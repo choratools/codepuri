@@ -38,12 +38,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .enumerate()
     {
         let results = std::thread::scope(|scope| {
-            let handles: Vec<_> = dex
-                .classes
-                .chunks(dex.classes.len().div_ceil(32).max(1))
-                .map(|classes| {
-                    let filter = &filter;
-                    scope.spawn(move || {
+            let handles: Vec<_> =
+                dex.classes
+                    .chunks(dex.classes.len().div_ceil(32).max(1))
+                    .map(|classes| {
+                        let filter = &filter;
+                        scope.spawn(move || {
                         let (mut methods, mut affected, mut conflicts, mut errors) = (0, 0, 0, 0);
                         for class in classes {
                             let Some(data) = &class.class_data else {
@@ -90,8 +90,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     println!("  {name}: {}", d.message);
                                 }
                                 if filter.is_some() {
+                                    if let Ok(lifted) = DexPasses::run(code)
+                                        && let Ok(merged) = dex_decompiler::merge_method(lifted) {
+                                            for block in merged.cfg().block_ids() {
+                                                println!(
+                                                    "MERGED {:?}",
+                                                    merged.cfg().block(block).unwrap().payload()
+                                                );
+                                            }
+                                    }
+                                    for (offset, word) in code.insns.chunks_exact(2).enumerate() {
+                                        println!(
+                                            "WORD @0x{offset:x} {:04x}",
+                                            u16::from_le_bytes([word[0], word[1]])
+                                        );
+                                    }
                                     println!("TRIES {:?} HANDLERS {:?}", code.tries, code.handlers);
-                                    match decode_method(code) {
+                                    let decoded = decode_method(code).or_else(|error| {
+                                        println!("RAW_DECODE_ERROR {error}");
+                                        let recovered =
+                                            dex_decompiler::decode::decode_method_recovering(
+                                                code,
+                                                dex_decompiler::decode::DEFAULT_ERROR_LIMIT,
+                                            );
+                                        println!("RECOVERY {:?}", recovered.errors);
+                                        Ok::<_, dex_decompiler::decode::DecodeError>(
+                                            recovered.insns,
+                                        )
+                                    });
+                                    match decoded {
                                         Ok(decoded) => {
                                             for raw in decoded {
                                                 if let (
@@ -131,6 +158,51 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     }
                                     for (iid, record) in ssa.ir().instructions().iter() {
                                         println!("SSA {iid:?} {:?} {record:?}", ssa.offset(iid));
+                                        match record {
+                                            managed_ir::insn::ManagedInsn::Cast {
+                                                target, ..
+                                            } if target.index() < dex.type_ids.len() as u32 => {
+                                                println!(
+                                                    "SSA_POOL {iid:?} {}",
+                                                    ty(dex, target.index() as u16)
+                                                )
+                                            }
+                                            managed_ir::insn::ManagedInsn::Invoke {
+                                                method,
+                                                ..
+                                            } => println!(
+                                                "SSA_POOL {iid:?} {}",
+                                                method_name(dex, method.index())
+                                            ),
+                                            managed_ir::insn::ManagedInsn::FieldGet {
+                                                field,
+                                                ..
+                                            } => {
+                                                let f = &dex.field_ids[field.index() as usize];
+                                                println!(
+                                                    "SSA_POOL {iid:?} {}->{}:{}",
+                                                    ty(dex, f.class_idx),
+                                                    dex.string(f.name_idx).unwrap(),
+                                                    ty(dex, f.type_idx)
+                                                );
+                                            }
+                                            _ => {}
+                                        }
+                                    }
+                                    for block in ssa.ir().cfg().block_ids() {
+                                        let b = ssa.ir().cfg().block(block).unwrap();
+                                        for edge in b.outgoing() {
+                                            let e = ssa.ir().cfg().edge(*edge).unwrap();
+                                            let target = ssa.ir().cfg().block(e.target()).unwrap();
+                                            println!(
+                                                "EDGE {edge:?} {:?} {:?} -> {:?} {:?} {:?}",
+                                                b.payload(),
+                                                ssa.offset(*b.payload()),
+                                                target.payload(),
+                                                ssa.offset(*target.payload()),
+                                                e.kind()
+                                            );
+                                        }
                                     }
                                     for (vid, value) in ssa.ir().values().iter() {
                                         println!(
@@ -138,14 +210,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                             value.def(),
                                             value.ty()
                                         );
+                                        if let managed_ir::types::ManagedType::Reference(class) =
+                                            value.ty()
+                                            && class.index() < dex.type_ids.len() as u32 {
+                                                println!(
+                                                    "VALUE_POOL {vid:?} {}",
+                                                    ty(dex, class.index() as u16)
+                                                );
+                                        }
                                     }
                                 }
                             }
                         }
                         (methods, affected, conflicts, errors)
                     })
-                })
-                .collect();
+                    })
+                    .collect();
             handles
                 .into_iter()
                 .map(|h| h.join().unwrap())

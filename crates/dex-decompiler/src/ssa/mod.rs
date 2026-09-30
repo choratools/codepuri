@@ -70,7 +70,7 @@ pub struct SsaStats {
     pub hoisted_defs: usize,
     /// Synthetic predicates placed at use-chain heads.
     pub inserted_defs: usize,
-    /// Dead synthetic definitions removed.
+    /// Unplaced dead real instructions and unused synthetic definitions removed.
     pub dead_defs: usize,
     /// Phis placed before elimination.
     pub phis_placed: usize,
@@ -147,34 +147,20 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
     let mirror = chains.analysis_cfg();
     let mirror_blocks: Vec<BlockId> = mirror.block_ids().collect();
 
-    let placement = place::place_synthetics(&mirror, &mut chains, &insns);
+    let placement = place::place_synthetics(&mirror, &mut chains, &insns, &offsets);
     stats.hoisted_defs = placement.hoisted;
     stats.inserted_defs = placement.inserted;
     stats.dead_defs = placement.dead.len();
+    let mut dead_values = Vec::new();
     for insn in &placement.dead {
         if let Some(record) = insns.get(*insn) {
             uses::for_each_definition(record, |value| {
-                values.remove(value);
+                dead_values.push(value);
             });
         }
         insns.remove(*insn);
+        offsets.remove(insn);
     }
-    // Dead definitions must also leave the register histories, or phantom
-    // multi-def variables would place spurious phis.
-    let reg_slots = {
-        let mut scrubbed = managed_ir::method::RegisterSlotArena::with_key();
-        for (_, slot) in reg_slots.iter() {
-            let mut copy = managed_ir::method::RegisterSlot::new(slot.index());
-            for value in slot.values() {
-                if values.get(*value).is_some() {
-                    copy.append(*value);
-                }
-            }
-            scrubbed.insert(copy);
-        }
-        scrubbed
-    };
-
     let mut vars = vars::Variables::build(&reg_slots, &values, &width_claims);
     let candidates = vars.multi_def_vars();
     let live = liveness::compute(&mirror, &chains, &insns, &vars, &candidates);
@@ -201,6 +187,25 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
         &vars,
         &mut phis,
     );
+    // File-order lifter operands can still name an unreachable definition.
+    // Keep its register lineage until renaming resolves the live reaching
+    // value; only then remove the orphaned semantic value.
+    for value in dead_values {
+        values.remove(value);
+    }
+    let reg_slots = {
+        let mut scrubbed = managed_ir::method::RegisterSlotArena::with_key();
+        for (_, slot) in reg_slots.iter() {
+            let mut copy = managed_ir::method::RegisterSlot::new(slot.index());
+            for value in slot.values() {
+                if values.get(*value).is_some() {
+                    copy.append(*value);
+                }
+            }
+            scrubbed.insert(copy);
+        }
+        scrubbed
+    };
     stats.entry_initials = renamed.entry_initials.len();
     let mut initial_insns: Vec<(u32, InsnId)> = renamed
         .entry_initials

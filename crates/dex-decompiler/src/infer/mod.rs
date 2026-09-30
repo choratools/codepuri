@@ -1,7 +1,7 @@
 //! Stage 2.4c: worklist type inference over the managed type lattice.
 //!
 //! Inference is flow-insensitive and monotone. Consumer constraints
-//! *narrow* values via the lattice meet (`check-cast`, opcode families,
+//! *narrow* values via the lattice meet (cast results, opcode families,
 //! field and method descriptors, returns); merge points *widen* phi
 //! results via the lattice join of their inputs. A constraint applied to
 //! a phi result is pushed down onto its inputs instead, so every stored
@@ -18,6 +18,9 @@ mod descriptor;
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod array_cast_regressions;
 
 pub use context::{DexTypes, NoTypes};
 
@@ -276,6 +279,27 @@ impl Engine<'_> {
     }
 
     fn meet_leaf(&mut self, value: ValueId, target: ManagedType, insn_id: InsnId) {
+        // Raw zero in a reference context denotes null, never an exact
+        // instance of the requested class or array descriptor. Keep it usable
+        // by other reference consumers and by phi joins of different ranks.
+        let target = if self.raw_constants.contains(&value)
+            && matches!(
+                target,
+                ManagedType::Reference(_) | ManagedType::Array { nullable: true, .. }
+            )
+            && matches!(
+                self.definitions
+                    .get(&value)
+                    .and_then(|id| self.insns.get(*id)),
+                Some(ManagedInsn::Const {
+                    value: Constant::Zero,
+                    ..
+                })
+            ) {
+            ManagedType::Null
+        } else {
+            target
+        };
         let Some(current) = self.types.get(&value) else {
             return;
         };
@@ -527,14 +551,28 @@ impl Engine<'_> {
                 target,
             } => {
                 // Numeric conversions carry lifter-owned synthetic targets
-                // whose result types are already exact; only real
-                // check-cast targets constrain the operand.
+                // whose result types are already exact; real check-cast
+                // targets describe the successful result.
                 if target.index() >= crate::lift::SYNTHETIC_TYPE_BASE {
                     return;
                 }
                 if let Some(ty) = self.ctx.type_at(target.index()) {
                     refinements.push(Refinement::Meet(*result, ty.clone()));
-                    refinements.push(Refinement::Meet(*value, ty));
+                    // A runtime cast accepts any reference, not only values
+                    // already typed as the exact target. Reject known scalars
+                    // without narrowing an Object source to an array or Null.
+                    if self.types.get(value).is_some_and(|source| {
+                        !matches!(
+                            source,
+                            ManagedType::Unknown
+                                | ManagedType::Zero
+                                | ManagedType::Null
+                                | ManagedType::Reference(_)
+                                | ManagedType::Array { .. }
+                        )
+                    }) {
+                        refinements.push(Refinement::Meet(*value, ManagedType::Conflict));
+                    }
                 } else {
                     self.ctx.note_unresolved("type", target.index());
                 }

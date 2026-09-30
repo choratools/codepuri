@@ -51,6 +51,7 @@ pub(crate) fn place_synthetics(
     cfg: &Cfg<usize>,
     chains: &mut Chains,
     insns: &InsnArena,
+    offsets: &HashMap<InsnId, u32>,
 ) -> Placement {
     let mut placed: HashSet<InsnId> = chains.payloads.iter().flatten().copied().collect();
     let unplaced: Vec<InsnId> = insns
@@ -58,12 +59,38 @@ pub(crate) fn place_synthetics(
         .map(|(id, _)| id)
         .filter(|id| !placed.contains(id))
         .collect();
+    // Absence from the CFG is not synthetic provenance: merge also leaves
+    // unreachable real instructions in the arena. Normal-success commits are
+    // Moves without offsets, but are CFG-owned, never standalone synthetics.
+    let dead_real: HashSet<InsnId> = unplaced
+        .iter()
+        .copied()
+        .filter(|id| {
+            offsets.contains_key(id)
+                || !matches!(
+                    insns.get(*id),
+                    Some(
+                        ManagedInsn::Const { .. }
+                            | ManagedInsn::Compare { .. }
+                            | ManagedInsn::Not { .. }
+                    ) | Some(ManagedInsn::Opaque {
+                        family_tag: 0x8001 | 0x8002,
+                        ..
+                    })
+                )
+        })
+        .collect();
     let users = value_users(insns);
     let doms = dominators(cfg);
     let mut placement = Placement::default();
     let mut entry_order: Vec<InsnId> = Vec::new();
     let mut alive: HashSet<InsnId> = placed.clone();
-    alive.extend(unplaced.iter().copied());
+    alive.extend(
+        unplaced
+            .iter()
+            .copied()
+            .filter(|id| !dead_real.contains(id)),
+    );
     // Kill fixpoint: an unplaced insn whose definitions nobody (alive)
     // uses is dead — including whole dead chains left unplaced by merge.
     // Counts are recomputed from scratch each round because killing one
@@ -160,7 +187,8 @@ pub(crate) fn place_synthetics(
     for insn in entry_order.into_iter().rev() {
         chains.payloads[entry_chain].insert(0, insn);
     }
-    // Only killed (unused) insns are dead. An alive insn that resisted
+    // Dead real code and killed (unused) synthetics are removed. An alive
+    // synthetic that resisted
     // placement stays in the arena and is reported by the structural
     // verifier rather than silently dropped.
     placement.dead = Vec::from_iter(

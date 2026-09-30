@@ -80,7 +80,9 @@ pub(super) fn lower(state: &mut Lowering<'_>) -> Built {
         }),
         0x1f => {
             let value = state.values.read(state.reg(0));
-            let ty = ManagedType::Reference(ClassRef::new(state.pool()));
+            // The pool operand may name an array descriptor. Inference resolves
+            // its structural type; a nominal seed would meet that array as Null.
+            let ty = ManagedType::Unknown;
             Built::Managed(ManagedInsn::Cast {
                 result: state.values.define(state.id, state.reg(0), ty),
                 value,
