@@ -1,0 +1,5 @@
+/target
+/target-dev
+/.codegraph/
+/.omo/
+*.apk

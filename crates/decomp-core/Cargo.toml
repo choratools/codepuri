@@ -1,0 +1,17 @@
+[package]
+name = "decomp-core"
+description = "Family-neutral decompiler core: arena CFG, graph analyses, pass registry, diagnostics"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+slotmap.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+
+[lints]
+workspace = true

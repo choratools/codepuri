@@ -1,0 +1,21 @@
+app                                        methods    ssa-ok merged-blk   ssa-blk     phis conflicts    warn       ms  errors
+com.elevenst.apk                            380038    380038    1610302   7977199   142652       25      74   437517  
+com.finnq.f1.apk                            560040    560040    1472456   5294949   116665       18     147   520882  
+com.microsoft.office.outlook.apk            651632    651632    2211602  10709008   245545       12     156   728217  
+com.nate.android.portalmini.apk             239679    239679     889400   3584638    72215       14      77   192314  
+com.samsung.android.app.notes.apk           503882    503882    2008193   7910989   162970       11     154   438061  
+com.sec.android.app.popupcalculator.apk      16770     16770     104184    445507    11603        0       6     8233  
+com.sec.android.app.sbrowser.apk            215972    215972     984981   3752954    66743        3      23   244987  
+com.skmc.okcashbag.home_google.apk          554658    554658    2210438   8879469   175302       51     123   524311  
+com.skt.aladdin.apk                         104733    104733     377128   1616624    37353        0      66   107065  
+com.sktelecom.tauth.apk                     299133    299133    1122351   4907185   118062       14      84   274690  
+blade.verification.apk                          31        31        500      1338       29        0       0       92  
+blade.verification.h052cb49cf25f.apk            31        31        500      1343       29        0       0       17  
+blade.verification.h2ac626c3faad.apk            31        31        500      1343       29        0       0       17  
+blade.verification.h4bac0eb61661.apk            31        31        500      1343       29        0       0       17  
+blade.verification.h5ceb7065c65f.apk            31        31        500      1343       29        0       0       16  
+blade.verification.h5f17c79f3423.apk            31        31        500      1343       29        0       0       17  
+blade.verification.h64e21eb06c46.apk            31        31        500      1343       29        0       0       16  
+blade.verification.h7382541e0413.apk            31        31        500      1343       29        0       0       16  
+com.android.settings.apk                    162957    162957     782873   3292544    72584        0      32   192263  
+com.android.systemui.apk                    212034    212034    1070090   5076057   112402        2      23   388494  

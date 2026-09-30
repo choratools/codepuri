@@ -1,0 +1,18 @@
+[package]
+name = "decomp"
+description = "Decompiler facade library and development CLI harness"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+decomp-core = { path = "../decomp-core" }
+decomp-emit = { path = "../decomp-emit" }
+dex-format = { path = "../dex-format" }
+managed-ir = { path = "../managed-ir" }
+dex-decompiler = { path = "../dex-decompiler" }
+backend-java = { path = "../backend-java" }
+
+[lints]
+workspace = true

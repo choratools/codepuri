@@ -1,0 +1,108 @@
+app                                         dex   methods   clean  partial  aborted        insns        ms  errors
+termux-app_v0.118.0_arm64.apk                27     58259   58259        0        0       763828       264  
+com.elevenst.apk                              9    380038  380038        0        0      7228949      1952  
+com.finnq.f1.apk                             12    560040  560040        0        0     12603301      2621  
+com.microsoft.office.outlook.apk             12    651632  651632        0        0      9200410      2305  
+com.nate.android.portalmini.apk               5    239679  239679        0        0      3044083       711  
+com.samsung.android.app.notes.apk            12    503882  503882        0        0      6833162      1952  
+com.sec.android.app.popupcalculator.apk       1     16770   16770        0        0       389449        80  
+com.sec.android.app.sbrowser.apk              5    215972  215972        0        0      3332831       692  
+com.skmc.okcashbag.home_google.apk           11    554658  554658        0        0      7743517      1997  
+com.skt.aladdin.apk                           3    104733  104733        0        0      1593337       456  "malformed-payload"=104727,"register-oob"=99736
+com.sktelecom.tauth.apk                       7    299133  299133        0        0      4247058       935  
+blade.verification.apk                        2        31      31        0        0         1300         3  
+blade.verification.h052cb49cf25f.apk          2        31      31        0        0         1308         0  
+blade.verification.h2ac626c3faad.apk          2        31      31        0        0         1308         0  
+blade.verification.h4bac0eb61661.apk          2        31      31        0        0         1308         0  
+blade.verification.h5ceb7065c65f.apk          2        31      31        0        0         1308         0  
+blade.verification.h5f17c79f3423.apk          2        31      31        0        0         1308         0  
+blade.verification.h64e21eb06c46.apk          2        31      31        0        0         1308         0  
+blade.verification.h7382541e0413.apk          2        31      31        0        0         1308         0  
+com.android.settings.apk                      5    162957  162957        0        0      2936486       761  
+com.android.systemui.apk                      5    212034  212034        0        0      4452338       961  
+com.elevenst.skpay.apk                       10    216293  216293        0        0      5019636      1323  "malformed-payload"=216275,"register-oob"=194352
+com.google.android.apps.docs.apk              4    139207  139207        0        0      4649346       773  
+com.google.android.apps.photos.apk            9    301617  301617        0        0      7780172      1467  
+com.google.android.apps.youtube.music.apk     6    177658  177658        0        0      4134977      1022  
+com.google.android.contactkeys.apk            3     55313   55313        0        0      1064025       238  
+com.google.android.safetycore.apk             3     33844   33844        0        0       585499       139  
+com.google.android.videos.apk                 5    124423  124423        0        0      2836005       550  
+com.microsoft.office.officehubrow.apk        10    332845  332845        0        0      7442032      2035  
+com.microsoft.skydrive.apk                    4    167370  167370        0        0      3570412       729  
+com.samsung.aasaservice.apk                   1     19426   19426        0        0       452502        91  
+com.samsung.accessibility.apk                 1     32343   32343        0        0       716494       135  
+com.samsung.accessory.budsunitemgr.apk        2     56199   56199        0        0      1748233       392  
+com.samsung.advp.imssettings.apk              3     97654   97654        0        0      1686408       301  
+com.samsung.android.accessibility.talkb...    4    108819  108819        0        0      1415227       326  
+com.samsung.android.aircommandmanager.apk     1       527     527        0        0        27969         8  
+com.samsung.android.allshare.service.me...    1      1816    1816        0        0        62656        11  
+com.samsung.android.app.aodservice.apk        3     80570   80570        0        0      1871187       400  
+com.samsung.android.app.camera.sticker....    1         2       2        0        0            4        20  
+com.samsung.android.app.clipboardedge.apk     1      6360    6360        0        0       149678        31  
+com.samsung.android.app.contacts.apk          2     65994   65994        0        0      1799634       394  
+com.samsung.android.app.dofviewer.apk         2     79989   79989        0        0      1081412       221  
+com.samsung.android.app.dressroom.apk         3    166773  166773        0        0      2358544       513  
+com.samsung.android.app.earphonetypec.apk     1      4324    4324        0        0        81264        22  
+com.samsung.android.app.esimkeystring.apk     1     13581   13581        0        0       198268        52  
+com.samsung.android.app.reminder.apk          4    173969  173969        0        0      3073455       655  
+com.samsung.android.app.routines.apk          6    281050  281050        0        0      4376232       955  
+com.samsung.android.app.sharelive.apk         2     75680   75680        0        0      1862699       347  
+com.samsung.android.app.sketchbook.apk        2     58707   58707        0        0      1043032       255  
+com.samsung.android.app.smartcapture.apk      5    162250  162250        0        0      2557868       537  
+com.samsung.android.app.soundpicker.apk       1     25811   25811        0        0       498426        99  
+com.samsung.android.app.spage.apk             5    237469  237469        0        0      3552112       801  
+com.samsung.android.app.taskedge.apk          1      6554    6554        0        0       167362        37  
+com.samsung.android.app.telephonyui.apk       4    204308  204308        0        0      2900237       612  
+com.samsung.android.app.telephonyui.esi...    2     79286   79286        0        0      1039059       245  
+com.samsung.android.app.tips.apk              1     20264   20264        0        0       520696       114  
+com.samsung.android.app.updatecenter.apk      1     21973   21973        0        0       449524        84  
+com.samsung.android.app.vex.scanner.apk       1     36741   36741        0        0       852493       153  
+com.samsung.android.app.watchmanager.apk      1     33019   33019        0        0       683873       178  
+com.samsung.android.app.watchmanagerstu...    1     12556   12556        0        0       287052        55  
+com.samsung.android.appseparation.apk         1     28611   28611        0        0       568720       112  
+com.samsung.android.aremoji.apk               2     56022   56022        0        0      1040634       238  
+com.samsung.android.aremojieditor.apk         2     80795   80795        0        0      1194646       362  
+com.samsung.android.audiomirroring.apk        1     11770   11770        0        0       280001        55  
+com.samsung.android.authfw.apk                1     35031   35031        0        0       529748       101  
+com.samsung.android.aware.service.apk         1     13138   13138        0        0       317225        60  
+com.samsung.android.bbc.bbcagent.apk          1       132     132        0        0         2796         1  
+com.samsung.android.beaconmanager.apk         1      4124    4124        0        0       106330        23  
+com.samsung.android.biometrics.app.sett...    1      8508    8508        0        0       243762        46  
+com.samsung.android.bixby.agent.apk           4    175114  175114        0        0      3292451       762  
+com.samsung.android.bixby.ondevice.enus...    2    103616  103616        0        0      1438417       349  
+com.samsung.android.bixby.ondevice.kokr...    2    108152  108152        0        0      1481719       407  
+com.samsung.android.bixby.wakeup.apk          1     39017   39017        0        0       866287       184  
+com.samsung.android.bixbyvision.framewo...    1      3641    3641        0        0        56568        18  
+com.samsung.android.bluelightfilter.apk       1       238     238        0        0         5004         2  
+com.samsung.android.brightnessbackupser...    1        27      27        0        0         1744         0  
+com.samsung.android.calendar.apk              4    101220  101220        0        0      2241627       577  
+com.samsung.android.callassistant.apk         1     44650   44650        0        0       948129       213  
+com.samsung.android.callbgprovider.apk        1      1389    1389        0        0        38656        14  
+com.samsung.android.game.gamehome.apk         3    159509  159509        0        0      2362716       566  
+com.samsung.android.nmt.apps.t2t.langua...    1     10473   10473        0        0       228777        60  
+com.samsung.android.oneconnect.apk           11    556271  556271        0        0      9572674      2254  
+com.samsung.android.spay.apk                 14    687826  687826        0        0     10394945      4819  
+com.samsung.android.voc.apk                   4    203740  203740        0        0      3618574      1545  
+com.samsung.sec.android.prd.apk               2     94409   94409        0        0      1410732       556  
+com.samsung.sree.apk                          7    292073  292073        0        0      5132163      2068  
+com.sec.android.app.clockpackage.apk          6     86672   86672        0        0      1903397       853  
+com.sec.android.app.fm.apk                    1     20970   20970        0        0       594469       183  
+com.sec.android.app.kidshome.apk              2     58670   58670        0        0      1055037       360  
+com.sec.android.app.shealth.apk               7    318988  318988        0        0      8184929      2840  
+com.sec.android.app.voicenote.apk             4    181669  181669        0        0      2931853      1325  
+com.skt.nugu.apollo.apk                      19    309187  309187        0        0      5106636      1961  "malformed-payload"=309149,"register-oob"=288344
+com.skt.skaf.OA00026910.apk                  11    560397  560397        0        0      9891044      2644  
+com.skt.smartbill.apk                         1       116     116        0        0         2343        24  "malformed-payload"=114,"register-oob"=107
+com.skt.tmap.ku.apk                          19    426180  426180        0        0      6537682      1659  
+com.sktelecom.myinitial.apk                   6    182610  182610        0        0      2539269       590  "malformed-payload"=182598,"register-oob"=174304
+com.sktelecom.tdeal.apk                       4     73027   73027        0        0      1283095       357  "malformed-payload"=73019,"register-oob"=68912
+com.sktelecom.vcoloring.apk                   8    310313  310313        0        0      4854317      1461  "malformed-payload"=310297,"register-oob"=289183
+com.ubercab.apk                              37   1691601 1691601        0        0     18748133      4718  
+im.status.ethereum.apk                        3    100922  100922        0        0      1529999       425  
+kr.co.captv.pooqV2.apk                        7    384901  384901        0        0      5393423      1425  
+skplanet.musicmate.apk                        8    421011  421011        0        0      7885596      1809  
+
+TOTAL: 102 apks, 462 dex, 15619349 methods (15619349 clean, 0 partial, 0 aborted), 2311117 diagnostics, 264791176 insns, 70085 ms, 0 parse failures
+ERRORS: "malformed-payload"=1196179,"register-oob"=1114938
+SEMANTIC: Const=33186496,Move=45011410,Arith=8179509,Compare=611550,Branch=25403608,Switch=201545,Invoke=64946962,Field=38789970,Array=3403017,New=8895420,Cast=8089672,Monitor=972981,Return=19818517,Throw=1711435,Payload=332223,Nop=5236861
+UNSUPPORTED: {}

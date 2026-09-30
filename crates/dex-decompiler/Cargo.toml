@@ -1,0 +1,20 @@
+[package]
+name = "dex-decompiler"
+description = "DEX frontend: Dalvik opcode decoder, lifting into managed IR, CFG/SSA passes"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+decomp-core = { path = "../decomp-core" }
+dex-format = { path = "../dex-format" }
+managed-ir = { path = "../managed-ir" }
+slotmap.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/decomp-core",
+    "crates/decomp-emit",
+    "crates/dex-format",
+    "crates/managed-ir",
+    "crates/dex-decompiler",
+    "crates/backend-java",
+    "crates/decomp",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+slotmap = "1"
+thiserror = "2"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+proptest = "1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
