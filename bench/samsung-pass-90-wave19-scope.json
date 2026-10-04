@@ -1,0 +1,9 @@
+{
+  "root": "/tmp/opencode/decomphify-java-corpus/run-1790948870869553255-1716764/com.samsung.android.samsungpass",
+  "apps": 1,
+  "workers": 30,
+  "concurrent_workspace_tests": true,
+  "timing_comparison_limit": "shared host and concurrent validation; no controlled speedup claim",
+  "frozen_release": true,
+  "coverage_denominator": 205497
+}

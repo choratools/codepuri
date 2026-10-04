@@ -1,0 +1,21 @@
+{
+  "status": "terminal",
+  "goal_complete": false,
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave38",
+  "driver_session": 55404,
+  "workspace_tests_session": 97053,
+  "release_and_scoped_clippy_exit_code": 0,
+  "typing_patch_sha256": "498fead317aa16927a2a7b0e27a2cd8e0c2ce124653f479896cb6e91e632d7b3",
+  "actual_m1_profile": {
+    "root": "/tmp/opencode/wave38-typing-m1-static",
+    "exit_code": 0,
+    "complete_static_initializers": 1,
+    "unsupported_methods": 0,
+    "whole_original_class_compilation_verified": false
+  },
+  "actual_certificate_method": "classes2#31849",
+  "full_corpus_coverage_pending": false,
+  "updated_at": "2026-10-04T04:36:20.392464+00:00",
+  "workspace_tests_exit_code": 0,
+  "driver_exit_code": 0
+}

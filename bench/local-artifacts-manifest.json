@@ -1,0 +1,535 @@
+{
+  "created_utc": "2026-10-04T15:01:10.303268+00:00",
+  "archive": "bench/local-artifacts/pre-checkpoint-large-reports.tar.gz",
+  "archive_is_not_committed": true,
+  "source_files_retained_in_place": true,
+  "files": [
+    {
+      "path": "bench/java_corpus_first_slice.txt",
+      "bytes": 4513530,
+      "sha256": "72bc0f25f7fd5f29cf58f41971f602639ecba2b3087fc37f2a461f59d0c6eb14"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave11-inventory.json",
+      "bytes": 1489582,
+      "sha256": "e1de5d01145e20d8c7420e08e29b2f592443331b42f7c5a5593ef13c2cb3194f"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave12-inventory.json",
+      "bytes": 1483632,
+      "sha256": "d8ed9e528f3f5e52ae1eed5191535dda0b270308aa22dec62cd7607ce79c843f"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave13-inventory.json",
+      "bytes": 1477899,
+      "sha256": "36e4c145f02b9eaed60b7ba3105b7c21c49591a6c9ff9d23acbc848a6dffdae1"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave14-inventory.json",
+      "bytes": 1486560,
+      "sha256": "cc6a4445484fef231cbc47f9ca3b18315522cfb65dcc4d52d5dd362818530e1c"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave15-inventory.json",
+      "bytes": 1491735,
+      "sha256": "8fb1ec84bac05dd588c01c94038a392217ca5f4e22d50ed414a0c3593e9a6174"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave16-inventory.json",
+      "bytes": 1490406,
+      "sha256": "b882cdb911328d8160af057b4de74c916806ead30d341dd3edab7c48a06df9db"
+    },
+    {
+      "path": "bench/samsung-pass-100-wave27-identity-delta.json",
+      "bytes": 1300375,
+      "sha256": "fbbabd2e5e36ee47883bc2a21e8c57d09176f80e29a7b78173a178b6ef6bbb34"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave1-inventory.json",
+      "bytes": 2687466,
+      "sha256": "2effd7c70ec93aa001e9f606ae082477d1a578e496827d177320e8faf7fa91e1"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave1.json",
+      "bytes": 1655238,
+      "sha256": "e627d1c187ad5accc28dc0307c319b20229381380085beec9dde161f4c614c26"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave10-inventory.json",
+      "bytes": 3126654,
+      "sha256": "24bc20a1fa1fa47b4463cd3f036541921138f50bcc86f93ed78142cecfce35d4"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave10.json",
+      "bytes": 5764092,
+      "sha256": "dbbdab406cdcfce32134dadbb52fc8f7b80a0dfcb18cf88907acd28ca0d88e4d"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave11-inventory.json",
+      "bytes": 3129487,
+      "sha256": "fbcf7bdb55fa295bcdaadb99fc92fb3fa4736997b423952e4c5aceedea631845"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave11.json",
+      "bytes": 6024608,
+      "sha256": "a646d22707b6fbae81808ff26010b666e157c3f10b3427521bd5c59de23b2467"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave12-inventory.json",
+      "bytes": 3133675,
+      "sha256": "8584c66fc170d8a5dc6b95d6f1cfed2f0ae192c7378871f1e370818c1688c32a"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave12.json",
+      "bytes": 6079080,
+      "sha256": "59f549e0b674750e7b9799874a94facd503c9a5923e9d750ee5cb14a837369a4"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave13-inventory.json",
+      "bytes": 3127686,
+      "sha256": "0186be5009a166391432f851f53d879948663445e27320cead3964ad97a72b0e"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave13.json",
+      "bytes": 6189093,
+      "sha256": "634f911db27354439c13479856d206e0b103943ff38ffd311852257f52cd239a"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave14-inventory.json",
+      "bytes": 3131522,
+      "sha256": "a095690428e0fbe8d5150b614e79b36c465b73f21d679e8dfacc7399a9b33ea8"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave14.json",
+      "bytes": 6230131,
+      "sha256": "617711aa03e67c859cba40039db16c8acf3670e1df411c2a0af462e4436e734b"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave15-inventory.json",
+      "bytes": 3173916,
+      "sha256": "e0468c584a76c1ad98f8a073f28c20f2d6f44a1c8af9abbb7fe014cc934da2c1"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave15.json",
+      "bytes": 6302321,
+      "sha256": "cc34ce2c583f9d9f7e38574d4b6d7e574ac428c5e51e6dc688227f588596f17b"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave16-inventory.json",
+      "bytes": 3081860,
+      "sha256": "1649a43f6dc28f43f5a32042fae91753b7a29098d6cd7697cbf2e38901eb00eb"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave16.json",
+      "bytes": 6440669,
+      "sha256": "8a3317fdc84de9acbd846d7ccd5d57eccb40063f896eb964b5e12e0b711b9ff6"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave17-inventory.json",
+      "bytes": 3079328,
+      "sha256": "6a49993814091a241db87c580093528541b6358c881ffb79a2b68945240cbcba"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave17.json",
+      "bytes": 6701624,
+      "sha256": "3a08195801984242508509bf9a5e50821642ce25f08b608be0cb73e903596daa"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave18-inventory.json",
+      "bytes": 3080224,
+      "sha256": "a49dada70ec6436dd4d7b23d552eda77bb74f8b4c3bb2ddfff677b2b4741039c"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave18.json",
+      "bytes": 6775872,
+      "sha256": "bad16104e007047b52b6f0eda991651de3aa0aeb62ac06a7e931ae6bf9e71d11"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave19-constructor-diagnostics.json",
+      "bytes": 7290594,
+      "sha256": "1fa08b3bf43cc46cb6abb7643177d1141a8844f82b1cdb91b9fb9859122b8d22"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave19-inventory.json",
+      "bytes": 3106721,
+      "sha256": "c66247fa41446e164285ef90323181afb6104251babbb4997bf17ddab4c2ac4d"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave19.json",
+      "bytes": 6839182,
+      "sha256": "4992592e6212489636715b0c5448daf04fb5e8f49c433bffc26412a92d3e1f83"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave2-inventory.json",
+      "bytes": 2703543,
+      "sha256": "5d2ce303c203de4edf20d199a2b25ea6dc0caee03d9c183cfe31ea1907e13fa2"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave2.json",
+      "bytes": 3428202,
+      "sha256": "cc758d90fa89aa229ff73ec1149a6de3071b70e6cc8c9cd33ea10cd9486933b9"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave20-constructor-diagnostics.json",
+      "bytes": 8329152,
+      "sha256": "9dfa236f5c68044436a07d8b8ecc848535700f12695ab04d0e86a63979e8d73d"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave20-inventory.json",
+      "bytes": 3107435,
+      "sha256": "406b82891a3ab1abe3f4d1ce20fb65f34bb870386c851926ac17b8b9bbdf38c7"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave20.json",
+      "bytes": 6968847,
+      "sha256": "8812e3d5a513b9b8ad62cbf08a435449ce604a5310c8b1b76c225600a4f91bbb"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave21-inventory.json",
+      "bytes": 3107220,
+      "sha256": "3fdf051cbe2890023f155263b26f6a3e0fa64ca87af06713fa7141b23dcd7df1"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave22-inventory.json",
+      "bytes": 3111120,
+      "sha256": "e44206203ce5095eee80e2dc0761b0a115718a766413d31d2607fd287a43f29f"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave23-inventory.json",
+      "bytes": 1807154,
+      "sha256": "c03c3070646de2865de090ade535b87a883355897976269e5be52ec600ae8ebf"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave24-inventory.json",
+      "bytes": 1771092,
+      "sha256": "737e6bb266c5321225901526b1cbb038d43ad6ded84b4a0f2c7e893995c41451"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave3-inventory.json",
+      "bytes": 2717583,
+      "sha256": "52d26481159d734790edf46932fd5b67125ddbf6b0271573ed8856cb8e490978"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave3.json",
+      "bytes": 4239661,
+      "sha256": "e72bcd847780c64d920dab056dec7ff110532ab7581f1309e086fead57d0f6cf"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave4-inventory.json",
+      "bytes": 2721790,
+      "sha256": "f4f87ad161c3a4384c19b262fc840138ac3c04099a7a28d761206a529396c5e2"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave4-rejected-methods.csv",
+      "bytes": 17185958,
+      "sha256": "fa8e5c4c527e81bdd298c0767f90293416edddcfa9c79c0af63ceb7c07e136d9"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave4.json",
+      "bytes": 4228731,
+      "sha256": "675176b954179c9e91032976ebe3da61ab6cdca9f4ad598816071fcdc96fe8b4"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave5-inventory.json",
+      "bytes": 3200469,
+      "sha256": "63e95b8a6b22560c1d3085357e85d5ae50ffd00ad30b36a236bf0bd1683b0562"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave5.json",
+      "bytes": 5074368,
+      "sha256": "35891d678c2787eb140df4194cb3b15981ebdb8808540d884aa6e4e9a73145ac"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave6-inventory.json",
+      "bytes": 3176986,
+      "sha256": "515801290e5d98921cf017ffb59ce815c9cfb8f5cfc5d7c03e8cac7a737a0671"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave6.json",
+      "bytes": 5264202,
+      "sha256": "f339e7cc5f3a9716e5d34565c765db46382df2b8e91ad02a8c94876f1bfc728e"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave7-inventory.json",
+      "bytes": 3188216,
+      "sha256": "e4e9e18847f114db2e9b560e6922a698f057cf8581d6990ad38ebfde9ced50e1"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave7.json",
+      "bytes": 5249975,
+      "sha256": "f3edcae04e1d605665fbfee048bc17a8192a3843dff89a7bab2585e198ddc983"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave8-inventory.json",
+      "bytes": 3179053,
+      "sha256": "889f48144edeecaadd37d0b9f82960ae8e3166b987b5d5d304a2ff32e72a5971"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave8.json",
+      "bytes": 5264202,
+      "sha256": "daa0bfe11b14333307711d176728c9a63c9b3093909314fe7d3be3ae4ffc6a4c"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave9-inventory.json",
+      "bytes": 3144576,
+      "sha256": "f38e41c33dcd2c2d6218ce07db81f743410b63a8d8e839bf4bdabbcf5bf3ad4e"
+    },
+    {
+      "path": "bench/samsung-pass-90-wave9.json",
+      "bytes": 5695094,
+      "sha256": "06b1f853fec255d27b6bc09577b2e0788d4716e8f3b99386162023f7156725b0"
+    },
+    {
+      "path": "bench/samsung-pass-99-session-baseline-inventory.json",
+      "bytes": 1598283,
+      "sha256": "75c433bc8131cf14817dc58934e8be031dec76876f886ed50852a904a4b6cb28"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-corrected-coverage.json",
+      "bytes": 1239187,
+      "sha256": "396b32f8eb1c351f3302c9110057bd20af188cdd573fe3983fe1ea73907b5ae3"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-corrected-inventory.json",
+      "bytes": 1734418,
+      "sha256": "ec2726d92480e849abe5ed0dde6685045152ef59e3ccafccb25c907cc4b39af0"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-corrected-run.txt",
+      "bytes": 1087339,
+      "sha256": "de495902554fbc1fe02923c2176b5c3d68f4f84393bebb27a42e0afc19608ffb"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-java17-inventory.json",
+      "bytes": 1733645,
+      "sha256": "15906a3de8d123f4a314172997c3a0c06e26d72fb0ca6adaac698c0a4e042c06"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-java17-run.txt",
+      "bytes": 1079613,
+      "sha256": "a1d851ee0510c71e2c0ff9a08a159b56dd3093118931b300192e7351a78ad51e"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-java25-coverage.json",
+      "bytes": 1238540,
+      "sha256": "0905be3a2fb4db9b590d7d82df093cf97dc317538b57e7bb2f85d6e53f41c90f"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-java25-inventory.json",
+      "bytes": 1736957,
+      "sha256": "b0964647f8ddd00544216e06c64f03a562026966184731e676b1027874b1b3ea"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave1-java25-run.txt",
+      "bytes": 1087308,
+      "sha256": "6227f90374c972e9a8e2f2cf1213417273d903df36c0da2de83fa13a4739738b"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave10-inventory.json",
+      "bytes": 1486896,
+      "sha256": "e6a790893781d7946e326754e424fe13d0020bf848eb1711c31d6c0cd4ff82bb"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave2-inventory.json",
+      "bytes": 1952162,
+      "sha256": "858f319cf128e671c0ad08249f6a6a3618846a15feb9fca5d1d0cb5071b0f51b"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave2-run.txt",
+      "bytes": 1092002,
+      "sha256": "ee3ee6ad62d0a07ed3e85c4a25c13eb7793b4a524493a4b287cbd49ea5182aa5"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave3-inventory.json",
+      "bytes": 1883812,
+      "sha256": "5164d741c122f5c2bec21c77272600c428913dfdd472a1a4803d5020f110a7a7"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave3-run.txt",
+      "bytes": 1054096,
+      "sha256": "0ec9654293ccb113b5c9adc25c90cdf371fe973e9afcaef8a171fe4e51b811b7"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave4-inventory.json",
+      "bytes": 1884487,
+      "sha256": "55421c02b91aaa2f6124e2329f796ac7ad9c962aab4d466bde77023aba1389aa"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave4-run.txt",
+      "bytes": 1059052,
+      "sha256": "4018816710351bb4e6f964c9d580183a22d4f5f9fe90263032004cc372c83789"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave5-inventory.json",
+      "bytes": 1681429,
+      "sha256": "c54c598c4acfbd807be80f93ec68e08321c0b6cc459a159aca2198e5c3688bf8"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave7-inventory.json",
+      "bytes": 1633698,
+      "sha256": "55d391aa3a4b1d2540f68818e9dba9690d083f44032f73122d98b293e88a0d8c"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave8-inventory.json",
+      "bytes": 1633422,
+      "sha256": "3727157886207a4c6f6a8ad71f00454c0326f917ae43ebc8c484ce7bd955f978"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave9-inventory.json",
+      "bytes": 1481722,
+      "sha256": "4b3d07ab4b53724ef4a200dbe7155867a7377afc5283d278386f4b50c0c77f57"
+    },
+    {
+      "path": "bench/samsung-pass-99-wave9-runtime-inventory.json",
+      "bytes": 1413539,
+      "sha256": "4ff139c8926b43b92d6c7e5a9540e3dd6aed81a6cb15168c72e56965ee9b35b0"
+    },
+    {
+      "path": "bench/samsung-pass-baseline.json",
+      "bytes": 2256006,
+      "sha256": "51cccdd6e9c0d74b50e614197bc35959b0646a6ba87cc08cfd885f863cd6729e"
+    },
+    {
+      "path": "bench/samsung-pass-cache-wave6-inventory.json",
+      "bytes": 1679010,
+      "sha256": "795e811666b1dda1bf41318708a1e61aabc7a73f979853619ceade93b1118f3e"
+    },
+    {
+      "path": "bench/samsung-pass-caches-off-inventory.json",
+      "bytes": 1604510,
+      "sha256": "b6a7a53d1752326517ca56b6fe435ad86e165810b71fb55c2a9023c0e2d9fd2c"
+    },
+    {
+      "path": "bench/samsung-pass-caches-on-inventory.json",
+      "bytes": 1604691,
+      "sha256": "17624781127c609014890f9ad7bf83a0c5b705a873cd127ac8bfffe0ec74165a"
+    },
+    {
+      "path": "bench/samsung-pass-continuation-final.json",
+      "bytes": 2280654,
+      "sha256": "f0f031b35f90d4a4b06d66819654559c5be461cb217a99503cc194f2ecf810a9"
+    },
+    {
+      "path": "bench/samsung-pass-final.json",
+      "bytes": 2264709,
+      "sha256": "d310ed75c8a51df90cc36e54fd4f6ca9123493cceb95888fbbfe9bb3fc03bd01"
+    },
+    {
+      "path": "bench/samsung-pass-five-blockers-final.json",
+      "bytes": 2517810,
+      "sha256": "3efdc78f1037f966212d2c63787ab4b0c061a371a1a361d272beb71ccaa18426"
+    },
+    {
+      "path": "bench/samsung-pass-five-blockers-validation.json",
+      "bytes": 4458402,
+      "sha256": "d89f5f020e4dd1c56c98cddb7b85de92740f8fff36ab7657f97686cd738414c6"
+    },
+    {
+      "path": "bench/samsung-pass-five-final-inventory.json",
+      "bytes": 2546317,
+      "sha256": "62b50a4fd94607ea8a8fac40774d51473f099932b79cb13252ae5156633ef239"
+    },
+    {
+      "path": "bench/samsung-pass-five-final-per-file-errors.json",
+      "bytes": 6572479,
+      "sha256": "378834ac96b91ce631adc492d7d6852081e08fda9030d414e5de4711e92761bf"
+    },
+    {
+      "path": "bench/samsung-pass-five-final-summary.json",
+      "bytes": 5081189,
+      "sha256": "313c54bb8a3e4c492460016d6fdcecfc727e413735c8c0186b587aefe5bd0b8b"
+    },
+    {
+      "path": "bench/samsung-pass-five-final-validation.json",
+      "bytes": 4803867,
+      "sha256": "a9fff7a92394137253a6a9c804eb5346bb79014bdaddc3fe90c0becc5b138dbf"
+    },
+    {
+      "path": "bench/samsung-pass-memory-cache-off-inventory.json",
+      "bytes": 1604887,
+      "sha256": "0d986f73a9e68c7b720100918d2770724e221597adf5697604779cd2dac3b1b8"
+    },
+    {
+      "path": "bench/samsung-pass-memory-cache-on-inventory.json",
+      "bytes": 1599822,
+      "sha256": "22c1607876c81309aaf9966114ce06eb463b96fa4204ee21c90c0138374d92d4"
+    },
+    {
+      "path": "bench/samsung-pass-next-wave-final.json",
+      "bytes": 2283026,
+      "sha256": "65aa49d9477b8854b48b4ce5295fe956a2edaa3b8a80b27e6e3d24d026b7d4b5"
+    },
+    {
+      "path": "bench/samsung-pass-next-wave-validation.json",
+      "bytes": 2366501,
+      "sha256": "57589d9be6f0f0683ff845dc90ddde9450b32ff87f794e8aa305d1c173a57a55"
+    },
+    {
+      "path": "bench/samsung-pass-protected-final.json",
+      "bytes": 2283142,
+      "sha256": "f30286f082ab625226900e1fafd8e4b04301f12f10a2f87852e50820c4e63e78"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final-coverage.json",
+      "bytes": 18603546,
+      "sha256": "6555c2de4c007f96d9b3197693ece10add1c7640964c46e68f740cb304b4c036"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final-diagnostics.json",
+      "bytes": 1097172,
+      "sha256": "61daa81da64c402d8ddf2066c046e05e4fcb0c682890dc90c54d13d6e7059780"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final-inventory.json",
+      "bytes": 2699000,
+      "sha256": "a264cfe28faf03e89014cd493aa35965e8f2e3e737adf287f1b06a6e34cc4e2c"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final-per-file-errors.json",
+      "bytes": 16666512,
+      "sha256": "c1e551594edf7607c157e2c97ec48ddc42b8e45c12ab00246a32e96406438d7a"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final-wholeclasses.json",
+      "bytes": 1748071,
+      "sha256": "e3707b2924234dc982ad7eb2796d26694cb0544524e7a7efa56b60e5e12335fd"
+    },
+    {
+      "path": "bench/samsung-pass-sourceclosure-final.json",
+      "bytes": 20051709,
+      "sha256": "63ac04935bc8c48497ec10a19fc987c778cfd230a8e0d4d2eab32bb0b292fe68"
+    },
+    {
+      "path": "bench/samsung-pass-speed-after-inventory.json",
+      "bytes": 1598947,
+      "sha256": "9a9b2755152a21f9de7e7e726c2705dbe73f3a3315fedad7b99cae548c861b82"
+    },
+    {
+      "path": "bench/samsung-pass-speed-before-inventory.json",
+      "bytes": 1604421,
+      "sha256": "c149a517c79d440591aa91d28e68c548401bf49c950c0e4271508ba21b5b5d0f"
+    },
+    {
+      "path": "bench/samsung-pass-speed-final-inventory.json",
+      "bytes": 1599645,
+      "sha256": "b50cf12e5abdd15081f07d8b628ca378acd344d1f2d5741cf7f6a6e2e6d61bb4"
+    },
+    {
+      "path": "bench/samsung-pass-ssa-cache-off-inventory.json",
+      "bytes": 1599111,
+      "sha256": "f74b836808cfbd8a387619db1a0be205a45b9f2796375ba6d901c8c773d375e0"
+    },
+    {
+      "path": "bench/samsung-pass-ssa-cache-on-inventory.json",
+      "bytes": 1598968,
+      "sha256": "91451a7610f7aba1fc1ab53ac122af452323ae35eb76f528c6976d121c7294b0"
+    },
+    {
+      "path": "bench/smartthings-cached-run.txt",
+      "bytes": 11754492,
+      "sha256": "f4a834744aaddcb875773ce95e530018f37a7f526d0ab72c554fdf35e61234ab"
+    }
+  ],
+  "archive_sha256": "309a530567d57f377ab1a8a2ee2d99567d7bdc4d0d4718ccd99588aa628a18ce",
+  "archive_members_verified": true
+}

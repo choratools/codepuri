@@ -1,0 +1,19 @@
+{
+  "state": "full_export_running",
+  "baseline": "wave34",
+  "changed_sources_vs_baseline": [
+    "crates/backend-java/src/checked_source_bridge.rs",
+    "crates/backend-java/src/checked_source_bridge_cache_tests.rs"
+  ],
+  "bounded_signature_lookup_only": {
+    "sites": 128,
+    "iterations": 2000,
+    "uncached_ns": 62209537,
+    "cached_ns": 170639,
+    "apk_speedup_unverified": true
+  },
+  "exact_source_equivalence_tests": "/tmp/opencode/wave35-bridge-cache-bounded.log",
+  "strict_clippy": "/tmp/opencode/wave35-bridge-cache-clippy.log",
+  "full_run_root": "/tmp/opencode/samsung-pass-100-wave35",
+  "goal_complete": false
+}

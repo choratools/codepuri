@@ -1,0 +1,17 @@
+{
+  "default_javac_errors": 52163,
+  "selected_module_errors": 52879,
+  "java_xml_module_conflicts": 0,
+  "terminal": {
+    "exit_code": 1,
+    "seconds": 63.80925454897806,
+    "source_args_sha256": "63e8e4d0dc1583983de616d4cba814412a0d3ff5efcafe09e3546401183417c3"
+  },
+  "artifact": "/tmp/opencode/samsung-pass-100-wave24-selected-modules",
+  "promoted": false,
+  "source_edits": false,
+  "source_exclusions": false,
+  "minimal_no_system_attempt": "failed: Unable to find package java.lang in platform classes",
+  "unchanged_XMLConstants_selected_module_probe": "exit 0",
+  "interpretation": "Selected module context fixes the XMLConstants unit but total diagnostics increased; not a recovery gain or whole-compile success."
+}

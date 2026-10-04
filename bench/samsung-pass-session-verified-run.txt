@@ -1,0 +1,3 @@
+phase=cold export_wall_s=189.116653 sources=30543 bytes=278620077 checksum=f8065aa4d6255fdd complete_methods=131627 constructors=25068 static_initializers=4733 unsupported_methods=23792 unavailable_constructors=9137 declaration_only=11140 stats=SessionStats { renders: 1, replays: 0, sources: 30543, source_text_bytes: 278620077, ready: true }
+phase=warm export_wall_s=1.436368 sources=30543 bytes=278620077 checksum=f8065aa4d6255fdd complete_methods=131627 constructors=25068 static_initializers=4733 unsupported_methods=23792 unavailable_constructors=9137 declaration_only=11140 stats=SessionStats { renders: 1, replays: 1, sources: 30543, source_text_bytes: 278620077, ready: true }
+setup_s=1.432994 artifacts=/tmp/opencode/samsung-pass-session-replay-verified

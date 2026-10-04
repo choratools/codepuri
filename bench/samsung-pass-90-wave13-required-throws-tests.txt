@@ -1,0 +1,26 @@
+warning: field `identity` is never read
+   --> crates/decomp/src/java_required_throws.rs:108:9
+    |
+106 | pub struct DerivedThrows {
+    |            ------------- field in this struct
+107 |     /// Exact original identity.
+108 |     pub identity: OriginalMethodIdentity,
+    |         ^^^^^^^^
+    |
+    = note: `DerivedThrows` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `decomp` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/java_required_throws_new.rs (target/debug/deps/java_required_throws_new-5420602527514b3a)
+
+running 6 tests
+test samsung_private_checked_throw_identity_is_genuine ... ignored, requires retained Samsung APK and explicit JDK17
+test required::tests::inherited_contract_and_exact_catch_preserve_original_metadata ... ok
+test required::tests::invalid_clinit_and_unknown_hierarchy_poison_cycles ... ok
+test required::tests::override_failure_invalidates_callers_and_recursive_peers ... ok
+test required::tests::long_chain_and_recursive_component_reach_fixed_point ... ok
+test required::tests::derived_contract_compiles_and_preserves_checked_exception_runtime ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.58s
+

@@ -1,0 +1,211 @@
+{
+  "source_root": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources",
+  "input_units": 29904,
+  "identity_status_counts": {
+    "complete_body": 147758,
+    "rejected_in_written_unit": 41457,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 4842,
+    "proven_enum_equivalence": 300
+  },
+  "identity_delta": "/tmp/opencode/decomphify-90-wave12-validation/identity-delta.json",
+  "gained_bodies": 58767,
+  "lost_bodies": 3,
+  "syntax_gate": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/java",
+      "-Xmx4g",
+      "-cp",
+      "/tmp/opencode/decomphify-90-wave12-validation",
+      "SamsungPassParseGate",
+      "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources"
+    ],
+    "exit_code": 0,
+    "seconds": 15.154019972775131,
+    "max_rss_kib": 2182880,
+    "log": "/tmp/opencode/decomphify-90-wave12-validation/syntax-gate.log"
+  },
+  "full_compile": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-J-Xmx8g",
+      "-proc:none",
+      "-Xmaxerrs",
+      "2147483647",
+      "-classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "-sourcepath",
+      "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+      "-d",
+      "/tmp/opencode/decomphify-90-wave12-validation/classes",
+      "@/tmp/opencode/decomphify-90-wave12-validation/sources.args"
+    ],
+    "exit_code": 1,
+    "seconds": 63.174397686030716,
+    "max_rss_kib": 4247884,
+    "log": "/tmp/opencode/decomphify-90-wave12-validation/full-javac.log"
+  },
+  "diagnostic_count": 64637,
+  "diagnostic_cap": 2147483647,
+  "diagnostic_cap_reached": false,
+  "source_hashes_unchanged": true,
+  "representatives": [
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.8666781401261687,
+      "max_rss_kib": 122184,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-0.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java",
+      "sha256": "4ff7e2d59b3733d91c62c0aa76e962e5ada50ab9a5e275110889669b810dd3b6"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/e$type.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.6659033210016787,
+      "max_rss_kib": 146496,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-1.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/e$type.java",
+      "sha256": "6d7555e5594d0e24a8dbb6efea57e28c04c4689848d85a5aa7c766b78ee69a0a"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/d$type.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7660789601504803,
+      "max_rss_kib": 147864,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-2.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/d$type.java",
+      "sha256": "1110c4dbbe3ea2b96fb50e404f4a3c5136d0017c05c9fd27b6155ed9203426de"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.6661653998307884,
+      "max_rss_kib": 122108,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-3.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java",
+      "sha256": "ba3412d52d2da56bd76cee0c6461649495b62e46d9df2b5040ed411f70cb622d"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.716040660161525,
+      "max_rss_kib": 120204,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-4.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java",
+      "sha256": "c042ca03a918b57ab6db9027aa939b462d4c6ca5d870a788d835774d6d580c39"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/m0/q0$type.java"
+      ],
+      "exit_code": 1,
+      "seconds": 1.7190062939189374,
+      "max_rss_kib": 161004,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-5.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/m0/q0$type.java",
+      "sha256": "cdd99627dbf55a17c31c886572389a4e64afb7654a8ff5212ddad3bd704c3aa8"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/c/c$type.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.8665863620117307,
+      "max_rss_kib": 155028,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-6.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/c/c$type.java",
+      "sha256": "fffbc6b503d19062cadd38b3ce109636d4e2c84a8563693cbc743c790cd60aac"
+    },
+    {
+      "requested_unit": "m0/b0$type.java",
+      "not_published": true
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/decomphify-90-wave12-validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/decomphify-90-wave12-validation/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java"
+      ],
+      "exit_code": 1,
+      "seconds": 2.5716915759257972,
+      "max_rss_kib": 144868,
+      "log": "/tmp/opencode/decomphify-90-wave12-validation/representative-8.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790938306426107663-412876/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java",
+      "sha256": "9d632b722953a241da9e5e9da4669a3c2fbe2c57d954847ce822ff01ebe82eeb"
+    }
+  ],
+  "compiled_apk": false
+}

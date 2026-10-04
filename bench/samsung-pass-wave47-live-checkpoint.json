@@ -1,0 +1,28 @@
+{
+  "observed_at": "2026-10-04T10:46:30.216328+00:00",
+  "driver_session": 44068,
+  "export_pid": 3088804,
+  "state": "terminal_driver_exit0",
+  "frozen_at": "2026-10-04T10:43:24.043080+00:00",
+  "changed_sources": [],
+  "accepted_baseline": "wave47",
+  "goal_complete": false,
+  "workspace": {
+    "passed": 1193,
+    "failed": 0,
+    "ignored": 164,
+    "suites": 195
+  },
+  "gate_exits": {
+    "fmt": 0,
+    "tests": 0,
+    "clippy": 0,
+    "release": 0
+  },
+  "pending_next_cohort": [
+    "selected-Phi receiver proof actual313 recovered",
+    "shared direct enum payload capture scheduling",
+    "pure zero-member interface publication",
+    "protected explicit checked throw causal trace"
+  ]
+}

@@ -1,0 +1,47 @@
+# Wave13 engineering checkpoint
+
+Authoritative lastfullWave12 coverage148058/205497=72.04874%;90remaining36890.
+Core sourceThrows workerownsjava_required_throws.rs; integrationworkerowns
+java_source_throws_integration.rs/java_integration.rs, originalcataloguntouched,
+exactscope/overridecontracts andstreamSSA. Actualprivateprotobuf12288 derivation
+leafproof passes, nofullproductiongainclaim.
+
+New correctnessbranch: Constant::String usesnewString(char[]).intern extra
+allocation/repeatedintern unlikeDEXconst-string. Allocationworker ownsnewexact
+UTF16Java literal renderer+smalllibbranch, verifiedJLSescaping/modifiedUTF8budget,
+JDKchar/internidentity andjavapLDC proof, nofreshconstructor. Constructorworker
+coordinates literalidentityreuse andkeeps originaleffectorder proof. Noauto
+restorationof269+53 withdrawnidentities; inspectactualorder/sourceafterfix.
+
+Coverageplanner investigatesactualfirstsubsetfailure forStatus/ASN1InputStream/
+Blake2sDigest; reachableconstructorlocalfinalproof alreadyproductionfallback,
+so newduplicatefallback andglobalunknownwaivers prohibited. Goalactive.
+
+Review findings sent to coreworker: override/clinit validation failures must
+propagate to exactsourcecallers afterfixpoint; use reversecallerworklist for
+205497methodscale ratherthan wholecatalog scans perchainstep. Separateoriginal
+annotations and derivedsourceclauses; noexceptions waived. ExactJava LDC literal
+renderer inprogress usesfixedoctalbackslash toavoidUnicodepreprocessinginjection,
+modifiedUTF8budget andjavapverification. Existing coverage remainsWave12only.
+
+Wave12new169withdrawals auditcomplete:111constructors oldString/ClassLiteral
+orderchanges,1singleemptyStringloadedoncebutoldheaderconstructstwice,4sameString
+post-chainfieldreuseoldexpressionduplicates;53clinitdependencywithdrawals.
+No knownidentitycomparisonbug; exact116constructorraw/oldsourceauditJSON retained.
+Smallpotentialrestoration5 requiresLDC nativehelper andsameSSAresolutionidentity.
+
+Parentreview sentintegration Facts::class missingclass_data/interfacesoffchecks:
+malformedNone mustnotimplyemptyinheritedinventory/NoInheritedDeclaration.
+Coreworklist andinvalidtargetbackprop reviewed; finalgates awaited.
+
+NativeJava literal renderer landedinConstant::String. Parentremovedproduction
+unwraps, testonlyunwrappermission. ScopedalltargetstrictClippy84864terminal0.
+RenewedcoreJDKproof74312terminal0:2testsallUTF16/intern/LDC/budget passed.
+Existingfloatingbits/UTF16literalruntime1testpassed. RequiredsourceThrows core
+5tests+long2100chain/SCC/failedoverridebackprop/JDKruntime pass,1ignoredactualprobe
+separatelyagentverified. Productionintegration stillawaitsactualfilteredoutput.
+No fullWave13 coverage claim. Originaldenominator205497unchanged.
+
+Full export completed: run-1790940291461257430-654148,226.208sec,34579classesvisited,30344sources,error0,skips0. Exact immutable ledger:149010strict bodies+300enum=149310/205497=72.657995%;35638remainingto90. Wave12delta+1992/-740, audit assignedsourceThrowsowner; no restorationclaimed. Workspace551tests passed; strictworkspaceClippyfinal2 passed. NativeUTF16LDCandconstructorprefixprooffocusedJDKtests pass. Fulluncappedsyntax/javac validation LIVE session50473 at /tmp/opencode/decomphify-90-wave13-validation; donotclaimcompiles. CoverageJSON anddelta retained.
+
+Validation50473terminal0:30344exactunits syntax0; uncappedfulljavacexit1,63287errors (Wave12 64637). validationJSON copied. Goalnotcomplete; loss audit and frontier exploration continue.

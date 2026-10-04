@@ -1,0 +1,26 @@
+{
+  "goal_complete": false,
+  "accepted_baseline": "wave43",
+  "candidate": "wave45",
+  "candidate_executable_percent": 95.27243342289202,
+  "candidate_executable": 185101,
+  "gained": 541,
+  "lost": [
+    "Landroidx/compose/ui/platform/AndroidComposeView;->findViewByAccessibilityIdTraversal(I)Landroid/view/View;",
+    "Landroidx/fragment/app/x;->b(Landroid/content/Context;Landroidx/fragment/app/Fragment;ZZ)Landroidx/fragment/app/x$a;",
+    "Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPresenter;->getXmlData(Ljava/lang/String;I)V",
+    "Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPresenter;->start(Ljava/lang/String;I)V",
+    "Llh/b;->readObject()Ljava/lang/Object;"
+  ],
+  "promotion": "blocked by5 originalidentitylosses; validationstillrunning",
+  "export_receipt": {
+    "finished_at": "2026-10-04T08:48:25.671133+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "runtime_metadata_unchanged": true,
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "updated_at": "2026-10-04T08:51:24.324512+00:00"
+}

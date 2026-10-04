@@ -1,0 +1,46 @@
+{
+  "state": "terminal_candidate_rejected_no_loss_gate",
+  "accepted_baseline": "wave29",
+  "objective": "100% original target recovery remains active/incomplete",
+  "root": "/tmp/opencode/samsung-pass-100-wave32",
+  "sessions": {
+    "full_driver": 2395,
+    "workspace_tests": 71037
+  },
+  "completed_root_gates": {
+    "release": "passed 38.28s",
+    "fmt": "passed",
+    "strict_clippy": "passed workspace/all-targets 7.87s"
+  },
+  "strict_clippy": "passed workspace/all-targets",
+  "bounded_original_evidence": {
+    "16702": "production original-clause emission passed; exact fragment compiled/runtime 46 assertions per JDK17/25 with explicit boundary dependencies",
+    "14395": "existing production derived clause preserved; original-clause backend recipe bounded evidence only",
+    "31220": "recovered in full wave32",
+    "122": "post-wave32 comparison repair preserves ArrayLength196/copy114/literal115 as Int; actual production probe pending",
+    "JavaType": "private recipe candidate subset compiles; original hidden-name schedule not attested; closed admission rejects and routing disabled"
+  },
+  "no_loss_baselines": [
+    "wave29",
+    "wave26"
+  ],
+  "new_coverage_claim": null,
+  "source_mutations_during_run": "none; freeze released after terminal receipts",
+  "workspace_tests": {
+    "first_attempt": "terminal101; JAVA_HOME missing in two branching runtime fixtures, source unchanged",
+    "corrected_session": 65413,
+    "corrected_log": "/tmp/opencode/wave32-root-workspace-tests-correct-env.log",
+    "corrected_JAVA_HOME": "/home/jtjisgod/tools/jdk-17.0.13+11",
+    "state": "terminal0: 1075 passed, 0 failed, 150 ignored"
+  },
+  "next_wave_diagnosis": "Exact ArrayLength196 domain is Int, comparison Meet with shared literal/byte operand incorrectly inferred Byte; standalone inference experiment assigned while source frozen.",
+  "terminal_evidence": "bench/samsung-pass-wave32-final.json",
+  "candidate_executable_coverage": {
+    "accepted": false,
+    "recovered": 182895,
+    "denominator": 194286,
+    "percent": 94.13699391618542,
+    "gained_vs_wave29": 1065,
+    "lost_vs_wave29": 19
+  }
+}

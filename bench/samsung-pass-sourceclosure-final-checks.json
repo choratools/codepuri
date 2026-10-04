@@ -1,0 +1,145 @@
+{
+  "fmt": {
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 1.9200749918818474,
+    "max_rss_kib": 54356,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/fmt.log"
+  },
+  "workspace-tests": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 264.26950335595757,
+    "max_rss_kib": 1535544,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/workspace-tests.log"
+  },
+  "clippy": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 2.721263305749744,
+    "max_rss_kib": 248912,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/clippy.log"
+  },
+  "build": {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "-p",
+      "decomp",
+      "--example",
+      "java_corpus"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 18.00991298398003,
+    "max_rss_kib": 641992,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/build.log"
+  },
+  "export": {
+    "command": [
+      "target/release/examples/java_corpus",
+      "--workers",
+      "30",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+      "--classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "--app",
+      "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 61.31851709727198,
+    "max_rss_kib": 2734608,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/export.log"
+  },
+  "inventory": {
+    "command": [
+      "python3",
+      "/storage_0/decomphify/bench/samsung_pass_inventory.py",
+      "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass",
+      "/storage_0/decomphify/bench/samsung-pass-sourceclosure-final-inventory.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 27.731086615938693,
+    "max_rss_kib": 413872,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/inventory.log"
+  },
+  "validation": {
+    "command": [
+      "python3",
+      "/storage_0/decomphify/bench/samsung_pass_continue.py",
+      "/tmp/opencode/decomphify-java-corpus/run-1790888814662654132-2680151/com.samsung.android.samsungpass",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/validation"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 63.12164974678308,
+    "max_rss_kib": 3606656,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/validation.log"
+  },
+  "diagnostics": {
+    "command": [
+      "python3",
+      "/storage_0/decomphify/bench/samsung_pass_diagnostics.py",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/validation/full-javac.log",
+      "/storage_0/decomphify/bench/samsung-pass-sourceclosure-final-diagnostics.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 9.137089863885194,
+    "max_rss_kib": 362244,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/diagnostics.log"
+  },
+  "original-three-class-subset": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-proc:none",
+      "-sourcepath",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/validation/empty-sourcepath",
+      "-d",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/original-subsets",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/CryptoLibException.java",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/BiometricTokenExpiredException.java",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/InvalidBiometricException.java"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.565670448821038,
+    "max_rss_kib": 86192,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/original-three-class-subset.log"
+  },
+  "original-guideline": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-proc:none",
+      "-classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "-sourcepath",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/validation/empty-sourcepath",
+      "-d",
+      "/tmp/opencode/samsung-pass-sourceclosure-final/original-subsets",
+      "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass/sources/androidx/constraintlayout/widget/Guideline.java"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.816014489158988,
+    "max_rss_kib": 162892,
+    "log": "/tmp/opencode/samsung-pass-sourceclosure-final/original-guideline.log"
+  }
+}

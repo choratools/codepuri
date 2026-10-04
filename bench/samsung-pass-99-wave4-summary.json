@@ -1,0 +1,46 @@
+{
+  "denominator": 205497,
+  "target_percent": 99.0,
+  "required_definitions": 203443,
+  "strict_accepted": 175254,
+  "strict_percent": 85.28299683207054,
+  "code_bearing_definitions": 194286,
+  "required_code_bearing_definitions": 192344,
+  "strict_code_bearing_accepted": 175254,
+  "strict_code_bearing_percent": 90.20413205274698,
+  "remaining_code_bearing_to_target": 17090,
+  "genuine_bodyless_declarations": 11177,
+  "original_form_accepted": 186431,
+  "original_form_percent": 90.72200567404877,
+  "remaining_original_forms_to_target": 17012,
+  "remaining_to_target": 28189,
+  "statuses": {
+    "complete_body": 174929,
+    "rejected_in_written_unit": 15868,
+    "declaration_only": 11177,
+    "rejected_without_written_unit": 3198,
+    "proven_enum_equivalence": 325
+  },
+  "ledger": "/tmp/opencode/samsung-pass-99-wave4/java25/method-coverage.jsonl",
+  "ledger_sha256": "43d71f3a6940190ff20a6dcdcaa09541c28767abf896dbf73bce43fdb51ef10e",
+  "wave": "wave4",
+  "gained": 1583,
+  "lost": 461,
+  "net": 1122,
+  "input_units": 31184,
+  "diagnostic_count": 53544,
+  "source_hashes_unchanged": true,
+  "syntax_exit": 0,
+  "compile_exit": 1,
+  "workspace": {
+    "passed": 808,
+    "failed": 0,
+    "ignored": 70
+  },
+  "export": {
+    "seconds": 300.582954,
+    "source_bytes": 304301179,
+    "peak_rss_kib": 13639132
+  },
+  "goal_complete": false
+}

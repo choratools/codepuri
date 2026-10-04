@@ -1,0 +1,26 @@
+{
+  "validated_at": "2026-10-02T21:23:17.038418+00:00",
+  "scope": "per-Hierarchy memoization of completed ordered class-assignment queries",
+  "validation": {
+    "hierarchy_tests_including_microbenchmark": 5,
+    "session_tests": 6,
+    "coupled_type_regressions": 12,
+    "failed": 0,
+    "ignored_coupled_test": 1,
+    "backend_all_target_strict_clippy": "passed",
+    "touched_file_rustfmt": "passed"
+  },
+  "microbenchmark": {
+    "queries": 20000,
+    "chain_depth": 64,
+    "uncached_seconds": 0.360498,
+    "cached_seconds": 0.000838,
+    "workload": "one repeatedly queried pair; includes first cache miss"
+  },
+  "new_full_apk_benchmark": false,
+  "whole_apk_speedup_claimed": false,
+  "source_sha256": {
+    "crates/backend-java/src/type_compatibility.rs": "9eb2e47056e95aac07f86943f56552cd2ba6bf47c311f9c636839fb38c2c791c",
+    "crates/backend-java/src/hierarchy_cache_tests.rs": "13696658c20c332d0be9275b09f9d9576e9cc5e31f27028f762af7b89520a32a"
+  }
+}

@@ -1,0 +1,1 @@
+{"original_defined_methods": {"constructor": 34205, "total": 205497, "code_bearing": 194286, "ordinary": 164926, "static_initializer": 6366, "declaration_only": 11211}, "complete_body_count": 172587, "rejected_count": 21733, "complete_bodies_all_original_methods_percent": 83.98516766668126, "complete_bodies_code_bearing_percent": 88.83141348321547}

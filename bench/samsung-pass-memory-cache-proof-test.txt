@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running tests/constructor_prechecks.rs (target/debug/deps/constructor_prechecks-93313e9da26ed880)
+
+running 4 tests
+test exact_inert_parent_chain_accepts ... ok
+test class_initialization_throwing_cast_and_handler_summaries_are_not_inert ... ok
+test finalizers_effects_missing_metadata_and_cycles_reject ... ok
+test java17_preserves_original_check_frame_and_order_without_helper ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+

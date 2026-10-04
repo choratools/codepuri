@@ -1,0 +1,50 @@
+{
+  "export_metrics": {
+    "apk": "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+    "workers": "30",
+    "source_release": "25",
+    "no_io": "false",
+    "unprofiled": "false",
+    "parse_s": "0.268181",
+    "export_wall_s": "344.152252",
+    "sources": "31192",
+    "bytes": "314692082",
+    "ordered_checksum": "0b0b387bfbbe8810"
+  },
+  "counts": {
+    "complete_body": 178044,
+    "rejected_in_written_unit": 12760,
+    "declaration_only": 11177,
+    "rejected_without_written_unit": 3183,
+    "proven_enum_equivalence": 333
+  },
+  "code_bearing_percent": 91.81155615947624,
+  "remaining_code_bearing_to_99": 13967,
+  "gained": 166,
+  "lost": 29,
+  "net": 137,
+  "syntax_gate": {
+    "command": [
+      "/tmp/opencode/decomphify-jdk25/jdk-25.0.4.1+1/bin/java",
+      "-Xmx4g",
+      "-cp",
+      "/tmp/opencode/samsung-pass-99-wave8/validation25",
+      "SamsungPassParseGate",
+      "/tmp/opencode/samsung-pass-99-wave8/java25/sources",
+      "25"
+    ],
+    "exit_code": 0,
+    "seconds": 16.60461877193302,
+    "max_rss_kib": 2204600,
+    "log": "/tmp/opencode/samsung-pass-99-wave8/validation25/syntax-gate.log"
+  },
+  "javac_diagnostics": 56715,
+  "workspace_counts": {
+    "suites": 149,
+    "passed": 880,
+    "failed": 0,
+    "ignored": 99
+  },
+  "goal_complete": false,
+  "whole_apk_compiled": false
+}

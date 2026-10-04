@@ -1,0 +1,67 @@
+{
+  "patch": "/tmp/opencode/wave49-arrayops-patch/owned.patch",
+  "sha256": "9217f28a82fd2a506d5933fd774437c6098ad076270adb234ec2a21893dc0d3b",
+  "main_integrated": true,
+  "review_requested": true,
+  "main_frozen_driver_session": null,
+  "operations": [
+    "typed NewArray",
+    "Int/Long Div",
+    "Int/Long Rem"
+  ],
+  "worker_validation": {
+    "jdk17_tests": 3,
+    "jdk25_tests": 3,
+    "clippy_exit": 0,
+    "release_exit": 0
+  },
+  "actual_method167": "still rejected; no recovery claim",
+  "goal_complete": false,
+  "review": {
+    "must_fix": false,
+    "parent_patch_applicability_exit": 0,
+    "alleged_duplicate_verified_absent": true,
+    "review_scope": "static production contract; parent tests pending"
+  },
+  "parent_focused_tests": {
+    "passed": 3,
+    "failed": 0,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave49-arrayops-parent-tests.log",
+    "workspace": "/tmp/opencode/wave49-arrayops-workspace"
+  },
+  "actual_replay": {
+    "actual_method": "classes.dex#167 La4/a;->r([B)Z",
+    "actual_recovered": false,
+    "actual_reason": "backend: Metadata(\"throw checked exception is not declared by caller\")",
+    "profile_terminal_exit": 0,
+    "profile": "/tmp/opencode/wave49-arrayops-actual",
+    "jdk17": {
+      "passed": 3,
+      "failed": 0
+    },
+    "jdk25": {
+      "passed": 3,
+      "failed": 0
+    },
+    "strict_clippy": true,
+    "release_build": true,
+    "scope": "NewArray plus Int/Long Div/Rem source operation origins only",
+    "main_edited": false
+  },
+  "parent_jdk25_tests": {
+    "passed": 3,
+    "failed": 0,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave49-arrayops-parent-jdk25-tests.log"
+  },
+  "main_test_log": "/tmp/opencode/wave49-arrayops-main-tests.log",
+  "main_focused_tests": {
+    "passed": 3,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "main_scoped_clippy_exit": 0,
+  "main_full_fmt_exit": 0,
+  "status": "integrated_scoped_verified_not_aggregate_measured"
+}

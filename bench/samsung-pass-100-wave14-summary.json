@@ -1,0 +1,24 @@
+{
+  "original_definitions": 205497,
+  "code_bearing": 194286,
+  "explicit_bodies": 180039,
+  "enum_equivalents": 388,
+  "code_accepted": 180427,
+  "code_percent": 92.8667016666152,
+  "retained_original_forms": 191610,
+  "original_form_percent": 93.24223711295055,
+  "gained": 502,
+  "lost": 0,
+  "remaining_executable": 13859,
+  "remaining_forms": 13887,
+  "sources": 32386,
+  "javac_diagnostics": 53559,
+  "tests": {
+    "passed": 972,
+    "failed": 0,
+    "ignored": 128,
+    "suites": 160
+  },
+  "compiled_apk": false,
+  "artifact_root": "/tmp/opencode/samsung-pass-100-wave14"
+}

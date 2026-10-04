@@ -1,0 +1,24 @@
+{
+  "validated_at": "2026-10-02T20:40:12.619808+00:00",
+  "session_tests": {
+    "command": "JAVA_HOME=/home/jtjisgod/tools/jdk-17.0.13+11 PATH=/home/jtjisgod/tools/jdk-17.0.13+11/bin:$PATH DECOMPHIFY_JDK25_HOME=/tmp/opencode/decomphify-jdk25/jdk-25.0.4.1+1 cargo test --release -p decomp --test java_session -- --include-ignored",
+    "passed": 6,
+    "failed": 0,
+    "ignored": 0,
+    "test_seconds": 46.51
+  },
+  "clippy": {
+    "command": "cargo clippy -p decomp --all-targets -- -D warnings",
+    "exit_code": 0
+  },
+  "source_sha256": {
+    "crates/decomp/src/java_session.rs": "c3393681040b6c7a2de97f1a10e5967053a7b2e357a0bafadd9d17c363c4ed2f",
+    "crates/decomp/src/java_ssa_cache.rs": "3129f6747a875c35644128378edf6e87a7aa4ec45235d9974bad1ad4def036f7",
+    "crates/decomp/src/java_resolution_cache.rs": "c53a72bbe5513fda5c543d9d269af8f17c4061a08a0a89c95d28192b282e7013",
+    "crates/decomp/tests/java_session.rs": "0576059de70ede2552dcc017a3786ed6a1744724f35c06bfd6b5c6f112b77cef"
+  },
+  "existing_frozen_full_export_measurement": "bench/samsung-pass-session-comparison.json",
+  "measurement_is_new_full_export": false,
+  "reuse_scope": "same process, immutable JavaSession input/options/classpath",
+  "faster_cold_full_export_claimed": false
+}

@@ -1,0 +1,25 @@
+{
+  "accepted": true,
+  "baseline": "wave40",
+  "artifact": "/tmp/opencode/samsung-pass-100-wave43",
+  "executable_accepted": 184565,
+  "executable_total": 194286,
+  "executable_percent": 94.9965514756596,
+  "remaining_executable": 9721,
+  "remaining_bodyless": 28,
+  "gained": 216,
+  "lost": 0,
+  "workspace": {
+    "passed": 1153,
+    "failed": 0,
+    "ignored": 159,
+    "exit_code": 0
+  },
+  "sources": 32420,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "javac_diagnostics": 50111,
+  "export_seconds": 241.79,
+  "peak_rss_kib": 16668180,
+  "goal_complete": false
+}

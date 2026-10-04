@@ -1,0 +1,573 @@
+warning: unused variable: `ssa`
+  --> crates/dex-decompiler/tests/scratch_dump.rs:64:24
+   |
+64 |                     Ok(ssa) => println!("OK"),
+   |                        ^^^ help: if this is intentional, prefix it with an underscore: `_ssa`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `dex-decompiler` (test "scratch_dump") generated 1 warning (run `cargo fix --test "scratch_dump" -p dex-decompiler` to apply 1 suggestion)
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.56s
+     Running unittests src/lib.rs (target/debug/deps/backend_java-7a00ca0c51de3396)
+
+running 18 tests
+test constructors::tests::primitive_constant_is_in_chain_without_a_leading_local ... ok
+test constructors::tests::rejects_cfg_cycle ... ok
+test constructors::tests::rejects_delegation_cycle ... ok
+test constructors::tests::exact_super_and_this_arguments_and_body_order ... ok
+test constructors::tests::rejects_uninitialized_this_as_argument_and_non_special_dispatch ... ok
+test static_initializer::tests::rejects_value_return ... ok
+test static_initializer::tests::rejects_non_initializer_and_wrong_enclosing_class ... ok
+test constructors::tests::rejects_preinit_effect_missing_mapping_missing_chain_and_double_init ... ok
+test static_initializer::tests::requires_field_member_context ... ok
+test tests::exceptional_edges_cycles_and_branches_are_explicitly_unsupported ... ok
+test static_initializer::tests::field_assignments_and_effects_keep_instruction_order ... ok
+test tests::mixed_numeric_width_is_not_silently_promoted ... ok
+test tests::naming_is_safe_and_unique ... ok
+test tests::unsupported_never_returns_stub ... ok
+test tests::synthetic_parameter_in_cfg_and_metadata_failures ... ok
+test tests::invokes_fields_and_unused_results_preserve_order ... ok
+test tests::floating_bits_and_utf16_literals_execute ... ok
+test tests::arithmetic_parameters_moves_and_widths_execute ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/branching.rs (target/debug/deps/branching-e555a3b1b5b48809)
+
+running 12 tests
+test copy_execution_is_simultaneous_even_for_swap ... ok
+test cycles_and_exception_edges_keep_typed_structure_errors ... ok
+test arm_local_cannot_escape_without_phi ... ok
+test consecutive_phis_use_cluster_head_edges_and_one_copy_batch ... ok
+test unused_descriptor_positions_have_no_fabricated_values ... ok
+test same_target_true_false_edges_still_select_distinct_phi_inputs ... ok
+test genuine_cfg_initials_are_bindings_not_hoisted_redefinitions ... ok
+test join_effect_stays_after_selected_arm_and_before_return ... ok
+test malformed_region_binding_and_unavailable_phi_fail_closed ... ok
+test phi_edge_coverage_types_and_branch_polarity_are_checked ... ok
+test integrated_emitter_hoists_declarations_but_keeps_effects_and_snapshots_in_arms ... ok
+test diamond_executes_only_selected_effect_and_edge_copy ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp-dfc41aadb677769f)
+
+running 33 tests
+test dex_java::tests::descriptors_are_exact_and_paths_genuine ... ok
+test dex_java::tests::resolver_preserves_isolated_surrogates ... ok
+test dex_java::tests::resolver_matches_real_descriptor_pools ... ok
+test java_aliases::tests::invalid_inventory_is_rejected_transactionally ... ok
+test java_aliases::tests::field_identity_and_reference_lookup ... ok
+test java_descriptors::tests::external_literal_class_names_and_rank_are_preserved ... ok
+test dex_java::tests::overwritten_argument_is_not_mistaken_for_initial ... ok
+test java_descriptors::tests::full_method_descriptors_use_logical_arity_and_erased_types ... ok
+test dex_java::tests::incoming_this_wide_and_narrow_follow_histories ... ok
+test java_aliases::tests::sanitized_paths_are_safe_and_case_insensitively_unique ... ok
+test java_aliases::tests::overloads_and_return_only_collisions_are_stable ... ok
+test java_descriptors::tests::malformed_and_unsupported_types_have_typed_errors ... ok
+test java_descriptors::tests::source_names_are_not_silently_aliased ... ok
+test java_aliases::tests::bad_names_unicode_keywords_and_special_methods ... ok
+test java_method_flags::tests::annotations_and_special_methods_are_separate ... ok
+test java_method_flags::tests::contradictions_and_non_method_flags_are_rejected ... ok
+test java_method_flags::tests::interface_declarations_use_default_only_for_public_instance_bodies ... ok
+test java_method_flags::tests::metadata_and_varargs_survive_without_fake_keywords ... ok
+test dex_java::tests::static_arithmetic_runs_ssa_bindings_and_backend ... ok
+test java_method_flags::tests::native_and_abstract_require_declarations_without_code ... ok
+test java_descriptors::tests::metadata_signatures_do_not_require_class_definitions ... ok
+test java_method_flags::tests::synchronization_is_preserved_and_dex_bits_are_not_interchangeable ... ok
+test output_tests::callback_and_explicit_status_are_independent_of_diagnostics ... ok
+test output_tests::deterministic_packages_and_literal_nested_names ... ok
+test output_tests::rejects_traversal_reserved_and_unsupported_descriptors ... ok
+test output_tests::caller_supplied_paths_cannot_escape_or_alias_descriptor ... ok
+test output_tests::multiple_existing_case_spellings_reject_even_exact_match ... ok
+test output_tests::write_and_flush_errors_do_not_increment_counts ... ok
+test output_tests::existing_directories_and_case_aliases_are_indexed ... ok
+test output_tests::rejects_symlink_roots_ancestors_directories_and_files ... ok
+test output_tests::unvalidated_symlink_is_rejected_below_cached_parent ... ok
+test output_tests::writes_packages_counts_success_and_never_overwrites ... ok
+test output_tests::shared_parents_are_validated_and_scanned_once ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/main.rs (target/debug/deps/decomp-1f74a7a1ada2cc91)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_class_kinds.rs (target/debug/deps/java_class_kinds-decad2f07558d4df)
+
+running 7 tests
+test annotation_defaults_are_explicitly_unsupported ... ok
+test annotation_elements_and_implicit_annotation_superinterface ... ok
+test enum_never_falls_back_to_plain_class ... ok
+test ordinary_class_keeps_abstract_access_and_inheritance ... ok
+test typed_parameters_and_annotation_return_boundaries ... ok
+test rejects_concrete_static_bad_owner_and_invalid_metadata ... ok
+test interface_signature_and_extends_use_real_pools ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_descriptors.rs (target/debug/deps/java_descriptors-b76f18c507a26086)
+
+running 6 tests
+test java_descriptors::tests::external_literal_class_names_and_rank_are_preserved ... ok
+test java_descriptors::tests::full_method_descriptors_use_logical_arity_and_erased_types ... ok
+test java_descriptors::tests::malformed_and_unsupported_types_have_typed_errors ... ok
+test option_resolver_hook_preserves_typed_parser_behavior ... ok
+test java_descriptors::tests::source_names_are_not_silently_aliased ... ok
+test java_descriptors::tests::metadata_signatures_do_not_require_class_definitions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_incoming_registers.rs (target/debug/deps/java_incoming_registers-78b803cd47231f9f)
+
+running 6 tests
+test empty_static_and_receiver_only_instance ... ok
+test instance_receiver_precedes_wide_and_narrow_parameters ... ok
+test invalid_parameter_descriptors_do_not_silently_consume_words ... ok
+test static_descriptor_order_and_wide_semantic_parameters ... ok
+test mismatched_words_and_too_small_frame_are_rejected ... ok
+test maximum_frame_boundary_and_word_sum_overflow ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/java_initial_parameters.rs (target/debug/deps/java_initial_parameters-f24756c2741adf89)
+
+running 10 tests
+test okcashbag_smallest_input_methods_probe ... ignored, local OKcashbag corpus probe; requires unzip and device APK fixture
+test missing_ssa_entry_provenance_is_not_declared_unused ... ok
+test overwritten_input_is_unused_not_the_returned_constant ... ok
+test frame_and_descriptor_widths_are_validated ... ok
+test initial_read_then_overwrite_keeps_original_identity ... ok
+test unused_inputs_keep_signature_positions_and_names ... ok
+test overwritten_wide_input_and_receiver_are_unused ... ok
+test unused_receiver_does_not_shift_used_argument ... ok
+test receiver_wide_and_narrow_bind_initials_in_signature_order ... ok
+test split_wide_and_narrow_aliases_are_ambiguities ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_integration.rs (target/debug/deps/java_integration-5471e11d0400039d)
+
+running 5 tests
+test profiling_retains_completed_work_on_sink_error ... ok
+test actual_apk_asbinder_requires_and_emits_its_genuine_field ... ok
+test facade_prunes_bodies_when_a_required_field_cannot_be_declared ... ok
+test whole_pool_aliases_are_shared_by_field_declaration_reference_and_output_path ... ok
+test class_workers_preserve_metrics_order_bytes_and_limits ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.39s
+
+     Running tests/java_members.rs (target/debug/deps/java_members-ead2415537a3ea26)
+
+running 4 tests
+test closure_requires_actual_bodies_and_fields_and_allows_cycles ... ok
+test genuine_pool_metadata_and_conservative_fields ... ok
+test invocation_metadata_dispatch_and_body_closure ... ok
+test okcashbag_real_selected_member_body_emits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests/java_scheduler_facade_new.rs (target/debug/deps/java_scheduler_facade_new-0c47d3cb7b1e6d90)
+
+running 1 test
+test persistent_facade_one_and_thirty_have_identical_sources_metrics_and_limits ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.90s
+
+     Running tests/java_scheduler_new.rs (target/debug/deps/java_scheduler_new-975c09b7329dbd9f)
+
+running 4 tests
+test sink_failure_counts_completed_tasks_separately_from_delivery ... ok
+test failures_and_panics_cancel_waiting_workers ... ok
+test skew_does_not_introduce_a_thirty_task_barrier_and_reorder_is_bounded ... ok
+test one_and_thirty_preserve_order_and_metrics ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_core-aaf62b7b75c71e63)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/analysis_cases.rs (target/debug/deps/analysis_cases-e3b2d685fd34fb23)
+
+running 10 tests
+test large_chain_frontier_scaling ... ignored, large graph scaling evidence
+test dominated_region_with_an_inner_two_entry_cycle_is_irreducible ... ok
+test entry_self_loop_is_reducible ... ok
+test dominators_and_frontier_match_a_diamond ... ok
+test exception_parallel_edges_and_nonterminating_regions_preserve_boundaries ... ok
+test post_dominators_match_if_else_join ... ok
+test nested_loops_have_distinct_headers_and_are_reducible ... ok
+test traversal_orders_a_diamond_in_depth_first_postorder ... ok
+test scc_and_natural_loops_find_single_loop_and_self_loop ... ok
+test two_entry_cycle_is_irreducible ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cfg_mutation.rs (target/debug/deps/cfg_mutation-86ce50aaaa883e8d)
+
+running 4 tests
+test mutations_preserve_adjacency_and_advance_revision ... ok
+test redirect_replace_and_insert_between_keep_edges_first_class ... ok
+test removing_a_block_cleans_incident_edges_but_rejects_entry ... ok
+test split_entry_promotes_new_prefix_to_the_only_entry ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/diagnostics.rs (target/debug/deps/diagnostics-ee260aa38a300315)
+
+running 1 test
+test diagnostic_is_an_owned_value_without_output_side_effects ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/pipeline.rs (target/debug/deps/pipeline-ef29790579f25316)
+
+running 4 tests
+test registry_rejects_duplicate_pass_ids ... ok
+test schedule_orders_providers_before_consumers ... ok
+test schedule_reports_a_missing_required_invariant ... ok
+test schedule_reports_dependency_cycles ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/properties.rs (target/debug/deps/properties-74b1529f029c7402)
+
+running 4 tests
+test post_dominators_match_brute_force ... ok
+test dominators_match_brute_force ... ok
+test random_mutations_preserve_cfg_validation ... ok
+test dominance_frontiers_match_brute_force ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_emit-5caebe974d1b03c7)
+
+running 6 tests
+test tests::adds_parentheses_when_child_binds_less_tightly ... ok
+test tests::indents_each_nested_line ... ok
+test tests::allocates_sanitized_unique_non_keyword_names ... ok
+test tests::records_provenance_at_rendered_positions_without_claiming_indentation ... ok
+test tests::minimizes_parentheses_when_child_binds_more_tightly ... ok
+test tests::preserves_right_associative_chains_with_only_required_parentheses ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/precedence_properties.rs (target/debug/deps/precedence_properties-c03245c21d7a0157)
+
+running 1 test
+test rendered_expression_roundtrips_and_each_parenthesis_pair_is_required ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_structure-aff137057395389c)
+
+running 10 tests
+test tests::acyclic_cross_branch_overlap_is_rejected ... ok
+test tests::exceptions_and_switches_are_not_silently_dropped ... ok
+test tests::diamond_uses_polarity_not_insertion_order ... ok
+test tests::invalid_branch_shapes_are_rejected ... ok
+test tests::distinct_terminal_arms_and_nested_early_return ... ok
+test tests::empty_arm_and_parallel_branch_edges_are_preserved ... ok
+test tests::unreachable_is_reported_even_without_edges ... ok
+test tests::terminal_and_straightline ... ok
+test tests::nested_diamonds_have_local_and_outer_joins ... ok
+test tests::reducible_and_irreducible_cycles_are_rejected ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/extended.rs (target/debug/deps/extended-eb9928604142381f)
+
+running 7 tests
+test default_can_share_a_case_target ... ok
+test grouped_labels_default_and_empty_arm_preserve_edges ... ok
+test malformed_dispatch_returns_typed_error_without_dropping_edges ... ok
+test exceptions_reducible_and_irreducible_cycles_are_explicit_errors ... ok
+test nested_conditional_and_separate_terminal_switch_arms ... ok
+test unreachable_blocks_and_payload_without_clone ... ok
+test partial_arm_overlap_is_rejected ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/dex_decompiler-23d3e3f9d87c3ae7)
+
+running 14 tests
+test infer::array_cast_regressions::raw_zero_still_supports_float_bit_interpretation ... ok
+test infer::array_cast_regressions::genuine_scalar_cast_and_array_element_mismatches_remain_errors ... ok
+test infer::tests::refinement_collection_preserves_pre_update_operand_snapshot ... ok
+test ssa::performance::calculator_stage_timings ... ignored, opt-in caller-controlled stage timings
+test infer::array_cast_regressions::shared_null_preserves_multidimensional_phi_and_element_types ... ok
+test ssa::liveness::tests::upward_exposed_uses_and_exception_edges ... ok
+test infer::tests::array_payload_bits_and_index_width_remain_exact ... ok
+test infer::array_cast_regressions::lifted_cast_preserves_descriptor_rank ... ok
+test infer::tests::worklist_matches_legacy_for_cycles_fanout_and_conflicts ... ok
+test infer::tests::raw_bits_propagate_through_long_copy_chains_without_integer_conversion ... ok
+test ssa::place::tests::reverse_dead_dependencies_and_effectful_roots ... ok
+test ssa::phis::tests::reverse_phi_dependencies_collapse_and_cycles_survive ... ok
+test ssa::liveness::tests::worklist_reduces_evaluations_on_local_cycle ... ok
+test ssa::liveness::tests::randomized_cfg_matches_original_equations ... ok
+
+test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/adversarial.rs (target/debug/deps/adversarial-7426229b347e769e)
+
+running 4 tests
+test branch_out_of_bounds_fixture_returns_typed_error ... ok
+test bad_payload_ident_returns_typed_error ... ok
+test packed_switch_case_target_out_of_bounds_returns_typed_error ... ok
+test unknown_opcode_fixture_returns_typed_error ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/decode.rs (target/debug/deps/decode-77b7aaa8b8e15dd1)
+
+running 16 tests
+test accepts_branch_targets_at_current_and_last_code_unit ... ok
+test decodes_branch_22t_when_target_is_in_bounds ... ok
+test decodes_const_31i_signed_literal ... ok
+test decodes_invoke_35c_registers_in_operand_order ... ok
+test decodes_invoke_polymorphic_45cc_operands ... ok
+test decodes_range_and_wide_literal_formats ... ok
+test decodes_signed_nibbles_high_literals_and_byte_literals ... ok
+test every_fixed_format_has_the_specified_code_unit_width ... ok
+test nonzero_unused_nop_bits_do_not_imply_a_payload ... ok
+test parses_and_validates_packed_switch_payload ... ok
+test opcode_table_maps_all_reserved_values_explicitly ... ok
+test parses_sparse_switch_and_array_data_payloads ... ok
+test payload_formats_are_variable_width ... ok
+test rejects_register_equal_to_registers_size ... ok
+test rejects_unaligned_and_invalid_width_payloads ... ok
+test arbitrary_truncation_never_panics ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/lift.rs (target/debug/deps/lift-a41a0734dc2bf7ba)
+
+running 9 tests
+test empty_body_synthesizes_return ... ok
+test const_kinds_map_literals ... ok
+test diamond_yields_four_blocks_four_edges ... ok
+test adversarial_bins_error_or_degrade_not_panic ... ok
+test invoke_fuses_following_move_result ... ok
+test packed_switch_resolves_payload_cases ... ok
+test offsets_side_table_tracks_code_units ... ok
+test try_catch_creates_exception_edges ... ok
+test wide_register_pair_is_one_atomic_value ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recovery.rs (target/debug/deps/recovery-0008a4cfe671d652)
+
+running 5 tests
+test garbage_payload_yields_gap_and_continues ... ok
+test register_oob_keeps_insn_jadx_parity ... ok
+test error_limit_aborts_walk ... ok
+test clean_stream_has_no_diagnostics ... ok
+test unsupported_opcode_is_diagnostic_not_abort ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scratch_dump.rs (target/debug/deps/scratch_dump-1167a3090988e86d)
+
+running 1 test
+test dump_method ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests/shared_metadata.rs (target/debug/deps/shared_metadata-1e097ffbb9f58092)
+
+running 4 tests
+test metadata_construction_microbenchmark ... ignored, bounded metadata construction microbenchmark; run release --ignored --nocapture
+test snapshot_is_not_reused_for_another_pool_or_source_mutation ... ok
+test cached_matches_fresh_types_and_diagnostics ... ok
+test parallel_contexts_isolate_diagnostics_and_returns ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_dead_resurrection.rs (target/debug/deps/ssa_dead_resurrection-63a6324474515d5e)
+
+running 5 tests
+test synthetic_parameter_survives_dead_definition ... ok
+test dead_iget_does_not_replace_live_register ... ok
+test dead_invoke_result_does_not_replace_live_register ... ok
+test dead_move_object_does_not_replace_live_register ... ok
+test handler_input_and_normal_success_commit_survive ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_performance.rs (target/debug/deps/ssa_performance-d1c3e6f39d1fb8a1)
+
+running 1 test
+test calculator_large_methods ... ignored, bounded release performance measurement
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_phi_check.rs (target/debug/deps/ssa_phi_check-97f210f43dc2a1ad)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_properties.rs (target/debug/deps/ssa_properties-0caa61d5b91e2b11)
+
+running 6 tests
+test loop_header_phi_carries_the_induction_variable ... ok
+test diamond_join_carries_one_well_formed_phi ... ok
+test wide_pair_stays_atomic_across_phi ... ok
+test try_catch_handler_keeps_exception_flow_verifiable ... ok
+test ssa_preserves_offsets_and_never_grows_blocks ... ok
+test random_streams_survive_the_full_pipeline ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running tests/ssa_semantics.rs (target/debug/deps/ssa_semantics-c8110e0b0c388f8a)
+
+running 13 tests
+test invoke_constraints_skip_receiver_and_wide_high_word ... ok
+test failed_array_get_preserves_array_for_handler_retry ... ok
+test new_array_preserves_the_descriptor_dimension_and_element_type ... ok
+test fill_array_payload_uses_element_bit_interpretation ... ok
+test raw_literals_keep_float_and_double_bits_through_late_copy_constraints ... ok
+test narrow_and_wide_register_reuse_preserves_definition_widths ... ok
+test wide_field_opcodes_bind_pairs_but_boolean_fields_do_not ... ok
+test consumer_constraint_reaches_the_defining_phi_inputs ... ok
+test protected_invoke_result_does_not_overwrite_handler_register ... ok
+test numeric_conversion_has_no_exception_edge_to_handler ... ok
+test join_reads_remain_live_before_later_overwrites_in_the_same_chain ... ok
+test two_variable_diamond_selects_both_arm_values ... ok
+test loop_phis_swap_two_reaching_values_simultaneously ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/lib.rs (target/debug/deps/dex_format-71252bc68f32098a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/apk_corpus.rs (target/debug/deps/apk_corpus-621518d24ac4d2b9)
+
+running 1 test
+test parses_every_dex_from_real_apk_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.64s
+
+     Running tests/codec.rs (target/debug/deps/codec-2e0843fcb1b59d03)
+
+running 5 tests
+test malformed_uleb_reports_an_error ... ok
+test mutf8_roundtrips_encoded_nul_and_surrogate_pair ... ok
+test sleb_decodes_signed_boundaries ... ok
+test uleb64_roundtrips ... ok
+test uleb32_roundtrips ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/model.rs (target/debug/deps/model-14ea9b1ec7933ff1)
+
+running 5 tests
+test parses_handcrafted_one_class_dex ... ok
+test parses_single_file_v41_container ... ok
+test preserves_unknown_map_entry ... ok
+test unsupported_version_is_typed ... ok
+test truncations_and_single_byte_mutations_never_panic ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/managed_ir-771d4308d532b5d2)
+
+running 2 tests
+test verify::uses::tests::cached_phi_heads_match_walks_for_clusters_and_cycles ... ok
+test verify::uses::tests::interval_queries_match_parent_walks_and_count_chain_work ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests/ssa_verifier.rs (target/debug/deps/ssa_verifier-c70e4b2075abc855)
+
+running 9 tests
+test branching_phi_starts_a_separate_cluster ... ok
+test duplicate_phi_selector_is_rejected_even_with_matching_arity ... ok
+test one_value_defined_by_two_instructions_fails ... ok
+test long_shifts_require_a_narrow_count_and_wide_lhs ... ok
+test use_from_non_dominating_sibling_fails ... ok
+test phi_arity_mismatch_fails ... ok
+test valid_diamond_with_edge_keyed_phi_passes ... ok
+test valid_loop_with_back_edge_phi_passes ... ok
+test phi_cluster_checks_shared_edges_and_each_predecessor_definition ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/type_lattice.rs (target/debug/deps/type_lattice-f09bee0d8084f177)
+
+running 5 tests
+test width_helpers_identify_category_two_values ... ok
+test zero_and_null_refine_ambiguous_managed_values ... ok
+test meet_is_idempotent ... ok
+test meet_is_commutative ... ok
+test meet_is_associative ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/verifier_policy.rs (target/debug/deps/verifier_policy-e7276b6e6a68bba2)
+
+running 4 tests
+test retained_register_history_rejects_half_of_a_wide_value ... ok
+test conflict_use_requires_explicit_opt_in ... ok
+test width_preserving_instruction_rejects_split_category_two_value ... ok
+test stale_arena_references_produce_diagnostics_without_panicking ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests backend_java
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_emit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_structure
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests dex_decompiler
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests dex_format
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests managed_ir
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

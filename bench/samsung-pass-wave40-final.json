@@ -1,0 +1,66 @@
+{
+  "wave": 40,
+  "goal_complete": false,
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave40",
+  "driver_exit_code": 0,
+  "export_terminal": {
+    "finished_at": "2026-10-04T05:31:55.065343+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "coverage": {
+    "denominator": 205497,
+    "code_bearing_definitions": 194286,
+    "strict_code_bearing_accepted": 184349,
+    "strict_code_bearing_percent": 94.88537516856593,
+    "original_form_accepted": 195532,
+    "original_form_percent": 95.1507807899872,
+    "remaining_code_bearing_to_target": 9937,
+    "genuine_bodyless_declarations": 11183,
+    "statuses": {
+      "complete_body": 183920,
+      "rejected_in_written_unit": 7174,
+      "declaration_only": 11183,
+      "rejected_without_written_unit": 2791,
+      "proven_enum_equivalence": 429
+    }
+  },
+  "gained": 282,
+  "lost": 0,
+  "gained_categories": {
+    "ordinary": 269,
+    "constructor": 12,
+    "static_initializer": 1
+  },
+  "wave39_lost_identities_restored": 18,
+  "syntax_exit_code": 0,
+  "javac_exit_code": 1,
+  "javac_diagnostics": 50535,
+  "diagnostic_cap_reached": false,
+  "no_loss_gate": {
+    "exit_code": 0,
+    "baseline": "wave38",
+    "finished_at": "2026-10-04T05:34:31.125842+00:00"
+  },
+  "no_loss_wave26_gate": {
+    "exit_code": 0,
+    "baseline": "wave26",
+    "finished_at": "2026-10-04T05:34:34.939705+00:00"
+  },
+  "export_wall_seconds": 281.56,
+  "peak_rss_kib": 16619304,
+  "workspace_tests": {
+    "passed": 1123,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 188,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave40-workspace-tests.log"
+  },
+  "scoped_strict_clippy_exit_code": 0,
+  "fmt_exit_code": 0,
+  "release_exit_code": 0
+}

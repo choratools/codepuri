@@ -1,0 +1,22 @@
+{
+  "state": "terminal_cache_measurement_goal_incomplete",
+  "full_run_root": "/tmp/opencode/samsung-pass-100-wave35",
+  "strict_code_bearing_accepted": 183646,
+  "strict_code_bearing_percent": 94.52353746538608,
+  "gained": 0,
+  "lost": 0,
+  "export_wall_seconds": 273.94,
+  "baseline_export_wall_seconds": 276.59,
+  "syntax_exit": 0,
+  "compile_exit": 1,
+  "full_compile_diagnostics": 50711,
+  "source_files": 32420,
+  "changed_source_files": 5311,
+  "byte_equivalence_proven": false,
+  "difference_attribution": "pending_dispatch_numbering_investigation",
+  "regression_gates": [
+    "wave34",
+    "wave26"
+  ],
+  "goal_complete": false
+}

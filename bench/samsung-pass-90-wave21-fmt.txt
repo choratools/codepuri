@@ -1,0 +1,7 @@
+error: couldn't read `/storage_0/decomphify/crates/backend-java/src/object_exception_pair_tests.rs`: No such file or directory (os error 2)
+   --> /storage_0/decomphify/crates/backend-java/src/object_plan.rs:336:1
+    |
+336 | mod exception_pair_tests;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error writing files: failed to resolve mod `exception_pair_tests`: /storage_0/decomphify/crates/backend-java/src/object_exception_pair_tests.rs does not exist

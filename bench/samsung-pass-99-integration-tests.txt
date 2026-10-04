@@ -1,0 +1,275 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.16s
+     Running unittests src/lib.rs (target/debug/deps/backend_java-7a00ca0c51de3396)
+
+running 112 tests
+test constructors::tests::rejects_cfg_cycle ... ok
+test constructors::tests::rejects_delegation_cycle ... ok
+test constructors::tests::rejects_uninitialized_this_as_argument_and_non_special_dispatch ... ok
+test constructors::tests::primitive_constant_is_in_chain_without_a_leading_local ... ok
+test constructors::tests::exact_super_and_this_arguments_and_body_order ... ok
+test constructors::tests::rejects_preinit_effect_missing_mapping_missing_chain_and_double_init ... ok
+test contextual_locals::index_tests::outside_cfg_opaque_read_and_missing_metadata_still_reject ... ok
+test contextual_locals::producer_reference_locals::tests::exact_producer_contract_and_all_copy_consumers_required ... ok
+test contextual_locals::index_tests::indexed_consumers_equal_full_arena_scan_with_order_and_duplicates ... ok
+test contextual_locals::producer_reference_locals::tests::same_fixture_without_producer_declarations_fails_at_string_consumer ... ok
+test contextual_locals::index_tests::phi_adjacency_preserves_scan_order_duplicate_inputs_and_literal_exclusion ... ok
+test constructors::wide_arguments_tests::wide_chain_rejects_distinct_high_word_missing_word_and_duplicate_effect ... ok
+test exceptions::region_tests::allocation_scope_tests::same_original_range_exact_chain_and_handler_observation ... ok
+test exceptions::region_tests::allocation_scope_tests::unequal_original_prethrow_phi_transfers_and_alias_sources_reject ... ok
+test exceptions::dispatch::tests::prethrow_result_cannot_feed_exception_phi_even_inside_a_loop ... ok
+test exceptions::region_tests::checked_guard_tests::unknown_operation_reference_cast_and_cleanup_do_not_enable_guard ... ok
+test exceptions::region_tests::allocation_scope_tests::canonical_exception_plan_installs_proof_only_at_emission ... ok
+test exceptions::region_tests::checked_guard_tests::declared_checked_contract_and_missing_hierarchy_keep_direct_path ... ok
+test exceptions::region_tests::contextual_phi_tests::contextual_phi_preserves_selected_edge_and_availability ... ok
+test exceptions::region_tests::contextual_phi_tests::phi_family_equality_to_literal_zero_is_contextual_not_unknown ... ok
+test exceptions::region_tests::disjoint_rejects_shared_handlers_and_nested_protected ... ok
+test exceptions::throw_tests::numeric_casts_and_floating_division_have_no_synchronous_handler_edge ... ok
+test exceptions::throw_tests::resolving_operations_and_declared_opaque_effects_remain_throwing ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_handler_rejects_capture_loss_normal_fallthrough_and_prethrow_unavailable_phi ... ok
+test filled_arrays::tests::category_one_source_forms ... ok
+test filled_arrays::tests::discarded_source_keeps_allocation_between_effects ... ok
+test filled_arrays::tests::contextual_family_checks_arena_escapes_and_preserves_selection ... ok
+test exceptions::region_tests::unrelated_catches_require_three_way_hierarchy_and_shadowing_rejects ... ok
+test object_plan::arguments::cast_tests::reference_cast_argument_rejects_escape_extra_read_and_wrong_result_type ... ok
+test object_plan::arguments::class_literal_tests::class_literal_argument_rejects_shared_reordered_external_and_unresolved_resolution_events ... ok
+test object_plan::arguments::array_tests::array_arguments_reject_reorder_shared_escape_extra_effect_descriptor_and_filled_oom_reorder ... ok
+test object_plan::cache_tests::argument_membership_keeps_pending_state_dynamic_and_pure_gap_ordinary ... ok
+test object_plan::arguments::tests::rejects_reordered_shared_non_argument_outside_use_and_checked_throw_trees ... ok
+test object_plan::arguments::read_tests::read_index_caches_relevant_signatures_preserves_multiplicity_and_raw_fallback ... ok
+test object_plan::arguments::tests::string_tree_rejects_reordering_outside_use_sharing_unrelated_effect_and_unresolved_literal ... ok
+test object_plan::cache_tests::block_index_retains_first_payload_and_initializer_boundary_rejection ... ok
+test object_plan::cache_tests::cached_failures_keep_original_effect_barrier_error_and_never_fold ... ok
+test object_plan::arguments::tests::nested_argument_rejects_order_escape_effect_wrong_owner_checked_throw_alias_and_preinit_use ... ok
+test object_plan::arguments::tests::numeric_tree_rejects_reordering_shared_operands_integer_division_narrow_and_reference_casts_and_escape ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_rejects_false_attestation_metadata_receiver_escape_and_distinct_high_word ... ok
+test object_plan::exception_pair_tests::exception_pair_requires_exact_scoped_alias_chain_capability ... ok
+test object_plan::arguments::tests::ordinary_pure_gap_materializes_constants_and_moves_under_the_selected_plan ... ok
+test object_plan::tests::hoisted_reference_copy_retains_reserved_static_type ... ok
+test object_plan::tests::explicit_branch_between_allocation_and_constructor_is_a_barrier ... ok
+test static_initializer::tests::rejects_non_initializer_and_wrong_enclosing_class ... ok
+test object_plan::tests::reserved_object_slot_cannot_be_read_before_its_unique_initializer ... ok
+test static_initializer::tests::rejects_value_return ... ok
+test static_initializer::tests::requires_field_member_context ... ok
+test static_initializer::tests::terminal_throw_returns_diagnostic_instead_of_successor_panic ... ok
+test static_initializer::tests::field_assignments_and_effects_keep_instruction_order ... ok
+test object_plan::tests::effects_throwing_allocation_preinit_use_and_repeated_init_reject ... ok
+test java_string_literal::tests::java_string_literal_budget_is_modified_utf8_and_compiler_bounded ... ok
+test contextual_locals::producer_reference_locals::tests::generated_producer_copy_equals_and_string_append_jdk ... ok
+test exceptions::region_tests::disjoint_conditionals_compile_and_run_all_throw_modes ... ok
+test constructors::tests::unused_constructor_descriptor_position_preserves_arity_and_executes ... ok
+test tests::allocation_uses_exact_adjacent_constructor_arguments ... ok
+test tests::invalid_managed_operations_fail_closed ... ok
+test tests::arithmetic_parameters_moves_and_widths_execute ... ok
+test tests::malformed_edges_reject_and_normal_self_loop_emits ... ok
+test tests::mixed_numeric_width_is_not_silently_promoted ... ok
+test exceptions::region_tests::genuine_finally_and_synchronized_compile_execute_return_throw_release ... ok
+test tests::naming_is_safe_and_unique ... ok
+test tests::nonadjacent_allocation_and_wrong_width_array_access_reject ... ok
+test exceptions::region_tests::allocation_scope_tests::original_scope_pair_preserves_constructor_effects_and_throw_identity_jdk ... ok
+test object_plan::tests::alias_and_pure_gap_compile_and_preserve_constructor_exception ... ok
+test object_plan::arguments::tests::allocation_argument_tree_preserves_class_initialization_and_argument_effect_order ... ok
+test tests::array_index_effects_execute_once_before_store_and_load ... ok
+test object_plan::tests::constructor_words_preserve_wide_identity_and_following_argument ... ok
+test exceptions::region_tests::catchall_cleanup_mismatch_keeps_literal_handler_and_identity_rethrow ... ok
+test exceptions::region_tests::disjoint_planner_preserves_prethrow_phi_and_catch_priority ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_effectful_handler_runs_once_and_gap_throw_is_uncaught ... ok
+test tests::synthetic_parameter_in_cfg_and_metadata_failures ... ok
+test tests::unsupported_never_returns_stub ... ok
+test tests::fill_checks_before_mutation_and_length_is_materialized ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_void_terminal_preserves_bypass_normal_and_exception_effects ... ok
+test object_plan::arguments::read_tests::read_index_allocation_plan_skips_foreign_invokes_and_preserves_runtime_trace ... ok
+test object_plan::arguments::tests::narrowed_primitive_argument_keeps_its_ssa_int_overload ... ok
+test exceptions::region_tests::disjoint_handler_throw_stays_outside_other_scope_and_bad_snapshot_rejects ... ok
+test tests::dex_wide_invoke_words_preserve_descriptor_and_effects ... ok
+test constructors::wide_arguments_tests::actual_samsung_ctor111_to110_layout_preserves_long_and_following_array ... ok
+test exceptions::region_tests::branching_protected_prethrow_states_exact_dispatch_and_terminal_handlers ... ok
+test constructors::wide_arguments_tests::wide_chain_words_preserve_effect_order_and_initializer_evidence ... ok
+test object_plan::arguments::tests::string_argument_expression_is_single_and_follows_outer_class_initialization ... ok
+test exceptions::region_tests::checked_guard_tests::zero_checked_contract_guard_preserves_foreign_throwables_and_priority_jdk ... ok
+test object_plan::arguments::tests::immediate_nested_argument_preserves_outer_inner_allocation_and_constructor_order ... ok
+test exceptions::dispatch::tests::shared_handler_uses_each_original_site_snapshot_and_rethrows_unmatched_identity ... ok
+test exceptions::dispatch::tests::loop_multi_exit_priority_prethrow_phi_and_store_effects_compile_and_run ... ok
+test tests::arrays_materialize_effects_and_narrow_stores ... ok
+test object_plan::arguments::tests::branch_shared_tail_folds_hoisted_argument_placeholders ... ok
+test object_plan::arguments::cast_tests::reference_cast_argument_retains_failure_order_and_null_identity ... ok
+test tests::floating_bits_and_utf16_literals_execute ... ok
+test exceptions::dispatch::tests::declared_checked_calls_and_shadowed_encoded_handlers_compile_and_run ... ok
+test object_plan::arguments::tests::numeric_argument_tree_preserves_float_rounding_allocation_and_effect_order ... ok
+test object_plan::arguments::class_literal_tests::class_literal_array_argument_is_ldc_without_array_allocation_or_wrapper_initialization ... ok
+test object_plan::arguments::array_tests::array_arguments_preserve_allocation_length_effect_throw_and_constructor_trace ... ok
+test tests::floating_payload_fill_preserves_raw_negative_zero_and_nan_bits ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_private_receiver_effects_and_abrupt_completion ... ok
+test tests::integrated_filled_array_and_contextual_zero_execute ... ok
+test tests::multidimensional_array_allocates_outer_dimension_only ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_attested_wide_append_word_identity ... ok
+test tests::integrated_hierarchy_argument_field_return_and_array_store_execute ... ok
+test object_plan::arguments::class_literal_tests::class_literal_argument_preserves_allocation_resolution_and_target_noninitialization ... ok
+test tests::invokes_fields_and_unused_results_preserve_order ... ok
+test java_string_literal::tests::java_string_literal_jdk_all_utf16_identity_and_ldc ... ok
+test tests::numeric_cast_preserves_short_narrowing_with_int_result ... ok
+test tests::primitive_array_roundtrips_preserve_bits_and_boolean_identity ... ok
+test tests::numeric_conversions_handle_nan_saturation_and_char_wrapping ... ok
+test tests::reference_cast_and_instanceof_keep_source_type ... ok
+test exceptions::region_tests::checked_guard_tests::javac_precise_rethrow_requires_immutable_parameter_and_zero_checked_contract ... ok
+test tests::raw_zero_without_descriptor_consumer_is_category_one ... ok
+test tests::one_proven_zero_has_independent_numeric_and_reference_operands ... ok
+test tests::protected_instance_receiver_preserves_attested_static_type_and_fails_closed ... ok
+
+test result: ok. 112 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.08s
+
+     Running tests/arithmetic_operands.rs (target/debug/deps/arithmetic_operands-7e97597ed2ae905f)
+
+running 2 tests
+test only_exact_width_or_int_promotion_is_accepted ... ok
+test javac_executes_narrow_masks_and_shift_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests/branching.rs (target/debug/deps/branching-e555a3b1b5b48809)
+
+running 22 tests
+test arm_local_cannot_escape_without_phi ... ok
+test copy_execution_is_simultaneous_even_for_swap ... ok
+test cycles_and_exception_edges_keep_typed_structure_errors ... ok
+test consecutive_phis_use_cluster_head_edges_and_one_copy_batch ... ok
+test branch_throw_non_throwable_or_unavailable_type_rejects ... ok
+test branch_throw_uninitialized_allocation_still_rejects ... ok
+test edge_temporary_names_reserve_even_unused_parameters ... ok
+test join_effect_stays_after_selected_arm_and_before_return ... ok
+test unused_descriptor_positions_have_no_fabricated_values ... ok
+test malformed_region_binding_and_unavailable_phi_fail_closed ... ok
+test genuine_cfg_initials_are_bindings_not_hoisted_redefinitions ... ok
+test same_target_true_false_edges_still_select_distinct_phi_inputs ... ok
+test terminating_arm_does_not_remove_surviving_arm_definitions ... ok
+test phi_edge_coverage_types_and_branch_polarity_are_checked ... ok
+test diamond_executes_only_selected_effect_and_edge_copy ... ok
+test integrated_emitter_hoists_declarations_but_keeps_effects_and_snapshots_in_arms ... ok
+test chain_phi_many_joins_scaling ... ok
+test branch_arm_throw_checked_exception_requires_declared_throws ... ok
+test production_shared_tail_compiles_and_preserves_selected_return ... ok
+test branch_shared_tail_allocation_preserves_arm_effect_order ... ok
+test branch_arm_throw_emits_and_runs_unchecked_exception_terminal ... ok
+test production_checked_phi_families_compile_execute_and_reject_mixed_escapes ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running tests/category_one_context.rs (target/debug/deps/category_one_context-e898a7f42b3d091e)
+
+running 3 tests
+test descriptor_boolean_and_bitwise_flags_are_not_arbitrary_ints ... ok
+test all_phi_inputs_and_consumers_keep_category_one_proofs ... ok
+test jdk17_bit_domain_and_single_evaluation_runtime ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.24s
+
+     Running tests/checked_exceptions.rs (target/debug/deps/checked_exceptions-12688bfae9038846)
+
+running 2 tests
+test exact_subtype_unchecked_and_missing_proofs ... ok
+test subtype_coverage_preserves_original_throw_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+
+     Running tests/class_literals.rs (target/debug/deps/class_literals-96a0a1a9b24cc303)
+
+running 2 tests
+test rejects_missing_and_invalid_array_targets ... ok
+test emitted_literals_compile_and_preserve_identity_without_initialization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests/compare_order.rs (target/debug/deps/compare_order-afd45bb7ce63806c)
+
+running 2 tests
+test emitter_ordering_compare_runs_with_dalvik_edges ... ok
+test generated_ordering_expressions_match_dalvik_runtime_edges ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+
+     Running tests/comparison_context.rs (target/debug/deps/comparison_context-0fe168671d0c7eb7)
+
+running 2 tests
+test reference_ordering_still_rejects ... ok
+test reference_and_boolean_zero_comparisons_compile_and_run ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+
+     Running tests/constructor_argument_allocations.rs (target/debug/deps/constructor_argument_allocations-4ce2bf5840e6676b)
+
+running 6 tests
+test constructed_argument_does_not_invent_missing_this_delegation_metadata ... ok
+test literal_effect_trace_accepts_matching_argument_order_and_rejects_original_reversal ... ok
+test unreachable_extra_read_prevents_argument_duplication_or_escape ... ok
+test two_allocation_arguments_require_original_left_to_right_order_without_duplication ... ok
+test original_single_native_literal_can_reuse_its_canonical_identity ... ok
+test allocated_argument_preserves_initialization_throw_and_single_evaluation ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/constructor_paths_new.rs (target/debug/deps/constructor_paths_new-f3c52f5392de2607)
+
+running 5 tests
+test failed_store_catch_does_not_inherit_successful_assignment ... ok
+test cycles_saturate_counts_and_double_writes_are_not_one ... ok
+test failed_super_and_pre_super_writes_remain_distinct ... ok
+test branch_assignment_counts_and_missing_path_are_not_collapsed_to_first_successor ... ok
+test typed_null_pins_exact_parent_constructor_overload ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+
+     Running tests/constructor_prechecks.rs (target/debug/deps/constructor_prechecks-93313e9da26ed880)
+
+running 4 tests
+test class_initialization_throwing_cast_and_handler_summaries_are_not_inert ... ok
+test exact_inert_parent_chain_accepts ... ok
+test finalizers_effects_missing_metadata_and_cycles_reject ... ok
+test java17_preserves_original_check_frame_and_order_without_helper ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running tests/constructor_prefix_diamond.rs (target/debug/deps/constructor_prefix_diamond-9421dc0cfa7804cd)
+
+running 2 tests
+test unproved_edges_escape_effects_cycles_and_multi_diamonds_reject ... ok
+test conditional_argument_is_lazy_and_throw_precedes_chain ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests/constructor_prefix_expressions.rs (target/debug/deps/constructor_prefix_expressions-81e48e5a06610ecd)
+
+running 4 tests
+test array_failure_prevents_parent_and_nonzero_is_not_null ... ok
+test static_field_reads_keep_order_and_class_initialization ... ok
+test array_argument_retains_rank_allocation_and_throw_order ... ok
+test contextual_null_selects_original_overload ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+     Running tests/constructor_proven_preludes.rs (target/debug/deps/constructor_proven_preludes-2e6618973fafbf75)
+
+running 7 tests
+test captured_fields_without_checks_use_the_same_bounded_proof ... ok
+test java25_early_receiver_uses_and_handlers_still_reject ... ok
+test java25_preserves_prelude_without_reordering_proofs ... ok
+test preserves_descriptor_check_frame_and_capture_assignments ... ok
+test missing_finalizer_effectful_and_receiver_escape_proofs_deny ... ok
+test java25_jvm_preserves_original_order_including_parent_effects_and_finalizers ... FAILED
+test jvm_original_pre_super_bytecode_matches_emitted_checks_and_captures ... ok
+
+failures:
+
+---- java25_jvm_preserves_original_order_including_parent_effects_and_finalizers stdout ----
+
+thread 'java25_jvm_preserves_original_order_including_parent_effects_and_finalizers' (526471) panicked at crates/backend-java/tests/constructor_proven_preludes.rs:584:26:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    java25_jvm_preserves_original_order_including_parent_effects_and_finalizers
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.18s
+
+error: test failed, to rerun pass `-p backend-java --test constructor_proven_preludes`

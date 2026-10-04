@@ -1,0 +1,26 @@
+{
+  "original_denominator_before": 205497,
+  "original_denominator_after": 205497,
+  "identities_equal": true,
+  "changed_statuses": [],
+  "gained": [],
+  "lost": [],
+  "status_counts_before": {
+    "complete_body": 160431,
+    "rejected_in_written_unit": 29493,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 4101,
+    "proven_enum_equivalence": 332
+  },
+  "status_counts_after": {
+    "complete_body": 160431,
+    "rejected_in_written_unit": 29493,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 4101,
+    "proven_enum_equivalence": 332
+  },
+  "sha256": {
+    "off": "1517ebff08785a906e42cd76b256ec7404943479dc81705dcc7f9b6095dbf9f1",
+    "on": "8460dc9985bef847c546b349abae0ac3b31fcc3c2b1551f358994d614bbebe53"
+  }
+}

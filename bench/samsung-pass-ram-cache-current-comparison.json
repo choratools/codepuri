@@ -1,0 +1,69 @@
+{
+  "root": "/tmp/opencode/samsung-pass-ram-cache-20261003-8lvz4t_x/replay",
+  "verified": true,
+  "cold_export_s": 317.551165,
+  "warm_export_s": 1.584327,
+  "replay_speedup": 200.43284309362903,
+  "cold_files": 31196,
+  "warm_files": 31196,
+  "source_text_bytes": 315868104,
+  "missing_paths": [],
+  "added_paths": [],
+  "changed_files": [],
+  "reports_equal": true,
+  "phase_metrics": {
+    "cold": {
+      "phase": "cold",
+      "export_wall_s": "317.551165",
+      "sources": "31196",
+      "bytes": "315868104",
+      "checksum": "3a5c4c3d546e3078",
+      "complete_methods": "141611",
+      "constructors": "31456",
+      "static_initializers": "5609",
+      "unsupported_methods": "12895",
+      "unavailable_constructors": "2749",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "0",
+        "sources": "31196",
+        "source_text_bytes": "315868104",
+        "ready": "true"
+      }
+    },
+    "warm": {
+      "phase": "warm",
+      "export_wall_s": "1.584327",
+      "sources": "31196",
+      "bytes": "315868104",
+      "checksum": "3a5c4c3d546e3078",
+      "complete_methods": "141611",
+      "constructors": "31456",
+      "static_initializers": "5609",
+      "unsupported_methods": "12895",
+      "unavailable_constructors": "2749",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "1",
+        "sources": "31196",
+        "source_text_bytes": "315868104",
+        "ready": "true"
+      }
+    }
+  },
+  "cold_speedup_claimed": false,
+  "whole_app_compilation_claimed": false,
+  "whole_process_peak_rss_kib": 15511836,
+  "retained_text_mib": 301.2352981567383,
+  "whole_process_peak_rss_gib": 14.79323959350586,
+  "frozen_terminal": {
+    "exit_code": 0,
+    "wall_seconds": 321.9643460717052,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  }
+}

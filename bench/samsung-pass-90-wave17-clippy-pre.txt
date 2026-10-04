@@ -1,0 +1,15 @@
+    Blocking waiting for file lock on build directory
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+error: this call to `clone` can be replaced with `std::slice::from_ref`
+  --> crates/decomp/src/java_exception_regions.rs:99:13
+   |
+99 |             &[metadata.scope.clone()],
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `std::slice::from_ref(&metadata.scope)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#cloned_ref_to_slice_refs
+   = note: `-D clippy::cloned-ref-to-slice-refs` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::cloned_ref_to_slice_refs)]`
+
+error: could not compile `decomp` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `decomp` (lib test) due to 1 previous error

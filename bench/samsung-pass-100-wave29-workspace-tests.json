@@ -1,0 +1,12 @@
+{
+  "command": "cargo test --workspace",
+  "exit_code": 0,
+  "passed": 1037,
+  "failed": 0,
+  "ignored": 146,
+  "suites": 179,
+  "log": "/tmp/opencode/wave29-final-workspace-tests.log",
+  "log_sha256": "a0845193208f58bd540ed82a0471834eb2fcaf230491c9e390e647a93521ced7",
+  "jdk": "JDK17 with explicit DECOMPHIFY_JDK25_HOME",
+  "full_apk_coverage": "pending wave29 live process; this is workspace test evidence only"
+}

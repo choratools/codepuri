@@ -1,0 +1,57 @@
+{
+  "created_at": "2026-10-04T13:26:18.556461+00:00",
+  "baseline": "wave50",
+  "baseline_executable_accepted": 186105,
+  "baseline_executable_denominator": 194286,
+  "goal_complete": false,
+  "main_frozen": false,
+  "full_validation_session": null,
+  "full_validation_state": "interrupted_artifacts_unavailable_after_environment_reset",
+  "changes": [
+    "target-bound static field Throwable bridge",
+    "cached exact field-throw catalog",
+    "genuine foreign public nonfinal static initialization write",
+    "scheduler bounded admission window 256 and pending telemetry",
+    "Fcm constructor edge-selected receiver Phi and mask prefix",
+    "metadata-attested catch producer declaration and nominal cast evidence"
+  ],
+  "root_focused_checks": {
+    "fcm_constructor": 2,
+    "receiver_phi_positive_negative": 2,
+    "catch_phi_and_JVM": 7,
+    "nominal_catchall": 1,
+    "fmt": "passed"
+  },
+  "bounds": [
+    "aggregate wave51 recovery and timings pending",
+    "whole Java compilation previously failed",
+    "OwnThrow coroutine bridge and ChronoField enum proof not yet integrated"
+  ],
+  "workspace_gate_receipt": "/tmp/opencode/samsung-wave51-gates/terminal.json",
+  "workspace_gates": [
+    {
+      "gate": "fmt",
+      "exit_code": 0
+    },
+    {
+      "gate": "tests",
+      "exit_code": 0
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 0
+    },
+    {
+      "gate": "release",
+      "exit_code": 0
+    }
+  ],
+  "completed_test_totals": {
+    "suites": 199,
+    "passed": 1234,
+    "failed": 0,
+    "ignored": 167
+  },
+  "compiler_alias_root_cause_receipt": "bench/samsung-pass-wave51-compiler-alias-triage.md",
+  "restored_input_receipt": "/tmp/opencode/restored-validation-inputs.json"
+}

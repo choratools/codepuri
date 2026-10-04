@@ -1,0 +1,23 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.93s
+     Running tests/java_super_resolution.rs (target/debug/deps/java_super_resolution-46ffe0548e7886a4)
+
+running 2 tests
+test original_samsung_super_metadata_witnesses ... ignored, Requires preserved original Samsung Pass APK and local JDK/Android SDK
+test actual_classfile_intermediate_override_dispatch_and_negative_proofs ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.75s
+
+     Running tests/samsung_constructor_evidence_new.rs (target/debug/deps/samsung_constructor_evidence_new-09a43ebac86d0492)
+
+running 1 test
+whole-input scan: 205497 methods, 2135 arbitrary unknowns (10 native/unavailable), 435 field-scoped identities
+androidx.constraintlayout.widget.Guideline: 3 original constructors; no instance finals
+com.samsung.android.samsungpass.passservice.mdl.CryptoLibException: 2 original constructors; no instance finals
+com.samsung.android.samsungpass.passservice.mdl.BiometricTokenExpiredException: 2 original constructors; no instance finals
+residual com.samsung.android.samsungpass.passservice.smartswitch.SmartSwitchException 13204 ["Ljava/lang/String;", "Lcom/samsung/android/samsungpass/passservice/smartswitch/SmartSwitchErrorCode;"]: local code writes=1; whole-input final exclusivity unavailable
+residual com.samsung.android.samsungpass.passservice.smartswitch.SmartSwitchException 13205 ["Ljava/lang/String;", "Lcom/samsung/android/samsungpass/passservice/smartswitch/SmartSwitchErrorCode;", "I", "Lkotlin/jvm/internal/h;"]: local code writes=0; whole-input final exclusivity unavailable
+test original_samsung_families_exact_signatures_compile_and_runtime ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.88s
+

@@ -1,0 +1,10 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.08s
+     Running unittests src/lib.rs (target/debug/deps/backend_java-7a00ca0c51de3396)
+
+running 2 tests
+test java_string_literal::tests::java_string_literal_budget_is_modified_utf8_and_compiler_bounded ... ok
+test java_string_literal::tests::java_string_literal_jdk_all_utf16_identity_and_ldc ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 66 filtered out; finished in 1.46s
+

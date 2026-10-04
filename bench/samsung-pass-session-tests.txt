@@ -1,0 +1,46 @@
+warning: variant `Dispatch` is never constructed
+   --> crates/decomp/src/java_exception_regions.rs:119:5
+    |
+117 | enum RangeMode {
+    |      --------- variant in this enum
+118 |     Structured,
+119 |     Dispatch,
+    |     ^^^^^^^^
+    |
+    = note: `RangeMode` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `from_dex_dispatch` is never used
+   --> crates/decomp/src/java_exception_regions.rs:584:8
+    |
+584 | pub fn from_dex_dispatch(
+    |        ^^^^^^^^^^^^^^^^^
+
+warning: `decomp` (lib) generated 2 warnings
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
+     Running tests/java_session.rs (target/debug/deps/java_session-db814f6c3e10c437)
+
+running 6 tests
+test samsung_fragment_snapshot_replays_attested_static_prefix ... ignored, requires retained Samsung Pass APK and explicit JDK17/Android35 metadata
+test failed_render_never_installs_a_partial_snapshot ... ok
+test failed_sink_retains_snapshot_and_retry_starts_at_first_original_source ... ok
+test empty_selection_is_a_valid_cached_result_and_other_sessions_are_isolated ... ok
+test warm_replay_preserves_all_sources_reports_order_and_clear_lifetime ... ok
+test classpath_is_snapshotted_before_its_file_is_removed ... FAILED
+
+failures:
+
+---- classpath_is_snapshotted_before_its_file_is_removed stdout ----
+
+thread 'classpath_is_snapshotted_before_its_file_is_removed' (332513) panicked at crates/decomp/tests/java_session.rs:201:5:
+JavaReport { unavailable_initialization_units: 1, category_reasons: {"constructor\tinitialization proof: FieldInitializationUnavailable": 1}, complete_constructors: 0, complete_static_initializers: 0, semantic_bodies_with_unresolved_dependencies: 0, semantic_bodies_outside_strict_dependency_closure: 0, declaration_only_methods: 0, fields_emitted: 0, classes_seen: 1, classes_emitted: 1, complete_methods: 1, unsupported_methods: 0, unavailable_constructors: 1, skipped_classes: 0, reasons: {"initialization proof: FieldInitializationUnavailable": 1} }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    classpath_is_snapshotted_before_its_file_is_removed
+
+test result: FAILED. 4 passed; 1 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.51s
+
+error: test failed, to rerun pass `-p decomp --test java_session`

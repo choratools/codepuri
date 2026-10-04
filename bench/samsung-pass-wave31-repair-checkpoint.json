@@ -1,0 +1,63 @@
+{
+  "state": "frozen_full_wave31_rejected_no_loss_gate",
+  "accepted_baseline": "wave29",
+  "wave30_candidate": "rejected_no_loss_gate",
+  "fixes": [
+    {
+      "name": "array_meet_join_product_lattice",
+      "checks": "13 focused tests, 7 properties each 32768 cases; strict managed-ir clippy passed",
+      "full_corpus": "pending"
+    },
+    {
+      "name": "reference_copy_materialized_declaration_agreement",
+      "checks": "29 contextual tests; actual generated Java compile/runtime; backend strict clippy passed",
+      "original_5786_7728": "pending fresh production measurement"
+    }
+  ],
+  "in_progress": "post-wave31 checked-source bridge and nested cleanup implementation; full next-wave recovery unmeasured",
+  "goal": "active incomplete",
+  "frozen_run_root": "/tmp/opencode/samsung-pass-100-wave31",
+  "gates": {
+    "release": "passed",
+    "fmt": "passed",
+    "workspace_tests": "1070 passed, 0 failed, 148 ignored",
+    "clippy": "passed",
+    "full_export_compile_no_loss": "export passed; syntax passed; whole javac failed with 50900 diagnostics; no-loss failed with 23 losses against wave29"
+  },
+  "original_checks": {
+    "classes4_7696": "seeded constructor plan accepted; production publication pending",
+    "classes4_9842_9843": "seeded original unchanged method emission and boundary JVM compile/runtime passed; aggregate pending"
+  },
+  "candidate": {
+    "accepted": false,
+    "executable_recovered": 182606,
+    "executable_total": 194286,
+    "gained_against_wave29": 780,
+    "lost_against_wave29": 23
+  },
+  "jadx_comparison": {
+    "passkey_31220": "Original jadx output uses Object local for Long-or-empty-String logger paths. Seeded general downstream Phi repair passes; aggregate pending.",
+    "protobuf_JavaType": "jadx itself reports enum reconstruction failure; do not count its flattened output as proven enum recovery."
+  },
+  "post_wave31_review": {
+    "checked_source_bridge": "bounded read-only reviewer found no must-fix semantic blocker; exact sites, runtime/source separation, transactional fallback and synthetic provenance checked; focused worker tests still pending",
+    "performance_issue": "repeated global class scans in helper collision proof reported to implementation owner for indexed/cache repair",
+    "next_driver": "/tmp/opencode/run_samsung_wave32.py prepared, not launched; accepted wave29 and strong wave26 guards retained",
+    "cleanup": "new structural proof compiles; exact #122 checked-origin proof and runtime tests remain in progress"
+  },
+  "post_wave31_root_validation": {
+    "standalone_bridge_artifact": "/tmp/opencode/checked-source-bridge-wave31-orr4x95f/report.json",
+    "scope": "standalone compiler/runtime fixture, not original Samsung bodies",
+    "jdk17_checks": 76,
+    "jdk25_checks": 76,
+    "terminal": 0,
+    "jadx_original_122": "/tmp/opencode/wave32-jadx-original122.java; exact k(ByteOrder) itself fails JADX reconstruction",
+    "helper_inventory": "cached per owner with existing InputIndex instead of repeated all-class scan",
+    "enum_next_hypothesis": "Java25 synthetic private recipe constructor prelude retaining original payload effect order; feasibility experiment in progress",
+    "enum_recipe_feasibility": "Java25 fixture compiles; original modeled allocation precedes payload/type/literal prelude; cold initialization success/fail/reuse traces verified. New general production planner in development, not Samsung recovery.",
+    "original_122_phi_diagnosis": "Scratch panic passed empty declaration map after emission; not a production contextual failure. Real copy rendering Object -> a4.a$b owned by cleanup worker; use existing validated renderer.",
+    "bridge_actual_two_methods": "bounded original16702 and14395 test added, execution pending concurrent cleanup compilation fix",
+    "cleanup_origin_status": "Replay6 source allocation origin accepted after restoring emitter.current; no universal NewInstance grant. Remaining checked-capture widening evaluated through existing compatibility proof.",
+    "bridge_encoded_catch_boundary": "Do not replace accepted callee derived source throws clauses without transactional caller catch reachability proof. Initial production bridge admission targets unavailable override-conflict source contracts; already-valid original-clause restoration remains deferred."
+  }
+}

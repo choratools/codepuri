@@ -1,0 +1,47 @@
+{
+  "status": "corpus_and_workspace_terminal_pass",
+  "goal_complete": false,
+  "accepted_baseline": "wave38",
+  "rejected_candidate": "wave39",
+  "materialized_tests_session": 7552,
+  "fmt_clippy_release_session": 94464,
+  "nested_allocation_actuals": [
+    158,
+    163
+  ],
+  "restored_actual_profiles": [
+    41952,
+    41955,
+    55217
+  ],
+  "all18_regressions_restoration": "requires full corpus verification",
+  "patches": [
+    "/tmp/opencode/wave38-allocation-nested-alias.patch",
+    "/tmp/opencode/wave40-loss-repair.patch"
+  ],
+  "updated_at": "2026-10-04T05:26:32.591472+00:00",
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave40",
+  "driver_session": 12704,
+  "workspace_session": 28224,
+  "focused_tests_exit_code": 0,
+  "fmt_exit_code": 0,
+  "scoped_clippy_exit_code": 0,
+  "release_exit_code": 0,
+  "driver_exit_code": 0,
+  "workspace_session_id": 28224,
+  "strict_code_bearing_accepted": 184349,
+  "strict_code_bearing_percent": 94.88537516856593,
+  "gained": 282,
+  "lost": 0,
+  "wave39_losses_restored": 18,
+  "javac_diagnostics": 50535,
+  "source_freeze_released": true,
+  "workspace_tests": {
+    "passed": 1123,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 188,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave40-workspace-tests.log"
+  }
+}

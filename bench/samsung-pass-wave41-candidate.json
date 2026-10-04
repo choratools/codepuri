@@ -1,0 +1,55 @@
+{
+  "wave": 41,
+  "accepted": false,
+  "goal_complete": false,
+  "driver_exit_code": 1,
+  "accepted_baseline": "wave40",
+  "candidate_executable_accepted": 184375,
+  "candidate_executable_percent": 94.8987575018272,
+  "gained": 27,
+  "lost": 1,
+  "lost_identities": [
+    {
+      "identity": "Lorg/bouncycastle/math/ec/ECCurve;->precompute(Lorg/bouncycastle/math/ec/ECPoint;Ljava/lang/String;Lorg/bouncycastle/math/ec/PreCompCallback;)Lorg/bouncycastle/math/ec/PreCompInfo;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 20966,
+        "identity": "Lorg/bouncycastle/math/ec/ECCurve;->precompute(Lorg/bouncycastle/math/ec/ECPoint;Ljava/lang/String;Lorg/bouncycastle/math/ec/PreCompCallback;)Lorg/bouncycastle/math/ec/PreCompInfo;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/math/ec/ECCurve.java"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 20966,
+        "identity": "Lorg/bouncycastle/math/ec/ECCurve;->precompute(Lorg/bouncycastle/math/ec/ECPoint;Ljava/lang/String;Lorg/bouncycastle/math/ec/PreCompCallback;)Lorg/bouncycastle/math/ec/PreCompInfo;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/math/ec/ECCurve.java",
+        "reason": "backend: ControlFlow(\"exception plan: Unsupported(\\\"monitor acquisition identity is unproved\\\")\")"
+      }
+    }
+  ],
+  "javac_diagnostics": 50597,
+  "workspace_tests": {
+    "passed": 1130,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 190,
+    "exit_code": 0
+  },
+  "source_snapshot_unchanged": {
+    "finished_at": "2026-10-04T06:05:10.128545+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "repair_status": "MAIN selected-Phi anchor regression repair applied; shared-monitor cleanup integrated; scoped root tests pending",
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave41"
+}

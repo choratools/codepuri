@@ -1,0 +1,37 @@
+{
+  "original_focused_artifacts": [
+    {
+      "path": "/tmp/opencode/wave8-original-viewpager-21016.java.txt",
+      "exists": true,
+      "sha256": "ccf8e5241fcd7d063d245af4008b2ed8529ca4a2bfdb475e837b247e09d31575",
+      "bytes": 1568
+    },
+    {
+      "path": "/tmp/opencode/wave8-original-39055.java",
+      "exists": true,
+      "sha256": "ceb617665baebb6368557fbccd37559cee5d70c07401028fc9a2f12542d242e3",
+      "bytes": 88158
+    },
+    {
+      "path": "/tmp/opencode/wave8-auth-input-copy/genuine-nine-chain-scope-proof.txt",
+      "exists": true,
+      "sha256": "5ae91147f26f4b72164deda954862b0adf5743b7c7ad2bdb01aad7c880a14a1f",
+      "bytes": 1229
+    },
+    {
+      "path": "/tmp/opencode/wave8-shared-handler-original-source.log",
+      "exists": true,
+      "sha256": "1377c1f90d145c4035967b485faa68dc7f816ce248a05dd9aa9c63cf6499a61a",
+      "bytes": 33580
+    }
+  ],
+  "scope": "selected original witnesses, not aggregate recovery or whole APK runtime",
+  "auth20398_complete_body": false,
+  "auth20398_residual": "encoded checked catch unreachable under resolved Java contract",
+  "entry_ssa_verified": [
+    "ViewPager 21016",
+    "ArrayEncoder 5433"
+  ],
+  "contextual_body_restored": "classes.dex 39055",
+  "shared_handler_source_contract": "ReflectUtil pool1 23703 original=[] derived=[] source=[]"
+}

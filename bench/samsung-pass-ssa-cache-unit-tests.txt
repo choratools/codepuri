@@ -1,0 +1,15 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.14s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 7 tests
+test java_integration::ssa_cache::tests::frontend_errors_are_cached_and_counted_once ... ok
+test java_integration::ssa_cache::tests::disabled_cache_computes_every_time_and_retains_nothing ... ok
+test java_integration::ssa_cache::tests::frontend_computation_does_not_hold_global_map_lock ... ok
+test java_integration::ssa_cache::tests::export_sessions_do_not_share_entries ... ok
+test java_integration::ssa_cache::tests::changed_seed_types_produce_separate_typed_frontend_results ... ok
+test java_integration::ssa_cache::tests::concurrent_same_key_runs_frontend_once_and_shares_result ... ok
+test java_integration::ssa_cache::tests::every_input_identity_component_distinguishes_entries ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 85 filtered out; finished in 0.00s
+

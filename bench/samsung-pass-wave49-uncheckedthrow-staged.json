@@ -1,0 +1,31 @@
+{
+  "patch": "/tmp/opencode/wave49-uncheckedthrow-patch/owned.patch",
+  "sha256": "7f92cccb6b53dbdf814e5c4815d523535ff1d424fcd8db9a80971bea4e3c74f5",
+  "parent_tests": {
+    "passed": 3,
+    "failed": 0
+  },
+  "worker_jdk17": 3,
+  "worker_jdk25": 3,
+  "worker_clippy_exit": 0,
+  "actual154": {
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true,
+    "source": "/tmp/opencode/wave49-uncheckedthrow-actual/sources/a4/a$type.java"
+  },
+  "actual137": "semantic only; unresolved body closure",
+  "actual167": "still rejected",
+  "main_integrated": true,
+  "goal_complete": false,
+  "review": "no production must-fix",
+  "main_test_session": 23148,
+  "main_clippy_session": 91323,
+  "main_tests": {
+    "passed": 3,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "main_fmt_exit": 0,
+  "main_clippy_exit": 0
+}

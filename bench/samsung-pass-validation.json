@@ -1,0 +1,111 @@
+{
+  "jdk": "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+  "android_classpath": "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+  "representative_original_units": [
+    {
+      "unit": "com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java",
+      "exit_code": 0,
+      "seconds": 0.7996264868415892,
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-validation/unit-0",
+        "-d",
+        "/tmp/opencode/samsung-pass-validation/unit-0",
+        "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java"
+      ]
+    },
+    {
+      "unit": "com/samsung/android/samsungpass/ocr/nfc/e.java",
+      "exit_code": 0,
+      "seconds": 0.6667351634241641,
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-validation/unit-1",
+        "-d",
+        "/tmp/opencode/samsung-pass-validation/unit-1",
+        "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/e.java"
+      ]
+    },
+    {
+      "unit": "com/samsung/android/samsungpass/ocr/nfc/d.java",
+      "exit_code": 0,
+      "seconds": 0.6979369851760566,
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-validation/unit-2",
+        "-d",
+        "/tmp/opencode/samsung-pass-validation/unit-2",
+        "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/d.java"
+      ]
+    },
+    {
+      "unit": "com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java",
+      "exit_code": 0,
+      "seconds": 0.6398275578394532,
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-validation/unit-3",
+        "-d",
+        "/tmp/opencode/samsung-pass-validation/unit-3",
+        "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java"
+      ]
+    },
+    {
+      "unit": "com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java",
+      "exit_code": 0,
+      "seconds": 0.682403408922255,
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-validation/unit-4",
+        "-d",
+        "/tmp/opencode/samsung-pass-validation/unit-4",
+        "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java"
+      ]
+    }
+  ],
+  "full_compile": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-J-Xmx8g",
+      "-proc:none",
+      "-Xmaxerrs",
+      "5000",
+      "-classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "-sourcepath",
+      "/tmp/opencode/decomphify-java-corpus/run-1790868720256956227-453171/com.samsung.android.samsungpass/sources",
+      "-d",
+      "/tmp/opencode/samsung-pass-validation/all-classes",
+      "@/tmp/opencode/samsung-pass-validation/all-sources.args"
+    ],
+    "exit_code": 1,
+    "seconds": 9.389556305017322,
+    "diagnostic_cap": 5000,
+    "observed_diagnostic_categories_not_total_defects": {
+      "= expected": 2
+    }
+  },
+  "gained_identities": 1669,
+  "lost_identities": 0,
+  "compiled_apk": false
+}

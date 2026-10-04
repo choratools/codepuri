@@ -1,0 +1,26 @@
+{
+  "state": "two_actual_original_constructors_emitted",
+  "results": [
+    {
+      "label": "constraint",
+      "original_method_index": 10372,
+      "source_path": "/tmp/opencode/wave36-actual-mutable/constraint/sources/androidx/constraintlayout/widget/d$a.java",
+      "sha256": "7208183c7f1df6226ea30f23e0609a506e150ba72aa99bb7de9568370bc2b8b6",
+      "original_banner": "// original method pool index 10372; Some(MethodKey { owner: \"Landroidx/constraintlayout/widget/d$a;\", name: \"<init>\", parameters: [\"Landroid/content/Context;\", \"Lorg/xmlpull/v1/XmlPullParser;\"], return_type: \"V\" }); complete_body=true; semantic_complete=true; dependency_complete=true",
+      "export_exit": 0,
+      "whole_unit_compile_verified": false
+    },
+    {
+      "label": "carousel",
+      "original_method_index": 29753,
+      "source_path": "/tmp/opencode/wave36-actual-mutable/carousel/sources/com/google/android/material/carousel/c$type.java",
+      "sha256": "217c695affa5cf9582a7b4a137dada2cc8df78c9999c7c0596cc5f34908da001",
+      "original_banner": "// original method pool index 29753; Some(MethodKey { owner: \"Lcom/google/android/material/carousel/c;\", name: \"<init>\", parameters: [\"F\", \"Ljava/util/List;\", \"I\", \"I\", \"I\"], return_type: \"V\" }); complete_body=true; semantic_complete=true; dependency_complete=true",
+      "export_exit": 0,
+      "whole_unit_compile_verified": false
+    }
+  ],
+  "configuration_note": "bounded binary includes temporary final-source-admission candidate now rejected and being reverted; constructor flag fix validated independently",
+  "full_target_percent_not_remeasured": true,
+  "goal_complete": false
+}

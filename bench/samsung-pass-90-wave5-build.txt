@@ -1,0 +1,2 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `release` profile [optimized] target(s) in 5.05s

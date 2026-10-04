@@ -1,0 +1,330 @@
+{
+  "schema": "samsung-pass-recovery-checkpoint/v1",
+  "recorded_date": "2026-10-03",
+  "goal": {
+    "target_percent": 99,
+    "complete": false,
+    "original_definition_denominator": 205497,
+    "required_original_definitions": 203443,
+    "strict_all_original_remaining": 34517,
+    "code_bearing_denominator": 194286,
+    "required_code_bearing_definitions": 192344,
+    "code_bearing_remaining": 23418,
+    "original_form_remaining": 23340,
+    "accounting_views_separate": true,
+    "body_only_all_original_ceiling_percent": 94.54444590431977
+  },
+  "input": {
+    "apk": "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+    "apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+    "version_name": "5.2.10.10",
+    "version_code": 521010900,
+    "dex_count": 4,
+    "original_bodyless_definitions": 11211,
+    "audit": "All four ledgers preserve exact original identities, DEX slots, method indices, access flags and has_code; no denominator changes."
+  },
+  "configuration": {
+    "default_source_release": 17,
+    "additional_constructor_recovery_requires_source_release": 25,
+    "workers": 30,
+    "classpath": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+    ],
+    "initial_release_pair_same_binary": true,
+    "corrected_export_uses_new_binary": true,
+    "environment_artifacts": [
+      "bench/samsung-pass-99-wave1-environment.json",
+      "bench/samsung-pass-99-wave1-corrected-environment.json"
+    ]
+  },
+  "baseline": {
+    "strict_accepted": 161428,
+    "genuine_declarations": 11140,
+    "coverage_artifact": "bench/samsung-pass-99-session-baseline-coverage.json",
+    "ledger": "/tmp/opencode/samsung-pass-session-replay-verified/cold/method-coverage.jsonl",
+    "ledger_sha256": "3206ea3980c98b89de3d1b6e5f874b334448fec6cfe61e95b9c7cafccc761e61"
+  },
+  "runs": [
+    {
+      "name": "java17",
+      "source_release": 17,
+      "binary_sha256": "f5db9a7734cac1408ed8862f5fd2733258be727b43e1d6fba5a844e551c6e4eb",
+      "export_wall_seconds": 289.780865,
+      "subprocess_wall_seconds": 291.65554272569716,
+      "original_definitions": 205497,
+      "original_code_bearing": 194286,
+      "statuses": {
+        "complete_body": 162923,
+        "rejected_in_written_unit": 27143,
+        "declaration_only": 11177,
+        "rejected_without_written_unit": 3956,
+        "proven_enum_equivalence": 298
+      },
+      "strict_accepted": 163221,
+      "strict_all_original_percent": 79.427436896889,
+      "code_bearing_percent": 84.010685278404,
+      "genuine_declarations": 11177,
+      "original_form_accepted": 174398,
+      "original_form_percent": 84.86644573886723,
+      "rejected": 31099,
+      "classes_seen": 34579,
+      "source_units": 30558,
+      "export_exit_code": 0,
+      "skipped_classes": 0,
+      "identity_delta_vs_baseline": {
+        "gained": 1793,
+        "lost": 0,
+        "lost_identities": [],
+        "gained_kinds": {
+          "ordinary": 1768,
+          "static_initializer": 11,
+          "constructor": 14
+        }
+      },
+      "ltu_j_static_initializer": {
+        "dex": "classes4.dex",
+        "method_index": 41993,
+        "identity": "Ltu/j;-><clinit>()V",
+        "category": "static_initializer",
+        "access_flags": 65544,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "tu/j$type.java"
+      },
+      "coverage_artifact": "bench/samsung-pass-99-wave1-java17-coverage.json",
+      "inventory_artifact": "bench/samsung-pass-99-wave1-java17-inventory.json",
+      "ledger": "/tmp/opencode/samsung-pass-99-java-release-wave1/java17/method-coverage.jsonl",
+      "ledger_sha256": "093b4d6cc21ce30a53bb31c5cef8d4c484afe8270e36ae189839714a746fe86a",
+      "validation": {
+        "status": "finished",
+        "artifact": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation17/validation.json",
+        "artifact_sha256": "b42a5e3243ea3db19d6f2898274a67d73891b6eac8822aea118c8c5e2251cd04",
+        "syntax_gate": {
+          "exit_code": 0,
+          "seconds": 20.40496916230768,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation17/syntax-gate.log"
+        },
+        "full_compile": {
+          "exit_code": 1,
+          "seconds": 93.19194668577984,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation17/full-javac.log"
+        },
+        "diagnostic_count": 59784,
+        "diagnostic_cap": 2147483647,
+        "diagnostic_cap_reached": false,
+        "exact_sources_unchanged": true,
+        "compiled_apk": false
+      }
+    },
+    {
+      "name": "java25",
+      "source_release": 25,
+      "binary_sha256": "f5db9a7734cac1408ed8862f5fd2733258be727b43e1d6fba5a844e551c6e4eb",
+      "export_wall_seconds": 288.115248,
+      "subprocess_wall_seconds": 290.0175509620458,
+      "original_definitions": 205497,
+      "original_code_bearing": 194286,
+      "statuses": {
+        "complete_body": 168615,
+        "rejected_in_written_unit": 21508,
+        "declaration_only": 11177,
+        "rejected_without_written_unit": 3899,
+        "proven_enum_equivalence": 298
+      },
+      "strict_accepted": 168913,
+      "strict_all_original_percent": 82.19730701664744,
+      "code_bearing_percent": 86.94038685237227,
+      "genuine_declarations": 11177,
+      "original_form_accepted": 180090,
+      "original_form_percent": 87.63631585862568,
+      "rejected": 25407,
+      "classes_seen": 34579,
+      "source_units": 30596,
+      "export_exit_code": 0,
+      "skipped_classes": 0,
+      "identity_delta_vs_baseline": {
+        "gained": 7486,
+        "lost": 1,
+        "lost_identities": [
+          "Ltu/j;-><clinit>()V"
+        ],
+        "gained_kinds": {
+          "ordinary": 2777,
+          "static_initializer": 16,
+          "constructor": 4693
+        }
+      },
+      "ltu_j_static_initializer": {
+        "dex": "classes4.dex",
+        "method_index": 41993,
+        "identity": "Ltu/j;-><clinit>()V",
+        "category": "static_initializer",
+        "access_flags": 65544,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "tu/j$type.java",
+        "reason": "final field write requires atomic initialization proof"
+      },
+      "coverage_artifact": "bench/samsung-pass-99-wave1-java25-coverage.json",
+      "inventory_artifact": "bench/samsung-pass-99-wave1-java25-inventory.json",
+      "ledger": "/tmp/opencode/samsung-pass-99-java-release-wave1/java25/method-coverage.jsonl",
+      "ledger_sha256": "332472f4ec8fb0e75b3ce056726f3f6a6b6ca535aad095b7e80cf2025d92000c",
+      "validation": {
+        "status": "finished",
+        "artifact": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25/validation.json",
+        "artifact_sha256": "03638a8010a6e1fe72fda3e016295ae6011a6ad3340ae5d9f31dcfe912096431",
+        "syntax_gate": {
+          "exit_code": 0,
+          "seconds": 15.752860464155674,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25/syntax-gate.log"
+        },
+        "full_compile": {
+          "exit_code": 1,
+          "seconds": 59.96559782093391,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25/full-javac.log"
+        },
+        "diagnostic_count": 56138,
+        "diagnostic_cap": 2147483647,
+        "diagnostic_cap_reached": false,
+        "exact_sources_unchanged": true,
+        "compiled_apk": false
+      }
+    },
+    {
+      "name": "corrected",
+      "source_release": 25,
+      "binary_sha256": "0018c073d8e0add1d83e84ac0ffb04aa17b8a27341d0f65f0906437e3627dd01",
+      "export_wall_seconds": 276.465616,
+      "subprocess_wall_seconds": 278.35919880401343,
+      "original_definitions": 205497,
+      "original_code_bearing": 194286,
+      "statuses": {
+        "complete_body": 168628,
+        "rejected_in_written_unit": 21495,
+        "declaration_only": 11177,
+        "rejected_without_written_unit": 3899,
+        "proven_enum_equivalence": 298
+      },
+      "strict_accepted": 168926,
+      "strict_all_original_percent": 82.20363314306292,
+      "code_bearing_percent": 86.94707801900292,
+      "genuine_declarations": 11177,
+      "original_form_accepted": 180103,
+      "original_form_percent": 87.64264198504114,
+      "rejected": 25394,
+      "classes_seen": 34579,
+      "source_units": 30596,
+      "export_exit_code": 0,
+      "skipped_classes": 0,
+      "identity_delta_vs_baseline": {
+        "gained": 7498,
+        "lost": 0,
+        "lost_identities": [],
+        "gained_kinds": {
+          "ordinary": 2777,
+          "static_initializer": 28,
+          "constructor": 4693
+        }
+      },
+      "ltu_j_static_initializer": {
+        "dex": "classes4.dex",
+        "method_index": 41993,
+        "identity": "Ltu/j;-><clinit>()V",
+        "category": "static_initializer",
+        "access_flags": 65544,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "tu/j$type.java"
+      },
+      "coverage_artifact": "bench/samsung-pass-99-wave1-corrected-coverage.json",
+      "inventory_artifact": "bench/samsung-pass-99-wave1-corrected-inventory.json",
+      "ledger": "/tmp/opencode/samsung-pass-99-java-release-wave1/java25-corrected/method-coverage.jsonl",
+      "ledger_sha256": "0ff4b1fd175648724829db9ab9ab2d798083e6b9ab19da3abf58b1cde336e507",
+      "validation": {
+        "status": "finished",
+        "artifact": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25-corrected/validation.json",
+        "artifact_sha256": "ee8d374ba1cce00baa97103220c6e3e2b36b86292aa832d254c09158177c73fe",
+        "syntax_gate": {
+          "exit_code": 0,
+          "seconds": 15.452509082853794,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25-corrected/syntax-gate.log"
+        },
+        "full_compile": {
+          "exit_code": 1,
+          "seconds": 59.458472029771656,
+          "log": "/tmp/opencode/samsung-pass-99-java-release-wave1/validation25-corrected/full-javac.log"
+        },
+        "diagnostic_count": 56146,
+        "diagnostic_cap": 2147483647,
+        "diagnostic_cap_reached": false,
+        "exact_sources_unchanged": true,
+        "compiled_apk": false
+      }
+    }
+  ],
+  "correction": {
+    "reason": "independent static fallback after full-family closure failure",
+    "accepted_gained_vs_initial25": 13,
+    "accepted_lost_vs_initial25": 0,
+    "gained_identities": [
+      "Landroidx/appcompat/app/y;-><clinit>()V",
+      "Landroidx/datastore/preferences/protobuf/h0;-><clinit>()V",
+      "Lcom/google/firebase/messaging/y0;-><clinit>()V",
+      "Lcom/google/protobuf/ManifestSchemaFactory;-><clinit>()V",
+      "Ldf/d$a;-><clinit>()V",
+      "Lik/c;-><clinit>()V",
+      "Lim/b;-><clinit>()V",
+      "Lorg/bouncycastle/asn1/ASN1RelativeOID;-><clinit>()V",
+      "Lorg/bouncycastle/crypto/digests/Kangaroo$KangarooSponge;-><clinit>()V",
+      "Lorg/bouncycastle/x509/PKIXCertPathReviewer;-><clinit>()V",
+      "Lre/e;-><clinit>()V",
+      "Ltu/j;-><clinit>()V",
+      "Lxj/h$c;-><clinit>()V"
+    ],
+    "ltu_j_static_initializer_restored": true,
+    "genuine_declaration_gain_vs_baseline": 37,
+    "enum_to_explicit_body_transitions_vs_baseline": 121
+  },
+  "tests": {
+    "workspace_before_static_fix": {
+      "passed": 705,
+      "failed": 0,
+      "artifact": "bench/samsung-pass-99-integration-tests-jdk25.txt"
+    },
+    "static_regressions_after_fix": {
+      "passed": 2,
+      "failed": 0,
+      "provenance": "parent terminal rerun summary, 16.13 seconds"
+    },
+    "actual_source25_constructor_witnesses": {
+      "passed": 2,
+      "failed": 0,
+      "provenance": "parent completed targeted original-method tests"
+    },
+    "fresh_release_session_cache_tests": {
+      "passed": 6,
+      "failed": 0,
+      "includes": "original Samsung Fragment static initialization and replay",
+      "provenance": "parent terminal test summary"
+    },
+    "decomp_all_targets_strict_clippy": "passed, parent terminal summary",
+    "wave_clippy_artifact": "bench/samsung-pass-99-wave1-clippy.txt"
+  },
+  "earlier_session_cache_benchmark": {
+    "cold_export_seconds": 189.117,
+    "warm_source_replay_seconds": 1.436,
+    "same_process": true,
+    "artifact": "bench/SAMSUNG_PASS_SOURCE_SESSION.md",
+    "claim": "Earlier completed immutable source replay; not a cold acceleration measurement of this recovery wave."
+  },
+  "limits": [
+    "Active 99 percent goal remains incomplete.",
+    "Declarations remain genuine original code-less native or abstract forms; they are never counted as complete bodies.",
+    "All sources parse, but whole-source javac compilation fails on every measured release.",
+    "No successful whole-app build, compiled APK, Android device execution or runtime equivalence claim.",
+    "Cold export timings are single runs with changing source behavior and a corrected binary; no controlled cold speedup conclusion."
+  ]
+}

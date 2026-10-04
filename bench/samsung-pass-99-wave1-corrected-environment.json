@@ -1,0 +1,25 @@
+{
+  "binary": "/tmp/opencode/samsung-pass-99-java-release-wave1/java_profile-corrected",
+  "binary_sha256": "0018c073d8e0add1d83e84ac0ffb04aa17b8a27341d0f65f0906437e3627dd01",
+  "command": [
+    "/tmp/opencode/samsung-pass-99-java-release-wave1/java_profile-corrected",
+    "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+    "/tmp/opencode/samsung-pass-99-java-release-wave1/java25-corrected",
+    "--workers",
+    "30",
+    "--source-release",
+    "25",
+    "--classpath",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+    "--classpath",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "--classpath",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+    "--classpath",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+  ],
+  "fix": "independent static fallback after full-family closure failure",
+  "supersedes": "java25 first pass, lost Ltu/j;<clinit>",
+  "exit_code": 0,
+  "elapsed_s": 278.35919880401343
+}

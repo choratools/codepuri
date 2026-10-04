@@ -1,0 +1,16 @@
+ssa_cache enabled=true hits=269791 misses=194286 entries=194286 failures=0
+resolution_cache enabled=true hits=5380762 misses=402778 failures=122
+inventory_cache enabled=true
+profile_wall_s=307.661953 delivered_class_profiles=34579 completed_tasks=34579 task_elapsed_sum_s=3345.229081 scheduler_wall_sum_s=243.926088 capacity_slot_s=7317.782653 worker_lifetime_s=7191.636670 active_task_s=3345.245712 queue_wait_s=3844.927823 dispatch_idle_s=1.463135 effective_active_workers=13.714 capacity_occupancy_pct=45.714 lifetime_active_pct=46.516
+serial	alias_build	15.124880	wall_pct=4.914
+serial	alias_inventory	2.922519	wall_pct=0.950
+serial	cache_release	2.300274	wall_pct=0.747
+serial	resolver_prepare	0.527681	wall_pct=0.171
+serial	sink_io	1.600403	wall_pct=0.520
+serial	source_throws	23.213865	wall_pct=7.543
+task_stage	closure_pruning	0.159327	task_sum_pct=0.005
+task_stage	frontend	1.291407	task_sum_pct=0.039
+task_stage	initialization_family	1164.572086	task_sum_pct=34.813
+task_stage	source_collection	0.174628	task_sum_pct=0.005
+task_stage	source_serialization	12.091920	task_sum_pct=0.361
+task_stage	structure_backend	1937.222480	task_sum_pct=57.910

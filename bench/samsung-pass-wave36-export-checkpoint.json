@@ -1,0 +1,26 @@
+{
+  "state": "export_terminal_validation_pending",
+  "root": "/tmp/opencode/samsung-pass-100-wave36",
+  "export_exit": 0,
+  "changed_sources_during_export": [],
+  "strict_code_bearing_accepted": 183732,
+  "strict_code_bearing_percent": 94.56780210617337,
+  "gained_original_identities": 86,
+  "lost_original_identities": 0,
+  "remaining_executable": 10554,
+  "export_wall_seconds": 305.12,
+  "peak_rss_kib": 16493356,
+  "repeated_actual_dispatch_source": {
+    "exit_codes": [
+      0,
+      0
+    ],
+    "files_exist": true,
+    "exact_target_source_bytes_equal": true,
+    "whole_apk_determinism_proven": false,
+    "first_sha256": "90e8be1b533a94523260e8727331d2d6f7457fe42874b2ff31b99b947b68f65a",
+    "second_sha256": "90e8be1b533a94523260e8727331d2d6f7457fe42874b2ff31b99b947b68f65a"
+  },
+  "workspace_first_attempt": "failed existing private-final fixture lacks field flags; repairing exact metadata, production check retained",
+  "goal_complete": false
+}

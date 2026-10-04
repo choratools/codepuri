@@ -1,0 +1,10 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.32s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 1 test
+test java_exception_regions::tests::terminal_return_bridges_compile_run_and_exclude_handler_shared_return ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 70 filtered out; finished in 1.12s
+

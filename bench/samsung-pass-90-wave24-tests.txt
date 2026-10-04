@@ -1,0 +1,1409 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.44s
+     Running unittests src/lib.rs (target/debug/deps/backend_java-7a00ca0c51de3396)
+
+running 102 tests
+test constructors::tests::rejects_cfg_cycle ... ok
+test constructors::tests::rejects_delegation_cycle ... ok
+test constructors::tests::primitive_constant_is_in_chain_without_a_leading_local ... ok
+test constructors::tests::rejects_uninitialized_this_as_argument_and_non_special_dispatch ... ok
+test constructors::tests::exact_super_and_this_arguments_and_body_order ... ok
+test contextual_locals::producer_reference_locals::tests::exact_producer_contract_and_all_copy_consumers_required ... ok
+test constructors::tests::rejects_preinit_effect_missing_mapping_missing_chain_and_double_init ... ok
+test constructors::wide_arguments_tests::wide_chain_rejects_distinct_high_word_missing_word_and_duplicate_effect ... ok
+test exceptions::region_tests::allocation_scope_tests::same_original_range_exact_chain_and_handler_observation ... ok
+test contextual_locals::producer_reference_locals::tests::same_fixture_without_producer_declarations_fails_at_string_consumer ... ok
+test exceptions::region_tests::allocation_scope_tests::unequal_original_prethrow_phi_transfers_and_alias_sources_reject ... ok
+test exceptions::region_tests::checked_guard_tests::unknown_operation_reference_cast_and_cleanup_do_not_enable_guard ... ok
+test exceptions::region_tests::allocation_scope_tests::canonical_exception_plan_installs_proof_only_at_emission ... ok
+test exceptions::region_tests::contextual_phi_tests::contextual_phi_preserves_selected_edge_and_availability ... ok
+test exceptions::region_tests::checked_guard_tests::declared_checked_contract_and_missing_hierarchy_keep_direct_path ... ok
+test exceptions::region_tests::contextual_phi_tests::phi_family_equality_to_literal_zero_is_contextual_not_unknown ... ok
+test exceptions::throw_tests::numeric_casts_and_floating_division_have_no_synchronous_handler_edge ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_handler_rejects_capture_loss_normal_fallthrough_and_prethrow_unavailable_phi ... ok
+test exceptions::region_tests::disjoint_rejects_shared_handlers_and_nested_protected ... ok
+test exceptions::throw_tests::resolving_operations_and_declared_opaque_effects_remain_throwing ... ok
+test filled_arrays::tests::category_one_source_forms ... ok
+test filled_arrays::tests::contextual_family_checks_arena_escapes_and_preserves_selection ... ok
+test filled_arrays::tests::discarded_source_keeps_allocation_between_effects ... ok
+test exceptions::region_tests::unrelated_catches_require_three_way_hierarchy_and_shadowing_rejects ... ok
+test object_plan::arguments::cast_tests::reference_cast_argument_rejects_escape_extra_read_and_wrong_result_type ... ok
+test object_plan::arguments::class_literal_tests::class_literal_argument_rejects_shared_reordered_external_and_unresolved_resolution_events ... ok
+test object_plan::arguments::array_tests::array_arguments_reject_reorder_shared_escape_extra_effect_descriptor_and_filled_oom_reorder ... ok
+test object_plan::arguments::tests::rejects_reordered_shared_non_argument_outside_use_and_checked_throw_trees ... ok
+test object_plan::arguments::read_tests::read_index_caches_relevant_signatures_preserves_multiplicity_and_raw_fallback ... ok
+test object_plan::arguments::tests::nested_argument_rejects_order_escape_effect_wrong_owner_checked_throw_alias_and_preinit_use ... ok
+test object_plan::arguments::tests::ordinary_pure_gap_materializes_constants_and_moves_under_the_selected_plan ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_rejects_false_attestation_metadata_receiver_escape_and_distinct_high_word ... ok
+test object_plan::arguments::tests::string_tree_rejects_reordering_outside_use_sharing_unrelated_effect_and_unresolved_literal ... ok
+test object_plan::tests::hoisted_reference_copy_retains_reserved_static_type ... ok
+test object_plan::tests::explicit_branch_between_allocation_and_constructor_is_a_barrier ... ok
+test static_initializer::tests::rejects_non_initializer_and_wrong_enclosing_class ... ok
+test object_plan::tests::reserved_object_slot_cannot_be_read_before_its_unique_initializer ... ok
+test static_initializer::tests::field_assignments_and_effects_keep_instruction_order ... ok
+test static_initializer::tests::requires_field_member_context ... ok
+test static_initializer::tests::terminal_throw_returns_diagnostic_instead_of_successor_panic ... ok
+test object_plan::tests::effects_throwing_allocation_preinit_use_and_repeated_init_reject ... ok
+test object_plan::exception_pair_tests::exception_pair_requires_exact_scoped_alias_chain_capability ... ok
+test static_initializer::tests::rejects_value_return ... ok
+test object_plan::arguments::tests::numeric_tree_rejects_reordering_shared_operands_integer_division_narrow_and_reference_casts_and_escape ... ok
+test java_string_literal::tests::java_string_literal_budget_is_modified_utf8_and_compiler_bounded ... ok
+test constructors::tests::unused_constructor_descriptor_position_preserves_arity_and_executes ... ok
+test tests::invalid_managed_operations_fail_closed ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_void_terminal_preserves_bypass_normal_and_exception_effects ... ok
+test tests::malformed_edges_reject_and_normal_self_loop_emits ... ok
+test tests::mixed_numeric_width_is_not_silently_promoted ... ok
+test exceptions::region_tests::branching_protected_prethrow_states_exact_dispatch_and_terminal_handlers ... ok
+test tests::naming_is_safe_and_unique ... ok
+test tests::nonadjacent_allocation_and_wrong_width_array_access_reject ... ok
+test object_plan::tests::constructor_words_preserve_wide_identity_and_following_argument ... ok
+test exceptions::region_tests::disjoint_planner_preserves_prethrow_phi_and_catch_priority ... ok
+test tests::arithmetic_parameters_moves_and_widths_execute ... ok
+test object_plan::tests::alias_and_pure_gap_compile_and_preserve_constructor_exception ... ok
+test object_plan::arguments::tests::immediate_nested_argument_preserves_outer_inner_allocation_and_constructor_order ... ok
+test exceptions::region_tests::genuine_finally_and_synchronized_compile_execute_return_throw_release ... ok
+test exceptions::region_tests::disjoint_handler_throw_stays_outside_other_scope_and_bad_snapshot_rejects ... ok
+test tests::synthetic_parameter_in_cfg_and_metadata_failures ... ok
+test tests::unsupported_never_returns_stub ... ok
+test object_plan::arguments::tests::string_argument_expression_is_single_and_follows_outer_class_initialization ... ok
+test object_plan::arguments::tests::branch_shared_tail_folds_hoisted_argument_placeholders ... ok
+test tests::integrated_hierarchy_argument_field_return_and_array_store_execute ... ok
+test exceptions::region_tests::allocation_scope_tests::original_scope_pair_preserves_constructor_effects_and_throw_identity_jdk ... ok
+test object_plan::arguments::tests::numeric_argument_tree_preserves_float_rounding_allocation_and_effect_order ... ok
+test tests::dex_wide_invoke_words_preserve_descriptor_and_effects ... ok
+test tests::allocation_uses_exact_adjacent_constructor_arguments ... ok
+test object_plan::arguments::read_tests::read_index_allocation_plan_skips_foreign_invokes_and_preserves_runtime_trace ... ok
+test tests::array_index_effects_execute_once_before_store_and_load ... ok
+test tests::floating_bits_and_utf16_literals_execute ... ok
+test tests::arrays_materialize_effects_and_narrow_stores ... ok
+test object_plan::arguments::tests::narrowed_primitive_argument_keeps_its_ssa_int_overload ... ok
+test constructors::wide_arguments_tests::actual_samsung_ctor111_to110_layout_preserves_long_and_following_array ... ok
+test tests::floating_payload_fill_preserves_raw_negative_zero_and_nan_bits ... ok
+test tests::integrated_filled_array_and_contextual_zero_execute ... ok
+test contextual_locals::producer_reference_locals::tests::generated_producer_copy_equals_and_string_append_jdk ... ok
+test tests::fill_checks_before_mutation_and_length_is_materialized ... ok
+test exceptions::region_tests::contextual_phi_tests::shared_effectful_handler_runs_once_and_gap_throw_is_uncaught ... ok
+test exceptions::region_tests::disjoint_conditionals_compile_and_run_all_throw_modes ... ok
+test constructors::wide_arguments_tests::wide_chain_words_preserve_effect_order_and_initializer_evidence ... ok
+test exceptions::region_tests::catchall_cleanup_mismatch_keeps_literal_handler_and_identity_rethrow ... ok
+test object_plan::arguments::cast_tests::reference_cast_argument_retains_failure_order_and_null_identity ... ok
+test exceptions::region_tests::checked_guard_tests::zero_checked_contract_guard_preserves_foreign_throwables_and_priority_jdk ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_attested_wide_append_word_identity ... ok
+test tests::multidimensional_array_allocates_outer_dimension_only ... ok
+test object_plan::arguments::class_literal_tests::class_literal_argument_preserves_allocation_resolution_and_target_noninitialization ... ok
+test object_plan::arguments::tests::allocation_argument_tree_preserves_class_initialization_and_argument_effect_order ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_private_receiver_effects_and_abrupt_completion ... ok
+test object_plan::arguments::class_literal_tests::class_literal_array_argument_is_ldc_without_array_allocation_or_wrapper_initialization ... ok
+test tests::invokes_fields_and_unused_results_preserve_order ... ok
+test tests::numeric_conversions_handle_nan_saturation_and_char_wrapping ... ok
+test tests::numeric_cast_preserves_short_narrowing_with_int_result ... ok
+test object_plan::arguments::array_tests::array_arguments_preserve_allocation_length_effect_throw_and_constructor_trace ... ok
+test tests::primitive_array_roundtrips_preserve_bits_and_boolean_identity ... ok
+test tests::reference_cast_and_instanceof_keep_source_type ... ok
+test exceptions::region_tests::checked_guard_tests::javac_precise_rethrow_requires_immutable_parameter_and_zero_checked_contract ... ok
+test java_string_literal::tests::java_string_literal_jdk_all_utf16_identity_and_ldc ... ok
+test tests::one_proven_zero_has_independent_numeric_and_reference_operands ... ok
+test tests::raw_zero_without_descriptor_consumer_is_category_one ... ok
+test tests::protected_instance_receiver_preserves_attested_static_type_and_fails_closed ... ok
+
+test result: ok. 102 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.21s
+
+     Running tests/arithmetic_operands.rs (target/debug/deps/arithmetic_operands-7e97597ed2ae905f)
+
+running 2 tests
+test only_exact_width_or_int_promotion_is_accepted ... ok
+test javac_executes_narrow_masks_and_shift_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/branching.rs (target/debug/deps/branching-e555a3b1b5b48809)
+
+running 22 tests
+test arm_local_cannot_escape_without_phi ... ok
+test copy_execution_is_simultaneous_even_for_swap ... ok
+test branch_throw_uninitialized_allocation_still_rejects ... ok
+test cycles_and_exception_edges_keep_typed_structure_errors ... ok
+test consecutive_phis_use_cluster_head_edges_and_one_copy_batch ... ok
+test branch_throw_non_throwable_or_unavailable_type_rejects ... ok
+test join_effect_stays_after_selected_arm_and_before_return ... ok
+test edge_temporary_names_reserve_even_unused_parameters ... ok
+test genuine_cfg_initials_are_bindings_not_hoisted_redefinitions ... ok
+test unused_descriptor_positions_have_no_fabricated_values ... ok
+test malformed_region_binding_and_unavailable_phi_fail_closed ... ok
+test terminating_arm_does_not_remove_surviving_arm_definitions ... ok
+test same_target_true_false_edges_still_select_distinct_phi_inputs ... ok
+test phi_edge_coverage_types_and_branch_polarity_are_checked ... ok
+test diamond_executes_only_selected_effect_and_edge_copy ... ok
+test integrated_emitter_hoists_declarations_but_keeps_effects_and_snapshots_in_arms ... ok
+test production_shared_tail_compiles_and_preserves_selected_return ... ok
+test production_checked_phi_families_compile_execute_and_reject_mixed_escapes ... ok
+test branch_shared_tail_allocation_preserves_arm_effect_order ... ok
+test branch_arm_throw_emits_and_runs_unchecked_exception_terminal ... ok
+test branch_arm_throw_checked_exception_requires_declared_throws ... ok
+test chain_phi_many_joins_scaling ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.06s
+
+     Running tests/category_one_context.rs (target/debug/deps/category_one_context-e898a7f42b3d091e)
+
+running 3 tests
+test descriptor_boolean_and_bitwise_flags_are_not_arbitrary_ints ... ok
+test all_phi_inputs_and_consumers_keep_category_one_proofs ... ok
+test jdk17_bit_domain_and_single_evaluation_runtime ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.21s
+
+     Running tests/checked_exceptions.rs (target/debug/deps/checked_exceptions-12688bfae9038846)
+
+running 2 tests
+test exact_subtype_unchecked_and_missing_proofs ... ok
+test subtype_coverage_preserves_original_throw_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+     Running tests/class_literals.rs (target/debug/deps/class_literals-96a0a1a9b24cc303)
+
+running 2 tests
+test rejects_missing_and_invalid_array_targets ... ok
+test emitted_literals_compile_and_preserve_identity_without_initialization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+     Running tests/compare_order.rs (target/debug/deps/compare_order-afd45bb7ce63806c)
+
+running 2 tests
+test generated_ordering_expressions_match_dalvik_runtime_edges ... ok
+test emitter_ordering_compare_runs_with_dalvik_edges ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests/comparison_context.rs (target/debug/deps/comparison_context-0fe168671d0c7eb7)
+
+running 2 tests
+test reference_ordering_still_rejects ... ok
+test reference_and_boolean_zero_comparisons_compile_and_run ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+     Running tests/constructor_argument_allocations.rs (target/debug/deps/constructor_argument_allocations-4ce2bf5840e6676b)
+
+running 6 tests
+test constructed_argument_does_not_invent_missing_this_delegation_metadata ... ok
+test unreachable_extra_read_prevents_argument_duplication_or_escape ... ok
+test literal_effect_trace_accepts_matching_argument_order_and_rejects_original_reversal ... ok
+test two_allocation_arguments_require_original_left_to_right_order_without_duplication ... ok
+test original_single_native_literal_can_reuse_its_canonical_identity ... ok
+test allocated_argument_preserves_initialization_throw_and_single_evaluation ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests/constructor_paths_new.rs (target/debug/deps/constructor_paths_new-f3c52f5392de2607)
+
+running 5 tests
+test failed_store_catch_does_not_inherit_successful_assignment ... ok
+test cycles_saturate_counts_and_double_writes_are_not_one ... ok
+test failed_super_and_pre_super_writes_remain_distinct ... ok
+test branch_assignment_counts_and_missing_path_are_not_collapsed_to_first_successor ... ok
+test typed_null_pins_exact_parent_constructor_overload ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/constructor_prechecks.rs (target/debug/deps/constructor_prechecks-93313e9da26ed880)
+
+running 4 tests
+test finalizers_effects_missing_metadata_and_cycles_reject ... ok
+test class_initialization_throwing_cast_and_handler_summaries_are_not_inert ... ok
+test exact_inert_parent_chain_accepts ... ok
+test java17_preserves_original_check_frame_and_order_without_helper ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+
+     Running tests/constructor_prefix_diamond.rs (target/debug/deps/constructor_prefix_diamond-9421dc0cfa7804cd)
+
+running 2 tests
+test unproved_edges_escape_effects_cycles_and_multi_diamonds_reject ... ok
+test conditional_argument_is_lazy_and_throw_precedes_chain ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/constructor_prefix_expressions.rs (target/debug/deps/constructor_prefix_expressions-81e48e5a06610ecd)
+
+running 4 tests
+test contextual_null_selects_original_overload ... ok
+test array_argument_retains_rank_allocation_and_throw_order ... ok
+test array_failure_prevents_parent_and_nonzero_is_not_null ... ok
+test static_field_reads_keep_order_and_class_initialization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/constructor_reachable_subset.rs (target/debug/deps/constructor_reachable_subset-abcd8504e3014e17)
+
+running 2 tests
+test missing_cycle_duplicate_and_invalid_final_counts_never_publish ... ok
+test reachable_chain_retains_exact_identities_and_compiles_without_unrelated_body ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/constructor_shared_array_tail.rs (target/debug/deps/constructor_shared_array_tail-69acb5e375b66df5)
+
+running 3 tests
+test suffix_backedges_still_reject ... ok
+test exponentially_shared_tree_hits_lowering_budget ... ok
+test shared_allocation_tail_preserves_per_execution_effect_count_alias_and_copy ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+     Running tests/constructor_static_argument.rs (target/debug/deps/constructor_static_argument-f1ec2d8e8f7cf796)
+
+running 2 tests
+test loose_reordered_escaping_or_unproved_calls_reject ... ok
+test static_leaf_effects_follow_original_order_and_throw_before_chain ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+
+     Running tests/constructor_subset_diagnostics.rs (target/debug/deps/constructor_subset_diagnostics-2e7c925a3f73293b)
+
+running 2 tests
+test cycles_and_group_errors_are_chain_level_in_input_order ... ok
+test retained_order_matches_legacy_and_missing_target_is_exact ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/constructor_suffix_phi.rs (target/debug/deps/constructor_suffix_phi-bb081349d352bd34)
+
+running 3 tests
+test final_family_proof_remains_once_per_normal_path ... ok
+test wrong_edges_cycles_unavailable_sources_and_exception_joins_reject ... ok
+test final_phi_store_uses_selected_edge_once_after_parent ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+
+     Running tests/constructor_suffix_throw_object.rs (target/debug/deps/constructor_suffix_throw_object-6f72e125cd36163c)
+
+running 2 tests
+test malformed_or_escaping_initializers_and_missing_final_path_reject ... ok
+test exact_branch_throw_identity_message_and_normal_final_assignment ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests/constructor_virtual_argument.rs (target/debug/deps/constructor_virtual_argument-744af0a560d04e82)
+
+running 2 tests
+test loose_reordered_escaping_or_unproved_calls_reject ... ok
+test virtual_leaf_effects_dispatch_and_null_check_follow_original_order ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+
+     Running tests/contextual_locals.rs (target/debug/deps/contextual_locals-f63007a1a026738b)
+
+running 4 tests
+test retained_real_errorutils_jdk17_differential ... ignored, requires TYPE_REAL_JAVA pointing to retained ErrorUtils.java
+test explicit_null_cannot_be_numeric_and_unknown_is_not_evidence ... ok
+test shared_zero_has_use_site_expressions_and_phi_checks_real_inputs ... ok
+test jdk17_constant_expressions_preserve_selected_value_and_exceptions ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+     Running tests/contextual_null_dispatch.rs (target/debug/deps/contextual_null_dispatch-133a847f69e81028)
+
+running 1 test
+test null_is_typed_at_each_descriptor_use_and_invalid_bits_reject ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.12s
+
+     Running tests/contextual_null_locals.rs (target/debug/deps/contextual_null_locals-9f91458c333dc5e3)
+
+running 4 tests
+test true_null_numeric_and_category_one_wide_uses_remain_rejected ... ok
+test null_annotation_does_not_turn_nonzero_bits_into_null ... ok
+test raw_zero_with_null_annotation_and_move_splits_numeric_reference_uses ... ok
+test hoisted_null_and_copy_use_genuine_return_descriptor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+
+     Running tests/dispatch.rs (target/debug/deps/dispatch-664f02a8c930ed0f)
+
+running 3 tests
+test canonical_snapshot_unknown_read_and_identifier_fail_closed ... ok
+test parallel_switch_arms_select_edge_copies_and_evaluate_once ... ok
+test irreducible_phi_swap_effect_and_throw_traces_match_java17 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+
+     Running tests/dispatch_production.rs (target/debug/deps/dispatch_production-83e42aaab8bc853e)
+
+running 3 tests
+test entry_phi_without_initial_edge_rejects_self_cycle_and_default_read ... ok
+test full_backend_rejects_phi_type_conflict_and_unbound_initial_read ... ok
+test full_backend_irreducible_phi_swaps_default_locals_never_observed ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+
+     Running tests/exceptions.rs (target/debug/deps/exceptions-f1768b22839e7ef5)
+
+running 5 tests
+test reject_noncontiguous_scope ... ok
+test throwing_result_is_unavailable_on_exception_edge ... ok
+test reject_finally_overlap_missing_types_and_shadowing_order ... ok
+test checked_allowances_apply_only_to_protected_instructions ... ok
+test javac_runtime_beforethrow_success_and_ordered_typed_catches ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/loop_control.rs (target/debug/deps/loop_control-376a83f21621d8ad)
+
+running 1 test
+test jdk17_break_initial_continue_return_effects_and_phi_swaps ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+
+     Running tests/narrow_register_widening.rs (target/debug/deps/narrow_register_widening-fe513d6ef122a140)
+
+running 2 tests
+test wider_boolean_and_reference_domains_are_not_numeric_widening ... ok
+test narrow_fields_use_int_descriptor_and_preserve_boundary_values ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.84s
+
+     Running tests/phi_hierarchy.rs (target/debug/deps/phi_hierarchy-eb4a9fd2178bb3e1)
+
+running 1 test
+test throw_join_requires_attested_common_unchecked_ancestor ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference_widening_locals.rs (target/debug/deps/reference_widening_locals-4531cec79862c9ff)
+
+running 2 tests
+test missing_hierarchy_and_numeric_reinterpretation_remain_rejected ... ok
+test proven_integer_copy_declares_object_and_preserves_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/shared_regions.rs (target/debug/deps/shared_regions-a2cd885bc3f7a051)
+
+running 5 tests
+test irreducible_and_exception_graphs_remain_explicitly_unsupported ... ok
+test altered_snapshot_is_rejected_before_any_instruction_callback ... ok
+test old_accepted_regions_remain_identical ... ok
+test high_scale_shared_tail_has_linear_placement_and_edge_coverage ... ok
+test nested_shared_return_effects_and_exceptions_execute_on_jdk ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/super_dispatch.rs (target/debug/deps/super_dispatch-f9ab938051db0844)
+
+running 2 tests
+test provenance_receiver_and_declaration_conflicts_reject ... ok
+test exact_super_dispatch_compiles_and_bypasses_override ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+
+     Running tests/switching.rs (target/debug/deps/switching-d0e7281f1712f406)
+
+running 9 tests
+test exception_edges_keep_structure_error ... ok
+test overlapping_fallthrough_is_rejected_instead_of_duplicating_effects ... ok
+test selector_type_and_phi_source_type_are_checked ... ok
+test malformed_edges_phi_types_and_availability_are_typed ... ok
+test production_grouped_default_entry_phis_compile_and_execute ... ok
+test negative_default_shared_cases_and_multi_phi_compile_and_execute ... ok
+test grouped_effects_terminate_without_unreachable_break_or_fallthrough ... ok
+test production_selector_effect_and_continuation_phi_execute_once ... ok
+test continuing_arms_break_before_join_effect_and_selector_evaluates_once ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+
+     Running tests/type_compatibility.rs (target/debug/deps/type_compatibility-3c331231896d7c21)
+
+running 4 tests
+test contextual_values_preserve_conflicts ... ok
+test directed_and_array_rules ... ok
+test cycle_guard ... ok
+test generated_java_compiles_and_runs ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/while_loops.rs (target/debug/deps/while_loops-2c1b3dee8faa0db7)
+
+running 3 tests
+test loop_plan_rejects_missing_phi_inputs_and_unavailable_values ... ok
+test compiled_sum_count_zero_false_swap_effects_and_nested_if ... ok
+test production_nested_loops_and_distinct_latch_phi_copies_execute ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 83 tests
+test dex_java::tests::descriptors_are_exact_and_paths_genuine ... ok
+test java_aliases::tests::invalid_inventory_is_rejected_transactionally ... ok
+test dex_java::tests::resolver_matches_real_descriptor_pools ... ok
+test dex_java::tests::resolver_preserves_isolated_surrogates ... ok
+test java_aliases::tests::field_identity_and_reference_lookup ... ok
+test java_class_kinds::enum_initialization::emission::tests::okcashbag_enum_method_evidence ... ignored, local OKcashbag corpus inventory, one DEX only
+test java_class_kinds::enum_initialization::emission::tests::okcashbag_enum_source_runtime ... ignored, local corpus and JDK17 runtime
+test dex_java::tests::overwritten_argument_is_not_mistaken_for_initial ... ok
+test java_descriptors::tests::external_literal_class_names_and_rank_are_preserved ... ok
+test dex_java::tests::incoming_this_wide_and_narrow_follow_histories ... ok
+test java_descriptors::tests::full_method_descriptors_use_logical_arity_and_erased_types ... ok
+test java_aliases::tests::sanitized_paths_are_safe_and_case_insensitively_unique ... ok
+test java_descriptors::tests::source_names_are_not_silently_aliased ... ok
+test java_aliases::tests::overloads_and_return_only_collisions_are_stable ... ok
+test dex_java::tests::static_arithmetic_runs_ssa_bindings_and_backend ... ok
+test java_descriptors::tests::metadata_signatures_do_not_require_class_definitions ... ok
+test java_aliases::tests::bad_names_unicode_keywords_and_special_methods ... ok
+test java_exception_regions::tests::samsung_control_only_exit_bridges ... ignored, requires local Samsung Pass APK; bounded exact exception adapters
+test java_exception_regions::tests::samsung_disjoint_scopes_actual_graphs ... ignored, requires local Samsung Pass APK; bounded exact methods only
+test java_exception_regions::tests::samsung_high_fanout_exit_inventory ... ignored, local Samsung Pass exact high-fanout exception witnesses
+test java_exception_regions::tests::samsung_passoperation_shared_remote_exception_handler ... ignored, local Samsung Pass exact shared effectful typed handler
+test java_exception_regions::tests::samsung_result_receiver_shared_void_terminal ... ignored, local Samsung Pass shared void terminal witness
+test java_exception_regions::tests::selected_real_method_inventory ... ignored, requires local OKcashbag APK; no corpus export
+test java_descriptors::tests::malformed_and_unsupported_types_have_typed_errors ... ok
+test java_initial_parameters::provenance_tests::explicit_provenance_recovers_only_attested_initials ... ok
+test java_integration::constructor_chain_tests::absent_receiver_ambiguous_flow_and_other_owner_never_attest_this ... ok
+test java_integration::constructor_chain_tests::receiver_bound_this_target_skips_even_same_class_argument_initializers ... ok
+test java_integration::external_metadata_tests::crossdex_constructor_uses_declaration_flags_and_exceptions ... ok
+test java_integration::index_tests::numeric_instruction_targets_are_exact_and_do_not_alias_dex_pool ... ok
+test java_integration::source_throws::required::tests::inherited_contract_and_exact_catch_preserve_original_metadata ... ok
+test java_integration::source_throws::required::tests::approved_input_ancestor_source_contract_allows_override_without_mutating_raw ... ok
+test java_integration::source_throws::required::tests::inherited_source_cycles_and_missing_ancestors_never_approve ... ok
+test java_integration::index_tests::protected_receiver_proof_uses_original_access_and_exact_metadata ... ok
+test java_integration::source_throws::tests::samsung_derived_source_throws_actual_leaf_and_public_contract ... ignored, local Samsung Pass and explicit JDK17/Android35 declarations
+test java_integration::source_throws::tests::samsung_wave13_lost_throws_contract_inventory ... ignored, local Samsung Pass and explicit JDK17/Android35 declarations
+test java_integration::source_throws::required::tests::invalid_clinit_and_unknown_hierarchy_poison_cycles ... ok
+test java_integration::source_throws::required::tests::override_failure_invalidates_callers_and_recursive_peers ... ok
+test java_members::dependency_publication::tests::exact_body_identity_survives_unmet_declarations ... ok
+test java_integration::index_tests::interface_blank_fields_are_unavailable_even_with_implicit_flags ... ok
+test java_integration::index_tests::indexed_annotations_match_raw_duplicates_and_malformed_throws ... ok
+test java_integration::index_tests::static_positions_match_first_position_and_initializer_boundary ... ok
+test java_integration::index_tests::facade_native_reference_requires_declaration_not_native_body ... ok
+test java_integration::index_tests::facade_retains_exact_same_owner_private_static_call ... ok
+test java_members::dependency_publication::tests::mutually_recursive_emitted_bodies_close_without_order_dependence ... ok
+test java_method_flags::tests::annotations_and_special_methods_are_separate ... ok
+test java_method_flags::tests::contradictions_and_non_method_flags_are_rejected ... ok
+test java_method_flags::tests::interface_declarations_use_default_only_for_public_instance_bodies ... ok
+test java_method_flags::tests::metadata_and_varargs_survive_without_fake_keywords ... ok
+test java_method_flags::tests::native_and_abstract_require_declarations_without_code ... ok
+test java_method_flags::tests::synchronization_is_preserved_and_dex_bits_are_not_interchangeable ... ok
+test output_tests::callback_and_explicit_status_are_independent_of_diagnostics ... ok
+test output_tests::deterministic_packages_and_literal_nested_names ... ok
+test output_tests::caller_supplied_paths_cannot_escape_or_alias_descriptor ... ok
+test output_tests::multiple_existing_case_spellings_reject_even_exact_match ... ok
+test output_tests::write_and_flush_errors_do_not_increment_counts ... ok
+test java_integration::index_tests::facade_preserves_same_owner_direct_private_dispatch ... ok
+test output_tests::rejects_symlink_roots_ancestors_directories_and_files ... ok
+test output_tests::unvalidated_symlink_is_rejected_below_cached_parent ... ok
+test output_tests::writes_packages_counts_success_and_never_overwrites ... ok
+test output_tests::existing_directories_and_case_aliases_are_indexed ... ok
+test output_tests::rejects_traversal_reserved_and_unsupported_descriptors ... ok
+test java_members::method_publication_tests::missing_native_recursive_and_constructor_reasons ... ok
+test java_integration::index_tests::analyst_field_inventory_does_not_publish_a_winner_for_three_duplicate_declarations ... ok
+test java_integration::index_tests::real_facade_checked_throws_boundary_and_same_class_call ... ok
+test java_integration::index_tests::real_facade_small_metadata_preserves_sources_and_counters ... ok
+test java_aliases::tests::suffix_progress_is_shared_by_casefolded_stems ... ok
+test output_tests::shared_parents_are_validated_and_scanned_once ... ok
+test java_integration::source_throws::required::tests::long_chain_and_recursive_component_reach_fixed_point ... ok
+test java_aliases::tests::randomized_inventory_matches_legacy_aliases ... ok
+test java_integration::index_tests::production_crossdex_publication_uses_defining_pool_and_owner_fields ... ok
+test java_integration::index_tests::production_protected_field_receiver_uses_global_source_lookup_across_two_parents ... ok
+test java_aliases::tests::class_simple_names_cannot_shadow_root_packages_java17 ... ok
+test java_integration::source_throws::required::tests::derived_contract_compiles_and_preserves_checked_exception_runtime ... ok
+test java_exception_regions::tests::exact_raw_branching_scope_compiles_runs_and_rejects_bad_handler_address ... ok
+test java_exception_regions::tests::outside_conditional_entry_and_in_range_handler_scaffold_preserve_catches ... ok
+test java_exception_regions::tests::terminal_return_bridges_compile_run_and_exclude_handler_shared_return ... ok
+test java_exception_scopes::tests::exact_dex_offsets_and_success_commit_compile_and_execute ... ok
+test java_integration::index_tests::closure_exhaustive_three_node_graphs_preserve_reasons ... ok
+test java_integration::index_tests::interface_field_usage_is_rejected_and_exact_subset_compiles_java17 ... ok
+test java_integration::index_tests::closure_chain_and_recursive_cycles_match_baseline ... ok
+test java_integration::index_tests::production_inherited_android_field_uses_actual_owner_and_exact_jar ... ok
+test java_members::method_publication_tests::samsung_required_complete_body_reporter ... ok
+test java_integration::index_tests::original_samsung_lost_identity_is_restored has been running for over 60 seconds
+test java_integration::index_tests::original_samsung_lost_identity_is_restored ... ok
+
+test result: ok. 73 passed; 0 failed; 10 ignored; 0 measured; 0 filtered out; finished in 105.31s
+
+     Running unittests src/main.rs (target/debug/deps/decomp-6e209bef6248e6f2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/checked_exception_evidence.rs (target/debug/deps/checked_exception_evidence-778c6baddeda55db)
+
+running 1 test
+test actual_samsung_throws_evidence ... ignored, Requires original Samsung Pass APK and genuine local JDK/Android SDK
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/constructor_write_inventory_new.rs (target/debug/deps/constructor_write_inventory_new-7eeb74a116528b37)
+
+running 4 tests
+test bad_field_flags_are_local_but_native_body_still_is_arbitrary ... ok
+test missing_hierarchy_keeps_signature_uncertainty ... ok
+test genuine_inherited_operand_resolves_one_owner_not_all_same_signature_fields ... ok
+test same_owner_staticness_mismatch_must_not_fall_through_to_ancestor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/explicit_store_initialization.rs (target/debug/deps/explicit_store_initialization-272ba50805635728)
+
+running 6 tests
+test actual_a4_constructors_keep_original_store_owner_and_delegation ... ignored, explicit local Samsung corpus
+test out_of_constructor_store_is_not_filtered_even_when_unreachable ... ok
+test native_capability_retained_while_encoded_blank_final_is_not_inlined ... ok
+test malformed_opaque_and_duplicate_inputs_do_not_become_runtime_capabilities ... ok
+test atomic_explicit_contract_keeps_encoded_prefix_and_runtime_capabilities ... ok
+test reflected_final_remains_runtime_mutable_without_constant_inlining ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+     Running tests/explicit_store_inventory_new.rs (target/debug/deps/explicit_store_inventory_new-6523e127aa917df9)
+
+running 6 tests
+test samsung_final_constructor_explicit_store_probe ... ignored, bounded real APK inventory probe
+test resolved_reflection_is_capability_but_unknown_target_and_decode_failures_are_structural ... ok
+test capability_does_not_erase_scoped_flags_or_special_invocation_uncertainty ... ok
+test cross_dex_unreachable_original_stores_are_not_dropped ... ok
+test capability_only_native_retains_strict_failure_and_complete_explicit_writes ... ok
+test blank_final_reflection_preserves_actual_field_read ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/field_write_scope.rs (target/debug/deps/field_write_scope-099090856161ab6c)
+
+running 9 tests
+test declaration_availability_does_not_certify_initialization ... ok
+test complete_initializer_coverage_rejects_missing_clinit_and_constructor ... ok
+test reflection_capability_is_not_treated_as_a_symbolic_write ... ok
+test cross_dex_read_operand_resolves_only_real_declaration ... ok
+test symbolic_unknown_is_exact_and_pool_references_are_not_declarations ... ok
+test native_capability_still_blocks_every_field ... ok
+test unresolved_inherited_symbol_poison_is_signature_scoped ... ok
+test public_declaration_and_encoded_prefix_compile_and_preserve_active_use ... ok
+test three_real_okcashbag_classes_expose_fields_without_certifying_unknown_initialization ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.64s
+
+     Running tests/java_access_dispatch_new.rs (target/debug/deps/java_access_dispatch_new-9dd40e3aefec4416)
+
+running 7 tests
+test declaration_reference_is_not_body_completion ... ok
+test original_access_and_receiver_restriction ... ok
+test publication::tests::mutually_recursive_emitted_bodies_close_without_order_dependence ... ok
+test special_dispatch_requires_exact_proof ... ok
+test publication::tests::exact_body_identity_survives_unmet_declarations ... ok
+test explicit_local_android_sdk_declarations ... ok
+test javac17_access_and_super_runtime ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.13s
+
+     Running tests/java_class_kinds.rs (target/debug/deps/java_class_kinds-e6fe610be617e6f8)
+
+running 7 tests
+test annotation_elements_and_implicit_annotation_superinterface ... ok
+test annotation_defaults_are_explicitly_unsupported ... ok
+test enum_never_falls_back_to_plain_class ... ok
+test typed_parameters_and_annotation_return_boundaries ... ok
+test interface_signature_and_extends_use_real_pools ... ok
+test ordinary_class_keeps_abstract_access_and_inheritance ... ok
+test rejects_concrete_static_bad_owner_and_invalid_metadata ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_classpath.rs (target/debug/deps/java_classpath-be49081d6d3bfba0)
+
+running 7 tests
+test dex_precedence_and_duplicate_input_owners ... ok
+test archive_jmod_and_atomic_duplicates ... ok
+test real_signatures_flags_exceptions_and_hierarchy ... ok
+test all_truncations_and_duplicate_definitions_are_typed ... ok
+test explicit_path_precedence_keeps_whole_first_declaration ... ok
+test attested_member_source_names_compile_and_execute_without_splitting_literal_dollars ... ok
+test local_jdk17_jmod_proves_checked_exception_edges ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+
+     Running tests/java_declaration_initializers.rs (target/debug/deps/java_declaration_initializers-82e9201f657517aa)
+
+running 24 tests
+test constructor_hook_requires_exact_complete_acyclic_hierarchy ... ok
+test annotation_defaults_are_typed_and_atomic ... ok
+test annotation_enum_defaults_require_real_constant_metadata ... ok
+test arrays_class_literals_and_frozen_names ... ok
+test encoded_float_payloads_and_missing_values_fail_closed ... ok
+test encoded_fields_use_declaration_order_and_final_evidence ... ok
+test descriptor_owned_bad_staticness_does_not_taint_unrelated_same_signature ... ok
+test complete_cross_dex_inventory_keeps_dropped_writers_and_denies_unknown ... ok
+test fields_reject_wrong_types_unsupported_values_and_enum_conversion ... ok
+test enum_plan_rejects_class_conversion_payload_state_and_missing_backing ... ok
+test malformed_wrappers_or_unknown_elements_never_produce_partial_defaults ... ok
+test enum_plan_requires_exact_name_ordinal_chain_array_and_no_extra_effects ... ok
+test production_facade_annotation_defaults_compile_and_execute ... ok
+test decoded_branch_static_initializer_keeps_original_conditions_on_jdk17 ... ok
+test trusted_non_object_super_and_this_arguments_compile_and_run_on_jdk17 ... ok
+test blank_static_final_stays_in_order_and_is_assigned_once_on_jdk17 ... ok
+test constructor_branch_final_assignment_is_proven_on_both_return_paths ... ok
+test encoded_prefix_preserves_defaults_order_and_active_use_effects_on_jdk17 ... ok
+test inventory_to_blank_final_backend_wiring_is_complete ... ok
+test enum_recovery_plan_compiles_and_preserves_runtime_constants_on_jdk17 ... ok
+test generated_defaults_and_encoded_finals_compile_and_run_on_jdk17 ... ok
+test strict_constructor_family_finals_superargs_thisdelegation_and_malformed_denial ... ok
+test samsung_original_exception_families_compile_and_run_on_jdk17 ... ok
+test real_okcashbag_exception_constructors_compile_and_run_on_jdk17 ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.09s
+
+     Running tests/java_descriptors.rs (target/debug/deps/java_descriptors-5d53f9a885ac107d)
+
+running 6 tests
+test java_descriptors::tests::external_literal_class_names_and_rank_are_preserved ... ok
+test java_descriptors::tests::full_method_descriptors_use_logical_arity_and_erased_types ... ok
+test java_descriptors::tests::malformed_and_unsupported_types_have_typed_errors ... ok
+test java_descriptors::tests::source_names_are_not_silently_aliased ... ok
+test option_resolver_hook_preserves_typed_parser_behavior ... ok
+test java_descriptors::tests::metadata_signatures_do_not_require_class_definitions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_external_fields.rs (target/debug/deps/java_external_fields-40737156dcc002e4)
+
+running 5 tests
+test samsungpass_actual_external_field_references ... ignored, read-only local SamsungPass field-pool probe; no export or app execution
+test apk_priority_crossdex_and_duplicate_owner_fail_closed ... ok
+test genuine_constantvalue_bits_utf16_and_nonconstant_initialization ... ok
+test inherited_identity_visibility_receiver_shadow_and_ambiguity ... ok
+test android35_actual_view_build_string_metadata_and_missing_proprietary ... ok
+
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 7.35s
+
+     Running tests/java_field_publication.rs (target/debug/deps/java_field_publication-7f82cff8543d7cb0)
+
+running 7 tests
+test samsung_single_dex_actual_reads_close_on_android_classpath ... ignored, one real SamsungPass DEX, field-read closure only; no APK export
+test interface_finals_and_instance_finals_keep_explicit_partial_initialization ... ok
+test aliased_encoded_final_uses_original_identity_and_unsupported_body_stays_partial ... ok
+test alias_hidden_protected_field_rejects_illegal_owner_cast ... ok
+test caller_access_does_not_make_private_or_cross_package_fields_inherited ... ok
+test duplicate_owners_invalid_flags_and_pool_only_members_never_publish ... ok
+test two_dex_actual_owner_hidden_and_protected_fields_compile_and_initialize ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.43s
+
+     Running tests/java_hierarchy.rs (target/debug/deps/java_hierarchy-a8c4198640d3290d)
+
+running 1 test
+test dex_definitions_and_supplied_classpath ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_incoming_registers.rs (target/debug/deps/java_incoming_registers-208e1bde23cd2543)
+
+running 6 tests
+test invalid_parameter_descriptors_do_not_silently_consume_words ... ok
+test empty_static_and_receiver_only_instance ... ok
+test instance_receiver_precedes_wide_and_narrow_parameters ... ok
+test mismatched_words_and_too_small_frame_are_rejected ... ok
+test static_descriptor_order_and_wide_semantic_parameters ... ok
+test maximum_frame_boundary_and_word_sum_overflow ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/java_initial_parameters.rs (target/debug/deps/java_initial_parameters-8cbb5ccc402feb87)
+
+running 11 tests
+test okcashbag_smallest_input_methods_probe ... ignored, local OKcashbag corpus probe; requires unzip and device APK fixture
+test java_initial_parameters::provenance_tests::explicit_provenance_recovers_only_attested_initials ... ok
+test frame_and_descriptor_widths_are_validated ... ok
+test missing_ssa_entry_provenance_is_not_declared_unused ... ok
+test overwritten_input_is_unused_not_the_returned_constant ... ok
+test unused_inputs_keep_signature_positions_and_names ... ok
+test initial_read_then_overwrite_keeps_original_identity ... ok
+test overwritten_wide_input_and_receiver_are_unused ... ok
+test unused_receiver_does_not_shift_used_argument ... ok
+test receiver_wide_and_narrow_bind_initials_in_signature_order ... ok
+test split_wide_and_narrow_aliases_are_ambiguities ... ok
+
+test result: ok. 10 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/java_initial_parameters_index_new.rs (target/debug/deps/java_initial_parameters_index_new-6bae5d1c6bae0f42)
+
+running 2 tests
+test parameters::provenance_tests::explicit_provenance_recovers_only_attested_initials ... ok
+test many_initial_inputs_with_long_write_histories_keep_exact_bindings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/java_inner_classes.rs (target/debug/deps/java_inner_classes-ddce6d8ce1b0c569)
+
+running 3 tests
+test malformed_static_visibility_duplicate_metadata_and_mutated_body_reject ... ignored, explicit local Samsung APK corpus
+test samsung_system_annotations_and_original_first_stores_are_recognized ... ignored, explicit local Samsung APK corpus
+test java_nested_capture_exists_during_super_callback ... ok
+
+test result: ok. 1 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests/java_integration.rs (target/debug/deps/java_integration-3f92e57267442a67)
+
+running 5 tests
+test class_workers_preserve_metrics_order_bytes_and_limits ... ok
+test actual_apk_asbinder_requires_and_emits_its_genuine_field has been running for over 60 seconds
+test facade_retains_final_field_as_explicit_partial_dependency has been running for over 60 seconds
+test profiling_retains_completed_work_on_sink_error has been running for over 60 seconds
+test whole_pool_aliases_are_shared_by_field_declaration_reference_and_output_path has been running for over 60 seconds
+test profiling_retains_completed_work_on_sink_error ... ok
+test actual_apk_asbinder_requires_and_emits_its_genuine_field ... ok
+test facade_retains_final_field_as_explicit_partial_dependency ... ok
+test whole_pool_aliases_are_shared_by_field_declaration_reference_and_output_path ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 123.07s
+
+     Running tests/java_members.rs (target/debug/deps/java_members-e26bdf0c128ef918)
+
+running 4 tests
+test closure_requires_actual_bodies_and_fields_and_allows_cycles ... ok
+test genuine_pool_metadata_and_conservative_fields ... ok
+test invocation_metadata_dispatch_and_body_closure ... ok
+test okcashbag_real_selected_member_body_emits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.15s
+
+     Running tests/java_object_code.rs (target/debug/deps/java_object_code-67bcb59fa8aa19af)
+
+running 4 tests
+test changed_code_stack_locals_owner_and_version_do_not_attest ... ok
+test exact_exception_table_is_preserved_and_prevents_root_attestation ... ok
+test malformed_duplicate_code_and_native_abstract_access_reject ... ok
+test explicit_jdk17_jmod_preserves_actual_root_code ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.06s
+
+     Running tests/java_required_throws_new.rs (target/debug/deps/java_required_throws_new-5420602527514b3a)
+
+running 8 tests
+test required::tests::inherited_source_cycles_and_missing_ancestors_never_approve ... ok
+test required::tests::inherited_contract_and_exact_catch_preserve_original_metadata ... ok
+test required::tests::invalid_clinit_and_unknown_hierarchy_poison_cycles ... ok
+test required::tests::approved_input_ancestor_source_contract_allows_override_without_mutating_raw ... ok
+test samsung_private_checked_throw_identity_is_genuine ... ignored, requires retained Samsung APK and explicit JDK17
+test required::tests::override_failure_invalidates_callers_and_recursive_peers ... ok
+test required::tests::long_chain_and_recursive_component_reach_fixed_point ... ok
+test required::tests::derived_contract_compiles_and_preserves_checked_exception_runtime ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.66s
+
+     Running tests/java_scheduler_facade_new.rs (target/debug/deps/java_scheduler_facade_new-acba69f23fc74958)
+
+running 1 test
+test persistent_facade_one_and_thirty_have_identical_sources_metrics_and_limits ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.51s
+
+     Running tests/java_scheduler_new.rs (target/debug/deps/java_scheduler_new-b9c44bc2f5efd3f9)
+
+running 4 tests
+test sink_failure_counts_completed_tasks_separately_from_delivery ... ok
+test failures_and_panics_cancel_waiting_workers ... ok
+test skew_does_not_introduce_a_thirty_task_barrier_and_reorder_is_bounded ... ok
+test one_and_thirty_preserve_order_and_metrics ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/java_source_closure_new.rs (target/debug/deps/java_source_closure_new-3dbd553d8ccfb601)
+
+running 6 tests
+test exact_external_declarations_and_explicit_class_selection ... ok
+test refreshed_global_declarations_and_failed_class_fixed_point ... ok
+test unavailable_original_body_native_abstract_and_ambiguity ... ok
+test real_declared_bodies_global_cross_dex_and_exact_overloads ... ok
+test actual_javac_failure_metadata_and_recursive_overloaded_runtime ... ok
+test declared_bytecode_mutual_recursion_cross_dex_single_root ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.90s
+
+     Running tests/java_super_resolution.rs (target/debug/deps/java_super_resolution-46ffe0548e7886a4)
+
+running 2 tests
+test original_samsung_super_metadata_witnesses ... ignored, Requires preserved original Samsung Pass APK and local JDK/Android SDK
+test actual_classfile_intermediate_override_dispatch_and_negative_proofs ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 6.97s
+
+     Running tests/java_synchronized_modifiers.rs (target/debug/deps/java_synchronized_modifiers-8088ec9b0a42b4bd)
+
+running 4 tests
+test actual_samsung_declared_monitor_inventory ... ignored, Requires original Samsung Pass APK
+test three_real_empty_monitor_bodies_are_fully_proved ... ignored, Requires original Samsung Pass APK
+test declared_metadata_does_not_add_lock_or_consume_body_monitors ... ok
+test preserved_explicit_monitor_releases_normal_throw_and_static_null_receiver ... ok
+
+test result: ok. 2 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/protected_abstract_list_fields.rs (target/debug/deps/protected_abstract_list_fields-97690d36023534ce)
+
+running 3 tests
+test samsung_original_modcount_callers_have_protected_receiver_proof ... ignored, read-only local Samsung Pass original hierarchy probe
+test declaration_lookup_retains_invalid_ambiguous_and_cycle_rejection ... ok
+test actual_abstract_list_modcount_retains_receiver_and_rejects_illegal_parent_cast ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.91s
+
+     Running tests/samsung_branch_static_body_new.rs (target/debug/deps/samsung_branch_static_body_new-91a8c7c5622b40b7)
+
+running 1 test
+test actual_branch_static_probe ... ignored, requires retained Samsung APK and JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/samsung_constructor_body_subset_new.rs (target/debug/deps/samsung_constructor_body_subset_new-1c228d46f146ee75)
+
+running 1 test
+test real_static_final_classes_retain_constructor_bodies ... ignored, requires retained Samsung APK and explicit local JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/samsung_constructor_evidence_new.rs (target/debug/deps/samsung_constructor_evidence_new-09a43ebac86d0492)
+
+running 1 test
+test original_samsung_families_exact_signatures_compile_and_runtime ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.88s
+
+     Running tests/samsung_instance_final_body_subset_new.rs (target/debug/deps/samsung_instance_final_body_subset_new-4ac9b77881899189)
+
+running 1 test
+test real_instance_final_families_preserve_body_proof_only ... ignored, requires retained Samsung APK and explicit local JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/samsung_reachable_constructor_new.rs (target/debug/deps/samsung_reachable_constructor_new-187f88f72064a6a9)
+
+running 1 test
+test actual_constructor_overload_subset_keeps_original_catalog ... ignored, requires retained Samsung APK and JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/samsung_shared_regions.rs (target/debug/deps/samsung_shared_regions-7704767370797633)
+
+running 1 test
+test three_recorded_samsung_overlaps_have_exact_forward_coverage ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+     Running tests/samsung_static_body_subset_new.rs (target/debug/deps/samsung_static_body_subset_new-3279856d071eef3c)
+
+running 1 test
+test actual_static_final_body_retains_order_and_unknown_status ... ignored, requires retained Samsung APK and explicit local JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/static_explicit_initialization.rs (target/debug/deps/static_explicit_initialization-c15e38e5e104589a)
+
+running 2 tests
+test actual_kangaroo_and_asn1_static_proofs_are_independent_of_missing_constructors ... ignored, explicit retained Samsung corpus and local JDK
+test separate_static_prefix_preserves_active_use_order_and_nonconstant_final_reads ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_core-aaf62b7b75c71e63)
+
+running 3 tests
+test cfg::validation::tests::rejects_dangling_endpoints_and_entry ... ok
+test cfg::validation::tests::rejects_corrupt_adjacency_in_both_directions ... ok
+test cfg::validation::tests::validates_high_indegree_parallel_edges_and_self_loops ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/analysis_cases.rs (target/debug/deps/analysis_cases-e3b2d685fd34fb23)
+
+running 10 tests
+test large_chain_frontier_scaling ... ignored, large graph scaling evidence
+test entry_self_loop_is_reducible ... ok
+test traversal_orders_a_diamond_in_depth_first_postorder ... ok
+test dominators_and_frontier_match_a_diamond ... ok
+test post_dominators_match_if_else_join ... ok
+test dominated_region_with_an_inner_two_entry_cycle_is_irreducible ... ok
+test exception_parallel_edges_and_nonterminating_regions_preserve_boundaries ... ok
+test two_entry_cycle_is_irreducible ... ok
+test scc_and_natural_loops_find_single_loop_and_self_loop ... ok
+test nested_loops_have_distinct_headers_and_are_reducible ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cfg_mutation.rs (target/debug/deps/cfg_mutation-86ce50aaaa883e8d)
+
+running 4 tests
+test mutations_preserve_adjacency_and_advance_revision ... ok
+test split_entry_promotes_new_prefix_to_the_only_entry ... ok
+test removing_a_block_cleans_incident_edges_but_rejects_entry ... ok
+test redirect_replace_and_insert_between_keep_edges_first_class ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/diagnostics.rs (target/debug/deps/diagnostics-ee260aa38a300315)
+
+running 1 test
+test diagnostic_is_an_owned_value_without_output_side_effects ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/pipeline.rs (target/debug/deps/pipeline-ef29790579f25316)
+
+running 4 tests
+test registry_rejects_duplicate_pass_ids ... ok
+test schedule_reports_a_missing_required_invariant ... ok
+test schedule_orders_providers_before_consumers ... ok
+test schedule_reports_dependency_cycles ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/properties.rs (target/debug/deps/properties-74b1529f029c7402)
+
+running 4 tests
+test post_dominators_match_brute_force ... ok
+test dominators_match_brute_force ... ok
+test random_mutations_preserve_cfg_validation ... ok
+test dominance_frontiers_match_brute_force ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_emit-5caebe974d1b03c7)
+
+running 8 tests
+test tests::adds_parentheses_when_child_binds_less_tightly ... ok
+test tests::allocates_sanitized_unique_non_keyword_names ... ok
+test sourcemap::tests::indexed_and_fallback_lookup_match_first_covering_interval ... ok
+test tests::indents_each_nested_line ... ok
+test tests::minimizes_parentheses_when_child_binds_more_tightly ... ok
+test tests::preserves_right_associative_chains_with_only_required_parentheses ... ok
+test tests::records_provenance_at_rendered_positions_without_claiming_indentation ... ok
+test naming::tests::counters_match_restart_with_raw_and_reserved_collisions ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/precedence_properties.rs (target/debug/deps/precedence_properties-c03245c21d7a0157)
+
+running 1 test
+test rendered_expression_roundtrips_and_each_parenthesis_pair_is_required ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running unittests src/lib.rs (target/debug/deps/decomp_structure-aff137057395389c)
+
+running 19 tests
+test differential::scaling_benchmark ... ignored, release scaling benchmark; run with --release --ignored --nocapture
+test exceptions::region_tests::diamond_catchall_terminal_handler_and_exact_coverage ... ok
+test exceptions::disjoint_tests::disjoint_structure_tests::disjoint_singleplacement_and_shared_handler_rejection ... ok
+test tests::acyclic_cross_branch_overlap_is_rejected ... ok
+test tests::distinct_terminal_arms_and_nested_early_return ... ok
+test tests::diamond_uses_polarity_not_insertion_order ... ok
+test tests::empty_arm_and_parallel_branch_edges_are_preserved ... ok
+test tests::exceptions_and_switches_are_not_silently_dropped ... ok
+test tests::invalid_branch_shapes_are_rejected ... ok
+test differential::explicit_rejects_match_original ... ok
+test tests::break_continue_multiple_entries_and_posttest_are_unsupported ... ok
+test tests::nested_diamonds_have_local_and_outer_joins ... ok
+test tests::terminal_and_straightline ... ok
+test tests::unreachable_is_reported_even_without_edges ... ok
+test tests::pretest_loops_preserve_polarity_and_coverage ... ok
+test tests::unsupported_cycles_are_rejected ... ok
+test differential::nested_and_diamond_oracle_coverage ... ok
+test differential::deeply_nested_construction_uses_explicit_frames ... ok
+test differential::randomized_dags_match_original_trees_and_exact_errors ... ok
+
+test result: ok. 18 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.16s
+
+     Running tests/dispatch.rs (target/debug/deps/dispatch-74929742c3f5146d)
+
+running 3 tests
+test irreducible_edges_preserved_and_snapshot_changes ... ok
+test parallel_switch_edges_retain_distinct_identity ... ok
+test malformed_semantics_are_not_dispatchable ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/exceptions.rs (target/debug/deps/exceptions-6ca033694814513a)
+
+running 7 tests
+test rejects_duplicate_dispatch_and_exception_outside_scope ... ok
+test rejects_handler_cycle_and_unreachable_blocks ... ok
+test exceptions::region_tests::diamond_catchall_terminal_handler_and_exact_coverage ... ok
+test rejects_incomplete_dispatch_and_shared_handlers ... ok
+test exceptions::disjoint_tests::disjoint_structure_tests::disjoint_singleplacement_and_shared_handler_rejection ... ok
+test retains_source_identities_and_nonthrowing_commit_in_exact_scope ... ok
+test shared_typed_handler_keeps_original_scope_edges_and_rejects_normal_entry ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/extended.rs (target/debug/deps/extended-eb9928604142381f)
+
+running 7 tests
+test unreachable_blocks_and_payload_without_clone ... ok
+test malformed_dispatch_returns_typed_error_without_dropping_edges ... ok
+test default_can_share_a_case_target ... ok
+test exceptions_reducible_and_irreducible_cycles_are_explicit_errors ... ok
+test grouped_labels_default_and_empty_arm_preserve_edges ... ok
+test partial_arm_overlap_is_rejected ... ok
+test nested_conditional_and_separate_terminal_switch_arms ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/loop_control.rs (target/debug/deps/loop_control-adb4247d8f8175b5)
+
+running 3 tests
+test irreducible_two_entry_cycle_is_rejected ... ok
+test posttest_self_loop_tests_after_entry ... ok
+test pretest_early_break_and_conditional_continue_keep_all_edges ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/loop_determinism.rs (target/debug/deps/loop_determinism-38f866f342500ff2)
+
+running 3 tests
+test irreducible_cycle_is_always_rejected ... ok
+test multiple_retry_latches_and_private_return_are_stable ... ok
+test java_retry_trace_preserves_early_return_and_single_common_tail ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+
+     Running tests/loop_extensions.rs (target/debug/deps/loop_extensions-73e50c3f47cacb0a)
+
+running 2 tests
+test nested_loops_with_two_outer_latches_preserve_every_edge ... ok
+test unsupported_cycles_and_abrupt_edges_are_not_silently_truncated ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/dex_decompiler-23d3e3f9d87c3ae7)
+
+running 25 tests
+test infer::contextual_tests::selected_real_method_type_provenance ... ignored, requires TYPE_APK, TYPE_METHOD_IDS and optional TYPE_DEX
+test ssa::performance::calculator_stage_timings ... ignored, opt-in caller-controlled stage timings
+test lift::op_maps::invoke_provenance_tests::super_and_direct_opcodes_remain_distinct ... ok
+test infer::tests::refinement_collection_preserves_pre_update_operand_snapshot ... ok
+test infer::contextual_tests::signature_seed_uses_exact_initial_identity_and_retains_conflicts ... ok
+test infer::tests::array_payload_bits_and_index_width_remain_exact ... ok
+test infer::contextual_tests::shared_zero_copy_has_no_global_numeric_reference_contradiction ... ok
+test ssa::vars::tests::absent_physical_lineage_does_not_promote_ephemeral_values ... ok
+test infer::array_cast_regressions::genuine_scalar_cast_and_array_element_mismatches_remain_errors ... ok
+test infer::array_cast_regressions::raw_zero_still_supports_float_bit_interpretation ... ok
+test ssa::phis::tests::dominance_intervals_match_parent_walk_including_unreachable_blocks ... ok
+test infer::expansion_tests::scc_root_order_copy_boundary_and_no_exit ... ok
+test ssa::liveness::tests::upward_exposed_uses_and_exception_edges ... ok
+test ssa::phis::tests::trivial_phi_with_bypassed_definition_is_not_eliminated ... ok
+test infer::array_cast_regressions::shared_null_preserves_multidimensional_phi_and_element_types ... ok
+test infer::array_cast_regressions::lifted_cast_preserves_descriptor_rank ... ok
+test infer::tests::worklist_matches_legacy_for_cycles_fanout_and_conflicts ... ok
+test ssa::place::tests::reverse_dead_dependencies_and_effectful_roots ... ok
+test ssa::phis::tests::high_indegree_fill_preserves_edge_order_and_unknown_edge ... ok
+test ssa::phis::tests::reverse_phi_dependencies_collapse_and_cycles_survive ... ok
+test ssa::liveness::tests::worklist_reduces_evaluations_on_local_cycle ... ok
+test ssa::liveness::tests::randomized_cfg_matches_original_equations ... ok
+test infer::tests::raw_bits_propagate_through_long_copy_chains_without_integer_conversion ... ok
+test infer::expansion_tests::repeated_expansion_operation_counts ... ok
+test infer::expansion_tests::randomized_dependency_graphs_exact_differential ... ok
+
+test result: ok. 23 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running tests/adversarial.rs (target/debug/deps/adversarial-7426229b347e769e)
+
+running 4 tests
+test bad_payload_ident_returns_typed_error ... ok
+test branch_out_of_bounds_fixture_returns_typed_error ... ok
+test unknown_opcode_fixture_returns_typed_error ... ok
+test packed_switch_case_target_out_of_bounds_returns_typed_error ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/class_literals.rs (target/debug/deps/class_literals-ff17c9ba84697714)
+
+running 3 tests
+test resolution_exception_precedes_destination_commit ... ok
+test discarded_class_resolution_is_retained ... ok
+test class_literal_preserves_type_pool_identity_and_class_result ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/decode.rs (target/debug/deps/decode-77b7aaa8b8e15dd1)
+
+running 16 tests
+test decodes_const_31i_signed_literal ... ok
+test decodes_invoke_35c_registers_in_operand_order ... ok
+test decodes_branch_22t_when_target_is_in_bounds ... ok
+test decodes_invoke_polymorphic_45cc_operands ... ok
+test accepts_branch_targets_at_current_and_last_code_unit ... ok
+test decodes_signed_nibbles_high_literals_and_byte_literals ... ok
+test every_fixed_format_has_the_specified_code_unit_width ... ok
+test opcode_table_maps_all_reserved_values_explicitly ... ok
+test parses_and_validates_packed_switch_payload ... ok
+test decodes_range_and_wide_literal_formats ... ok
+test parses_sparse_switch_and_array_data_payloads ... ok
+test nonzero_unused_nop_bits_do_not_imply_a_payload ... ok
+test rejects_register_equal_to_registers_size ... ok
+test rejects_unaligned_and_invalid_width_payloads ... ok
+test payload_formats_are_variable_width ... ok
+test arbitrary_truncation_never_panics ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/filled_arrays.rs (target/debug/deps/filled_arrays-ecbe723fda4a9933)
+
+running 4 tests
+test range_expands_all_six_words_in_register_order ... ok
+test packed_and_range_preserve_elements_and_fuse_object_result ... ok
+test discarded_allocation_survives_and_wide_components_fail ... ok
+test component_constraints_interpret_raw_bits_and_zero ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/initial_register_seeds.rs (target/debug/deps/initial_register_seeds-84ec2d81ee1a2205)
+
+running 2 tests
+test incoming_wide_identity_keeps_both_physical_words ... ok
+test newly_created_ssa_initial_uses_slot_descriptor_not_later_write ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/lift.rs (target/debug/deps/lift-a41a0734dc2bf7ba)
+
+running 10 tests
+test packed_switch_resolves_payload_cases ... ok
+test empty_body_synthesizes_return ... ok
+test diamond_yields_four_blocks_four_edges ... ok
+test wide_register_pair_is_one_atomic_value ... ok
+test offsets_side_table_tracks_code_units ... ok
+test invoke_fuses_following_move_result ... ok
+test adversarial_bins_error_or_degrade_not_panic ... ok
+test three_way_compares_lift_to_typed_ordering_ir ... ok
+test const_kinds_map_literals ... ok
+test try_catch_creates_exception_edges ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recovery.rs (target/debug/deps/recovery-0008a4cfe671d652)
+
+running 5 tests
+test clean_stream_has_no_diagnostics ... ok
+test error_limit_aborts_walk ... ok
+test garbage_payload_yields_gap_and_continues ... ok
+test register_oob_keeps_insn_jadx_parity ... ok
+test unsupported_opcode_is_diagnostic_not_abort ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scratch_dump.rs (target/debug/deps/scratch_dump-1167a3090988e86d)
+
+running 1 test
+test dump_method ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+     Running tests/shared_metadata.rs (target/debug/deps/shared_metadata-1e097ffbb9f58092)
+
+running 4 tests
+test metadata_construction_microbenchmark ... ignored, bounded metadata construction microbenchmark; run release --ignored --nocapture
+test snapshot_is_not_reused_for_another_pool_or_source_mutation ... ok
+test cached_matches_fresh_types_and_diagnostics ... ok
+test parallel_contexts_isolate_diagnostics_and_returns ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_dead_resurrection.rs (target/debug/deps/ssa_dead_resurrection-63a6324474515d5e)
+
+running 5 tests
+test dead_iget_does_not_replace_live_register ... ok
+test synthetic_parameter_survives_dead_definition ... ok
+test dead_move_object_does_not_replace_live_register ... ok
+test dead_invoke_result_does_not_replace_live_register ... ok
+test handler_input_and_normal_success_commit_survive ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_performance.rs (target/debug/deps/ssa_performance-d1c3e6f39d1fb8a1)
+
+running 1 test
+test calculator_large_methods ... ignored, bounded release performance measurement
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_phi_check.rs (target/debug/deps/ssa_phi_check-97f210f43dc2a1ad)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ssa_properties.rs (target/debug/deps/ssa_properties-0caa61d5b91e2b11)
+
+running 6 tests
+test try_catch_handler_keeps_exception_flow_verifiable ... ok
+test loop_header_phi_carries_the_induction_variable ... ok
+test wide_pair_stays_atomic_across_phi ... ok
+test diamond_join_carries_one_well_formed_phi ... ok
+test ssa_preserves_offsets_and_never_grows_blocks ... ok
+test random_streams_survive_the_full_pipeline ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+
+     Running tests/ssa_semantics.rs (target/debug/deps/ssa_semantics-c8110e0b0c388f8a)
+
+running 13 tests
+test new_array_preserves_the_descriptor_dimension_and_element_type ... ok
+test numeric_conversion_has_no_exception_edge_to_handler ... ok
+test wide_field_opcodes_bind_pairs_but_boolean_fields_do_not ... ok
+test raw_literals_keep_float_and_double_bits_through_late_copy_constraints ... ok
+test invoke_constraints_skip_receiver_and_wide_high_word ... ok
+test failed_array_get_preserves_array_for_handler_retry ... ok
+test fill_array_payload_uses_element_bit_interpretation ... ok
+test protected_invoke_result_does_not_overwrite_handler_register ... ok
+test narrow_and_wide_register_reuse_preserves_definition_widths ... ok
+test consumer_constraint_reaches_the_defining_phi_inputs ... ok
+test two_variable_diamond_selects_both_arm_values ... ok
+test join_reads_remain_live_before_later_overwrites_in_the_same_chain ... ok
+test loop_phis_swap_two_reaching_values_simultaneously ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/ssa_single_definition_join.rs (target/debug/deps/ssa_single_definition_join-d8b30dbd4fe09c33)
+
+running 6 tests
+test samsung_default_constructor_retains_incoming_and_allocated_argument ... ignored, requires retained Samsung Pass original APK
+test straight_line_single_write_needs_no_phi_or_incoming_value ... ok
+test absent_input_evidence_retains_unresolved_entry_not_a_fabricated_constant ... ok
+test conditional_single_write_preserves_both_incoming_and_default ... ok
+test wide_single_write_merges_one_atomic_input_pair ... ok
+test first_write_in_loop_merges_the_entry_path ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/dex_format-71252bc68f32098a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/apk_corpus.rs (target/debug/deps/apk_corpus-621518d24ac4d2b9)
+
+running 1 test
+test parses_every_dex_from_real_apk_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+
+     Running tests/codec.rs (target/debug/deps/codec-2e0843fcb1b59d03)
+
+running 5 tests
+test malformed_uleb_reports_an_error ... ok
+test sleb_decodes_signed_boundaries ... ok
+test mutf8_roundtrips_encoded_nul_and_surrogate_pair ... ok
+test uleb64_roundtrips ... ok
+test uleb32_roundtrips ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/model.rs (target/debug/deps/model-14ea9b1ec7933ff1)
+
+running 5 tests
+test unsupported_version_is_typed ... ok
+test preserves_unknown_map_entry ... ok
+test parses_handcrafted_one_class_dex ... ok
+test parses_single_file_v41_container ... ok
+test truncations_and_single_byte_mutations_never_panic ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/managed_ir-771d4308d532b5d2)
+
+running 2 tests
+test verify::uses::tests::cached_phi_heads_match_walks_for_clusters_and_cycles ... ok
+test verify::uses::tests::interval_queries_match_parent_walks_and_count_chain_work ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/ssa_verifier.rs (target/debug/deps/ssa_verifier-c70e4b2075abc855)
+
+running 9 tests
+test one_value_defined_by_two_instructions_fails ... ok
+test phi_arity_mismatch_fails ... ok
+test long_shifts_require_a_narrow_count_and_wide_lhs ... ok
+test use_from_non_dominating_sibling_fails ... ok
+test duplicate_phi_selector_is_rejected_even_with_matching_arity ... ok
+test valid_loop_with_back_edge_phi_passes ... ok
+test valid_diamond_with_edge_keyed_phi_passes ... ok
+test branching_phi_starts_a_separate_cluster ... ok
+test phi_cluster_checks_shared_edges_and_each_predecessor_definition ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/type_lattice.rs (target/debug/deps/type_lattice-f09bee0d8084f177)
+
+running 5 tests
+test width_helpers_identify_category_two_values ... ok
+test zero_and_null_refine_ambiguous_managed_values ... ok
+test meet_is_idempotent ... ok
+test meet_is_commutative ... ok
+test meet_is_associative ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/verifier_policy.rs (target/debug/deps/verifier_policy-e7276b6e6a68bba2)
+
+running 6 tests
+test stale_arena_references_produce_diagnostics_without_panicking ... ok
+test width_preserving_instruction_rejects_split_category_two_value ... ok
+test ordering_compare_result_must_be_category_one ... ok
+test retained_register_history_rejects_half_of_a_wide_value ... ok
+test conflict_use_requires_explicit_opt_in ... ok
+test ordering_compare_operands_must_have_matching_width ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests backend_java
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_emit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests decomp_structure
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests dex_decompiler
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests dex_format
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests managed_ir
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

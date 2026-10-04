@@ -1,0 +1,27 @@
+Java subset report: JavaReport {
+    unavailable_initialization_units: 1,
+    category_reasons: {
+        "ordinary\tbackend: Instruction(\"allocation control-flow barrier\")": 1,
+        "ordinary\tbackend: Metadata(\"handler/body throw checked exceptions are not covered\")": 4,
+        "ordinary\tbackend: Metadata(\"invoke checked exceptions are not declared by caller\")": 3,
+        "ordinary\tcallee exceptions not declared by caller": 1,
+    },
+    complete_constructors: 1,
+    complete_static_initializers: 1,
+    semantic_bodies_with_unresolved_dependencies: 0,
+    semantic_bodies_outside_strict_dependency_closure: 0,
+    declaration_only_methods: 0,
+    fields_emitted: 6,
+    classes_seen: 34579,
+    classes_emitted: 1,
+    complete_methods: 48,
+    unsupported_methods: 9,
+    unavailable_constructors: 0,
+    skipped_classes: 34578,
+    reasons: {
+        "backend: Instruction(\"allocation control-flow barrier\")": 1,
+        "backend: Metadata(\"handler/body throw checked exceptions are not covered\")": 4,
+        "backend: Metadata(\"invoke checked exceptions are not declared by caller\")": 3,
+        "callee exceptions not declared by caller": 1,
+    },
+}

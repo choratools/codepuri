@@ -1,0 +1,11 @@
+   Compiling decomp-structure v0.1.0 (/storage_0/decomphify/crates/decomp-structure)
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.43s
+     Running tests/reference_widening_locals.rs (target/debug/deps/reference_widening_locals-4531cec79862c9ff)
+
+running 2 tests
+test missing_hierarchy_and_numeric_reinterpretation_remain_rejected ... ok
+test proven_integer_copy_declares_object_and_preserves_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+

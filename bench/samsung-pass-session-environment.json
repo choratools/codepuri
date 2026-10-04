@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-02T19:31:46.071253+00:00",
+  "workers": 30,
+  "source_profile": "Java17 default",
+  "cache_scope": "owned fixed input+options+classpath session, in-process only",
+  "phases": [
+    "first render+actual write",
+    "same session source replay+actual write"
+  ],
+  "paths": {
+    "target/release/examples/java_session_bench": "ef38e401f5d7a98e0ac213ee479c510095555a0a3e454ad38f1eb6ca1ff9fbb2",
+    "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41"
+  },
+  "classpath": [
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+  ],
+  "output_root": "/tmp/opencode/samsung-pass-session-replay-verified"
+}

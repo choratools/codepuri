@@ -1,0 +1,13 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.40s
+     Running tests/constructor_paths_new.rs (target/debug/deps/constructor_paths_new-f3c52f5392de2607)
+
+running 5 tests
+test failed_store_catch_does_not_inherit_successful_assignment ... ok
+test cycles_saturate_counts_and_double_writes_are_not_one ... ok
+test failed_super_and_pre_super_writes_remain_distinct ... ok
+test branch_assignment_counts_and_missing_path_are_not_collapsed_to_first_successor ... ok
+test typed_null_pins_exact_parent_constructor_overload ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+

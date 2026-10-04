@@ -1,0 +1,23 @@
+{
+  "apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "apk_bytes": 54063076,
+  "workers": 30,
+  "source_profile": "Java17",
+  "classpath": [
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+  ],
+  "benchmark_sink": "DirectorySink + ordered diagnostic checksum",
+  "perf_sampling": "unavailable: perf_event_paranoid 4; stage timers used instead",
+  "measurement": "Same release executable; sequential ON then OFF; both caches toggled; no simultaneous tests/builds",
+  "cache_lifetime": "SSA: one emit call. Java member resolutions: one immutable DEX resolver, created after source throws and metadata are fixed.",
+  "binary_sha256": "827aa45019755821b93a4efda2f4348ad38e85125208648e8f99bce2fb5c5ed8",
+  "before": "/tmp/opencode/samsung-pass-caches-off",
+  "after": "/tmp/opencode/samsung-pass-caches-on",
+  "host_memory_kib": {
+    "MemTotal": 131784124,
+    "MemAvailable": 61862416
+  }
+}

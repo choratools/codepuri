@@ -1,0 +1,459 @@
+{
+  "strict_counts": {
+    "complete_body": 80092,
+    "rejected_in_written_unit": 97873,
+    "rejected_without_written_unit": 16129,
+    "declaration_only": 11140,
+    "proven_enum_equivalence": 263
+  },
+  "strict_gained": 759,
+  "strict_lost": [
+    {
+      "identity": "Ld1/g;->a(I)J",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 37256,
+        "identity": "Ld1/g;->a(I)J",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "d1/g$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 37256,
+        "identity": "Ld1/g;->a(I)J",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "rejected_without_written_unit"
+      }
+    }
+  ],
+  "original_category_status": {
+    "constructor": {
+      "complete_body": 9102,
+      "rejected_without_written_unit": 5367,
+      "rejected_in_written_unit": 19681,
+      "proven_enum_equivalence": 55
+    },
+    "ordinary": {
+      "rejected_in_written_unit": 74070,
+      "declaration_only": 11140,
+      "complete_body": 70217,
+      "rejected_without_written_unit": 9346,
+      "proven_enum_equivalence": 153
+    },
+    "static_initializer": {
+      "complete_body": 773,
+      "rejected_without_written_unit": 1416,
+      "rejected_in_written_unit": 4122,
+      "proven_enum_equivalence": 55
+    }
+  },
+  "original_category_status_before": {
+    "constructor": {
+      "complete_body": 9066,
+      "rejected_without_written_unit": 6855,
+      "rejected_in_written_unit": 18230,
+      "proven_enum_equivalence": 54
+    },
+    "ordinary": {
+      "rejected_in_written_unit": 68406,
+      "declaration_only": 11140,
+      "complete_body": 69504,
+      "rejected_without_written_unit": 15727,
+      "proven_enum_equivalence": 149
+    },
+    "static_initializer": {
+      "complete_body": 770,
+      "rejected_without_written_unit": 1632,
+      "rejected_in_written_unit": 3910,
+      "proven_enum_equivalence": 54
+    }
+  },
+  "metric_definitions": {
+    "legacy_strict": "Unchanged legacy transitive same-class emitted-body/declaration closure gate; not whole-app/classpath compilation completeness.",
+    "semantic": "Original identities with real emitted bodies, including callers outside legacy closure; enum equivalence stays separate.",
+    "unresolved_dependencies": "Direct same-class method declarations absent from actual emitted bodies or genuine emitted native/abstract declarations. Cross-class/global closure remains incomplete."
+  },
+  "direct_same_class_method_declaration_closed_explicit_bodies": 81661,
+  "diagnostic_delta_from_latest_38158": 12808,
+  "actual_output_error_reduction_goal_met": false,
+  "lost_identity_evidence": "Targeted original SSA/production resolver regression observed Type(\"contextual constant constraints: Indeterminate(UnknownValue)\"); unsupported numeric Cast consumer role fails closed.",
+  "semantic_explicit_bodies": 94819,
+  "semantic_gained": 15480,
+  "semantic_lost": [
+    "Ld1/g;->a(I)J"
+  ],
+  "semantic_bodies_outside_strict_dependency_closure": 14727,
+  "semantic_bodies_with_unresolved_dependencies": 13158,
+  "diagnostics": 50966,
+  "syntax": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/java",
+      "-Xmx4g",
+      "-cp",
+      "/tmp/opencode/samsung-pass-five-blockers/validation",
+      "SamsungPassParseGate",
+      "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass/sources"
+    ],
+    "exit_code": 0,
+    "seconds": 7.232038053683937,
+    "max_rss_kib": 1934248,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/validation/syntax-gate.log"
+  },
+  "full_javac": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-J-Xmx8g",
+      "-proc:none",
+      "-Xmaxerrs",
+      "2147483647",
+      "-classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "-sourcepath",
+      "/tmp/opencode/samsung-pass-five-blockers/validation/empty-sourcepath",
+      "-d",
+      "/tmp/opencode/samsung-pass-five-blockers/validation/classes",
+      "@/tmp/opencode/samsung-pass-five-blockers/validation/sources.args"
+    ],
+    "exit_code": 1,
+    "seconds": 25.52675496507436,
+    "max_rss_kib": 3990136,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/validation/full-javac.log"
+  },
+  "five_first_rejection_pattern_counts": {
+    "ctor_writeinv_initializer": {
+      "ordinary": {
+        "before": 1867,
+        "after": 1867
+      },
+      "constructor": {
+        "before": 24682,
+        "after": 24638
+      },
+      "static_initializer": {
+        "before": 5444,
+        "after": 5441
+      }
+    },
+    "contextual_locals": {
+      "ordinary": {
+        "before": 16169,
+        "after": 20674
+      },
+      "constructor": {
+        "before": 1,
+        "after": 2
+      },
+      "static_initializer": {
+        "before": 1,
+        "after": 2
+      }
+    },
+    "dependency_publication": {
+      "ordinary": {
+        "before": 14765,
+        "after": 14729
+      },
+      "constructor": {
+        "before": 79,
+        "after": 80
+      },
+      "static_initializer": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    "externalfields": {
+      "ordinary": {
+        "before": 14757,
+        "after": 15946
+      },
+      "constructor": {
+        "before": 136,
+        "after": 142
+      },
+      "static_initializer": {
+        "before": 78,
+        "after": 77
+      }
+    },
+    "structure_flow": {
+      "ordinary": {
+        "before": 10949,
+        "after": 3393
+      },
+      "constructor": {
+        "before": 2,
+        "after": 1
+      },
+      "static_initializer": {
+        "before": 2,
+        "after": 1
+      }
+    }
+  },
+  "top_remaining": {
+    "constructor": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        19150
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        3136
+      ],
+      [
+        "initialization: unused constructor parameter",
+        1720
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        461
+      ],
+      [
+        "enum: missing initializer",
+        153
+      ],
+      [
+        "field requires external class closure",
+        142
+      ],
+      [
+        "initialization: exception family proof unavailable",
+        115
+      ],
+      [
+        "required complete method body unavailable",
+        80
+      ]
+    ],
+    "ordinary": [
+      [
+        "backend: Type(\"unresolved or uninitialized type Zero\")",
+        20673
+      ],
+      [
+        "required complete method body unavailable",
+        14727
+      ],
+      [
+        "field requires external class closure",
+        13404
+      ],
+      [
+        "special invocation: exact Java super target proof unavailable",
+        4058
+      ],
+      [
+        "backend: Instruction(\"observable or throwing operation before initializer\")",
+        3412
+      ],
+      [
+        "backend: ControlFlow(\"unsupported Java branch plan: UnsupportedInstruction(ID)\")",
+        3163
+      ],
+      [
+        "unresolved field metadata",
+        2542
+      ],
+      [
+        "exception region: multiple/nested source ranges require a separate proof",
+        2001
+      ]
+    ],
+    "static_initializer": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        4829
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        434
+      ],
+      [
+        "final field write requires atomic initialization proof",
+        82
+      ],
+      [
+        "field requires external class closure",
+        77
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        61
+      ],
+      [
+        "enum: unavailable constructor input",
+        15
+      ],
+      [
+        "initialization proof: InvalidMetadata",
+        10
+      ],
+      [
+        "initialization: exception family proof unavailable",
+        10
+      ]
+    ]
+  },
+  "source_counts": {
+    "written_units": 26209,
+    "honest_subset_fallback_units": 26154,
+    "proven_enum_equivalence_units": 55,
+    "unavailable_initialization_marker_units": 17669
+  },
+  "tests": {
+    "passed": 440,
+    "failed": 0,
+    "ignored": 12
+  },
+  "checks": {
+    "fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.7189096249639988,
+      "max_rss_kib": 52248,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/fmt.log"
+    },
+    "workspace-tests": {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 200.12734967423603,
+      "max_rss_kib": 1079920,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/workspace-tests.log"
+    },
+    "clippy": {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.819203392136842,
+      "max_rss_kib": 216476,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/clippy.log"
+    },
+    "build": {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        "decomp",
+        "--example",
+        "java_corpus"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.11499130306765437,
+      "max_rss_kib": 34864,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/build.log"
+    },
+    "export": {
+      "command": [
+        "target/release/examples/java_corpus",
+        "--workers",
+        "30",
+        "--classpath",
+        "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+        "--classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "--app",
+        "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 53.70490483939648,
+      "max_rss_kib": 1477888,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/export.log"
+    },
+    "inventory": {
+      "command": [
+        "python3",
+        "/storage_0/decomphify/bench/samsung_pass_inventory.py",
+        "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass",
+        "/storage_0/decomphify/bench/samsung-pass-five-blockers-final.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 25.62506518466398,
+      "max_rss_kib": 411152,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/inventory.log"
+    },
+    "validation": {
+      "command": [
+        "python3",
+        "/storage_0/decomphify/bench/samsung_pass_continue.py",
+        "/tmp/opencode/decomphify-java-corpus/run-1790888814662654132-2680151/com.samsung.android.samsungpass",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass",
+        "/tmp/opencode/samsung-pass-five-blockers/validation"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 50.98528546607122,
+      "max_rss_kib": 3990136,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/validation.log"
+    },
+    "diagnostics": {
+      "command": [
+        "python3",
+        "/storage_0/decomphify/bench/samsung_pass_diagnostics.py",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass",
+        "/tmp/opencode/samsung-pass-five-blockers/validation/full-javac.log",
+        "/storage_0/decomphify/bench/samsung-pass-five-blockers-diagnostics.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 8.184319050051272,
+      "max_rss_kib": 359160,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/diagnostics.log"
+    },
+    "jdk17-original-three-class-subset": {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-five-blockers/validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-five-blockers/original-subset-classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/CryptoLibException.java",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/BiometricTokenExpiredException.java",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/mdl/InvalidBiometricException.java"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.566008766181767,
+      "max_rss_kib": 82616,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/jdk17-original-three-class-subset.log"
+    },
+    "original-guideline": {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-five-blockers/validation/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-five-blockers/original-subset-classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790894446651331481-3421921/com.samsung.android.samsungpass/sources/androidx/constraintlayout/widget/Guideline.java"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.7664300352334976,
+      "max_rss_kib": 162656,
+      "log": "/tmp/opencode/samsung-pass-five-blockers/original-guideline.log"
+    }
+  }
+}

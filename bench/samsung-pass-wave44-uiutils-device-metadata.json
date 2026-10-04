@@ -1,0 +1,31 @@
+{
+  "frozen_baseline": "wave43",
+  "device_metadata_experiment_only": true,
+  "baseline_complete_identities": 55,
+  "experiment_complete_identities": 62,
+  "gained_original_method_indices": [
+    "32516",
+    "32537",
+    "32538",
+    "32544",
+    "32548",
+    "32559",
+    "32563"
+  ],
+  "lost_original_method_indices": [],
+  "restored_overload_index": 32516,
+  "restored_overload_signature": "changeLayoutWidthForTablet(Activity,View):void",
+  "sources": [
+    "/tmp/opencode/samsung-pass-100-wave43/java25/sources/com/samsung/android/samsungpass/common/util/UiUtils.java",
+    "/tmp/opencode/wave44-uiutils-matched-platform/sources/com/samsung/android/samsungpass/common/util/UiUtils.java"
+  ],
+  "source_sha256": [
+    "0ec37a47e29f9d0df642c717f617117f1e9ca497e2c74398521a84b526ca573c",
+    "920a07cccc3359b299dc37fde5a0fac874ce15af1b1b6628bcf586f636747fd1"
+  ],
+  "export_exit_code": 0,
+  "javac_availability_attested": false,
+  "whole_class_compile": false,
+  "whole_app_runtime": false,
+  "accepted_global_coverage_unchanged": true
+}

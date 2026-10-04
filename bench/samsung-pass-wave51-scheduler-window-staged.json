@@ -1,0 +1,11 @@
+{
+  "main_integrated": true,
+  "patch": "/tmp/opencode/wave50-scheduler-window-patch/owned.patch",
+  "sha256": "0d8ba4a2caa5bfe141fcbf57b2d8f57a6ab5a707ddbdeafad8f6099375f73543",
+  "admission_results_per_worker": 256,
+  "root_test_correction": "pending lower bound accounts for work completion vs channel send race",
+  "full_corpus_speedup_unproven": true,
+  "output_equivalence_pending": true,
+  "parent_validation_session": 81851,
+  "goal_complete": false
+}

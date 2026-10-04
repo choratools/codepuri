@@ -1,0 +1,25 @@
+{
+  "state": "validated_terminal",
+  "root": "/tmp/opencode/samsung-pass-100-wave37",
+  "strict_code_bearing_accepted": 183850,
+  "strict_code_bearing_percent": 94.62853731097454,
+  "original_form_accepted": 195033,
+  "original_form_percent": 94.9079548606549,
+  "remaining_code_bearing": 10436,
+  "remaining_bodyless": 28,
+  "gained": 118,
+  "lost": 0,
+  "sources": 32420,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "diagnostic_count": 50662,
+  "workspace": {
+    "passed": 1099,
+    "failed": 0,
+    "ignored": 157,
+    "suites": 184
+  },
+  "export_wall_seconds": 287.15,
+  "peak_rss_kib": 16435948,
+  "goal_complete": false
+}

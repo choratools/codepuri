@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-10-04T00:36:06.607376+00:00",
+  "state": "two_exact_production_probes_terminal",
+  "numeric_repair": "ArrayLength/copy retained Int; four focused tests and 27 inference lib tests passed",
+  "remaining_common_issue": "NewInstance rejected by native cleanup source-contract gates; no grant applied",
+  "probes": [
+    {
+      "probe": "lottie",
+      "process_terminal_exit": 0,
+      "original_body_recovered": false,
+      "evidence": {
+        "source": "/tmp/opencode/wave33-lottie-production/sources/com/airbnb/lottie/e$type.java",
+        "line": 337,
+        "diagnostic": "// unavailable original method index 23985: Some(MethodKey { owner: \"Lcom/airbnb/lottie/e;\", name: \"j\", parameters: [\"Lh7/c;\", \"Ljava/lang/String;\", \"Z\"], return_type: \"Lcom/airbnb/lottie/k;\" }): backend: Metadata(\"cleanup requires original native ordered catches: original=InsnId(6v1) current=Some(InsnId(6v1)) catch_all=true caught_type=Class(\\\"java.lang.Throwable\\\") source_contract=None insn=NewInstance { result: ValueId(20v1), class: ClassRef(3573) }\")",
+        "sha256": "d71b6a5a761800ee5bb399c68ec8c7533a9095c548969808f70bbf6ec78c6361"
+      }
+    },
+    {
+      "probe": "array-reader",
+      "process_terminal_exit": 0,
+      "original_body_recovered": false,
+      "evidence": {
+        "source": "/tmp/opencode/wave33-array-reader-production/sources/a4/a$c.java",
+        "line": 711,
+        "diagnostic": "// unavailable original method index 122: Some(MethodKey { owner: \"La4/a$c;\", name: \"k\", parameters: [\"Ljava/nio/ByteOrder;\"], return_type: \"Ljava/lang/Object;\" }): backend: Metadata(\"shared cleanup root contract unavailable: InsnId(4v1) NewInstance { result: ValueId(142v1), class: ClassRef(30) }\")",
+        "sha256": "7d1539ffc68adb5e13652e6f82a6a77e639d88736a458564906574465429ba4d"
+      }
+    }
+  ],
+  "whole_corpus_claim": null,
+  "dex_all_targets": {
+    "terminal_exit": 0,
+    "passed": 116,
+    "failed": 0,
+    "ignored": 6,
+    "suites": 26,
+    "log": "/tmp/opencode/wave33-root-dex-all-tests.log"
+  }
+}

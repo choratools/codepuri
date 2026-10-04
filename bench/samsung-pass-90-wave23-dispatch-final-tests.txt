@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/dispatch_production.rs (target/debug/deps/dispatch_production-83e42aaab8bc853e)
+
+running 3 tests
+test entry_phi_without_initial_edge_rejects_self_cycle_and_default_read ... ok
+test full_backend_rejects_phi_type_conflict_and_unbound_initial_read ... ok
+test full_backend_irreducible_phi_swaps_default_locals_never_observed ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+

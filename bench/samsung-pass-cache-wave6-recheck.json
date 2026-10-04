@@ -1,0 +1,58 @@
+{
+  "root": "/tmp/opencode/samsung-pass-cache-wave6/replay",
+  "verified": true,
+  "cold_export_s": 350.646405,
+  "warm_export_s": 1.507423,
+  "replay_speedup": 232.61314508270075,
+  "cold_files": 31188,
+  "warm_files": 31188,
+  "source_text_bytes": 308670036,
+  "missing_paths": [],
+  "added_paths": [],
+  "changed_files": [],
+  "reports_equal": true,
+  "phase_metrics": {
+    "cold": {
+      "phase": "cold",
+      "export_wall_s": "350.646405",
+      "sources": "31188",
+      "bytes": "308670036",
+      "checksum": "9bcc92d8c4ca8d96",
+      "complete_methods": "139742",
+      "constructors": "31404",
+      "static_initializers": "5232",
+      "unsupported_methods": "15141",
+      "unavailable_constructors": "2801",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "0",
+        "sources": "31188",
+        "source_text_bytes": "308670036",
+        "ready": "true"
+      }
+    },
+    "warm": {
+      "phase": "warm",
+      "export_wall_s": "1.507423",
+      "sources": "31188",
+      "bytes": "308670036",
+      "checksum": "9bcc92d8c4ca8d96",
+      "complete_methods": "139742",
+      "constructors": "31404",
+      "static_initializers": "5232",
+      "unsupported_methods": "15141",
+      "unavailable_constructors": "2801",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "1",
+        "sources": "31188",
+        "source_text_bytes": "308670036",
+        "ready": "true"
+      }
+    }
+  },
+  "cold_speedup_claimed": false,
+  "whole_app_compilation_claimed": false
+}

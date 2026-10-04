@@ -1,0 +1,400 @@
+{
+  "goal_complete": false,
+  "accepted_baseline": "wave43",
+  "wave45": "rejected:541gains5losses",
+  "main_integrated": [
+    "actual enum-child classification; exact parent integration requirement, no body acceptance",
+    "post-chain allocation/Phi suffix entry; exact folded region suppression; transactional fallback",
+    "new typed cleanup admission requires complete native-renderable original catch tables; otherwise original guarded dispatcher retained",
+    "result-bearing same-owner private direct call admitted as allocation argument producer; ordinary exact dispatch and checked exception proofs retained",
+    "handler-aware checked source bridge keeps original dispatcher in original override method; original range snapshot rechecked; old metadata-free API rejects",
+    "protected folded allocation inherits only exact original handler covered checkedargument contracts; atomic original-signature hardening pending",
+    "genuine original catch domain refines inferred supertypes only for proven captured-value copy/Phi lineage; unknown ancestry and unrelated consumers reject"
+  ],
+  "parent_enum_helper_tests": {
+    "passed": 2,
+    "failed": 0,
+    "session": 73166,
+    "actual_owners": 153,
+    "original_method_ids": 343
+  },
+  "pending": [
+    "whole46 frozen export, uncapped compiler and accepted43/26 no-loss replay"
+  ],
+  "aggregate_coverage_changed": false,
+  "constructor_review": "no mustfix; immutable shape caches recheck current materialization after rollback",
+  "constructor_parent_test": {
+    "session": 67109,
+    "exit_code": 0,
+    "passed": 2,
+    "failed": 0,
+    "jdk17_25": "original allocation-before-selector, same-exception, class-init/OOM traces; invalid shapes rejected"
+  },
+  "actual_timemodel": {
+    "original_method_indices": [
+      34219,
+      34220
+    ],
+    "dex": "classes.dex",
+    "worker_replay_session": 58731,
+    "export_exit": 0,
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true,
+    "whole_unchanged_java_compile_exit": 0,
+    "compiler": "JDK25+genuineAndroid35+unchangedinputdependencies",
+    "javac_log": "/tmp/opencode/wave45-TimeModel-compile/javac.log",
+    "android_execution": false,
+    "parent_jvm_constructor_cases": 128,
+    "parent_jvm_exit": 0,
+    "runtime_scope": "unchanged generated class constructor field contracts; no Android app execution"
+  },
+  "root_backend_suite": {
+    "session": 40757,
+    "exit_code": 0,
+    "passed": 317,
+    "failed": 0,
+    "ignored": 12
+  },
+  "isolated_test_environment_correction": {
+    "log": "/tmp/opencode/wave46-typed-fallback-tests2.log",
+    "failed": 5,
+    "cause": "Os NotFound launching JDK executable; not demonstrated admission/source regression",
+    "next": "rerun exact suite with explicit JDK PATH"
+  },
+  "root_cleanup_tests": {
+    "session": 98417,
+    "passed": 44,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "actual_restored_regression_ids": [
+    {
+      "dex": "classes.dex",
+      "method_index": 14661
+    },
+    {
+      "dex": "classes2.dex",
+      "method_index": 47599
+    },
+    {
+      "dex": "classes3.dex",
+      "method_index": 29163
+    },
+    {
+      "dex": "classes3.dex",
+      "method_index": 29165
+    }
+  ],
+  "private_producer": {
+    "patch": "/tmp/opencode/wave46-direct-private-arguments.patch",
+    "review": "no mustfix",
+    "original_indices": [
+      29971,
+      29968,
+      29975
+    ],
+    "actual_profile_complete": true,
+    "whole_class_compile": false,
+    "blocker": "missing original private getNames29980",
+    "root_test_session": 18887,
+    "root_test_status": "passed",
+    "root_tests": {
+      "passed": 2,
+      "failed": 0,
+      "jdk17_25": true
+    },
+    "root_clippy": {
+      "session": 15518,
+      "exit_code": 0
+    },
+    "actual_subset": {
+      "compiler": "JDK17/JDK25 + genuine BC1.78.1 independently versioned",
+      "verbatim_originals": [
+        29971,
+        29975
+      ],
+      "runtime_inputs": 6,
+      "whole_class_compile": false,
+      "report": "/tmp/opencode/wave46-direct-private-arguments-report.md"
+    }
+  },
+  "next_actual_roots": [
+    {
+      "dex": "classes2.dex",
+      "index": 3424,
+      "finding": "private T() argument producer unsupported; fresh replay pending"
+    },
+    {
+      "dex": "classes4.dex",
+      "index": 29980,
+      "finding": "missing getNames blocks actual Holder class compile; isolated investigation active"
+    },
+    {
+      "dex": "classes4.dex",
+      "index": 6432,
+      "finding": "LazyEncodedSequence.force Object-to-Throwable; original cause under investigation"
+    }
+  ],
+  "actual_json_tree_reader": {
+    "dex": "classes2.dex",
+    "method_index": 3424,
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true,
+    "ordinary_bodies_before": 11,
+    "ordinary_bodies_after": 27,
+    "actual_source": "/tmp/opencode/wave46-JsonTreeReader-final",
+    "jdk17_25_traces": 6,
+    "boundary_fixture": true,
+    "whole_unit_compile": false,
+    "oom_injected": false,
+    "report": "/tmp/opencode/wave46-JsonTreeReader-proof/report.md"
+  },
+  "reflection_candidate": {
+    "original": 9557,
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true,
+    "actual_source": "/tmp/opencode/wave46-android-compose-dispatch-bridge",
+    "main_integrated": true,
+    "review_pending": false,
+    "aggregate_coverage_changed": false,
+    "root_compiler": {
+      "session": 17857,
+      "exit_code": 0,
+      "jdk": "17",
+      "classpath": "genuine Android35",
+      "scope": "unchanged original9557 method+sourcebridge; explicit compilation-boundary constructor",
+      "whole_class_compile": false
+    },
+    "patch_sha256": "9d5a9aa07a003577ad6704021886c95a971c965ae85a47f6e175cfd9811d3a81",
+    "root_focused_session": 70913,
+    "root_focused_status": "passed",
+    "root_focused_tests": {
+      "session": 70913,
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "protected_allocation": {
+    "patch": "/tmp/opencode/wave47-checked-allocation-arguments.patch",
+    "root_tests": {
+      "session": 29568,
+      "passed": 4,
+      "failed": 0,
+      "ignored": 1
+    },
+    "root_original_bytecode_session": 47511,
+    "hardening_delta_pending": false,
+    "actual_final_profile_pending": true,
+    "atomic_delta": "/tmp/opencode/wave47-checked-allocation-atomic-delta.patch",
+    "atomic_review": "no mustfix; every uncovered folded checkedcall validated against original signature/ordered handler scope",
+    "root_atomic_tests": {
+      "session": 3342,
+      "passed": 6,
+      "failed": 0,
+      "ignored": 1
+    },
+    "root_original_bytecode_after_hardening_session": 86948,
+    "actual_original29980": {
+      "complete_body": true,
+      "semantic_complete": true,
+      "dependency_complete": true,
+      "whole_unchanged_class_compile_jdk25": true,
+      "whole_class_compile_jdk17": false,
+      "jdk17_boundary": "existing Java25 pre-this constructor statements",
+      "genuine_dependency": "BC1.78.1 independently versioned",
+      "worker_final_report_pending": true
+    },
+    "root_original_bytecode_after_hardening": {
+      "session": 86948,
+      "passed": 1,
+      "failed": 0
+    },
+    "worker_final_report_pending": false,
+    "final_report": "/tmp/opencode/wave47-checked-allocation-arguments-report.md",
+    "test_metadata_declaration_patch_applied": true
+  },
+  "capture_domain": {
+    "patch": "/tmp/opencode/wave46-capture-refinement.patch",
+    "review": "no mustfix",
+    "actual_original_index": 6432,
+    "ordinary_complete": 17,
+    "unsupported": 0,
+    "whole_unit_compile_jdk25": true,
+    "root_tests_session": 30549,
+    "root_tests_status": "passed",
+    "root_tests": {
+      "session": 30549,
+      "passed": 3,
+      "failed": 0,
+      "ignored": 1
+    },
+    "root_original_bytecode_tests": {
+      "session": 82741,
+      "passed": 2,
+      "failed": 0,
+      "scope": "capture lineage + existing selected-handler phi oracle"
+    }
+  },
+  "full46_driver": {
+    "session": 37928,
+    "status": "frozen whole export running",
+    "script": "/tmp/opencode/run_samsung_wave46_gates.py",
+    "initial_fmt_exit": 1,
+    "fmt_fix": "sort newly registered capture modules in exception_dispatch.rs",
+    "gates": {
+      "fmt": 0,
+      "tests": 0,
+      "clippy": 0,
+      "release": 0
+    },
+    "workspace_tests": {
+      "passed": 1183,
+      "failed": 0,
+      "ignored": 163,
+      "suites": 193
+    },
+    "frozen_binary": "/tmp/opencode/samsung-pass-100-wave46-runtime-metadata/java_profile.frozen",
+    "frozen_binary_sha256": "5bd670d9760a915e384c888f8d95e8853fcfbbb90140c7097b0e58443132f0a3"
+  },
+  "wave46_terminal_audit": {
+    "driver_exit": 1,
+    "status": "rejected_no_loss_gate",
+    "candidate_executable": 185562,
+    "denominator": 194286,
+    "gained": 1048,
+    "lost": 51,
+    "syntax_files": 32423,
+    "syntax_errors": 0,
+    "javac_exit": 1,
+    "javac_diagnostics": 49691,
+    "export_seconds": 481.82,
+    "peak_rss_kib": 35621596,
+    "tests_passed": 1183,
+    "accepted_baseline": "wave43",
+    "goal_complete": false
+  },
+  "post_wave46_integrations": [
+    "local allocation argument regions: 4 parent focused tests passed",
+    "filled array argument regions",
+    "reviewed shared catch inferred-bound repair",
+    "reviewed class literal cleanup source contract"
+  ],
+  "post_wave46_parent_checks": {
+    "local_and_filled_regions": {
+      "passed": 4,
+      "failed": 0
+    },
+    "class_literal_filter": {
+      "passed": 5,
+      "failed": 0
+    },
+    "shared_capture_domain": {
+      "passed": 4,
+      "failed": 0,
+      "ignored": 1
+    },
+    "wave47_drivers": "prepared_not_started_pending_original_scope_rollback",
+    "explicit_selected_handler_runtime_oracles": {
+      "passed": 2,
+      "failed": 0,
+      "jdk": "25"
+    },
+    "workspace_clippy": {
+      "exit_code": 0,
+      "all_targets": true,
+      "warnings_denied": true,
+      "log": "/tmp/opencode/wave47-parent-clippy.log"
+    },
+    "workspace_tests": {
+      "session": 83081,
+      "status": "confirmed_live",
+      "log": "/tmp/opencode/wave47-parent-workspace-tests.log",
+      "note": "started before rollback integration; final frozen gates still required"
+    },
+    "workspace_preflight_terminal": {
+      "exit": 0,
+      "passed": 1190,
+      "failed": 0,
+      "ignored": 163,
+      "suites": 195,
+      "note": "preflight began before final rollback/loop-tail patch; fresh immutable gates started separately"
+    },
+    "loop_tail_verified": {
+      "passed": 3,
+      "failed": 0,
+      "includes_explicit_jvm_oracle": true,
+      "log": "/tmp/opencode/wave47-parent-loop-tail-verified.log"
+    }
+  },
+  "remaining_regression_diagnosis": {
+    "method": "classes3.dex#20433 revokeCertificate",
+    "callee": "Certificate.getEncoded()[B",
+    "original_offset": 63,
+    "original_try": [
+      50,
+      142
+    ],
+    "cause": "failed checked-source bridge rollback discards original catch-scope preflight and emitter metadata",
+    "fix_status": "isolated implementation in progress"
+  },
+  "original_scope_rollback": {
+    "integrated": true,
+    "patch": "/tmp/opencode/wave47-checked-rollback-production.patch",
+    "patch_sha256": "975baa79d5734a22c03edebf6b9e5bf7fc07f8c62eed638dcd52e1b793b697cf",
+    "review": "no must-fix static review",
+    "actual_replay": "/tmp/opencode/wave47-auth-regression-fixed",
+    "original_method": "classes3.dex#20433",
+    "all_three_completeness_flags": true,
+    "caller_signature_changed": false,
+    "parent_focused_session": 88931,
+    "aggregate_verified": false,
+    "parent_focused_tests": {
+      "exit_code": 0,
+      "passed": 2,
+      "ignored": 1
+    },
+    "new_component_test": {
+      "passed": 1,
+      "failed": 0,
+      "log": "/tmp/opencode/wave47-parent-rollback-components.log"
+    }
+  },
+  "wave47_driver": {
+    "status": "frozen_export_running",
+    "script": "/tmp/opencode/run_samsung_wave47_gates.py",
+    "goal_complete": false,
+    "accepted_baseline": "wave43",
+    "session": 44068,
+    "fmt_exit": 0,
+    "gates": [
+      {
+        "gate": "fmt",
+        "exit_code": 0
+      },
+      {
+        "gate": "tests",
+        "exit_code": 0
+      },
+      {
+        "gate": "clippy",
+        "exit_code": 0
+      },
+      {
+        "gate": "release",
+        "exit_code": 0
+      }
+    ],
+    "workspace": {
+      "passed": 1193,
+      "failed": 0,
+      "ignored": 164,
+      "suites": 195,
+      "exit": 0
+    },
+    "frozen_at": "2026-10-04T10:43:24.043080+00:00",
+    "binary_sha256": "93e1553f7dbbc8bc90a48fa52ae1412f56566aac415406184ce9dedd6b022023"
+  }
+}

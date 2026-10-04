@@ -1,0 +1,20 @@
+{
+  "original_identity": "Lorg/jsoup/parser/CharacterReader;->bufferUp()V",
+  "dex": "classes4.dex",
+  "method_index": 31531,
+  "previous_failure": "integer Phi incoming Zero had no checked declaration",
+  "change": "definition-proven category-one zero accepted in integer relational compare; null/boolean relational reinterpretation rejected",
+  "full_arena_consumer_proof": true,
+  "original_method_source_route": "accepted",
+  "source_bytes": 15872,
+  "source_sha256": "5233008a5d155b97966a9dca38f81efe1ffe26bc0168de5a0ba055d36d8df455",
+  "original_assertion_log": "/tmp/opencode/character-reader-wave5-original-final.txt",
+  "focused_backend_tests": {
+    "passed": 5,
+    "failed": 0,
+    "ignored": 1
+  },
+  "aggregate_gain_measured": false,
+  "whole_original_unit_compilation_verified": false,
+  "original_android_runtime_verified": false
+}

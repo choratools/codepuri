@@ -1,0 +1,33 @@
+{
+  "candidate": "wave32",
+  "accepted": false,
+  "accepted_baseline": "wave29",
+  "coverage_executable": 182895,
+  "executable_denominator": 194286,
+  "percent": 94.13699391618542,
+  "gained": 1065,
+  "lost": 19,
+  "source_units": 32417,
+  "syntax_exit": 0,
+  "javac_exit": 1,
+  "javac_diagnostics": 50807,
+  "workspace": {
+    "passed": 1075,
+    "failed": 0,
+    "ignored": 150,
+    "suites": 182,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave32-root-workspace-tests-correct-env.log",
+    "sha256": "16176d02d45a1af7e1ef4b30a0aeb90e91778017ee73e1ef7ec7941803501d59"
+  },
+  "full_driver_exit": 1,
+  "source_receipt": {
+    "finished_at": "2026-10-04T00:12:44.840025+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "goal": "active incomplete"
+}

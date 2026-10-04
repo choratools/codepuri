@@ -1,0 +1,11 @@
+{
+  "main_integrated": true,
+  "patch": "/tmp/opencode/wave51-foreign-static-context.patch",
+  "sha256": "d7bda39a40cb7a03f19ca8afd946bfa0f4fc783f0cd12de7cd3830f32ed23ccd",
+  "actual_isolated_original_method": 8162,
+  "parent_main_test_passed": 1,
+  "scope_clippy": "passed",
+  "aggregate_gain_pending": true,
+  "whole_Android_class_compilation_proven": false,
+  "goal_complete": false
+}

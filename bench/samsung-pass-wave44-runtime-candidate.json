@@ -1,0 +1,22 @@
+{
+  "accepted": false,
+  "accepted_baseline": "wave43",
+  "driver_exit": 1,
+  "artifact": "/tmp/opencode/samsung-pass-100-wave44-runtime-metadata",
+  "export_exit": 0,
+  "source_mutations": [],
+  "candidate_executable": 184840,
+  "candidate_executable_percent": 95.13809538515385,
+  "gained": 310,
+  "lost": 35,
+  "no_loss_wave43_exit": 1,
+  "no_loss_wave26_exit": 1,
+  "source_units": 32423,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "javac_diagnostics": 50078,
+  "export_elapsed": "7:12.50",
+  "peak_rss_kib": 28329928,
+  "javac_availability_attested": false,
+  "goal_complete": false
+}

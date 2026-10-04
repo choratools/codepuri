@@ -1,0 +1,38 @@
+{
+  "wave": 10,
+  "goal_complete": false,
+  "defined_originals": 205497,
+  "code_bearing_originals": 194286,
+  "explicit_bodies": 178334,
+  "enum_equivalents": 342,
+  "accepted_code_bearing": 178676,
+  "code_bearing_percent": 91.9654529919809,
+  "genuine_retained_bodyless": 11177,
+  "original_form_percent": 92.38723679664423,
+  "additional_code_bearing_needed_for_99": 13668,
+  "gained": 55,
+  "lost": 0,
+  "java_units": 31196,
+  "syntax_errors": 0,
+  "javac_diagnostics": 55942,
+  "compiled_apk": false,
+  "export_wall_s": 321.10328,
+  "process_wall_s": 323.14997008629143,
+  "peak_rss_kib": 15059104,
+  "export_swaps": 0,
+  "binary_sha256": "8eab49770112d1c83525d9deb8867cd3d48d38f58f7e05697a56e812b64a02d9",
+  "workspace_tests": {
+    "exit_code": 0,
+    "seconds": 408.94925342919305,
+    "passed": 913,
+    "failed": 0,
+    "ignored": 111,
+    "suites": 151
+  },
+  "final_backend_tests": {
+    "passed": 193,
+    "failed": 0,
+    "ignored": 11
+  },
+  "artifact_root": "/tmp/opencode/samsung-pass-99-wave10"
+}

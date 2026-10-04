@@ -1,0 +1,68 @@
+[
+  {
+    "dex": "classes.dex",
+    "method_index": 9557,
+    "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->findViewByAccessibilityIdTraversal(I)Landroid/view/View;",
+    "category": "ordinary",
+    "access_flags": 17,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "androidx/compose/ui/platform/AndroidComposeView.java",
+    "reason": "callee exceptions not declared by caller"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 16920,
+    "identity": "Lcom/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource;->postSignIn$lambda$0(Lcom/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource;)Lco/n;",
+    "category": "ordinary",
+    "access_flags": 26,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource.java",
+    "reason": "callee exceptions not declared by caller"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 16931,
+    "identity": "Lcom/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource;->x(Lcom/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource;)Lco/n;",
+    "category": "ordinary",
+    "access_flags": 4105,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/samsung/android/samsungpass/remote/server/api/UserNetworkDataSource.java",
+    "reason": "required complete method body unavailable"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 28594,
+    "identity": "Lcom/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator;->d(Lcom/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator;Lcom/samsung/android/samsungpass/websignin/model/AppInfo;)Lcq/a1;",
+    "category": "ordinary",
+    "access_flags": 4105,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator.java",
+    "reason": "required complete method body unavailable"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 28655,
+    "identity": "Lcom/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator;->setAppTitle(Ljava/lang/String;)V",
+    "category": "ordinary",
+    "access_flags": 17,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator.java",
+    "reason": "callee exceptions not declared by caller"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 28670,
+    "identity": "Lcom/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator;->setupSearchList$lambda$0(Lcom/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator;Lcom/samsung/android/samsungpass/websignin/model/AppInfo;)Lcq/a1;",
+    "category": "ordinary",
+    "access_flags": 26,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/samsung/android/samsungpass/websignin/ui/idpass/WebSignInManualAddUiDelegator.java",
+    "reason": "required complete method body unavailable"
+  }
+]

@@ -1,0 +1,4476 @@
+{
+  "transitions": {
+    "complete_body -> complete_body": 180698,
+    "rejected_in_written_unit -> rejected_in_written_unit": 10119,
+    "declaration_only -> declaration_only": 11183,
+    "rejected_without_written_unit -> rejected_without_written_unit": 2913,
+    "rejected_in_written_unit -> complete_body": 186,
+    "proven_enum_equivalence -> proven_enum_equivalence": 398
+  },
+  "changed": [
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->a()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7718,
+        "identity": "Landroidx/appcompat/widget/a0;->a()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7718,
+        "identity": "Landroidx/appcompat/widget/a0;->a()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->e(Landroid/graphics/RectF;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7722,
+        "identity": "Landroidx/appcompat/widget/a0;->e(Landroid/graphics/RectF;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7722,
+        "identity": "Landroidx/appcompat/widget/a0;->e(Landroid/graphics/RectF;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->m(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7730,
+        "identity": "Landroidx/appcompat/widget/a0;->m(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "backend: Metadata(\"handler/body throw checked exceptions are not covered\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7730,
+        "identity": "Landroidx/appcompat/widget/a0;->m(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->p(IIII)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7733,
+        "identity": "Landroidx/appcompat/widget/a0;->p(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7733,
+        "identity": "Landroidx/appcompat/widget/a0;->p(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->q([II)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7734,
+        "identity": "Landroidx/appcompat/widget/a0;->q([II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7734,
+        "identity": "Landroidx/appcompat/widget/a0;->q([II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->r(I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7735,
+        "identity": "Landroidx/appcompat/widget/a0;->r(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7735,
+        "identity": "Landroidx/appcompat/widget/a0;->r(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/a0;->x(ILandroid/graphics/RectF;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 7741,
+        "identity": "Landroidx/appcompat/widget/a0;->x(ILandroid/graphics/RectF;)Z",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/a0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 7741,
+        "identity": "Landroidx/appcompat/widget/a0;->x(ILandroid/graphics/RectF;)Z",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/a0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->H0(ILandroid/graphics/drawable/Drawable;FI)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8703,
+        "identity": "Landroidx/appcompat/widget/t0;->H0(ILandroid/graphics/drawable/Drawable;FI)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8703,
+        "identity": "Landroidx/appcompat/widget/t0;->H0(ILandroid/graphics/drawable/Drawable;FI)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->M(FZI)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8708,
+        "identity": "Landroidx/appcompat/widget/t0;->M(FZI)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8708,
+        "identity": "Landroidx/appcompat/widget/t0;->M(FZI)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->N(I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8710,
+        "identity": "Landroidx/appcompat/widget/t0;->N(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8710,
+        "identity": "Landroidx/appcompat/widget/t0;->N(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->O(IF)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8712,
+        "identity": "Landroidx/appcompat/widget/t0;->O(IF)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8712,
+        "identity": "Landroidx/appcompat/widget/t0;->O(IF)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->R0()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8716,
+        "identity": "Landroidx/appcompat/widget/t0;->R0()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8716,
+        "identity": "Landroidx/appcompat/widget/t0;->R0()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->U0(II)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8719,
+        "identity": "Landroidx/appcompat/widget/t0;->U0(II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8719,
+        "identity": "Landroidx/appcompat/widget/t0;->U0(II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->c0(II)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8723,
+        "identity": "Landroidx/appcompat/widget/t0;->c0(II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8723,
+        "identity": "Landroidx/appcompat/widget/t0;->c0(II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->onRtlPropertiesChanged(I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8760,
+        "identity": "Landroidx/appcompat/widget/t0;->onRtlPropertiesChanged(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8760,
+        "identity": "Landroidx/appcompat/widget/t0;->onRtlPropertiesChanged(I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->onSizeChanged(IIII)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8761,
+        "identity": "Landroidx/appcompat/widget/t0;->onSizeChanged(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8761,
+        "identity": "Landroidx/appcompat/widget/t0;->onSizeChanged(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->setSystemGestureExclusionRects(Ljava/util/List;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8782,
+        "identity": "Landroidx/appcompat/widget/t0;->setSystemGestureExclusionRects(Ljava/util/List;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8782,
+        "identity": "Landroidx/appcompat/widget/t0;->setSystemGestureExclusionRects(Ljava/util/List;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->setThumb(Landroid/graphics/drawable/Drawable;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8783,
+        "identity": "Landroidx/appcompat/widget/t0;->setThumb(Landroid/graphics/drawable/Drawable;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8783,
+        "identity": "Landroidx/appcompat/widget/t0;->setThumb(Landroid/graphics/drawable/Drawable;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/appcompat/widget/t0;->v0()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8794,
+        "identity": "Landroidx/appcompat/widget/t0;->v0()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/t0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8794,
+        "identity": "Landroidx/appcompat/widget/t0;->v0()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/t0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 9604,
+        "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/compose/ui/platform/AndroidComposeView.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 9604,
+        "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/compose/ui/platform/AndroidComposeView.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(ILjava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11811,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11811,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11812,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11812,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/c;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11820,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11820,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/c;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11821,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11821,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/j0;->entrySet()Ljava/util/Set;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 12374,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 12374,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/j0;->m(Landroidx/datastore/preferences/protobuf/j0;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 12381,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->m(Landroidx/datastore/preferences/protobuf/j0;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 12381,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->m(Landroidx/datastore/preferences/protobuf/j0;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/j0;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 12383,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 12383,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/j0;->putAll(Ljava/util/Map;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 12384,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 12384,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/j0;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 12385,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 12385,
+        "identity": "Landroidx/datastore/preferences/protobuf/j0;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/j0$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 15264,
+        "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/lifecycle/w$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 15264,
+        "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/lifecycle/w$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 15267,
+        "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/lifecycle/w$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 15267,
+        "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/lifecycle/w$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/picker/widget/e$j;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 16682,
+        "identity": "Landroidx/picker/widget/e$j;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/picker/widget/e$j.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 16682,
+        "identity": "Landroidx/picker/widget/e$j;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/picker/widget/e$j.java"
+      }
+    },
+    {
+      "identity": "Landroidx/picker/widget/j$f;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 16931,
+        "identity": "Landroidx/picker/widget/j$f;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/picker/widget/j$f.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 16931,
+        "identity": "Landroidx/picker/widget/j$f;->findAccessibilityNodeInfosByText(Ljava/lang/String;I)Ljava/util/List;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/picker/widget/j$f.java"
+      }
+    },
+    {
+      "identity": "Landroidx/recyclerview/widget/RecyclerView;->addFocusables(Ljava/util/ArrayList;II)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 18812,
+        "identity": "Landroidx/recyclerview/widget/RecyclerView;->addFocusables(Ljava/util/ArrayList;II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/recyclerview/widget/RecyclerView.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 18812,
+        "identity": "Landroidx/recyclerview/widget/RecyclerView;->addFocusables(Ljava/util/ArrayList;II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/recyclerview/widget/RecyclerView.java"
+      }
+    },
+    {
+      "identity": "Landroidx/viewpager2/widget/ViewPager2;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 21235,
+        "identity": "Landroidx/viewpager2/widget/ViewPager2;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/viewpager2/widget/ViewPager2.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 21235,
+        "identity": "Landroidx/viewpager2/widget/ViewPager2;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/viewpager2/widget/ViewPager2.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/e;->a()Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 25637,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->a()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 25637,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->a()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/e;->g(Lcom/google/android/gms/internal/clearcut/m;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 25643,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->g(Lcom/google/android/gms/internal/clearcut/m;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 25643,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->g(Lcom/google/android/gms/internal/clearcut/m;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/e;->h(Ljava/lang/String;Z)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 25644,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->h(Ljava/lang/String;Z)Z",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 25644,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->h(Ljava/lang/String;Z)Z",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/e;->n()Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 25650,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->n()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 25650,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->n()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/e;->o()Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 25651,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->o()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 25651,
+        "identity": "Lcom/google/android/gms/internal/clearcut/e;->o()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/e$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(ILjava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26344,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26344,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26345,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26345,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/s;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26351,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26351,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/s;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26352,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26352,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/u1;->b(Lcom/google/android/gms/internal/clearcut/u1;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26408,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->b(Lcom/google/android/gms/internal/clearcut/u1;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26408,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->b(Lcom/google/android/gms/internal/clearcut/u1;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/u1;->entrySet()Ljava/util/Set;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26413,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26413,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/u1;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26418,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26418,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/u1;->putAll(Ljava/util/Map;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26419,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26419,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/u1;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26420,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26420,
+        "identity": "Lcom/google/android/gms/internal/clearcut/u1;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/u1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/x4;->d(Landroid/content/ContentResolver;[Ljava/lang/String;)Ljava/util/Map;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26525,
+        "identity": "Lcom/google/android/gms/internal/clearcut/x4;->d(Landroid/content/ContentResolver;[Ljava/lang/String;)Ljava/util/Map;",
+        "category": "ordinary",
+        "access_flags": 137,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/x4$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26525,
+        "identity": "Lcom/google/android/gms/internal/clearcut/x4;->d(Landroid/content/ContentResolver;[Ljava/lang/String;)Ljava/util/Map;",
+        "category": "ordinary",
+        "access_flags": 137,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/x4$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(ILjava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26847,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26847,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26848,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26848,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/e1;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26856,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26856,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/e1;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26857,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26857,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/q3;->c(Lcom/google/android/gms/internal/vision/q3;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 27404,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->c(Lcom/google/android/gms/internal/vision/q3;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 27404,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->c(Lcom/google/android/gms/internal/vision/q3;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/q3;->entrySet()Ljava/util/Set;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 27408,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 27408,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/q3;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 27413,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 27413,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/q3;->putAll(Ljava/util/Map;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 27414,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 27414,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/q3;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 27415,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 27415,
+        "identity": "Lcom/google/android/gms/internal/vision/q3;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/q3$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 31115,
+        "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/material/floatingactionbutton/a$type.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 31115,
+        "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/material/floatingactionbutton/a$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/material/textfield/TextInputLayout;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 33528,
+        "identity": "Lcom/google/android/material/textfield/TextInputLayout;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/material/textfield/TextInputLayout.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 33528,
+        "identity": "Lcom/google/android/material/textfield/TextInputLayout;->dispatchRestoreInstanceState(Landroid/util/SparseArray;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/material/textfield/TextInputLayout.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->f(Landroid/content/Intent;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 35357,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->f(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 35357,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->f(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->handleIntent(Landroid/content/Intent;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 35361,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->handleIntent(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 35361,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->handleIntent(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->i(Landroid/content/Intent;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 35362,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->i(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 35362,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->i(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->j(Landroid/content/Intent;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 35363,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->j(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 35363,
+        "identity": "Lcom/google/firebase/messaging/FirebaseMessagingService;->j(Landroid/content/Intent;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/firebase/messaging/FirebaseMessagingService.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3277,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3277,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3278,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3278,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3280,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3280,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3281,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3281,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3285,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3285,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3286,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3286,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3291,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3291,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3292,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3292,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(ILjava/util/Collection;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 4020,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 4020,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 4021,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 4021,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/AbstractProtobufList;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 4030,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 4030,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/AbstractProtobufList;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 4031,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 4031,
+        "identity": "Lcom/google/protobuf/AbstractProtobufList;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/AbstractProtobufList.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->entrySet()Ljava/util/Set;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11566,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11566,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->entrySet()Ljava/util/Set;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->mergeFrom(Lcom/google/protobuf/MapFieldLite;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11573,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->mergeFrom(Lcom/google/protobuf/MapFieldLite;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11573,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->mergeFrom(Lcom/google/protobuf/MapFieldLite;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11575,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11575,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/util/Map$Entry;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11576,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/util/Map$Entry;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11576,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->put(Ljava/util/Map$Entry;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->putAll(Ljava/util/Map;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11577,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11577,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->putAll(Ljava/util/Map;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/MapFieldLite;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11578,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/MapFieldLite.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11578,
+        "identity": "Lcom/google/protobuf/MapFieldLite;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/MapFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19043,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19043,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19046,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19046,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19048,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19048,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19050,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19050,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 28820,
+        "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 28820,
+        "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37896,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37896,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37898,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37898,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37899,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37899,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37900,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37900,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37908,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37908,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37910,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37910,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37912,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37912,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37915,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37915,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37918,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37918,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37919,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37919,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37921,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37921,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37926,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37926,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37923,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37923,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37933,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37933,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37936,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37936,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37932,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37932,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37942,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37942,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37944,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37944,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37948,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37948,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37950,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37950,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37952,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37952,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37949,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37949,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37959,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37959,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37968,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37968,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37974,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37974,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37975,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37975,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37983,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37983,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37984,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37984,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37985,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37985,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37988,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37988,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37987,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37987,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37989,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37989,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37990,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37990,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37991,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37991,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37993,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37993,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37994,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37994,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37996,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37996,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38001,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38001,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38002,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38002,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38007,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38007,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38008,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38008,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38010,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38010,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38011,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38011,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38014,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38014,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38015,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38015,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38017,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38017,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38018,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38018,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38019,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38019,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/main/dashboard/viewmodel/AutofillListViewModelImpl;->getAdapter(Landroid/content/Context;ILcom/samsung/android/samsungpass/websignin/ui/common/OnViewHolderListener;)Landroidx/recyclerview/widget/RecyclerView$r;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 42239,
+        "identity": "Lcom/samsung/android/samsungpass/main/dashboard/viewmodel/AutofillListViewModelImpl;->getAdapter(Landroid/content/Context;ILcom/samsung/android/samsungpass/websignin/ui/common/OnViewHolderListener;)Landroidx/recyclerview/widget/RecyclerView$r;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/main/dashboard/viewmodel/AutofillListViewModelImpl.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 42239,
+        "identity": "Lcom/samsung/android/samsungpass/main/dashboard/viewmodel/AutofillListViewModelImpl;->getAdapter(Landroid/content/Context;ILcom/samsung/android/samsungpass/websignin/ui/common/OnViewHolderListener;)Landroidx/recyclerview/widget/RecyclerView$r;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/main/dashboard/viewmodel/AutofillListViewModelImpl.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/Operation/Cmp/Kica/OcspVerify;-><init>(ILcom/samsung/android/samsungpass/passservice/Operation/Cmp/ICertificateListener;[BLjava/lang/String;Ljava/lang/String;)V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 5959,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/Operation/Cmp/Kica/OcspVerify;-><init>(ILcom/samsung/android/samsungpass/passservice/Operation/Cmp/ICertificateListener;[BLjava/lang/String;Ljava/lang/String;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/Operation/Cmp/Kica/OcspVerify.java",
+        "reason": "initialization: exception family proof unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 5959,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/Operation/Cmp/Kica/OcspVerify;-><init>(ILcom/samsung/android/samsungpass/passservice/Operation/Cmp/ICertificateListener;[BLjava/lang/String;Ljava/lang/String;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/Operation/Cmp/Kica/OcspVerify.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 12816,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/provider/state/StateRepository.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 12816,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/provider/state/StateRepository.java"
+      }
+    },
+    {
+      "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 42869,
+        "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/yessign/fido/jce/provider/PBE$Util.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 42869,
+        "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/yessign/fido/jce/provider/PBE$Util.java"
+      }
+    },
+    {
+      "identity": "Lcv/c$a;->a(Lcv/c$a;Lcv/c;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 291,
+        "identity": "Lcv/c$a;->a(Lcv/c$a;Lcv/c;)Z",
+        "category": "ordinary",
+        "access_flags": 4121,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "cv/c$a.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 291,
+        "identity": "Lcv/c$a;->a(Lcv/c$a;Lcv/c;)Z",
+        "category": "ordinary",
+        "access_flags": 4121,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "cv/c$a.java"
+      }
+    },
+    {
+      "identity": "Lcv/c$a;->d(Lcv/c;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 294,
+        "identity": "Lcv/c$a;->d(Lcv/c;)Z",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "cv/c$a.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 294,
+        "identity": "Lcv/c$a;->d(Lcv/c;)Z",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "cv/c$a.java"
+      }
+    },
+    {
+      "identity": "Le2/g;->G1(IIII)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39168,
+        "identity": "Le2/g;->G1(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39168,
+        "identity": "Le2/g;->G1(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      }
+    },
+    {
+      "identity": "Le2/g;->r2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39202,
+        "identity": "Le2/g;->r2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39202,
+        "identity": "Le2/g;->r2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      }
+    },
+    {
+      "identity": "Le2/g;->s2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39203,
+        "identity": "Le2/g;->s2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39203,
+        "identity": "Le2/g;->s2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      }
+    },
+    {
+      "identity": "Le2/g;->t2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39204,
+        "identity": "Le2/g;->t2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39204,
+        "identity": "Le2/g;->t2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/e;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45399,
+        "identity": "Lfq/e;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/e$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45399,
+        "identity": "Lfq/e;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/e$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/e;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45400,
+        "identity": "Lfq/e;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/e$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45400,
+        "identity": "Lfq/e;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/e$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/f;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45410,
+        "identity": "Lfq/f;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/f$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45410,
+        "identity": "Lfq/f;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/f$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/f;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45411,
+        "identity": "Lfq/f;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/f$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45411,
+        "identity": "Lfq/f;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/f$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/g;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45421,
+        "identity": "Lfq/g;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/g$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45421,
+        "identity": "Lfq/g;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/g$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/g;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45422,
+        "identity": "Lfq/g;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/g$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45422,
+        "identity": "Lfq/g;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/g$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/h;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45429,
+        "identity": "Lfq/h;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/h$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45429,
+        "identity": "Lfq/h;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/h$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/h;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45437,
+        "identity": "Lfq/h;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/h$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45437,
+        "identity": "Lfq/h;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/h$type.java"
+      }
+    },
+    {
+      "identity": "Lfq/h;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45438,
+        "identity": "Lfq/h;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fq/h$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45438,
+        "identity": "Lfq/h;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fq/h$type.java"
+      }
+    },
+    {
+      "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45445,
+        "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fr/d$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45445,
+        "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fr/d$type.java"
+      }
+    },
+    {
+      "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45446,
+        "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fr/d$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45446,
+        "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fr/d$type.java"
+      }
+    },
+    {
+      "identity": "Lju/a;->X(Lju/h;)V",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 4362,
+        "identity": "Lju/a;->X(Lju/h;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "ju/a$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 4362,
+        "identity": "Lju/a;->X(Lju/h;)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "ju/a$type.java"
+      }
+    },
+    {
+      "identity": "Lju/a;->d0(J)V",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 4366,
+        "identity": "Lju/a;->d0(J)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "ju/a$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 4366,
+        "identity": "Lju/a;->d0(J)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "ju/a$type.java"
+      }
+    },
+    {
+      "identity": "Lla/i;->loadClass(Ljava/lang/String;Z)Ljava/lang/Class;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 49218,
+        "identity": "Lla/i;->loadClass(Ljava/lang/String;Z)Ljava/lang/Class;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "la/i$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 49218,
+        "identity": "Lla/i;->loadClass(Ljava/lang/String;Z)Ljava/lang/Class;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "la/i$type.java"
+      }
+    },
+    {
+      "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47486,
+        "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47486,
+        "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      }
+    },
+    {
+      "identity": "Llg/c;->a(IIZ)Llg/c;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47487,
+        "identity": "Llg/c;->a(IIZ)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47487,
+        "identity": "Llg/c;->a(IIZ)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      }
+    },
+    {
+      "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47496,
+        "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47496,
+        "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 27509,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 27509,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature.java"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSUtil$CheckingStream;->resolveClass(Ljava/io/ObjectStreamClass;)Ljava/lang/Class;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 27538,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSUtil$CheckingStream;->resolveClass(Ljava/io/ObjectStreamClass;)Ljava/lang/Class;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSUtil$CheckingStream.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 27538,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSUtil$CheckingStream;->resolveClass(Ljava/io/ObjectStreamClass;)Ljava/lang/Class;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSUtil$CheckingStream.java"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 29038,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 29038,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 29039,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 29039,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java"
+      }
+    },
+    {
+      "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(ILjava/util/Collection;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 30574,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 30574,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(ILjava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java"
+      }
+    },
+    {
+      "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 30575,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 30575,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->addAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java"
+      }
+    },
+    {
+      "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->removeAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 30580,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 30580,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->removeAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java"
+      }
+    },
+    {
+      "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->retainAll(Ljava/util/Collection;)Z",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 30582,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 30582,
+        "identity": "Lorg/jsoup/helper/ChangeNotifyingArrayList;->retainAll(Ljava/util/Collection;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/jsoup/helper/ChangeNotifyingArrayList.java"
+      }
+    },
+    {
+      "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/InputNode;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 34964,
+        "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/InputNode;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/simpleframework/xml/stream/InputNodeMap.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 34964,
+        "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/InputNode;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/simpleframework/xml/stream/InputNodeMap.java"
+      }
+    },
+    {
+      "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 34965,
+        "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/simpleframework/xml/stream/InputNodeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 34965,
+        "identity": "Lorg/simpleframework/xml/stream/InputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/simpleframework/xml/stream/InputNodeMap.java"
+      }
+    },
+    {
+      "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 35144,
+        "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/simpleframework/xml/stream/OutputNodeMap.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 35144,
+        "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/Node;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/simpleframework/xml/stream/OutputNodeMap.java"
+      }
+    },
+    {
+      "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/OutputNode;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 35145,
+        "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/OutputNode;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/simpleframework/xml/stream/OutputNodeMap.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 35145,
+        "identity": "Lorg/simpleframework/xml/stream/OutputNodeMap;->remove(Ljava/lang/String;)Lorg/simpleframework/xml/stream/OutputNode;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/simpleframework/xml/stream/OutputNodeMap.java"
+      }
+    },
+    {
+      "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 39988,
+        "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "retrofit2/i$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"allocation may throw OOM before initializer\\\")\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 39988,
+        "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "retrofit2/i$type.java"
+      }
+    },
+    {
+      "identity": "Ls6/c;->b(Ljava/lang/String;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 57456,
+        "identity": "Ls6/c;->b(Ljava/lang/String;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "s6/c$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 57456,
+        "identity": "Ls6/c;->b(Ljava/lang/String;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "s6/c$type.java"
+      }
+    },
+    {
+      "identity": "Ls6/c;->d(Ljava/lang/String;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 57458,
+        "identity": "Ls6/c;->d(Ljava/lang/String;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "s6/c$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 57458,
+        "identity": "Ls6/c;->d(Ljava/lang/String;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "s6/c$type.java"
+      }
+    },
+    {
+      "identity": "Ls6/w;->t()Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 57642,
+        "identity": "Ls6/w;->t()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "s6/w$type.java",
+        "reason": "backend: Metadata(\"throw checked exception is not declared by caller\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 57642,
+        "identity": "Ls6/w;->t()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "s6/w$type.java"
+      }
+    },
+    {
+      "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 60987,
+        "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "tr/s$type.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 60987,
+        "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "tr/s$type.java"
+      }
+    },
+    {
+      "identity": "Lut/j;->iterator()Ljava/util/Iterator;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 62329,
+        "identity": "Lut/j;->iterator()Ljava/util/Iterator;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "ut/j$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 62329,
+        "identity": "Lut/j;->iterator()Ljava/util/Iterator;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "ut/j$type.java"
+      }
+    },
+    {
+      "identity": "Lwb/f$a;->B(Landroid/view/View;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 61978,
+        "identity": "Lwb/f$a;->B(Landroid/view/View;)Z",
+        "category": "ordinary",
+        "access_flags": 65,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "wb/f$a.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 61978,
+        "identity": "Lwb/f$a;->B(Landroid/view/View;)Z",
+        "category": "ordinary",
+        "access_flags": 65,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "wb/f$a.java"
+      }
+    },
+    {
+      "identity": "Lwb/f$a;->remove(Ljava/lang/Object;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 61987,
+        "identity": "Lwb/f$a;->remove(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 81,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "wb/f$a.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 61987,
+        "identity": "Lwb/f$a;->remove(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 81,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "wb/f$a.java"
+      }
+    },
+    {
+      "identity": "Lwn/k;->afterExecute(Ljava/lang/Runnable;Ljava/lang/Throwable;)V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 63413,
+        "identity": "Lwn/k;->afterExecute(Ljava/lang/Runnable;Ljava/lang/Throwable;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "wn/k$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 63413,
+        "identity": "Lwn/k;->afterExecute(Ljava/lang/Runnable;Ljava/lang/Throwable;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "wn/k$type.java"
+      }
+    },
+    {
+      "identity": "Lwn/k;->e()Lwn/c;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 63416,
+        "identity": "Lwn/k;->e()Lwn/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "wn/k$type.java",
+        "reason": "super invocation: exact selected-target binding unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 63416,
+        "identity": "Lwn/k;->e()Lwn/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "wn/k$type.java"
+      }
+    },
+    {
+      "identity": "Lwn/k;->getQueue()Ljava/util/concurrent/BlockingQueue;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 63418,
+        "identity": "Lwn/k;->getQueue()Ljava/util/concurrent/BlockingQueue;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "wn/k$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 63418,
+        "identity": "Lwn/k;->getQueue()Ljava/util/concurrent/BlockingQueue;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "wn/k$type.java"
+      }
+    }
+  ]
+}

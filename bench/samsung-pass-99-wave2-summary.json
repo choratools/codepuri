@@ -1,0 +1,37 @@
+{
+  "denominator": 205497,
+  "strict_accepted": 172587,
+  "strict_percent": 83.98516766668126,
+  "code_bearing_definitions": 194286,
+  "strict_code_bearing_percent": 88.83141348321547,
+  "genuine_bodyless_declarations": 11177,
+  "original_form_accepted": 183764,
+  "original_form_percent": 89.4241765086595,
+  "statuses": {
+    "complete_body": 172289,
+    "rejected_in_written_unit": 18330,
+    "declaration_only": 11177,
+    "rejected_without_written_unit": 3403,
+    "proven_enum_equivalence": 298
+  },
+  "gained_bodies": 3745,
+  "lost_bodies": 84,
+  "source_units": 31076,
+  "syntax_exit": 0,
+  "full_javac_exit": 1,
+  "javac_diagnostics": 53639,
+  "prior_javac_diagnostics": 56146,
+  "export_seconds": 307.762656,
+  "process_seconds": 309.805596,
+  "max_rss_kib": 13058100,
+  "source_hashes_unchanged": true,
+  "goal_complete": false,
+  "workspace_tests_frozen_checkpoint": {
+    "passed": 734,
+    "failed": 0,
+    "ignored": 50
+  },
+  "validation_artifact": "/tmp/opencode/samsung-pass-99-wave2/validation25/validation.json",
+  "environment_artifact": "bench/samsung-pass-99-wave2-environment.json",
+  "later_current_worktree_changes_included": false
+}

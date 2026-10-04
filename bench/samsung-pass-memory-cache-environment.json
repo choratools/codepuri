@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-02T18:49:44.551172+00:00",
+  "binary": "/tmp/opencode/decomphify-memory-cache-profile",
+  "sha256": "f1ff6f888a23f3ec3ad4f76d1c2d6a6fa27a552309651c3f192b15587aaf86f5",
+  "apk": "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+  "apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "workers": 30,
+  "vary_only": "cache_inventory",
+  "ssa_cache": true,
+  "resolution_cache": true,
+  "classpath": [
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+  ]
+}

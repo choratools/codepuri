@@ -1,0 +1,17 @@
+{
+  "state": "integrated_pending_full_corpus",
+  "patch": "/tmp/opencode/wave47-empty-types.patch",
+  "patch_sha256": "163d2f289bd3735df6422fd5c678e63c3d9f34f700fe08b9f5ff802badec1e46",
+  "eligible_actual_original_interfaces": 131,
+  "original_body_gains_claimed": 0,
+  "parent_tests": {
+    "passed": 3,
+    "failed": 0,
+    "ignored": 1,
+    "log": "/tmp/opencode/wave48-parent-empty-types-verified.log"
+  },
+  "review": "no must-fix",
+  "scope": "pure original zero-member interface declarations; no generated constructors/fields/methods",
+  "abstract_synthetic_f_a_supported": false,
+  "goal_complete": false
+}

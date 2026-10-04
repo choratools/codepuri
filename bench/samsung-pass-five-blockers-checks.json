@@ -1,0 +1,55 @@
+{
+  "fmt": {
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 1.7189096249639988,
+    "max_rss_kib": 52248,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/fmt.log"
+  },
+  "workspace-tests": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 200.12734967423603,
+    "max_rss_kib": 1079920,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/workspace-tests.log"
+  },
+  "clippy": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 1.819203392136842,
+    "max_rss_kib": 216476,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/clippy.log"
+  },
+  "build": {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "-p",
+      "decomp",
+      "--example",
+      "java_corpus"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.11499130306765437,
+    "max_rss_kib": 34864,
+    "log": "/tmp/opencode/samsung-pass-five-blockers/build.log"
+  }
+}

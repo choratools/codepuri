@@ -1,0 +1,627 @@
+{
+  "final_inventory": "/storage_0/decomphify/bench/samsung-pass-continuation-final.json",
+  "source_root": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources",
+  "syntax_gate": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/java",
+      "-Xmx4g",
+      "-cp",
+      "/tmp/opencode/samsung-pass-continuation-final",
+      "SamsungPassParseGate",
+      "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources"
+    ],
+    "exit_code": 0,
+    "seconds": 10.392149146646261,
+    "log": "/tmp/opencode/samsung-pass-continuation-final/syntax-gate.log"
+  },
+  "parse_block_cases": {
+    "CertificateViewModel": "retained interface subset, field and dependent body explicitly unavailable",
+    "Lm0/b0;": "unit unavailable after dependent getKey body rejected; no blank interface field published"
+  },
+  "validation_artifact": "/tmp/opencode/samsung-pass-continuation-final/validation.json",
+  "full_compile": {
+    "command": [
+      "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+      "-J-Xmx8g",
+      "-proc:none",
+      "-Xmaxerrs",
+      "2147483647",
+      "-classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "-sourcepath",
+      "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+      "-d",
+      "/tmp/opencode/samsung-pass-continuation-final/classes",
+      "@/tmp/opencode/samsung-pass-continuation-final/sources.args"
+    ],
+    "exit_code": 1,
+    "seconds": 21.91919364500791,
+    "log": "/tmp/opencode/samsung-pass-continuation-final/full-javac.log"
+  },
+  "full_diagnostic_count": 40083,
+  "diagnostic_cap_reached": false,
+  "cyclic_inheritance_diagnostics": {},
+  "cannot_find_symbol": 30478,
+  "java_xml_module_conflicts": 37,
+  "protected_access_diagnostics": {
+    "setMeasuredDimension(int,int) has protected access in View": 7,
+    "measureChildWithMargins(View,int,int,int,int) has protected access in ViewGroup": 1,
+    "computeVerticalScrollExtent() has protected access in View": 2,
+    "computeVerticalScrollOffset() has protected access in View": 3,
+    "computeVerticalScrollRange() has protected access in View": 2,
+    "dispatchThawSelfOnly(SparseArray<Parcelable>) has protected access in ViewGroup": 3,
+    "dispatchFreezeSelfOnly(SparseArray<Parcelable>) has protected access in ViewGroup": 1,
+    "removeDetachedView(View,boolean) has protected access in ViewGroup": 1,
+    "computeHorizontalScrollRange() has protected access in View": 1,
+    "computeHorizontalScrollOffset() has protected access in View": 1,
+    "measureChild(View,int,int) has protected access in ViewGroup": 1,
+    "getSuggestedMinimumWidth() has protected access in View": 1,
+    "getSuggestedMinimumHeight() has protected access in View": 2,
+    "generateDefaultLayoutParams() has protected access in FrameLayout": 1
+  },
+  "tests": {
+    "passed": 410,
+    "failed": 0,
+    "ignored": 11
+  },
+  "identity_status_counts": {
+    "complete_body": 79351,
+    "rejected_in_written_unit": 90535,
+    "rejected_without_written_unit": 24214,
+    "declaration_only": 11140,
+    "proven_enum_equivalence": 257
+  },
+  "gained_bodies": 0,
+  "lost_bodies": 14,
+  "lost_body_categories": {
+    "ordinary": 5,
+    "constructor": 9
+  },
+  "lost_identities": [
+    {
+      "identity": "Landroidx/appcompat/widget/i0;->measureChildBeforeLayout(Landroid/view/View;IIIII)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 8145,
+        "identity": "Landroidx/appcompat/widget/i0;->measureChildBeforeLayout(Landroid/view/View;IIIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/appcompat/widget/i0.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 8145,
+        "identity": "Landroidx/appcompat/widget/i0;->measureChildBeforeLayout(Landroid/view/View;IIIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/appcompat/widget/i0$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Landroidx/compose/ui/platform/h0;->onMeasure(II)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 9875,
+        "identity": "Landroidx/compose/ui/platform/h0;->onMeasure(II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/compose/ui/platform/h0.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 9875,
+        "identity": "Landroidx/compose/ui/platform/h0;->onMeasure(II)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/compose/ui/platform/h0$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Landroidx/datastore/preferences/protobuf/c;-><init>()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11809,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/datastore/preferences/protobuf/c.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11809,
+        "identity": "Landroidx/datastore/preferences/protobuf/c;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/datastore/preferences/protobuf/c$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/clearcut/s;-><init>()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26342,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/clearcut/s.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26342,
+        "identity": "Lcom/google/android/gms/internal/clearcut/s;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/clearcut/s$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/gms/internal/vision/e1;-><init>()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 26844,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/gms/internal/vision/e1.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 26844,
+        "identity": "Lcom/google/android/gms/internal/vision/e1;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/gms/internal/vision/e1$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/material/textfield/v;->c(Lcom/google/android/material/textfield/v;Ljava/lang/Object;)Ljava/lang/CharSequence;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 34066,
+        "identity": "Lcom/google/android/material/textfield/v;->c(Lcom/google/android/material/textfield/v;Ljava/lang/Object;)Ljava/lang/CharSequence;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/material/textfield/v.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 34066,
+        "identity": "Lcom/google/android/material/textfield/v;->c(Lcom/google/android/material/textfield/v;Ljava/lang/Object;)Ljava/lang/CharSequence;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/material/textfield/v$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel;->getValidateString(I)I",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 26605,
+        "identity": "Lcom/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel;->getValidateString(I)I",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 26605,
+        "identity": "Lcom/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel;->getValidateString(I)I",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java",
+        "reason": "required genuine field declaration unavailable"
+      }
+    },
+    {
+      "identity": "Leq/e;-><init>()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 44347,
+        "identity": "Leq/e;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "eq/e.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 44347,
+        "identity": "Leq/e;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "eq/e$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Leq/f;-><init>()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 44370,
+        "identity": "Leq/f;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "eq/f.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 44370,
+        "identity": "Leq/f;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "eq/f$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Leq/g;-><init>()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 44383,
+        "identity": "Leq/g;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "eq/g.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 44383,
+        "identity": "Leq/g;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "eq/g$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    },
+    {
+      "identity": "Lj8/i;-><init>(Ljava/io/InputStream;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 46163,
+        "identity": "Lj8/i;-><init>(Ljava/io/InputStream;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "j8/i.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 46163,
+        "identity": "Lj8/i;-><init>(Ljava/io/InputStream;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_without_written_unit"
+      }
+    },
+    {
+      "identity": "Lla/i;-><init>()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 49217,
+        "identity": "Lla/i;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "la/i.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 49217,
+        "identity": "Lla/i;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_without_written_unit"
+      }
+    },
+    {
+      "identity": "Lm0/b0;->getKey()Ljq/i$c;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 49427,
+        "identity": "Lm0/b0;->getKey()Ljq/i$c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "m0/b0.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 49427,
+        "identity": "Lm0/b0;->getKey()Ljq/i$c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_without_written_unit"
+      }
+    },
+    {
+      "identity": "Lut/j;-><init>()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 62323,
+        "identity": "Lut/j;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "ut/j.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 62323,
+        "identity": "Lut/j;-><init>()V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "ut/j$type.java",
+        "reason": "protected access: aliased hierarchy identity proof unavailable"
+      }
+    }
+  ],
+  "unavailable_field_declarations_in_written_units": 298,
+  "unavailable_field_reason_counts": {
+    "interface field initializer unavailable": 298
+  },
+  "unavailable_field_samples": [
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/androidx/room/a0$type.java",
+      "field_index": 10279,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/androidx/room/b0$type.java",
+      "field_index": 10287,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/at/f$type.java",
+      "field_index": 380,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/bs/l0$type.java",
+      "field_index": 625,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/bu/x1$type.java",
+      "field_index": 350,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/c3/g$type.java",
+      "field_index": 11599,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/google/android/material/oneui/floatingactioncontainer/a$type.java",
+      "field_index": 16407,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/google/firebase/components/i$type.java",
+      "field_index": 17319,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/google/firebase/sessions/a$type.java",
+      "field_index": 433,
+      "reason": "interface field initializer unavailable"
+    },
+    {
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/google/firebase/sessions/b$type.java",
+      "field_index": 435,
+      "reason": "interface field initializer unavailable"
+    }
+  ],
+  "representatives": [
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7160389004275203,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-0.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.java",
+      "sha256": "37ce8c433c0b9dceb01cc1c338c80f7d80a642c7b616cf20127420e36140bf18"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/e$type.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7157340487465262,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-1.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/e$type.java",
+      "sha256": "6bb700333cef3ebc565e99f9842a72cd645696cd3cd8896e9fb9e8fef475b07b"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/d$type.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.6654781689867377,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-2.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/ocr/nfc/d$type.java",
+      "sha256": "dd321e884cbea1955252fd7ceaf7b1c864a117451f94b8afb3789544d47a916b"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7656428460031748,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-3.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/AppInfoColumns.java",
+      "sha256": "6a4fe116357e101ca1d0f7a2f8c2d8eaff6cce6412e2ba12feaf0814b82a3c6a"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7158648972399533,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-4.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/passservice/common/storage/db/KeyInfoColumns.java",
+      "sha256": "b427fbe781efcff57a5c6527b3d1566df0d75c05c32a95a59420cb1908fb3833"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/m0/q0$type.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.8664473239332438,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-5.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/m0/q0$type.java",
+      "sha256": "e59a97aea3ec3d52c697fb77036da5ce92877f258631efdbf690e6736a4774e7"
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/c/c$type.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.8159827389754355,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-6.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/c/c$type.java",
+      "sha256": "6759c35450540284544a7455f807f9534472bb508526131bdb777232660fd8bf"
+    },
+    {
+      "requested_unit": "m0/b0$type.java",
+      "not_published": true
+    },
+    {
+      "command": [
+        "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+        "-proc:none",
+        "-classpath",
+        "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+        "-sourcepath",
+        "/tmp/opencode/samsung-pass-continuation-final/empty-sourcepath",
+        "-d",
+        "/tmp/opencode/samsung-pass-continuation-final/classes",
+        "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java"
+      ],
+      "exit_code": 1,
+      "seconds": 0.8662390974350274,
+      "log": "/tmp/opencode/samsung-pass-continuation-final/representative-8.log",
+      "source_path": "/tmp/opencode/decomphify-java-corpus/run-1790871140841023213-740155/com.samsung.android.samsungpass/sources/com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java",
+      "sha256": "1672bb2e0ef4ff141deb74721a38599d5849ce992be40f1fce20760ade9b6ada"
+    }
+  ],
+  "source_hashes_unchanged": true,
+  "export_seconds": 47.504,
+  "workers": 30,
+  "metadata": [
+    "java.base.jmod JDK17",
+    "android-35/android.jar"
+  ],
+  "metadata_cache": "Existing per-input classpath and per-DEX DexMetadata/Resolver indexes shared by class workers; no per-class rebuild added",
+  "compiled_apk": false
+}

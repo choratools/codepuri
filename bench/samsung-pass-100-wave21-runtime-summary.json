@@ -1,0 +1,28 @@
+{
+  "variant": "wave21-runtime",
+  "baseline": "wave20 SDK-only",
+  "promoted_to_sdk_baseline": false,
+  "code_bearing_definitions": 194286,
+  "accepted": 181036,
+  "accepted_percent": 93.18015708800428,
+  "gained": 331,
+  "lost": 209,
+  "javac_diagnostics": 52243,
+  "syntax_exit": 0,
+  "compile_exit": 1,
+  "terminal": {
+    "finished_at": "2026-10-03T16:43:28.067097+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "runtime_metadata_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "artifact_root": "/tmp/opencode/samsung-pass-100-wave21-runtime",
+  "limits": [
+    "Runtime DEX is not a compiler classpath",
+    "Installed APK/framework co-observation does not prove historical build compatibility",
+    "No app execution or native recovery"
+  ]
+}

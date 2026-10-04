@@ -1,0 +1,25 @@
+Java subset report: JavaReport {
+    unavailable_initialization_units: 1,
+    category_reasons: {
+        "constructor\tinitialization: whole-input final-write proof indeterminate (2135 unknown observations)": 19,
+        "ordinary\tbackend: Metadata(\"handler/body throw checked exceptions are not covered\")": 4,
+        "ordinary\trequired complete method body unavailable": 31,
+    },
+    complete_constructors: 1,
+    complete_static_initializers: 0,
+    semantic_bodies_with_unresolved_dependencies: 10,
+    semantic_bodies_outside_strict_dependency_closure: 31,
+    declaration_only_methods: 0,
+    fields_emitted: 4,
+    classes_seen: 34579,
+    classes_emitted: 1,
+    complete_methods: 8,
+    unsupported_methods: 35,
+    unavailable_constructors: 19,
+    skipped_classes: 34578,
+    reasons: {
+        "backend: Metadata(\"handler/body throw checked exceptions are not covered\")": 4,
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)": 19,
+        "required complete method body unavailable": 31,
+    },
+}

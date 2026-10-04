@@ -1,0 +1,194 @@
+{
+  "receipt": "receipt.json",
+  "jar_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "apk_build_match": "not_attested",
+  "metadata_kind": "genuine runtime DEX declaration; not JVM classfile or javac availability proof",
+  "unique_class_owners": 43973,
+  "duplicate_class_owners": 0,
+  "dex_class_inventory": [
+    {
+      "dex": "classes.dex",
+      "version": 39,
+      "class_def_count": 6435,
+      "method_id_count": 65534
+    },
+    {
+      "dex": "classes2.dex",
+      "version": 39,
+      "class_def_count": 7111,
+      "method_id_count": 65460
+    },
+    {
+      "dex": "classes3.dex",
+      "version": 39,
+      "class_def_count": 7759,
+      "method_id_count": 65385
+    },
+    {
+      "dex": "classes4.dex",
+      "version": 39,
+      "class_def_count": 7815,
+      "method_id_count": 65463
+    },
+    {
+      "dex": "classes5.dex",
+      "version": 39,
+      "class_def_count": 7085,
+      "method_id_count": 64193
+    },
+    {
+      "dex": "classes6.dex",
+      "version": 39,
+      "class_def_count": 6802,
+      "method_id_count": 64963
+    },
+    {
+      "dex": "classes7.dex",
+      "version": 39,
+      "class_def_count": 966,
+      "method_id_count": 12625
+    }
+  ],
+  "target_methods": [
+    {
+      "dex": "classes4.dex",
+      "method_index": 37947,
+      "signature": "Landroid/view/View;->semSetHoverPopupType(I)V",
+      "definition_list": "virtual",
+      "access_flags": 1,
+      "code_offset": 3807084,
+      "dex_code_present": true,
+      "method_annotation_count": 1,
+      "throws_annotation_present": false,
+      "declared_exception_descriptors": [],
+      "owner": {
+        "dex": "classes4.dex",
+        "descriptor": "Landroid/view/View;",
+        "access_flags": 1,
+        "class_def_offset": 1478336,
+        "class_data_offset": 8305107,
+        "superclass": "Ljava/lang/Object;",
+        "interfaces": [
+          "Landroid/graphics/drawable/Drawable$Callback;",
+          "Landroid/view/KeyEvent$Callback;",
+          "Landroid/view/accessibility/AccessibilityEventSource;"
+        ],
+        "annotations_directory_offset": 8768428,
+        "annotations_directory_decoded": true
+      }
+    },
+    {
+      "dex": "classes3.dex",
+      "method_index": 46280,
+      "signature": "Landroid/os/UserHandle;->semGetCallingUserId()I",
+      "definition_list": "direct",
+      "access_flags": 25,
+      "code_offset": 3981468,
+      "dex_code_present": true,
+      "method_annotation_count": 0,
+      "throws_annotation_present": false,
+      "declared_exception_descriptors": [],
+      "owner": {
+        "dex": "classes3.dex",
+        "descriptor": "Landroid/os/UserHandle;",
+        "access_flags": 17,
+        "class_def_offset": 1574968,
+        "class_data_offset": 8041786,
+        "superclass": "Ljava/lang/Object;",
+        "interfaces": [
+          "Landroid/os/Parcelable;"
+        ],
+        "annotations_directory_offset": 8553420,
+        "annotations_directory_decoded": true
+      }
+    }
+  ],
+  "hierarchy_declarations": [
+    {
+      "dex": "classes4.dex",
+      "descriptor": "Landroid/view/View;",
+      "access_flags": 1,
+      "class_def_offset": 1478336,
+      "class_data_offset": 8305107,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [
+        "Landroid/graphics/drawable/Drawable$Callback;",
+        "Landroid/view/KeyEvent$Callback;",
+        "Landroid/view/accessibility/AccessibilityEventSource;"
+      ],
+      "annotations_directory_offset": 8768428,
+      "annotations_directory_decoded": true
+    },
+    {
+      "dex": "classes4.dex",
+      "descriptor": "Landroid/view/accessibility/AccessibilityEventSource;",
+      "access_flags": 1537,
+      "class_def_offset": 1478304,
+      "class_data_offset": 8305093,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [],
+      "annotations_directory_offset": 0,
+      "annotations_directory_decoded": false
+    },
+    {
+      "dex": "classes4.dex",
+      "descriptor": "Landroid/view/KeyEvent$Callback;",
+      "access_flags": 1537,
+      "class_def_offset": 1478272,
+      "class_data_offset": 8257161,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [],
+      "annotations_directory_offset": 8768412,
+      "annotations_directory_decoded": true
+    },
+    {
+      "dex": "classes2.dex",
+      "descriptor": "Landroid/graphics/drawable/Drawable$Callback;",
+      "access_flags": 1537,
+      "class_def_offset": 1158880,
+      "class_data_offset": 7095747,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [],
+      "annotations_directory_offset": 7670212,
+      "annotations_directory_decoded": true
+    },
+    {
+      "dex": "classes3.dex",
+      "descriptor": "Landroid/os/UserHandle;",
+      "access_flags": 17,
+      "class_def_offset": 1574968,
+      "class_data_offset": 8041786,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [
+        "Landroid/os/Parcelable;"
+      ],
+      "annotations_directory_offset": 8553420,
+      "annotations_directory_decoded": true
+    },
+    {
+      "dex": "classes3.dex",
+      "descriptor": "Landroid/os/Parcelable;",
+      "access_flags": 1537,
+      "class_def_offset": 1400280,
+      "class_data_offset": 7702320,
+      "superclass": "Ljava/lang/Object;",
+      "interfaces": [],
+      "annotations_directory_offset": 8362764,
+      "annotations_directory_decoded": true
+    }
+  ],
+  "missing_hierarchy_owners": [
+    "Ljava/lang/Object;"
+  ],
+  "other_target_annotations": [
+    {
+      "dex": "classes4.dex",
+      "method_index": 37947,
+      "descriptor": "Landroid/view/RemotableViewMethod;",
+      "visibility": "Runtime",
+      "offset": 8008648,
+      "size": 4
+    }
+  ]
+}

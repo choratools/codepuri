@@ -1,0 +1,14 @@
+{
+  "aborted_wrong_scope": {
+    "root": "/tmp/opencode/decomphify-java-corpus/run-1790947062970324754-1478585",
+    "reason": "gdb run redirection replaced --args; defaults102apps/1worker detected; inferior explicitly killed",
+    "exclude_from_coverage": true
+  },
+  "corrected": {
+    "root": "/tmp/opencode/decomphify-java-corpus/run-1790947242253538330-1497799",
+    "apps": 1,
+    "workers": 30,
+    "debugger_session": 23443,
+    "profile_only_time_not_comparable": true
+  }
+}

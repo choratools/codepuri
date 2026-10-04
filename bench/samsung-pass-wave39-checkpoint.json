@@ -1,0 +1,27 @@
+{
+  "goal_complete": false,
+  "status": "regression_gate_failed",
+  "baseline": "wave38",
+  "workspace_session": 26422,
+  "clippy_release_session": 9981,
+  "literal_one_nonconvergence_candidate_rejected": "/tmp/opencode/wave39-root-n0/candidate-rejection.json",
+  "fixed_actual_n0_profile": "/tmp/opencode/wave39-root-n0-domain",
+  "actual_n0_method8355_complete": true,
+  "actual_n0_profile_unsupported": 0,
+  "actual_n0_profile_seconds": 34.024656,
+  "bridge_evidence": "/tmp/opencode/wave38-final-bridge-patch/report.md",
+  "bridge_reflection_or_external_compiled_narrow_abi_equivalence": false,
+  "whole_app_compile_verified": false,
+  "updated_at": "2026-10-04T05:02:09.586548+00:00",
+  "driver_exit_code": 1,
+  "candidate_accepted": false,
+  "accepted_baseline": "wave38",
+  "workspace_tests": {
+    "passed": 1116,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 187,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave39-workspace-tests.log"
+  }
+}

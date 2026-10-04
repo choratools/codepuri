@@ -1,0 +1,62 @@
+{
+  "status": "regression_gate_failed",
+  "candidate_accepted": false,
+  "goal_complete": false,
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave39",
+  "coverage_candidate": {
+    "strict_code_bearing_accepted": 184077,
+    "strict_code_bearing_percent": 94.74537537444797,
+    "remaining_code_bearing_to_target": 10209
+  },
+  "gained": 28,
+  "lost": 18,
+  "lost_identities": [
+    "Lcom/yessign/fido/crypto/engines/DESEngine;->a(Z[B)[I",
+    "Lcom/yessign/fido/crypto/engines/DESEngine;->init(ZLcom/yessign/fido/crypto/CipherParameters;)V",
+    "Ljh/a0;->equals(Ljava/lang/Object;)Z",
+    "Lms/q;->isInitialized()Z",
+    "Lms/w;->isInitialized()Z",
+    "Lms/x;->isInitialized()Z",
+    "Lorg/bouncycastle/crypto/engines/DESBase;->generateWorkingKey(Z[B)[I",
+    "Lorg/bouncycastle/crypto/engines/DESEngine;->generateWorkingKey(Z[B)[I",
+    "Lorg/bouncycastle/crypto/engines/DESEngine;->init(ZLorg/bouncycastle/crypto/CipherParameters;)V",
+    "Lorg/bouncycastle/pqc/crypto/picnic/Tree;->addMerkleNodes([II[BI)I",
+    "Lorg/bouncycastle/pqc/crypto/picnic/Tree;->getRevealedMerkleNodes([II[I)[I",
+    "Lorg/bouncycastle/pqc/crypto/picnic/Tree;->openMerkleTree([II[I)[B",
+    "Lorg/bouncycastle/pqc/crypto/picnic/Tree;->openMerkleTreeSize([II)I",
+    "Lps/a$b;->isInitialized()Z",
+    "Lps/a$c;->isInitialized()Z",
+    "Lps/a$d;->isInitialized()Z",
+    "Lps/a$e$c;->isInitialized()Z",
+    "Lps/a$e;->isInitialized()Z"
+  ],
+  "javac_diagnostics": 50691,
+  "syntax_exit": 0,
+  "no_loss_gate": {
+    "exit_code": 1,
+    "baseline": "wave38",
+    "finished_at": "2026-10-04T05:08:55.930148+00:00"
+  },
+  "workspace_session": 26422,
+  "remediation_workspace": "/tmp/opencode/wave40-loss-workspace",
+  "accepted_baseline": "wave38",
+  "workspace_tests": {
+    "passed": 1116,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 187,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave39-workspace-tests.log"
+  },
+  "regression_breakdown": {
+    "direct_int_to_byte": 8,
+    "direct_int_to_boolean": 5,
+    "dependent_callers": 5
+  },
+  "diagnostic_revision": {
+    "hoisted_definition_hypothesis": "disproved by actual trace",
+    "actual_des41952_gate": "ArrayPut boolean component uses get+compatible instead of checked operand",
+    "actual_ms_q55217_gate": "FieldPut Byte of proven constant1 lacks safe contextual narrowing"
+  },
+  "pending_repair": "/tmp/opencode/wave40-loss-workspace"
+}

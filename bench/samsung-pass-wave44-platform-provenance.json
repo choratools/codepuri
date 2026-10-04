@@ -1,0 +1,19 @@
+{
+  "device": "R3CW704ZNRP",
+  "model": "SM_F731N",
+  "sdk": 36,
+  "release": "16",
+  "fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "apk_sha256_device": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "apk_sha256_frozen": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "runtime_path": "/system/framework/framework.jar",
+  "local_path": "/tmp/opencode/samsung-framework-metadata/framework.jar",
+  "runtime_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "local_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "experiment_session": 34925,
+  "original_descriptor": "Lcom/samsung/android/samsungpass/common/util/UiUtils;",
+  "scope": "explicit runtime metadata experiment, not accepted corpus baseline or javac classpath",
+  "interrupted_wrong_descriptor_session": 25352,
+  "interrupted_exit": 143,
+  "interruption_reason": "wrong original class descriptor detected from DEX evidence; corrected run34925"
+}

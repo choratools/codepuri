@@ -1,0 +1,94 @@
+{
+  "state": "terminal_candidate_rejected_no_loss_gate",
+  "accepted_baseline": "wave29",
+  "root": "/tmp/opencode/samsung-pass-100-wave33",
+  "objective_complete": false,
+  "executable": {
+    "recovered": 183078,
+    "denominator": 194286,
+    "percent": 94.23118495413978,
+    "remaining": 11208
+  },
+  "original_defined": 205497,
+  "explicit": 182649,
+  "enum_equivalents": 429,
+  "retained_bodyless": 11183,
+  "bodyless_pending": 28,
+  "vs_wave29": {
+    "gained": 1238,
+    "lost": 9,
+    "lost_identities": [
+      "Ldm/b;->g(Lhm/d;Ljava/lang/String;)Lah/d;",
+      "Ldm/d;->d()Lah/c;",
+      "Ldm/d;->e(ILhm/d;Lhm/b;Ljava/lang/String;)Lah/d;",
+      "Lfs/f;->h(Lfs/f;)[Lct/k;",
+      "Lfs/f;->k(Lfs/f;)[Lct/k;",
+      "Lgr/f;->a(Lcq/p;)Ler/h;",
+      "Lhr/b2$a;->g(Lhr/b2$a;)Lcq/s0;",
+      "Lhr/b2$a;->o(Lhr/b2$a;)Lcq/s0;",
+      "Lsr/a;->a(Lsr/f;)Lct/k;"
+    ]
+  },
+  "export": {
+    "finished_at": "2026-10-04T00:55:11.461467+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "source_units": 32417,
+  "syntax": 0,
+  "full_javac": {
+    "exit_code": 1,
+    "diagnostics": 50727,
+    "cap_reached": false,
+    "source_hashes_unchanged": true
+  },
+  "workspace": {
+    "terminal_exit": 0,
+    "passed": 1085,
+    "failed": 0,
+    "ignored": 151,
+    "suites": 185,
+    "log": "/tmp/opencode/wave33-root-workspace-tests.log",
+    "sha256": "ee2ec6d1e42c3ac460715cc527ede7935bc95f6518f962720b731a477fe14e00"
+  },
+  "root_gates": {
+    "release": "pass 40.92s",
+    "strict_clippy": "pass workspace all-targets 11.15s",
+    "fmt": "pass"
+  },
+  "performance": {
+    "export_wall_seconds": 380.63,
+    "peak_rss_kib": 17477060,
+    "concurrent_workspace_tests": true
+  },
+  "restored_original_sites": [
+    "classes.dex:122",
+    "classes.dex:23981",
+    "classes.dex:23982",
+    "classes.dex:23984",
+    "classes.dex:23985",
+    "classes.dex:23987",
+    "classes3.dex:31994",
+    "classes4.dex:10608",
+    "classes4.dex:10609",
+    "classes4.dex:10620",
+    "classes4.dex:10621"
+  ],
+  "next": "prove exact remaining checked-source caller facts and disjoint allocation effect ownership; continue 100% goal",
+  "restored_original_statuses": {
+    "classes.dex:122": "complete_body",
+    "classes.dex:23981": "complete_body",
+    "classes.dex:23982": "complete_body",
+    "classes.dex:23984": "complete_body",
+    "classes.dex:23985": "complete_body",
+    "classes.dex:23987": "complete_body",
+    "classes3.dex:31994": "complete_body",
+    "classes4.dex:10608": "complete_body",
+    "classes4.dex:10609": "complete_body",
+    "classes4.dex:10620": "complete_body",
+    "classes4.dex:10621": "complete_body"
+  }
+}

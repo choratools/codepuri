@@ -1,0 +1,21 @@
+{
+  "state": "frozen_full_export_and_workspace_running",
+  "root": "/tmp/opencode/samsung-pass-100-wave36",
+  "baseline": "wave35",
+  "changed_sources": [
+    "crates/backend-java/src/constructor_initialized_suffix.rs",
+    "crates/backend-java/src/constructor_mutable_suffix_tests.rs",
+    "crates/decomp/src/java_source_throws_final_tests.rs",
+    "crates/decomp/src/java_source_throws_integration.rs",
+    "crates/dex-decompiler/src/merge/fuse.rs",
+    "crates/dex-decompiler/tests/merge_edge_order.rs"
+  ],
+  "fmt_passed": true,
+  "workspace_strict_clippy_passed": true,
+  "release_build_passed": true,
+  "bounded_actual_constructors": [
+    10372,
+    29753
+  ],
+  "goal_complete": false
+}

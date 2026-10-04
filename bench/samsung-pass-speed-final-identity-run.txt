@@ -1,0 +1,16 @@
+{
+  "denominator": 205497,
+  "required_90_percent": 184948,
+  "strict_accepted": 160737,
+  "strict_percent": 78.2186601264252,
+  "remaining_to_target": 24211,
+  "statuses": {
+    "complete_body": 160431,
+    "rejected_in_written_unit": 29493,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 4127,
+    "proven_enum_equivalence": 306
+  },
+  "ledger": "/tmp/opencode/samsung-pass-speed-final/method-coverage.jsonl",
+  "ledger_sha256": "191cc02098decdaa7a783e98ea815731ad4938930b327dcfe68d5ac59f45f3f2"
+}

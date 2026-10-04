@@ -1,0 +1,21 @@
+{
+  "measurement": "one sequential matched frozen binary pair; inventory cache only varied",
+  "delta_percent": 2.41918040468746,
+  "speedup": 1.0247915565243282,
+  "counts_equal": true,
+  "paths_equal": true,
+  "exact_source_bytes_equal": false,
+  "changed_files": 4067,
+  "identity_comparison": "bench/samsung-pass-memory-cache-identity-comparison.json",
+  "claims_whole_app_compilation": false,
+  "claims_statistically_reliable_speedup": false,
+  "workspace_tests": {
+    "passed": 690,
+    "failed": 0,
+    "ignored": 40
+  },
+  "workspace_clippy_all_targets": "passed",
+  "workspace_format_check": "passed",
+  "targeted_cache_tests_passed": 17,
+  "cache_facade_differential": "passed"
+}

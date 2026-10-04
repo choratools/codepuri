@@ -1,0 +1,1956 @@
+{
+  "count": 81,
+  "reasons": {
+    "backend: Instruction(\"observable or throwing operation before initializer\")": 9,
+    "required complete method body unavailable": 62,
+    "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")": 6,
+    "initialization explicit-store definite assignment: FieldInitializationUnavailable": 3,
+    "backend: ControlFlow(\"Instruction(\\\"allocation may throw OOM before initializer\\\")\")": 1
+  },
+  "identities": [
+    {
+      "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 9604,
+        "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/compose/ui/platform/AndroidComposeView.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 9604,
+        "identity": "Landroidx/compose/ui/platform/AndroidComposeView;->n(Lxq/l;Lxq/a;)Li1/w0;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/compose/ui/platform/AndroidComposeView.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 15264,
+        "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/lifecycle/w$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 15264,
+        "identity": "Landroidx/lifecycle/w;->d(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/lifecycle/w$type.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 15267,
+        "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/lifecycle/w$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 15267,
+        "identity": "Landroidx/lifecycle/w;->g(Ljava/lang/Class;)I",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/lifecycle/w$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 31115,
+        "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/android/material/floatingactionbutton/a$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 31115,
+        "identity": "Lcom/google/android/material/floatingactionbutton/a;->A(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;Landroid/content/res/ColorStateList;I)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/android/material/floatingactionbutton/a$type.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3277,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3277,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->b(Ljava/lang/Object;Z)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3278,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3278,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->c(Ljava/util/Map$Entry;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3280,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3280,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->containsKey(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3281,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3281,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->d(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3285,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3285,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->g(Ljava/lang/Object;)Lcom/google/gson/internal/LinkedTreeMap$Node;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3286,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3286,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->get(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3291,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3291,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3292,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3292,
+        "identity": "Lcom/google/gson/internal/LinkedTreeMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/LinkedTreeMap.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19043,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19043,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19046,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19046,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->b(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19048,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19048,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->d()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 19050,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 19050,
+        "identity": "Lcom/samsung/android/honeyboard/support/category/CategoryLayout;->f(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/honeyboard/support/category/CategoryLayout.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 28820,
+        "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 28820,
+        "identity": "Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion;->getInstance(Landroid/content/Context;)Lcom/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/common/db/signindb/WebSigninDBManager$Companion.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37896,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37896,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->A(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37898,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37898,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->C(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37899,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37899,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->D(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37900,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37900,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->E(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37908,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37908,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->M(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37910,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37910,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->O(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37912,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37912,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Q(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37915,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37915,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->T(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37918,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37918,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->W(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37919,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37919,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->X(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37921,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37921,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->Z(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37926,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37926,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37923,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37923,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37933,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37933,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$default(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;ZILjava/lang/Object;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37936,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37936,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37932,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37932,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode(Lcom/samsung/android/samsungpass/intro/state/WelcomeState;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37942,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37942,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->confirmPasswordForIntroActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37944,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37944,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->e0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37948,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37948,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37950,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37950,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37952,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37952,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Throwable;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37949,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37949,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getAccessTokenForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37959,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37959,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getServicePolicyForInit$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37968,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37968,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37974,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37974,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->i0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37975,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37975,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->initViews(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37983,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37983,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->loadWelcomePageView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37984,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37984,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSAGuideView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37985,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37985,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeServiceIntroPage()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37988,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37988,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/common/samsungaccount/SamsungAccountHelper$OnAccessTokenListener;ZLandroid/os/Bundle;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37987,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37987,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->makeSignedInView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37989,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37989,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onBackPressed()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37990,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37990,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onConfigurationChanged(Landroid/content/res/Configuration;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37991,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37991,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37993,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37993,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onResume()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37994,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37994,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onStart()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 37996,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 37996,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->onViewCreated$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/intro/state/WelcomeState;)Lcq/a1;",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38001,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38001,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setAgreementContent(Z)V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38002,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38002,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setButtonEnabled$SamsungPass_prodRelease(Z)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38007,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38007,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTNCVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38008,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38008,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setTncView()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38010,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38010,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setWelcomePageBodyVisibility$SamsungPass_prodRelease(I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38011,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38011,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->setupForSignedIn()V",
+        "category": "ordinary",
+        "access_flags": 18,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38014,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38014,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38015,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38015,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->signInForWelcomeActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38017,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38017,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->validationCheckActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38018,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38018,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->webViewActivityLauncher$lambda$0(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 26,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 38019,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 38019,
+        "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->x(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/base/common/utils/UiExtension$DefaultActivityResult;)V",
+        "category": "ordinary",
+        "access_flags": 4105,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 12816,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/provider/state/StateRepository.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 12816,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/provider/state/StateRepository;->query(Landroid/content/Context;Landroid/net/Uri;[Ljava/lang/String;)Landroid/database/Cursor;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/provider/state/StateRepository.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 42869,
+        "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/yessign/fido/jce/provider/PBE$Util.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 42869,
+        "identity": "Lcom/yessign/fido/jce/provider/PBE$Util;->a(Lcom/yessign/fido/jce/provider/JCEPBEKey;Ljava/security/spec/AlgorithmParameterSpec;I)Lcom/yessign/fido/crypto/CipherParameters;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/yessign/fido/jce/provider/PBE$Util.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Le2/g;->G1(IIII)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39168,
+        "identity": "Le2/g;->G1(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39168,
+        "identity": "Le2/g;->G1(IIII)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Le2/g;->r2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39202,
+        "identity": "Le2/g;->r2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39202,
+        "identity": "Le2/g;->r2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Le2/g;->s2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39203,
+        "identity": "Le2/g;->s2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39203,
+        "identity": "Le2/g;->s2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Le2/g;->t2([Le2/e;III[I)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 39204,
+        "identity": "Le2/g;->t2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "e2/g$type.java"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 39204,
+        "identity": "Le2/g;->t2([Le2/e;III[I)V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "e2/g$type.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45445,
+        "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fr/d$type.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45445,
+        "identity": "Lfr/d;->a(Lkt/q1;Lkt/u1;Ljava/util/List;Z)Lkt/c1;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fr/d$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 45446,
+        "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "fr/d$type.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 45446,
+        "identity": "Lfr/d;->b(Ler/f;Ljava/util/List;ZLjava/util/List;)Ler/p;",
+        "category": "ordinary",
+        "access_flags": 25,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "fr/d$type.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47486,
+        "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47486,
+        "identity": "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      }
+    },
+    {
+      "identity": "Llg/c;->a(IIZ)Llg/c;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47487,
+        "identity": "Llg/c;->a(IIZ)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47487,
+        "identity": "Llg/c;->a(IIZ)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 47496,
+        "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "lg/c$type.java"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 47496,
+        "identity": "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "lg/c$type.java",
+        "reason": "required complete method body unavailable"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 27509,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature.java"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 27509,
+        "identity": "Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature$Builder;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/crypto/xmss/XMSSReducedSignature.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 29038,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 29038,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyUnwrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 29039,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 29039,
+        "identity": "Lorg/bouncycastle/pqc/jcajce/provider/util/WrapUtil;->getKeyWrapper(Lorg/bouncycastle/jcajce/spec/KTSParameterSpec;[B)Lorg/bouncycastle/crypto/Wrapper;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "org/bouncycastle/pqc/jcajce/provider/util/WrapUtil.java",
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 39988,
+        "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "retrofit2/i$type.java"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 39988,
+        "identity": "Lretrofit2/i;->f(Lretrofit2/q;Ljava/lang/reflect/Method;Lretrofit2/p;)Lretrofit2/i;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "retrofit2/i$type.java",
+        "reason": "backend: ControlFlow(\"Instruction(\\\"allocation may throw OOM before initializer\\\")\")"
+      }
+    },
+    {
+      "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 60987,
+        "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "tr/s$type.java"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 60987,
+        "identity": "Ltr/s;-><init>(Ljava/lang/reflect/Type;)V",
+        "category": "constructor",
+        "access_flags": 65537,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "tr/s$type.java",
+        "reason": "initialization explicit-store definite assignment: FieldInitializationUnavailable"
+      }
+    }
+  ]
+}

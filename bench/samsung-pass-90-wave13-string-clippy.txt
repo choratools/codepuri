@@ -1,0 +1,256 @@
+    Checking backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:36:39
+   |
+36 |             0..=31 | 34 | 92 | 127 => write!(source, "\\{unit:03o}").unwrap(),
+   |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+   = note: `-D clippy::unwrap-used` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::unwrap_used)]`
+
+error: used `unwrap()` on an `Option` value
+  --> crates/backend-java/src/java_string_literal.rs:37:37
+   |
+37 |             32..=126 => source.push(char::from_u32(u32::from(*unit)).unwrap()),
+   |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:38:18
+   |
+38 |             _ => write!(source, "\\u{unit:04x}").unwrap(),
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: could not compile `backend-java` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:64:9
+   |
+64 |         std::fs::create_dir_all(&dir).unwrap();
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:70:27
+   |
+70 |             let literal = render(&units).unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:72:13
+   |
+72 |             writeln!(source,"static String s{chunk}() {{return {literal};}} static String d{chunk}() {{return {literal};}}").unwrap();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:78:9
+   |
+78 | /         writeln!(
+79 | |             source,
+80 | |             "static String tricky() {{return {};}}",
+81 | |             render(&adversarial).unwrap()
+82 | |         )
+83 | |         .unwrap();
+   | |_________________^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:81:13
+   |
+81 |             render(&adversarial).unwrap()
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:84:9
+   |
+84 | /         writeln!(
+85 | |             source,
+86 | |             "static String boundary() {{return {};}}",
+87 | |             render(&vec![0x800; 21845]).unwrap()
+88 | |         )
+89 | |         .unwrap();
+   | |_________________^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:87:13
+   |
+87 |             render(&vec![0x800; 21845]).unwrap()
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:92:13
+   |
+92 | ...   writeln!(source,"s=s{chunk}(); if(s != d{chunk}() || s != s.intern() || s.length()!=1024) throw new AssertionError(); for(int i=0;i<1024;i++) if(s.charAt(i)!=(char)({chunk}*1024+i)) throw new AssertionError();").unwrap();
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> crates/backend-java/src/java_string_literal.rs:99:9
+   |
+99 | ...   writeln!(source,"int[] expected={{{expecte...45) throw new AssertionError(); }} }}").unwrap();
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> crates/backend-java/src/java_string_literal.rs:100:9
+    |
+100 |         std::fs::write(dir.join("LiteralProof.java"), source).unwrap();
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> crates/backend-java/src/java_string_literal.rs:109:26
+    |
+109 |             let output = command.output().unwrap();
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> crates/backend-java/src/java_string_literal.rs:116:22
+    |
+116 |           let output = Command::new(format!("{JDK}/javap"))
+    |  ______________________^
+117 | |             .current_dir(&dir)
+118 | |             .args(["-c", "-p", "LiteralProof"])
+119 | |             .output()
+120 | |             .unwrap();
+    | |_____________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> crates/backend-java/src/java_string_literal.rs:122:27
+    |
+122 |         let disassembly = String::from_utf8(output.stdout).unwrap();
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> crates/backend-java/src/java_string_literal.rs:123:9
+    |
+123 |         std::fs::write(dir.join("javap.txt"), &disassembly).unwrap();
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:126:23
+    |
+126 |           let methods = disassembly
+    |  _______________________^
+127 | |             .split("  public static void main")
+128 | |             .next()
+129 | |             .unwrap();
+    | |_____________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:142:28
+    |
+142 |                   let body = methods
+    |  ____________________________^
+143 | |                     .split(&format!("static java.lang.String {name}();"))
+144 | |                     .nth(1)
+145 | |                     .unwrap()
+146 | |                     .split("areturn")
+147 | |                     .next()
+148 | |                     .unwrap();
+    | |_____________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:142:28
+    |
+142 |                   let body = methods
+    |  ____________________________^
+143 | |                     .split(&format!("static java.lang.String {name}();"))
+144 | |                     .nth(1)
+145 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:149:17
+    |
+149 | /                 body.lines()
+150 | |                     .find(|line| line.contains("ldc"))
+151 | |                     .unwrap()
+152 | |                     .split("//")
+...   |
+156 | |                     .nth(1)
+157 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:149:17
+    |
+149 | /                 body.lines()
+150 | |                     .find(|line| line.contains("ldc"))
+151 | |                     .unwrap()
+152 | |                     .split("//")
+153 | |                     .next()
+154 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` value
+   --> crates/backend-java/src/java_string_literal.rs:149:17
+    |
+149 | /                 body.lines()
+150 | |                     .find(|line| line.contains("ldc"))
+151 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#unwrap_used
+
+error: could not compile `backend-java` (lib test) due to 23 previous errors

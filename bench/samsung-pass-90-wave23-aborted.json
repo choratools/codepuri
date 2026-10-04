@@ -1,0 +1,8 @@
+{
+  "excluded_from_coverage": true,
+  "root": "/tmp/opencode/decomphify-java-corpus/run-1790954635289878135-2497892/com.samsung.android.samsungpass",
+  "reason": "Field publication used runtime-exclusive encoded planner while facade used explicit-store definite-assignment planner; InitializationUnavailable La2/a$e",
+  "report_available": false,
+  "export_exit": 1,
+  "repair": "Explicit-store analyst catalog and facade use consistent proof contract; old strict catalog APIs preserved"
+}

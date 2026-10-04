@@ -1,0 +1,5 @@
+START apps=1 workers=30 artifacts=/tmp/opencode/decomphify-java-corpus/run-1790955482601570562-2642916
+PARALLELISM app_workers=1 class_workers=30
+DONE com.samsung.android.samsungpass seconds=272.304 report=true errors=0
+app=TOTAL seconds=272.313 report_available=true classes_seen=34579 classes_generated=30524 complete_method_bodies=131451 unsupported_methods=24562 unavailable_constructors=9235 skipped_classes=0 classes_written=30524 complete_constructors=24970 complete_static_initializers=4139 declaration_only_methods=11140 fields_emitted=173503
+COMPLETE artifacts=/tmp/opencode/decomphify-java-corpus/run-1790955482601570562-2642916

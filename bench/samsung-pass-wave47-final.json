@@ -1,0 +1,30 @@
+{
+  "accepted": true,
+  "baseline": "wave43",
+  "artifact": "/tmp/opencode/samsung-pass-100-wave47-runtime-metadata",
+  "executable_accepted": 185753,
+  "executable_total": 194286,
+  "executable_percent": 95.60802116467475,
+  "remaining_executable": 8533,
+  "remaining_bodyless": 28,
+  "explicit_bodies": 185324,
+  "enum_equivalences": 429,
+  "gained": 1188,
+  "lost": 0,
+  "workspace": {
+    "passed": 1193,
+    "failed": 0,
+    "ignored": 164,
+    "exit_code": 0
+  },
+  "sources": 32423,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "javac_diagnostics": 49591,
+  "no_loss_wave43_exit": 0,
+  "no_loss_wave26_exit": 0,
+  "goal_complete": false,
+  "acceptance_scope": "regression-free executable recovery baseline; not whole-source compile or whole-app equivalence",
+  "export_seconds": 483.26,
+  "peak_rss_kib": 36414356
+}

@@ -1,0 +1,20 @@
+{
+  "method": "La4/a;->e(La4/a$h;)V",
+  "dex_method_index": 154,
+  "source_signature_throws": [
+    "java.io.EOFException",
+    "java.io.IOException"
+  ],
+  "source_plan_failure": null,
+  "handler_carrier_path": "capture23 -> copy24 -> goto -> release@317 -> Throw24@320",
+  "missing_source_ingress_capabilities": [
+    "Throw",
+    "ArrayGet",
+    "NewArray"
+  ],
+  "jadx_output": "/tmp/opencode/wave37-jadx-a4.java",
+  "jadx_comparison": "same explicit IOException throws and cleanup rethrow; output lacks declared checked throws and is not a compilation oracle",
+  "diagnostic_receipt": "/tmp/opencode/wave49-source-throws-diagnosis.md",
+  "production_patch_integrated": false,
+  "goal_complete": false
+}

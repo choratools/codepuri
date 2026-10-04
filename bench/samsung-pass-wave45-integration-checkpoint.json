@@ -1,0 +1,80 @@
+{
+  "accepted_baseline": "wave43",
+  "goal_complete": false,
+  "previous_turn": "progress and verified wait",
+  "runtime_candidate": "wave44 rejected by35 original-identity losses despite310 gains",
+  "main_integrated": [
+    "trusted Class-to-Class enum payload upcasts; effects and descriptor casts preserved",
+    "genuine DEX covariant bridge bytes; selected-owner origins only",
+    "constructor exclusive terminal-arm materialization; all-prefix external transfers rejected",
+    "precise lexical typed-capture rethrow; tri-state hierarchy and immediate unknown rejection"
+  ],
+  "parent_tests": {
+    "session": 63859,
+    "terminal_exit": 0,
+    "passed": 2,
+    "failed": 0
+  },
+  "pending": {
+    "aggregate": "fresh MAIN gates followed by frozen wave45 runtime replay; accepted43 and strong26 no-loss gates"
+  },
+  "aggregate_coverage_changed": false,
+  "updated_at": "2026-10-04T08:33:04.321929+00:00",
+  "root_dex_bridge_tests": {
+    "unit_passed": 2,
+    "genuine_framework_tests_passed": 2,
+    "sessions": [
+      49654,
+      47016
+    ],
+    "terminal_exit": 0
+  },
+  "root_constructor_tests": {
+    "initial_session": 83313,
+    "initial_matched_tests": 0,
+    "correction_reason": "full filename was not the Rust module filter",
+    "session": 95485,
+    "terminal_exit": 0,
+    "passed": 13,
+    "failed": 0
+  },
+  "root_typed_capture_tests": {
+    "source_passed": 1,
+    "backend_throws_passed": 43,
+    "failed": 0,
+    "sessions": [
+      42935,
+      94158
+    ]
+  },
+  "wave45_driver": {
+    "session": 67332,
+    "state": "live; full tests/clippy/fmt exit0; release pending",
+    "path": "/tmp/opencode/run_samsung_wave45_gates.py"
+  },
+  "root_full_workspace": {
+    "passed": 1165,
+    "failed": 0,
+    "ignored": 161,
+    "suites": 190,
+    "exit_code": 0
+  },
+  "gate_receipts": [
+    {
+      "gate": "fmt",
+      "exit_code": 0
+    },
+    {
+      "gate": "tests",
+      "exit_code": 0
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 0
+    },
+    {
+      "gate": "release",
+      "exit_code": 0
+    }
+  ]
+}

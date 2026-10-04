@@ -1,0 +1,23 @@
+	Command being timed: "/tmp/opencode/samsung-pass-99-wave9/java_profile.frozen /storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk /tmp/opencode/samsung-pass-99-wave9/java25-runtime --workers 30 --source-release 25 --classpath /home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod --classpath /home/jtjisgod/Android/Sdk/platforms/android-35/android.jar --classpath /home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod --classpath /home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod --metadata-dex /tmp/opencode/samsung-framework-metadata/framework.jar"
+	User time (seconds): 6130.48
+	System time (seconds): 50.49
+	Percent of CPU this job got: 1110%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 9:16.77
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 27454980
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6973364
+	Voluntary context switches: 1129826
+	Involuntary context switches: 741291
+	Swaps: 0
+	File system inputs: 106856
+	File system outputs: 780944
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

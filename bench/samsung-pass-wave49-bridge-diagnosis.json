@@ -1,0 +1,10 @@
+{
+  "original_method_index": 6494,
+  "site_recipe_valid": true,
+  "whole_body_recipe_valid": true,
+  "actual_site_emission_failure": "protected receiver selection proof unavailable",
+  "retry_only_hypothesis": "not established; underlying receiver proof must be fixed first",
+  "live_handle_owned_by": "/root/final_assignment_wave17",
+  "log": "/tmp/opencode/wave50-overlay-emit.log",
+  "goal_complete": false
+}

@@ -1,0 +1,9 @@
+{
+  "terminal_exit": 0,
+  "passed": 1070,
+  "failed": 0,
+  "ignored": 148,
+  "suites": 180,
+  "log": "/tmp/opencode/wave31-root-workspace-tests.log",
+  "log_sha256": "ff567c8338ba0efcfdd788525c7b9300588b8a4aab055c92681625e8703d8578"
+}

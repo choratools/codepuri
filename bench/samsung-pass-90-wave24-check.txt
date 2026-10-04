@@ -1,0 +1,6 @@
+    Checking managed-ir v0.1.0 (/storage_0/decomphify/crates/managed-ir)
+    Checking decomp-structure v0.1.0 (/storage_0/decomphify/crates/decomp-structure)
+    Checking dex-decompiler v0.1.0 (/storage_0/decomphify/crates/dex-decompiler)
+    Checking backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.12s

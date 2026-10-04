@@ -1,0 +1,39 @@
+{
+  "validated_at": "2026-10-03T05:48:20.013035+00:00",
+  "new_field_proof_tests": {
+    "passed": 7,
+    "failed": 0,
+    "seconds": 4.18,
+    "tested_by": "cache_review"
+  },
+  "final_session_release_tests": {
+    "passed": 6,
+    "failed": 0,
+    "ignored": 0,
+    "seconds": 56.31
+  },
+  "final_facade_cache_on_off_test": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 11.82
+  },
+  "strict_workspace_all_target_clippy": {
+    "exit_code": 0
+  },
+  "release_benchmarks_build": {
+    "exit_code": 0
+  },
+  "source_sha256": {
+    "crates/decomp/src/java_field_use_cache.rs": "9435f6f67cbd484cc2cb10a27add8f3ed1e452c06209a00801e141beac0745c6",
+    "crates/decomp/src/java_field_use_cache_tests.rs": "4909ab10e28dbfa2ce11e0b9dfe6b9ae799ebd67ef5663923df4d7f7af93eb96",
+    "crates/decomp/src/java_field_publication.rs": "0eb65b666112a0f27e788ff99ecf3f7c87dcb25b25eb4809516750adfeeff0fa",
+    "crates/decomp/src/java_integration.rs": "c78c1a9c43c2a1bf6662c81029b6c3178f3ec01ae5736fad01ee21c3e99736c0",
+    "crates/decomp/src/java_profile.rs": "75270aa93acde220f5520778fffd1a24d713d34f233338a7b33fa69133251aae",
+    "crates/decomp/examples/java_profile.rs": "d5f12553b5449948cfd6ca9c1d06d1b90e3e1eabf34cc35004ad2a9245b915fc",
+    "crates/decomp/tests/java_integration.rs": "1dc313c4305e208823ed8d1aa1b6701bc854a5f8433947bd8baa5ff11ac9a2e0",
+    "crates/decomp/src/java_session.rs": "c3393681040b6c7a2de97f1a10e5967053a7b2e357a0bafadd9d17c363c4ed2f"
+  },
+  "comparison": "bench/samsung-pass-ram-cache-current-comparison.json",
+  "new_field_cache_cold_speedup_measured": false,
+  "whole_app_compilation_repeated": false
+}

@@ -1,0 +1,402 @@
+[
+  [
+    "Some(MethodKey { owner: \"Lkr/i;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    69
+  ],
+  [
+    "Some(MethodKey { owner: \"Lu8/f;\", name: \"B1\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    28
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/android/material/floatingactionbutton/FloatingActionButton;\", name: \"getImpl\", parameters: [], return_type: \"Lcom/google/android/material/floatingactionbutton/a;\" }): source declared signature absent from emitted subset",
+    27
+  ],
+  [
+    "Some(MethodKey { owner: \"Lvs/i;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    25
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/ArrayDecoders;\", name: \"decodeVarint32\", parameters: [\"[B\", \"I\", \"Lcom/google/protobuf/ArrayDecoders$Registers;\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    22
+  ],
+  [
+    "Some(MethodKey { owner: \"Lfq/b$a;\", name: \"B\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    21
+  ],
+  [
+    "Some(MethodKey { owner: \"Lra/a;\", name: \"E\", parameters: [\"Landroid/os/Parcel;\", \"I\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    20
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/launcher/DeeplinkViewModelImpl;\", name: \"launchActivity\", parameters: [\"Landroidx/appcompat/app/AppCompatActivity;\", \"Landroid/content/Intent;\", \"Z\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    20
+  ],
+  [
+    "Some(MethodKey { owner: \"Landroidx/datastore/preferences/protobuf/i;\", name: \"m\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    20
+  ],
+  [
+    "Some(MethodKey { owner: \"Lvs/o;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    19
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/y;\", name: \"z0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    19
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/threeten/bp/format/DateTimeFormatterBuilder;\", name: \"appendInternal\", parameters: [\"Lorg/threeten/bp/format/DateTimeFormatterBuilder$DateTimePrinterParser;\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    19
+  ],
+  [
+    "Some(MethodKey { owner: \"Lkt/i2;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    18
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/authfw/client/common/Log;\", name: \"log\", parameters: [\"I\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Ljava/lang/Throwable;\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    15
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/k0;\", name: \"V\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    14
+  ],
+  [
+    "Some(MethodKey { owner: \"Lf8/a;\", name: \"c\", parameters: [], return_type: \"Lf8/a;\" }): source declared signature absent from emitted subset",
+    14
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/android/material/carousel/CarouselLayoutManager;\", name: \"X\", parameters: [], return_type: \"Z\" }): source declared signature absent from emitted subset",
+    14
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/s;\", name: \"V\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    13
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedInputStream$UnsafeDirectNioDecoder;\", name: \"readRawVarint32\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    12
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedInputStream$ArrayDecoder;\", name: \"readRawVarint32\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    12
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/s$c;\", name: \"u\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/g0;\", name: \"z0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lf8/a;\", name: \"a0\", parameters: [], return_type: \"Lf8/a;\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/intro/WelcomeFragment;\", name: \"getViewHolder\", parameters: [], return_type: \"Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedInputStream$IterableDirectByteBufferDecoder;\", name: \"readRawVarint32\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedInputStream$StreamDecoder;\", name: \"readRawVarint32\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/BinaryReader$SafeHeapReader;\", name: \"readVarint32\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/sec/android/app/billing/helper/UPHelper;\", name: \"createSamsungBillingIntent\", parameters: [\"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Landroid/graphics/Bitmap;\"], return_type: \"Landroid/content/Intent;\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/jcajce/provider/symmetric/util/BCPBEKey;\", name: \"checkDestroyed\", parameters: [\"Ljavax/security/auth/Destroyable;\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/jsoup/parser/CharacterReader;\", name: \"bufferUp\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Landroidx/recyclerview/widget/RecyclerView;\", name: \"requestLayout\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    11
+  ],
+  [
+    "Some(MethodKey { owner: \"Lc4/c;\", name: \"b\", parameters: [\"Landroidx/fragment/app/Fragment;\"], return_type: \"Lc4/c$c;\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lc4/c;\", name: \"q\", parameters: [\"Lc4/c$c;\", \"Ljava/lang/Class;\", \"Ljava/lang/Class;\"], return_type: \"Z\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/q$a;\", name: \"h\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/k;\", name: \"z0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/q;\", name: \"z0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/SimpleBigDecimal;\", name: \"<init>\", parameters: [\"Ljava/math/BigInteger;\", \"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT233FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT113FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT283FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT131FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT239FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT163FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT193FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT409FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecT571FieldElement;\", name: \"<init>\", parameters: [\"[J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Landroidx/appcompat/widget/t0;\", name: \"getMax\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Landroidx/fragment/app/FragmentManager;\", name: \"a0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    10
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqb/k0;\", name: \"z\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lvs/h;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/a;\", name: \"z0\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lb2/d;\", name: \"r\", parameters: [], return_type: \"Lb2/b;\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/common/dialog/DialogFactory;\", name: \"show\", parameters: [\"Landroidx/fragment/app/FragmentManager;\", \"Ljava/lang/String;\", \"Landroid/os/Bundle;\", \"Lcom/samsung/android/samsungpass/common/dialog/DialogFactory$DialogResultListener;\", \"Landroid/view/View;\", \"Landroidx/preference/Preference;\"], return_type: \"Landroidx/fragment/app/q;\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedOutputStream$ArrayEncoder;\", name: \"writeUInt32NoTag\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/threeten/bp/Duration;\", name: \"create\", parameters: [\"J\", \"I\"], return_type: \"Lorg/threeten/bp/Duration;\" }): source declared signature absent from emitted subset",
+    9
+  ],
+  [
+    "Some(MethodKey { owner: \"Ljt/f;\", name: \"j\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/h$c;\", name: \"H\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/j0;\", name: \"V\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lkt/f2;\", name: \"a\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lb2/d;\", name: \"d\", parameters: [\"Lb2/b;\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lg9/a0;\", name: \"o0\", parameters: [\"Lg9/a0$m;\"], return_type: \"Ljava/lang/Object;\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/passservice/common/net/samsungpass/SamsungPassNetworkOperations;\", name: \"createPartnerAuditSupport\", parameters: [\"Ljava/lang/String;\"], return_type: \"Lcom/samsung/android/samsungpass/passservice/common/net/message/PartnerAuditSupport;\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/passservice/common/net/samsungpass/SamsungPassNetworkOperations;\", name: \"postServiceOperation\", parameters: [\"Lcom/samsung/android/samsungpass/passservice/common/net/samsungpass/PostPassServiceOperation$OperationType;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\", \"Lcom/samsung/android/samsungpass/passservice/common/net/common/NetworkOperationResponseListener;\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedOutputStream$SafeDirectNioEncoder;\", name: \"writeUInt32NoTag\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/protobuf/CodedOutputStream$UnsafeDirectNioEncoder;\", name: \"writeUInt32NoTag\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/asn1/LazyEncodedSequence;\", name: \"force\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/djb/Curve25519FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/gm/SM2P256V1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP256K1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP192R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP521R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP256R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP160R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP128R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP224R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP192K1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP160R2FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP384R1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/ec/custom/sec/SecP224K1FieldElement;\", name: \"<init>\", parameters: [\"[I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/jsoup/select/Elements;\", name: \"siblings\", parameters: [\"Ljava/lang/String;\", \"Z\", \"Z\"], return_type: \"Lorg/jsoup/select/Elements;\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/jsoup/parser/CharacterReader;\", name: \"cacheString\", parameters: [\"[C\", \"[Ljava/lang/String;\", \"I\", \"I\"], return_type: \"Ljava/lang/String;\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Landroidx/appcompat/widget/SearchView;\", name: \"J\", parameters: [\"Z\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    8
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcv/u;\", name: \"a0\", parameters: [\"J\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lh2/o;\", name: \"isAttachedToWindow\", parameters: [], return_type: \"Z\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Leq/i;\", name: \"C\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/h;\", name: \"V\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lqr/i;\", name: \"V\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lp9/h;\", name: \"Y\", parameters: [], return_type: \"Ljava/lang/Object;\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/verifier/VerifierAuthFWActivity;\", name: \"activityResult\", parameters: [\"I\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/base/common/analytics/SamsungAnalyticsLog;\", name: \"initializeSamsungAnalytics\", parameters: [], return_type: \"Z\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/passservice/passkey/PasskeyTaDataSourceImpl;\", name: \"disconnectError\", parameters: [], return_type: \"Lco/n;\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/common/db/signindb/SignInStateCursor;\", name: \"isSignedUp\", parameters: [], return_type: \"I\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/wallet/provider/WalletGlobalProviderHelper;\", name: \"putValue\", parameters: [\"Landroid/content/Context;\", \"Ljava/lang/String;\", \"Ljava/lang/String;\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/firebase/FirebaseApp;\", name: \"i\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/android/material/textfield/TextInputLayout;\", name: \"updateTextInputBoxState\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/android/material/bottomappbar/BottomAppBar;\", name: \"c1\", parameters: [], return_type: \"Landroid/view/View;\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lcom/google/gson/internal/bind/JsonTreeReader;\", name: \"T0\", parameters: [\"Lcom/google/gson/stream/JsonToken;\"], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/util/Arrays;\", name: \"getLength\", parameters: [\"I\", \"I\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/x509/PKIXCertPathReviewer;\", name: \"doChecks\", parameters: [], return_type: \"V\" }): source declared signature absent from emitted subset",
+    7
+  ],
+  [
+    "Some(MethodKey { owner: \"Lorg/bouncycastle/math/raw/Nat;\", name: \"incAt\", parameters: [\"I\", \"[I\", \"I\"], return_type: \"I\" }): source declared signature absent from emitted subset",
+    7
+  ]
+]

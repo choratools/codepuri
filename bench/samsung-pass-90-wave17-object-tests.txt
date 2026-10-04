@@ -1,0 +1,29 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running unittests src/lib.rs (target/debug/deps/backend_java-7a00ca0c51de3396)
+
+running 21 tests
+test object_plan::arguments::tests::ordinary_pure_gap_materializes_constants_and_moves_under_the_selected_plan ... ok
+test object_plan::tests::explicit_branch_between_allocation_and_constructor_is_a_barrier ... ok
+test object_plan::tests::reserved_object_slot_cannot_be_read_before_its_unique_initializer ... ok
+test object_plan::arguments::array_tests::array_arguments_reject_reorder_shared_escape_extra_effect_descriptor_and_filled_oom_reorder ... ok
+test object_plan::arguments::tests::string_tree_rejects_reordering_outside_use_sharing_unrelated_effect_and_unresolved_literal ... ok
+test object_plan::arguments::tests::nested_argument_rejects_order_escape_effect_wrong_owner_checked_throw_alias_and_preinit_use ... ok
+test object_plan::arguments::tests::rejects_reordered_shared_non_argument_outside_use_and_checked_throw_trees ... ok
+test object_plan::arguments::tests::numeric_tree_rejects_reordering_shared_operands_integer_division_narrow_and_reference_casts_and_escape ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_rejects_false_attestation_metadata_receiver_escape_and_distinct_high_word ... ok
+test object_plan::tests::effects_throwing_allocation_preinit_use_and_repeated_init_reject ... ok
+test object_plan::tests::alias_and_pure_gap_compile_and_preserve_constructor_exception ... ok
+test object_plan::tests::constructor_words_preserve_wide_identity_and_following_argument ... ok
+test object_plan::arguments::tests::string_argument_expression_is_single_and_follows_outer_class_initialization ... ok
+test object_plan::arguments::tests::branch_shared_tail_folds_hoisted_argument_placeholders ... ok
+test object_plan::arguments::tests::allocation_argument_tree_preserves_class_initialization_and_argument_effect_order ... ok
+test object_plan::arguments::tests::narrowed_primitive_argument_keeps_its_ssa_int_overload ... ok
+test object_plan::arguments::tests::numeric_argument_tree_preserves_float_rounding_allocation_and_effect_order ... ok
+test object_plan::arguments::tests::immediate_nested_argument_preserves_outer_inner_allocation_and_constructor_order ... ok
+test object_plan::arguments::array_tests::array_arguments_preserve_allocation_length_effect_throw_and_constructor_trace ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_private_receiver_effects_and_abrupt_completion ... ok
+test object_plan::arguments::builder_tests::trusted_builder_chain_preserves_attested_wide_append_word_identity ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 56 filtered out; finished in 2.21s
+

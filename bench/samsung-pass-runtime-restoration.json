@@ -1,0 +1,13 @@
+{
+  "framework": "/tmp/opencode/samsung-framework-metadata/framework.jar",
+  "framework_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "recorded_device_fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "device_fingerprint_observed_this_run": null,
+  "jdk_home": "/tmp/opencode/decomphify-jdk25/jdk-25.0.4.1+1",
+  "jdk_archive_sha256": "dbb698396d478e7fa2b1e50f4103324b2a99b90569ee27c33f2261f9215cf41e",
+  "java_version": "openjdk version \"25.0.4.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)\n",
+  "export_complete": false,
+  "bounds": "Input restoration only; no source, compilation, or runtime-equivalence gate is implied",
+  "recovered_from_environment_reset": true,
+  "restoration_script": "bench/restore_samsung_validation.py"
+}

@@ -1,0 +1,16 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.21s
+     Running tests/java_access_dispatch_new.rs (target/debug/deps/java_access_dispatch_new-9dd40e3aefec4416)
+
+running 8 tests
+test alias_protected_access_requires_both_original_and_source_graphs ... ok
+test declaration_reference_is_not_body_completion ... ok
+test special_dispatch_requires_exact_proof ... ok
+test publication::tests::mutually_recursive_emitted_bodies_close_without_order_dependence ... ok
+test publication::tests::exact_body_identity_survives_unmet_declarations ... ok
+test original_access_and_receiver_restriction ... ok
+test explicit_local_android_sdk_declarations ... ok
+test javac17_access_and_super_runtime ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.13s
+

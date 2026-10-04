@@ -1,0 +1,22 @@
+{
+  "scope": "focused wave30 evidence, not whole APK",
+  "array_join_root_tests": {
+    "passed": 2,
+    "failed": 0
+  },
+  "q2_original_method": {
+    "dex": "classes.dex",
+    "index": 54730,
+    "signature": "Lq2/n;->a(Context,CancellationSignal,Uri)ByteBuffer",
+    "exact_body_compile": "JDK17 + genuine Android35, minimal original-package wrapper",
+    "full_original_class_compile": false,
+    "Android_execution": false
+  },
+  "artifacts": {
+    "/tmp/opencode/wave30-root-array-join-final4.log": "a0b711293b04ba95ffbec3a36dfaee1585346bbbf4a80c4ca43d7aa9d222e5d5",
+    "/tmp/opencode/wave30-q2-sdk-source/q2/n.java": "ef7e094f92cc4579bcc0078f459ae4d488986ac5447f42a653397a0de8069e0f",
+    "/tmp/opencode/wave30-q2-sdk-source/classes/q2/n.class": "520c7e1b9bd8c397753b6bc767a583af7c1cf82d320a9c9566cc0988b8fcda38",
+    "/tmp/opencode/wave30-q2-sdk-source/javac.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "aggregate_coverage": "latest verified wave29 93.598612%; wave30 aggregate not run"
+}

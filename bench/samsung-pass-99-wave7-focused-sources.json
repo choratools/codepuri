@@ -1,0 +1,30 @@
+{
+  "sources": [
+    {
+      "path": "/tmp/opencode/wave7-original-38394.java",
+      "exists": true,
+      "bytes": 3091,
+      "sha256": "0c3aa0e670762512915a2aafcd169f8f39137c55d63357dfbc5fb9ac5bee2f41"
+    },
+    {
+      "path": "/tmp/opencode/wave7-original-33268.java",
+      "exists": true,
+      "bytes": 13687,
+      "sha256": "4ce515af7af774288a7b2bb311a9b8ae30e096940595a13057b7b4f532905819"
+    },
+    {
+      "path": "/tmp/opencode/decomphify-object-sequence-actual/original-method-37968.java.txt",
+      "exists": true,
+      "bytes": 1917,
+      "sha256": "9b3a7a0e7d61cdb772aba4b76a16883d37c8e468bac603088085b6fd6f16bed3"
+    },
+    {
+      "path": "/tmp/wave7-static-publication-3036414/com/google/common/math/b$a.java",
+      "exists": true,
+      "bytes": 6287,
+      "sha256": "558050dfaa5bfd279ece4dbe2e0f6a20c74cf34282b61886a67650cba72a5155"
+    }
+  ],
+  "full_apk_gain_claimed": false,
+  "android_runtime_established": false
+}

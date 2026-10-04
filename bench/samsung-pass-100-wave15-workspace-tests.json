@@ -1,0 +1,10 @@
+{
+  "command": "cargo test --workspace",
+  "exit_code": 0,
+  "passed": 972,
+  "failed": 0,
+  "ignored": 129,
+  "suites": 160,
+  "log": "/tmp/opencode/wave15-workspace.log",
+  "scope": "post-wave15 production changes"
+}

@@ -1,0 +1,117 @@
+{
+  "root": "/tmp/opencode/samsung-pass-cache-wave6/replay",
+  "verified": true,
+  "cold_export_s": 350.646405,
+  "warm_export_s": 1.507423,
+  "replay_speedup": 232.61314508270075,
+  "cold_files": 31188,
+  "warm_files": 31188,
+  "source_text_bytes": 308670036,
+  "missing_paths": [],
+  "added_paths": [],
+  "changed_files": [],
+  "reports_equal": true,
+  "phase_metrics": {
+    "cold": {
+      "phase": "cold",
+      "export_wall_s": "350.646405",
+      "sources": "31188",
+      "bytes": "308670036",
+      "checksum": "9bcc92d8c4ca8d96",
+      "complete_methods": "139742",
+      "constructors": "31404",
+      "static_initializers": "5232",
+      "unsupported_methods": "15141",
+      "unavailable_constructors": "2801",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "0",
+        "sources": "31188",
+        "source_text_bytes": "308670036",
+        "ready": "true"
+      }
+    },
+    "warm": {
+      "phase": "warm",
+      "export_wall_s": "1.507423",
+      "sources": "31188",
+      "bytes": "308670036",
+      "checksum": "9bcc92d8c4ca8d96",
+      "complete_methods": "139742",
+      "constructors": "31404",
+      "static_initializers": "5232",
+      "unsupported_methods": "15141",
+      "unavailable_constructors": "2801",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "1",
+        "sources": "31188",
+        "source_text_bytes": "308670036",
+        "ready": "true"
+      }
+    }
+  },
+  "cold_speedup_claimed": false,
+  "whole_app_compilation_claimed": false,
+  "peak_process_rss_kib": 12857980,
+  "snapshot_text_mib": 294.3706855773926,
+  "same_process": true,
+  "cache_persists_across_processes": false,
+  "concurrent_workspace_tests": true,
+  "peak_process_rss_gib": 12.262325286865234,
+  "validation": {
+    "workspace_tests_passed": 829,
+    "workspace_tests_failed": 0,
+    "workspace_tests_ignored": 78,
+    "suites": 141,
+    "workspace_all_target_clippy": "passed",
+    "workspace_fmt": "passed",
+    "syntax_gate": {
+      "units": 31188,
+      "syntax_errors": 0
+    },
+    "index_all_original_ordered_vectors_equal": true
+  },
+  "changed_source_files_since_freeze": [],
+  "index_evidence": {
+    "schema": "decomphify.source-throws-index-evidence.v1",
+    "scope": "isolated original-input linkage only; no export",
+    "profile": "release",
+    "full_ordered_vectors_equal": true,
+    "files": {
+      "old-link-vectors.bin": {
+        "sha256": "fdc8135fb82d536ed7dd3425924987f892fd705325ba91d4a7747791714f16d6",
+        "bytes": 5580731
+      },
+      "indexed-link-vectors.bin": {
+        "sha256": "fdc8135fb82d536ed7dd3425924987f892fd705325ba91d4a7747791714f16d6",
+        "bytes": 5580731
+      }
+    },
+    "metrics": {
+      "abstracts": 11201,
+      "candidates": 105902,
+      "old_pairs": 1452305,
+      "links": 36518,
+      "cached_owners": 22593,
+      "cached_ancestor_names": 89740,
+      "retained_payload_lower_bound_bytes": 12176015,
+      "temporary_ancestor_payload_lower_bound_bytes": 4571483,
+      "old_scan_seconds": 3.10821266,
+      "index_build_seconds": 0.311934174,
+      "all_lookup_seconds": 0.004766581,
+      "allocator_btree_overhead_excluded": true
+    },
+    "indexed_build_plus_all_lookups_seconds": 0.316700755,
+    "retained_memory_scope": "method keys, vectors, string capacities; BTree allocator/node overhead excluded",
+    "temporary_memory_scope": "completed ancestor String objects/capacities only; other temporary index structures and allocator overhead excluded",
+    "whole_export_speedup": "unmeasured",
+    "benchmark_log": "/tmp/opencode/wave6-throws-index-benchmark.log"
+  },
+  "gained_bodies_vs_wave5": 0,
+  "lost_bodies_vs_wave5": 0,
+  "method_status_changes_vs_wave5": 0,
+  "original_definitions_compared": 205497
+}

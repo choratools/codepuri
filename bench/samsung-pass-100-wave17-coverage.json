@@ -1,0 +1,2201 @@
+{
+  "denominator": 205497,
+  "target_percent": 100.0,
+  "required_definitions": 205497,
+  "strict_accepted": 180909,
+  "strict_percent": 88.03486182280034,
+  "code_bearing_definitions": 194286,
+  "required_code_bearing_definitions": 194286,
+  "strict_code_bearing_accepted": 180909,
+  "strict_code_bearing_percent": 93.11478953707422,
+  "remaining_code_bearing_to_target": 13377,
+  "genuine_bodyless_declarations": 11183,
+  "original_form_accepted": 192092,
+  "original_form_percent": 93.47679041543185,
+  "remaining_original_forms_to_target": 13405,
+  "remaining_to_target": 24588,
+  "statuses": {
+    "complete_body": 180515,
+    "rejected_in_written_unit": 10476,
+    "declaration_only": 11183,
+    "rejected_without_written_unit": 2929,
+    "proven_enum_equivalence": 394
+  },
+  "ledger": "/tmp/opencode/samsung-pass-100-wave17/java25/method-coverage.jsonl",
+  "ledger_sha256": "f4f782fdf9f9c1748d80d8e1ad918aa00252f0bf8ed9d7c712ffdc1c192e3275",
+  "rejection_reasons": [
+    [
+      "required complete method body unavailable",
+      4140
+    ],
+    [
+      "enum initialization: EnumConstructorsUnavailable",
+      2368
+    ],
+    [
+      "callee exceptions not declared by caller",
+      1226
+    ],
+    [
+      "backend: Metadata(\"throw checked exception is not declared by caller\")",
+      694
+    ],
+    [
+      "initialization explicit-store definite assignment: FieldInitializationUnavailable",
+      659
+    ],
+    [
+      "enum: missing initializer",
+      343
+    ],
+    [
+      "initialization: exception family proof unavailable",
+      314
+    ],
+    [
+      "backend: Instruction(\"observable or throwing operation before initializer\")",
+      308
+    ],
+    [
+      "backend: Instruction(\"allocation may throw OOM before initializer\")",
+      299
+    ],
+    [
+      "super invocation: exact selected-target binding unavailable",
+      275
+    ],
+    [
+      "initialization proof: FieldInitializationUnavailable",
+      246
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\")",
+      233
+    ],
+    [
+      "backend: Metadata(\"handler/body throw checked exceptions are not covered\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")",
+      220
+    ],
+    [
+      "backend: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      142
+    ],
+    [
+      "final field write requires atomic initialization proof",
+      138
+    ],
+    [
+      "backend: ControlFlow(\"Instruction(\\\"observable or throwing operation before initializer\\\")\")",
+      117
+    ],
+    [
+      "backend: Instruction(\"allocation may throw OOM before initializer\"); exception dispatch: Instruction(\"allocation may throw OOM before initializer\")",
+      71
+    ],
+    [
+      "backend: ControlFlow(\"Instruction(\\\"allocation may throw OOM before initializer\\\")\")",
+      70
+    ],
+    [
+      "backend: Type(\"cast requires numeric or reference types\")",
+      52
+    ],
+    [
+      "backend: Instruction(\"special dispatch: UnprovenSpecial\")",
+      46
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Metadata(\"invoke checked exceptions are not declared by caller\")",
+      45
+    ],
+    [
+      "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")",
+      45
+    ],
+    [
+      "backend: Type(\"result type mismatch <id>\")",
+      42
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7777)), edge <id>; checked declaration None\\\")\")",
+      38
+    ],
+    [
+      "backend: Instruction(\"observable or throwing operation before initializer\"); exception dispatch: Instruction(\"observable or throwing operation before initializer\")",
+      37
+    ],
+    [
+      "backend: Metadata(\"protected receiver selection proof unavailable\")",
+      34
+    ],
+    [
+      "backend: Instruction(\"allocation control-flow barrier\")",
+      34
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(1337)), edge <id>; checked declaration None\\\")\")",
+      30
+    ],
+    [
+      "backend: ControlFlow(\"Metadata(\\\"throw checked exception is not declared by caller\\\")\")",
+      29
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"monitor release identity differs from acquisition\\\")\")",
+      27
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"result type mismatch <id>\\\")\")",
+      27
+    ],
+    [
+      "unresolved field metadata",
+      27
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7180)), edge <id>; checked declaration None\\\")\")",
+      24
+    ],
+    [
+      "initializer exceptions not declared by caller",
+      23
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: RegionMismatch\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      22
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"contextual narrow operand requires an exact typed local\\\")\")",
+      22
+    ],
+    [
+      "external field requirement: Invalid(\"Lcom/google/android/gms/internal/clearcut/z0$c;\")",
+      21
+    ],
+    [
+      "annotation default dependency: enum constant source closure unproven",
+      21
+    ],
+    [
+      "backend: Type(\"unary types\")",
+      21
+    ],
+    [
+      "backend: ControlFlow(\"Metadata(\\\"protected receiver selection proof unavailable\\\")\")",
+      19
+    ],
+    [
+      "invocation member access: ProtectedReceiver",
+      19
+    ],
+    [
+      "backend: Type(\"contextual narrow operand requires an exact typed local\")",
+      19
+    ],
+    [
+      "exception region: unproven synthetic handler provenance; exception dispatch metadata: exception region: unproven synthetic handler provenance",
+      17
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/feature/SemFloatingFeature;\", name: \"getInstance\", parameters: [], return_type: \"Lcom/samsung/android/feature/SemFloatingFeature;\" })",
+      15
+    ],
+    [
+      "backend: Type(\"unresolved or uninitialized type Unknown\")",
+      12
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: TypeMismatch(<id>)\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      12
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[B\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      12
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/SemSystemProperties;\", name: \"getCountryIso\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      12
+    ],
+    [
+      "external field requirement: Invalid(\"Lcom/google/android/gms/internal/vision/r2$d;\")",
+      11
+    ],
+    [
+      "backend: Type(\"array load component\")",
+      11
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager;\", name: \"createInstance\", parameters: [\"Landroid/content/Context;\"], return_type: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager;\" })",
+      11
+    ],
+    [
+      "backend: Type(\"arithmetic operand widths/types\")",
+      10
+    ],
+    [
+      "initialization proof: InvalidMetadata",
+      10
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/View;\", name: \"semSetRoundedCorners\", parameters: [\"I\"], return_type: \"V\" })",
+      10
+    ],
+    [
+      "backend: Type(\"result type mismatch <id>\"); exception dispatch: Type(\"result type mismatch <id>\")",
+      10
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"dispatch switch instruction/edge mismatch\\\")\")",
+      9
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"nested monitor requires nested ownership proof\\\")\")",
+      9
+    ],
+    [
+      "backend: ControlFlow(\"Instruction(\\\"special dispatch: UnprovenSpecial\\\")\")",
+      8
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[I\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      8
+    ],
+    [
+      "initialization explicit-store definite assignment: InvalidMetadata",
+      8
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(4161)), edge <id>; checked declaration None\\\")\")",
+      7
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Ljava/lang/Object;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      7
+    ],
+    [
+      "exception region: multiple normal exits from exact source range; exception dispatch metadata: exception region: unproven synthetic handler provenance",
+      7
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/UserHandle;\", name: \"myUserId\", parameters: [], return_type: \"I\" })",
+      7
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Throwable\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Throwable\\\")\")",
+      7
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/UserHandle;\", name: \"semGetMyUserId\", parameters: [], return_type: \"I\" })",
+      7
+    ],
+    [
+      "annotation declaration: NotAbstractDeclaration",
+      7
+    ],
+    [
+      "result <id> Unknown, input <id> Zero, edge <id>; checked declaration None\\\")\")",
+      6
+    ],
+    [
+      "backend: Type(\"assignment Int to Boolean\")",
+      6
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Throwable\\\")\")",
+      6
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"arithmetic operand widths/types\\\")\")",
+      6
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/feature/SemCscFeature;\", name: \"getInstance\", parameters: [], return_type: \"Lcom/samsung/android/feature/SemCscFeature;\" })",
+      6
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"array load component\\\")\")",
+      5
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.lang.Exception\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.lang.Exception\\\")\")",
+      5
+    ],
+    [
+      "external field requirement: Invalid(\"Lcom/google/android/gms/internal/vision/y5;\")",
+      5
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"constant type mismatch\\\")\")",
+      5
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/app/SemMultiWindowManager;\", name: \"<init>\", parameters: [], return_type: \"V\" })",
+      5
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager;\", name: \"hasEnrolledFingerprints\", parameters: [], return_type: \"Z\" })",
+      5
+    ],
+    [
+      "backend: Instruction(\"allocation may throw OOM before initializer\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      5
+    ],
+    [
+      "backend: Type(\"assignment Boolean to Byte\")",
+      5
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(774)), edge <id>; checked declaration None\\\")\")",
+      5
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"unary types\\\")\")",
+      5
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/content/res/XmlResourceParser;\", name: \"next\", parameters: [], return_type: \"I\" })",
+      4
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      4
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")",
+      4
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Int to Boolean\\\")\")",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/HttpHost;\", name: \"toURI\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/client/methods/HttpUriRequest;\", name: \"getURI\", parameters: [], return_type: \"Ljava/net/URI;\" })",
+      4
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(5332)), edge <id>; checked declaration None\\\")\")",
+      4
+    ],
+    [
+      "backend: Type(\"unresolved or uninitialized type Zero\")",
+      4
+    ],
+    [
+      "result <id> Unknown, input <id> Null, edge <id>; checked declaration None\\\")\")",
+      4
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Ljava/lang/reflect/Type;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      4
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\")",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/WindowManager$LayoutParams;\", name: \"semAddExtensionFlags\", parameters: [\"I\"], return_type: \"V\" })",
+      4
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.Locale\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.Locale\\\")\")",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/content/pm/PackageManager;\", name: \"semGetDrawableForIconTray\", parameters: [\"Landroid/graphics/drawable/Drawable;\", \"I\"], return_type: \"Landroid/graphics/drawable/Drawable;\" })",
+      4
+    ],
+    [
+      "backend: Instruction(\"allocation may throw OOM before initializer\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")",
+      4
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9021)), edge <id>; checked declaration None\\\")\")",
+      4
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/conscrypt/Conscrypt;\", name: \"isConscrypt\", parameters: [\"Ljavax/net/ssl/SSLSocket;\"], return_type: \"Z\" })",
+      4
+    ],
+    [
+      "required genuine field declaration unavailable",
+      3
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"monitor proof has unreachable original states\\\")\")",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.view.View\\\")\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/content/res/XmlResourceParser;\", name: \"getName\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      3
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      3
+    ],
+    [
+      "result <id> Unknown, input <id> Int, edge <id>; checked declaration None\\\")\")",
+      3
+    ],
+    [
+      "external field requirement: Invalid(\"Lcom/google/android/gms/internal/vision/j4;\")",
+      3
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/WindowExtensionsProvider;\", name: \"getWindowExtensions\", parameters: [], return_type: \"Landroidx/window/extensions/WindowExtensions;\" })",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitInfo;\", name: \"getPrimaryActivityStack\", parameters: [], return_type: \"Landroidx/window/extensions/embedding/ActivityStack;\" })",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Boolean to Int\")",
+      3
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"unreachable catch\\\")\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/SemSystemProperties;\", name: \"getSalesCode\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager;\", name: \"getCharacteristics\", parameters: [], return_type: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager$Characteristics;\" })",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.CharSequence\\\") to Class(\\\"java.lang.String\\\")\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager$AuthenticationCallback;\", name: \"onAuthenticationError\", parameters: [\"I\", \"Ljava/lang/CharSequence;\"], return_type: \"V\" })",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.nio.charset.Charset\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.nio.charset.Charset\\\")\")",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.nio.charset.Charset\\\")\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/widget/TextView;\", name: \"semSetButtonShapeEnabled\", parameters: [\"Z\"], return_type: \"V\" })",
+      3
+    ],
+    [
+      "backend: Type(\"assignment Byte to Short\")",
+      3
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/HttpResponse;\", name: \"getStatusLine\", parameters: [], return_type: \"Lorg/apache/http/StatusLine;\" })",
+      2
+    ],
+    [
+      "unsupported class initializer flags/kind",
+      2
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Landroidx/constraintlayout/widget/e$a;\", name: \"e\", descriptor: \"Landroidx/constraintlayout/widget/e$b;\" }))",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"androidx.fragment.app.l1$d\\\")\")",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/content/res/XmlResourceParser;\", name: \"getDepth\", parameters: [], return_type: \"I\" })",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Byte to Boolean\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.lang.reflect.InvocationTargetException\\\")\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      2
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(4017)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      2
+    ],
+    [
+      "backend: Metadata(\"allocation checked exceptions\")",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Ljava/lang/String;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7105)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[C\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7714)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[B\", name: \"hashCode\", parameters: [], return_type: \"I\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/camera/iris/IIrisService;\", name: \"authenticate\", parameters: [\"Landroid/os/IBinder;\", \"Landroid/os/IBinder;\", \"I\", \"I\", \"I\", \"I\", \"J\", \"I\", \"Lcom/samsung/android/camera/iris/IIrisServiceReceiver;\", \"I\", \"Ljava/lang/String;\", \"Landroid/os/Bundle;\", \"[B\"], return_type: \"V\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/ServiceManager;\", name: \"getService\", parameters: [\"Ljava/lang/String;\"], return_type: \"Landroid/os/IBinder;\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/app/SemStatusBarManager;\", name: \"disable\", parameters: [\"I\"], return_type: \"V\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/view/SemWindowManager;\", name: \"getInstance\", parameters: [], return_type: \"Lcom/samsung/android/view/SemWindowManager;\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/UserHandle;\", name: \"semGetCallingUserId\", parameters: [], return_type: \"I\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/widget/SemLockPatternUtils;\", name: \"<init>\", parameters: [\"Landroid/content/Context;\"], return_type: \"V\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/content/res/Configuration;\", name: \"semIsPopOver\", parameters: [], return_type: \"Z\" })",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/View;\", name: \"semSetHoverPopupType\", parameters: [\"I\"], return_type: \"V\" })",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.hardware.Camera\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9313)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Boolean to Int\\\")\")",
+      2
+    ],
+    [
+      "backend: Instruction(\"allocation control-flow barrier\"); exception dispatch: Instruction(\"allocation control-flow barrier\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9285)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9094)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"unresolved or uninitialized type Unknown\"); exception dispatch: Type(\"unresolved or uninitialized type Unknown\")",
+      2
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcv/v;\", name: \"c\", descriptor: \"I\" }))",
+      2
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Lorg/bouncycastle/asn1/ASN1Encodable;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Boolean to Byte\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(710)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(711)), edge <id>; checked declaration None\\\")\")",
+      2
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Throwable\\\\\\\") to Class(\\\\\\\"java.lang.String\\\\\\\")\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.Method\\\")\")",
+      2
+    ],
+    [
+      "result <id> Unknown, input <id> Array { element: Int, nullable: true }, edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7121)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/HttpMessage;\", name: \"getFirstHeader\", parameters: [\"Ljava/lang/String;\"], return_type: \"Lorg/apache/http/Header;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/HttpResponse;\", name: \"getFirstHeader\", parameters: [\"Ljava/lang/String;\"], return_type: \"Lorg/apache/http/Header;\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7316)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Landroidx/fragment/app/Fragment;\", name: \"mWho\", descriptor: \"Ljava/lang/String;\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Class\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Class\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"androidx.lifecycle.n0$type\\\")\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"androidx.lifecycle.p$type\\\\\\\") to Class(\\\\\\\"androidx.lifecycle.h$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Integer\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"androidx.room.v1$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"u6.c$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"u6.c$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"androidx.work.c$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.String\\\") to Class(\\\"b2.b$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.String\\\\\\\") to Class(\\\\\\\"q9.w$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"b9.t$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"b9.t$type\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/apache/http/ProtocolVersion;\", name: \"<init>\", parameters: [\"Ljava/lang/String;\", \"I\", \"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: Type(\"array operand\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/crashlytics/android/ndk/CrashlyticsNdk;\", name: \"<init>\", parameters: [], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"cb.a$type\\\") to Class(\\\"android.os.IBinder\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Llibcore/io/Memory;\", name: \"pokeByte\", parameters: [\"I\", \"B\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Llibcore/io/Memory;\", name: \"pokeByteArray\", parameters: [\"I\", \"[B\", \"I\", \"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Llibcore/io/Memory;\", name: \"pokeByte\", parameters: [\"J\", \"B\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Llibcore/io/Memory;\", name: \"pokeByteArray\", parameters: [\"J\", \"[B\", \"I\", \"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: Type(\"arithmetic operand widths/types\"); exception dispatch: Type(\"arithmetic operand widths/types\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.os.IInterface\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"com.google.android.gms.internal.vision.t2$type\\\") to Class(\\\"com.google.android.gms.internal.vision.z2$type\\\")\")",
+      1
+    ],
+    [
+      "external field requirement: Invalid(\"Lcom/google/android/gms/internal/vision/r1;\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Array(Class(\\\"z5.l$j\\\")) to Class(\\\"z5.l$j\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Byte to Short\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.google.firebase.messaging.FirebaseMessaging\\\")\")",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(7166)), input <id> Reference(ClassRef(7180)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.String\\\") to Class(\\\"kotlin.jvm.internal.h$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"y8.d$type\\\") to Class(\\\"b9.s$type\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7323)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lf2/p;\", name: \"h\", descriptor: \"Lf2/f;\" }))",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/graphics/RuntimeXfermode;\", name: \"<init>\", parameters: [\"Ljava/lang/String;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"android.graphics.RuntimeXfermode\\\\\\\") to Class(\\\\\\\"android.graphics.Xfermode\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitInfo;\", name: \"getSplitRatio\", parameters: [], return_type: \"F\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitPairRule$Builder;\", name: \"setSplitRatio\", parameters: [\"F\"], return_type: \"Landroidx/window/extensions/embedding/SplitPairRule$Builder;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitPlaceholderRule$Builder;\", name: \"setSplitRatio\", parameters: [\"F\"], return_type: \"Landroidx/window/extensions/embedding/SplitPlaceholderRule$Builder;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitAttributes$SplitType$HingeSplitType;\", name: \"<init>\", parameters: [\"Landroidx/window/extensions/embedding/SplitAttributes$SplitType;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitAttributes;\", name: \"getSplitType\", parameters: [], return_type: \"Landroidx/window/extensions/embedding/SplitAttributes$SplitType;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/ActivityRule$Builder;\", name: \"<init>\", parameters: [\"Landroidx/window/extensions/core/util/function/Predicate;\", \"Landroidx/window/extensions/core/util/function/Predicate;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitAttributes$Builder;\", name: \"<init>\", parameters: [], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitPairRule$Builder;\", name: \"<init>\", parameters: [\"Landroidx/window/extensions/core/util/function/Predicate;\", \"Landroidx/window/extensions/core/util/function/Predicate;\", \"Landroidx/window/extensions/core/util/function/Predicate;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/SplitPlaceholderRule$Builder;\", name: \"<init>\", parameters: [\"Landroid/content/Intent;\", \"Landroidx/window/extensions/core/util/function/Predicate;\", \"Landroidx/window/extensions/core/util/function/Predicate;\", \"Landroidx/window/extensions/core/util/function/Predicate;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/embedding/ActivityEmbeddingComponent;\", name: \"setEmbeddingRules\", parameters: [\"Ljava/util/Set;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroidx/window/extensions/WindowExtensions;\", name: \"getActivityEmbeddingComponent\", parameters: [], return_type: \"Landroidx/window/extensions/embedding/ActivityEmbeddingComponent;\" })",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(6617)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/accessibility/AccessibilityNodeInfo;\", name: \"getChecked\", parameters: [], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/accessibility/AccessibilityNodeInfo;\", name: \"getExpandedState\", parameters: [], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/accessibility/AccessibilityNodeInfo;\", name: \"getSupplementalDescription\", parameters: [], return_type: \"Ljava/lang/CharSequence;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/accessibility/AccessibilityNodeInfo;\", name: \"isFieldRequired\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"jf.q$type\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lk4/a$b;\", name: \"b\", descriptor: \"Ljava/util/ArrayList;\" }))",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lk4/a$c;\", name: \"a\", descriptor: \"Landroid/content/IntentFilter;\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"k6.h0$type\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7519)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.List\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7301)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/app/Notification$Builder;\", name: \"setShortCriticalText\", parameters: [\"Ljava/lang/String;\"], return_type: \"Landroid/app/Notification$Builder;\" })",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lla/x;\", name: \"a\", descriptor: \"I\" }))",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"android.accounts.Account\\\") to Class(\\\"na.k$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"na.a$f\\\\\\\") to Class(\\\\\\\"nb.e$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"unproved monitor balance\\\")\"); exception dispatch: Metadata(\"original cleanup rethrow has undeclared checked contract\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"unproved monitor balance\\\")\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lq5/d$c;\", name: \"e\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"q7.q$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"q7.q$type\\\")\")",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(9070)), input <id> Reference(ClassRef(9071)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"qa.a1$type\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9185)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.os.IBinder\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lr7/i$a;\", name: \"b\", descriptor: \"I\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Array(Class(\\\"android.os.Parcel\\\")) to Class(\\\"android.os.Parcel\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"m0.z0$type\\\") to Class(\\\"s1.x$type\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Ls7/c$a;\", name: \"b\", descriptor: \"I\" }))",
+      1
+    ],
+    [
+      "backend: Instruction(\"observable or throwing operation before initializer\"); exception dispatch: Type(\"encoded checked catch is unreachable under the resolved Java contract\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"com.google.firebase.perf.config.RemoteConfigManager\\\") to Class(\\\"ef.f$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"unproved monitor balance\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"s3.f$type\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7197)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7394)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7115)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(10836)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"q8.c$type\\\") to Class(\\\"t8.b$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Array(Class(\\\"h3.a$type\\\")) to Class(\\\"h3.a$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(605)), input <id> Null, edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Runnable\\\") to Class(\\\"bu.f1$c\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"xq.a$type\\\") to Class(\\\"kotlin.jvm.internal.h$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(1378)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"held throwing operation lacks original cleanup table\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7963)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/security/keystore/AndroidKeyStoreProvider;\", name: \"getKeyStoreOperationHandle\", parameters: [\"Ljava/lang/Object;\"], return_type: \"J\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/camera/iris/IIrisService;\", name: \"cancelAuthentication\", parameters: [\"Landroid/os/IBinder;\", \"Ljava/lang/String;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/camera/iris/IIrisService;\", name: \"isHardwareDetected\", parameters: [\"J\", \"Ljava/lang/String;\"], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/app/ActivityManagerNative;\", name: \"getDefault\", parameters: [], return_type: \"Landroid/app/IActivityManager;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/widget/ImageButton;\", name: \"semSetHoverPopupType\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(7695)), input <id> Zero, edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.net.Uri\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.net.Uri\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/UserManager;\", name: \"semIsGuestUser\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/SemBlurInfo$Builder;\", name: \"<init>\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"com.samsung.android.sdk.pass.SpassInvalidStateException\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager$CryptoObject;\", name: \"<init>\", parameters: [\"Ljava/security/Signature;\", \"[B\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/fingerprint/SemFingerprintManager;\", name: \"getEnrolledFingerprintNames\", parameters: [], return_type: \"Ljava/util/List;\" })",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(7788)), input <id> Reference(ClassRef(7777)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7934)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7796)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/provider/Settings$System;\", name: \"semGetIntForUser\", parameters: [\"Landroid/content/ContentResolver;\", \"Ljava/lang/String;\", \"I\", \"I\"], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/app/Dialog;\", name: \"semSetAnchor\", parameters: [\"I\", \"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/media/MediaRouter$RouteInfo;\", name: \"semGetDeviceAddress\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/hardware/display/DisplayManager;\", name: \"semCheckScreenSharingSupported\", parameters: [], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/View;\", name: \"semSetDisplayCutoutBackgroundColor\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/accessibility/AccessibilityManager;\", name: \"semIsScreenReaderEnabled\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Ljava/util/List;\", name: \"removeFirst\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/ViewGroup;\", name: \"semSetRoundedCorners\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/app/ActivityOptions;\", name: \"semSetPopOverOptions\", parameters: [\"[I\", \"[I\", \"[Landroid/graphics/Point;\", \"[I\"], return_type: \"Landroid/app/ActivityOptions;\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.ocr.base.CeRequest\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Array(Byte) to Class(\\\\\\\"java.util.List\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/nfc/NfcAdapter;\", name: \"disable\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/nfc/NfcAdapter;\", name: \"enable\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/nfc/NfcAdapter;\", name: \"enableReaderOption\", parameters: [\"Z\"], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/nfc/NfcAdapter;\", name: \"getAdapterState\", parameters: [], return_type: \"I\" })",
+      1
+    ],
+    [
+      "backend: Instruction(\"MonitorEnter { object: <id> }\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.lang.Exception\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/SemSystemProperties;\", name: \"get\", parameters: [\"Ljava/lang/String;\"], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/Vibrator;\", name: \"semGetSupportedVibrationType\", parameters: [], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/view/HapticFeedbackConstants;\", name: \"semGetVibrationIndex\", parameters: [\"I\"], return_type: \"I\" })",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.passservice.di.model.DefaultDiResponse\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"cast requires numeric or reference types\"); exception dispatch: Type(\"cast requires numeric or reference types\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[B\", name: \"toString\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/os/UserHandle;\", name: \"semGetUserId\", parameters: [\"I\"], return_type: \"I\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/widget/Button;\", name: \"semSetButtonShapeEnabled\", parameters: [\"Z\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"unproved monitor balance\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"xq.l$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.remote.server.api.model.StatisticsRequest\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.remote.server.UserKeyPushModel\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.remote.server.UserKeyPushModel\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.nio.charset.Charset\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Throwable\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcom/samsung/android/samsungpass/remote/server/group/GroupServerApiImpl$requestCertificate$1;\", name: \"result\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Landroid/widget/LinearLayout;\", name: \"semSetRoundedCorners\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/iris/SemIrisManager$AuthenticationResult;\", name: \"getCryptoObject\", parameters: [], return_type: \"Lcom/samsung/android/bio/iris/SemIrisManager$CryptoObject;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/iris/SemIrisManager$CryptoObject;\", name: \"<init>\", parameters: [\"Ljava/security/Signature;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/iris/SemIrisManager;\", name: \"hasEnrolledIris\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/iris/SemIrisManager;\", name: \"isHardwareDetected\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/bio/iris/SemIrisManager;\", name: \"setIrisViewType\", parameters: [\"I\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"cast requires numeric or reference types\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Landroidx/constraintlayout/widget/ConstraintLayout$b;\", name: \"l\", descriptor: \"I\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.view.View\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.view.View\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormCardVaultService$addCardToVault$1;\", name: \"result\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormCardViewModel$addCardToVault$1;\", name: \"result\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormCardViewModel$requestSave$1;\", name: \"result\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormCardViewModel$saveCardData$1;\", name: \"result\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.Map\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"unresolved or uninitialized type Null\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"com.samsung.android.sdk.pass.SpassFingerprint$a\\\") to Class(\\\"com.samsung.android.fingerprint.IFingerprintClient\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/fingerprint/FingerprintManager$FingerprintClientSpecBuilder;\", name: \"<init>\", parameters: [\"Ljava/lang/String;\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/fingerprint/FingerprintManager;\", name: \"unregisterClient\", parameters: [\"Landroid/os/IBinder;\"], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/fingerprint/FingerprintManager;\", name: \"process\", parameters: [\"Landroid/os/IBinder;\", \"Ljava/lang/String;\", \"[B\"], return_type: \"[B\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/samsung/android/fingerprint/FingerprintManager;\", name: \"processFIDO\", parameters: [\"Landroid/content/Context;\", \"Landroid/os/IBinder;\", \"Ljava/lang/String;\", \"[B\"], return_type: \"[B\" })",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(6600)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Int to Boolean\"); exception dispatch: Type(\"assignment Int to Boolean\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Long\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"contextual narrow operand requires an exact typed local\"); exception dispatch: Type(\"contextual narrow operand requires an exact typed local\")",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(9094)), input <id> Reference(ClassRef(7917)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/crypto/Signature;\", name: \"<init>\", parameters: [], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/crypto/Signature;\", name: \"verify\", parameters: [\"[B\", \"[B\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"java.lang.String\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/cert/X509Certificate;\", name: \"getIssuerDN\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/cert/X509Certificate;\", name: \"getSubjectDN\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/cert/X509Certificate;\", name: \"<init>\", parameters: [\"[B\"], return_type: \"V\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/cert/X509Certificate;\", name: \"getSubjectPublicKeyInfo\", parameters: [], return_type: \"Lcom/gpki/gpkiapi/crypto/PublicKey;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lcom/gpki/gpkiapi/cert/X509Certificate;\", name: \"getSerialNumber\", parameters: [], return_type: \"Ljava/math/BigInteger;\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9115)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9308)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(9309)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"co.q$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\")",
+      1
+    ],
+    [
+      "backend: Instruction(\"special dispatch: UnprovenSpecial\"); exception dispatch: Instruction(\"special dispatch: UnprovenSpecial\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Invalid(\\\"Phi type mismatch at <id>: result <id> Reference(ClassRef(9017)), input <id> Zero, edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"android.app.Application\\\") to Class(\\\"yk.c$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.security.cert.X509Certificate\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"array load component\"); exception dispatch: Type(\"array load component\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Ldu/b$e;\", name: \"a\", descriptor: \"Ljava/lang/Object;\" }))",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"du.j$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lcv/v;\", name: \"f\", descriptor: \"Lcv/v;\" }))",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Array(Class(\\\"java.lang.Object\\\"))\")",
+      1
+    ],
+    [
+      "source field requirement: Resolution(Access(FieldKey { owner: \"Lgu/c0;\", name: \"c\", descriptor: \"J\" }))",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"gu.n0$type\\\\\\\") to Class(\\\\\\\"gu.o0$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"ju.a$c\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: Instruction(\"observable or throwing operation before initializer\"); exception dispatch: Metadata(\"throw checked exception is not declared by caller\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Lorg/bouncycastle/asn1/x500/RDN;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(2452)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(905)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Instruction(\"allocation may throw OOM before initializer\"); exception dispatch: Instruction(\"observable or throwing operation before initializer\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(2857)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.security.cert.Certificate\\\\\\\") to Class(\\\\\\\"java.security.cert.X509Certificate\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "result <id> Reference(ClassRef(1574)), input <id> Reference(ClassRef(784)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(1996)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"constant type mismatch\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"shared handler lacks original capture\\\")\"); exception dispatch: Instruction(\"allocation may throw OOM before initializer\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(793)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Throwable\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.net.URISyntaxException\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(4702)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(2854)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Ljavax/naming/NamingEnumeration;\", name: \"hasMoreElements\", parameters: [], return_type: \"Z\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"org.bouncycastle.crypto.params.AsymmetricKeyParameter\\\\\\\") to Class(\\\\\\\"org.bouncycastle.pqc.crypto.xmss.XMSSMTPrivateKeyParameters\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(5613)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(5631)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(5698)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(5758)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Lorg/bouncycastle/pqc/jcajce/spec/LMSKeyGenParameterSpec;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Lorg/bouncycastle/pqc/jcajce/spec/LMSParameterSpec;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[J\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Ljava/math/BigInteger;\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[S\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"[Z\", name: \"clone\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      1
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Instruction(\"allocation may throw OOM before initializer\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.net.URISyntaxException\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.net.URISyntaxException\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(1122)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(6188)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.jsoup.nodes.Node\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.jsoup.nodes.Node\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>])); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"exception plan: Unsupported(\\\"original throwing-site coverage mismatch\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(1042)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(6859)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(<id>)); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: TypeMismatch(<id>); forward planner: unsupported Java branch plan: Structure(CyclicControlFlow([<id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>, <id>]))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(<id>)\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(704)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"av.c$type\\\") to Class(\\\"kotlin.jvm.internal.h$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"tu.e$a\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(998)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Throwable\\\") to Class(\\\"java.io.IOException\\\")\")",
+      1
+    ],
+    [
+      "result <id> Unknown, input <id> Reference(ClassRef(7839)), edge <id>; checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/conscrypt/Conscrypt;\", name: \"version\", parameters: [], return_type: \"Lorg/conscrypt/Conscrypt$Version;\" })",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.InvocationTargetException\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.InvocationTargetException\\\")\")",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/bouncycastle/jsse/BCSSLSocket;\", name: \"getApplicationProtocol\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/bouncycastle/jsse/BCSSLSocket;\", name: \"getParameters\", parameters: [], return_type: \"Lorg/bouncycastle/jsse/BCSSLParameters;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/conscrypt/Conscrypt;\", name: \"getApplicationProtocol\", parameters: [\"Ljavax/net/ssl/SSLSocket;\"], return_type: \"Ljava/lang/String;\" })",
+      1
+    ],
+    [
+      "input metadata requirement: Declaration(MethodKey { owner: \"Lorg/conscrypt/Conscrypt;\", name: \"setUseSessionTickets\", parameters: [\"Ljavax/net/ssl/SSLSocket;\", \"Z\"], return_type: \"V\" })",
+      1
+    ]
+  ],
+  "gained": [
+    "Lah/p;-><init>(Lyg/k;)V",
+    "Lah/p;->e(Ljava/lang/Object;)Lah/p;",
+    "Landroidx/appcompat/widget/ButtonBarLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V",
+    "Landroidx/appcompat/widget/n1;-><init>(Landroidx/appcompat/widget/Toolbar;Z)V",
+    "Landroidx/appcompat/widget/n1;-><init>(Landroidx/appcompat/widget/Toolbar;ZII)V",
+    "Landroidx/appcompat/widget/t1;-><init>(Landroid/content/Context;)V",
+    "Landroidx/appcompat/widget/x0$c;-><init>(Landroid/content/Context;Ljava/lang/Integer;Landroid/util/AttributeSet;)V",
+    "Landroidx/fragment/app/FragmentContainerView;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V",
+    "Landroidx/navigation/c;-><init>(Landroidx/navigation/n;ZLjava/lang/Object;Z)V",
+    "Landroidx/navigation/d;-><init>(Landroid/content/Context;Landroidx/navigation/g;Landroid/os/Bundle;Landroidx/lifecycle/t;Landroidx/navigation/e;)V",
+    "Landroidx/navigation/d;-><init>(Landroid/content/Context;Landroidx/navigation/g;Landroid/os/Bundle;Landroidx/lifecycle/t;Landroidx/navigation/e;Ljava/util/UUID;Landroid/os/Bundle;)V",
+    "Landroidx/navigation/n$n;-><init>(Ljava/lang/Class;)V",
+    "Landroidx/picker/widget/SeslDatePicker$o;-><init>(Landroidx/picker/widget/SeslDatePicker;Landroid/content/Context;Landroid/content/res/TypedArray;)V",
+    "Landroidx/picker/widget/SeslDatePickerSpinnerLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V",
+    "Landroidx/picker/widget/SeslDatePickerSpinnerLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V",
+    "Landroidx/picker/widget/SeslDatePickerSpinnerLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+    "Landroidx/preference/Preference;-><init>(Landroid/content/Context;)V",
+    "Landroidx/preference/Preference;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V",
+    "Landroidx/preference/Preference;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V",
+    "Landroidx/preference/Preference;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V",
+    "Landroidx/preference/i;-><init>(Landroidx/preference/PreferenceGroup;)V",
+    "Landroidx/recyclerview/widget/h;-><init>(Landroidx/recyclerview/widget/g;Landroidx/recyclerview/widget/g$a;)V",
+    "Landroidx/work/a;-><init>(Landroidx/work/a$b;)V",
+    "Lb9/d;-><init>(Lb9/e;Ly8/c;Lc9/c;Ljava/util/Map;Ljava/util/Set;ZZ)V",
+    "Lb9/s;-><init>(Lb9/s;Ly8/k;Lb9/p;)V",
+    "Lb9/s;-><init>(Lg9/r;Ly8/j;Lj9/d;Lq9/b;)V",
+    "Lb9/s;-><init>(Ly8/w;Ly8/j;Ly8/v;Ly8/k;)V",
+    "Lb9/s;-><init>(Ly8/w;Ly8/j;Ly8/w;Lj9/d;Lq9/b;Ly8/v;)V",
+    "Lcom/bumptech/glide/l;-><init>(Lcom/bumptech/glide/b;Lcom/bumptech/glide/manager/l;Lcom/bumptech/glide/manager/q;Landroid/content/Context;)V",
+    "Lcom/bumptech/glide/l;-><init>(Lcom/bumptech/glide/b;Lcom/bumptech/glide/manager/l;Lcom/bumptech/glide/manager/q;Lcom/bumptech/glide/manager/r;Lcom/bumptech/glide/manager/d;Landroid/content/Context;)V",
+    "Lcom/google/android/gms/common/internal/GetServiceRequest;-><init>(IIILjava/lang/String;Landroid/os/IBinder;[Lcom/google/android/gms/common/api/Scope;Landroid/os/Bundle;Landroid/accounts/Account;[Lcom/google/android/gms/common/Feature;[Lcom/google/android/gms/common/Feature;ZIZLjava/lang/String;)V",
+    "Lcom/google/android/gms/common/server/response/FastJsonResponse$Field;-><init>(IIZIZLjava/lang/String;ILjava/lang/String;Lcom/google/android/gms/common/server/converter/zaa;)V",
+    "Lcom/google/android/gms/internal/clearcut/e;-><init>(Lcom/google/android/gms/internal/clearcut/o;Ljava/lang/String;Ljava/lang/Object;)V",
+    "Lcom/google/android/gms/internal/clearcut/e;-><init>(Lcom/google/android/gms/internal/clearcut/o;Ljava/lang/String;Ljava/lang/Object;Lcom/google/android/gms/internal/clearcut/i;)V",
+    "Lcom/google/android/material/appbar/AppBarLayout;-><init>(Landroid/content/Context;)V",
+    "Lcom/google/android/material/appbar/AppBarLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V",
+    "Lcom/google/android/material/appbar/AppBarLayout;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V",
+    "Lcom/google/android/material/badge/BadgeState;-><init>(Landroid/content/Context;IIILcom/google/android/material/badge/BadgeState$State;)V",
+    "Lcom/google/android/material/datepicker/CalendarConstraints;-><init>(Lcom/google/android/material/datepicker/Month;Lcom/google/android/material/datepicker/Month;Lcom/google/android/material/datepicker/CalendarConstraints$DateValidator;Lcom/google/android/material/datepicker/Month;I)V",
+    "Lcom/google/android/material/datepicker/CalendarConstraints;-><init>(Lcom/google/android/material/datepicker/Month;Lcom/google/android/material/datepicker/Month;Lcom/google/android/material/datepicker/CalendarConstraints$DateValidator;Lcom/google/android/material/datepicker/Month;ILcom/google/android/material/datepicker/CalendarConstraints$a;)V",
+    "Lcom/google/android/material/navigation/g;-><init>(Landroid/content/Context;)V",
+    "Lcom/google/android/material/sidesheet/SideSheetBehavior;-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V",
+    "Lcom/google/firebase/messaging/FirebaseMessaging;-><init>(Lcom/google/firebase/FirebaseApp;Lie/a;Lje/b;Lge/d;Lcom/google/firebase/messaging/i0;Lcom/google/firebase/messaging/d0;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)V",
+    "Lcom/google/firebase/messaging/FirebaseMessaging;-><init>(Lcom/google/firebase/FirebaseApp;Lie/a;Lje/b;Lje/b;Lke/h;Lje/b;Lge/d;)V",
+    "Lcom/google/firebase/messaging/FirebaseMessaging;-><init>(Lcom/google/firebase/FirebaseApp;Lie/a;Lje/b;Lje/b;Lke/h;Lje/b;Lge/d;Lcom/google/firebase/messaging/i0;)V",
+    "Lcom/google/protobuf/CodedInputStream$IterableDirectByteBufferDecoder;-><init>(Ljava/lang/Iterable;IZ)V",
+    "Lcom/google/protobuf/CodedInputStream$IterableDirectByteBufferDecoder;-><init>(Ljava/lang/Iterable;IZLcom/google/protobuf/CodedInputStream$1;)V",
+    "Lcom/google/protobuf/GeneratedMessageLite$Builder;-><init>(Lcom/google/protobuf/GeneratedMessageLite;)V",
+    "Lcom/google/protobuf/GeneratedMessageLite$GeneratedExtension;-><init>(Lcom/google/protobuf/MessageLite;Ljava/lang/Object;Lcom/google/protobuf/MessageLite;Lcom/google/protobuf/GeneratedMessageLite$ExtensionDescriptor;Ljava/lang/Class;)V",
+    "Lcom/google/protobuf/RopeByteString$PieceIterator;-><init>(Lcom/google/protobuf/ByteString;)V",
+    "Lcom/google/protobuf/RopeByteString$PieceIterator;-><init>(Lcom/google/protobuf/ByteString;Lcom/google/protobuf/RopeByteString$1;)V",
+    "Lcom/samsung/android/authfw/pass/sdk/callback/SvcAuthenticationCallback;-><init>(ILjava/lang/Object;)V",
+    "Lcom/samsung/android/samsungpass/common/dialog/SPassProgressDialog;-><init>(Landroid/content/Context;)V",
+    "Lcom/samsung/android/samsungpass/common/dialog/SPassProgressDialog;-><init>(Landroid/content/Context;I)V",
+    "Lcom/samsung/android/samsungpass/common/dialog/SPassProgressDialog;-><init>(Landroid/content/Context;II)V",
+    "Lcom/samsung/android/samsungpass/main/dashboard/indexscroll/IndexScrollManager;-><init>(ILandroidx/indexscroll/widget/SeslIndexScrollView;Landroidx/recyclerview/widget/RecyclerView;)V",
+    "Lcom/samsung/android/samsungpass/ocr/nfc/cardtagging/Tag/TagImpl;-><init>(Ljava/lang/String;Lcom/samsung/android/samsungpass/ocr/nfc/cardtagging/Tag/TagValueTypeEnum;Ljava/lang/String;Ljava/lang/String;)V",
+    "Lcom/samsung/android/samsungpass/ocr/nfc/cardtagging/Tag/TagImpl;-><init>([BLcom/samsung/android/samsungpass/ocr/nfc/cardtagging/Tag/TagValueTypeEnum;Ljava/lang/String;Ljava/lang/String;)V",
+    "Lcom/samsung/android/samsungpass/plugin/honeyboard/main/MainViewer;-><init>(Landroid/content/Context;Lcom/samsung/android/honeyboard/plugins/board/PluginBoardCallback;)V",
+    "Lcom/samsung/android/samsungpass/remote/server/SPassApiBase;-><init>(Landroid/content/Context;ILjava/lang/String;Lcom/samsung/android/samsungpass/remote/server/SPassApiAppListener;Lcom/samsung/android/samsungpass/remote/server/SPassApiBase$BaseResp;)V",
+    "Lcom/samsung/android/samsungpass/remote/server/error/SPassApiError;-><init>(Lk7/u;)V",
+    "Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPageViewHolder;-><init>(Landroid/view/View;Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPageViewHolder$OnViewHolderListener;)V",
+    "Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormTextWatcher;-><init>(Lcom/samsung/android/samsungpass/websignin/ui/privateinfo/card/AutoFillFormCardViewModel;Lcom/samsung/android/samsungpass/databinding/FragmentAutofillFormEditCardBinding;ILxq/l;)V",
+    "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;-><init>(Landroid/content/Context;)V",
+    "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;->getInstance(Landroid/content/Context;)Lcom/samsung/android/sdk/smp/common/preference/PrefManager;",
+    "Lcom/yessign/fido/asn1/ASN1TaggedObject;-><init>(ZILcom/yessign/fido/asn1/DEREncodable;)V",
+    "Lcom/yessign/fido/asn1/x509/IssuingDistributionPoint;-><init>(Lcom/yessign/fido/asn1/x509/DistributionPointName;ZZLcom/yessign/fido/asn1/x509/ReasonFlags;ZZ)V",
+    "Lcom/yessign/fido/asn1/x509/Time;-><init>(Lcom/yessign/fido/asn1/DERObject;)V",
+    "Lcom/yessign/fido/asn1/x509/Time;->getInstance(Lcom/yessign/fido/asn1/ASN1TaggedObject;Z)Lcom/yessign/fido/asn1/x509/Time;",
+    "Lcom/yessign/fido/asn1/x509/Time;->getInstance(Ljava/lang/Object;)Lcom/yessign/fido/asn1/x509/Time;",
+    "Lcom/yessign/fido/util/yessignSecureRandom;-><init>()V",
+    "Lcom/yessign/fido/util/yessignSecureRandom;-><init>([B[BLjava/math/BigInteger;)V",
+    "Lev/g;-><init>(Ljava/lang/Object;Ljava/lang/Object;Ljava/util/Comparator;)V",
+    "Lev/g;->a(Ljava/lang/Comparable;Ljava/lang/Comparable;)Lev/g;",
+    "Lev/g;->c(Ljava/lang/Object;Ljava/lang/Object;Ljava/util/Comparator;)Lev/g;",
+    "Lfs/t0;->E(Lis/n;)Lqr/k0;",
+    "Lg9/p;-><init>(La9/h;Ly8/j;Lg9/b;Ljava/util/List;)V",
+    "Lg9/p;-><init>(Lg9/z;)V",
+    "Lg9/p;-><init>(Lg9/z;Ly8/j;Lg9/b;)V",
+    "Lg9/p;->G(Lg9/z;)Lg9/p;",
+    "Lg9/p;->H(La9/h;Ly8/j;Lg9/b;)Lg9/p;",
+    "Lg9/p;->I(Lg9/z;)Lg9/p;",
+    "Lg9/z;-><init>(La9/h;ZLy8/j;Lg9/b;Ljava/lang/String;)V",
+    "Lgh/m;-><init>(Lyg/i;)V",
+    "Lgh/s;-><init>(Lyg/i;)V",
+    "Lht/w$c;-><init>(Lht/w;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V",
+    "Li3/v1;-><init>(Li3/v1;)V",
+    "Lis/p;->c(Lis/q;)Z",
+    "Lix/b;-><init>(Z)V",
+    "Lix/t;-><init>(Ljava/util/Date;)V",
+    "Lix/t;-><init>(Lsw/s;)V",
+    "Lix/t;->n(Ljava/lang/Object;)Lix/t;",
+    "Lj3/g$a;-><init>(ILjava/lang/CharSequence;)V",
+    "Lj3/g$a;-><init>(ILjava/lang/CharSequence;Lj3/j;)V",
+    "Lj3/g$a;-><init>(ILjava/lang/CharSequence;Ljava/lang/Class;)V",
+    "Lj3/g$a;-><init>(Ljava/lang/Object;)V",
+    "Lj3/g$a;-><init>(Ljava/lang/Object;ILjava/lang/CharSequence;Lj3/j;Ljava/lang/Class;)V",
+    "Lj3/g$a;->a(Ljava/lang/CharSequence;Lj3/j;)Lj3/g$a;",
+    "Ljh/c;-><init>(Lyg/i;)V",
+    "Ljh/c;->e(Ljava/lang/Object;)Ljh/c;",
+    "Ljh/l;-><init>(ILjava/lang/String;)V",
+    "Ljh/v;-><init>(Lyg/d0;)V",
+    "Ljh/v;->f(Ljava/lang/Object;)Ljh/v;",
+    "Ljh/v;->g(Lyg/k;Z)Ljh/v;",
+    "Lk7/k;-><init>(I[BLjava/util/Map;Ljava/util/List;ZJ)V",
+    "Lk7/k;-><init>(I[BLjava/util/Map;ZJ)V",
+    "Lk7/k;-><init>(I[BZJLjava/util/List;)V",
+    "Lk7/k;-><init>([BLjava/util/Map;)V",
+    "Lkk/b;-><init>(JLjava/lang/String;JZLjava/lang/String;)V",
+    "Lkt/d1;-><init>(Lkt/u1;Ljava/util/List;ZLct/k;Lxq/l;)V",
+    "Llg/c;-><init>(Lyf/b;Lsf/q;Lsf/q;Lsf/q;Lsf/q;)V",
+    "Llg/c;->a(IIZ)Llg/c;",
+    "Llg/c;->j(Llg/c;Llg/c;)Llg/c;",
+    "Lm9/c;-><init>(Lg9/r;Lg9/h;Lq9/b;Ly8/j;Ly8/o;Lj9/g;Ly8/j;ZLjava/lang/Object;[Ljava/lang/Class;)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIII)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIIII)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIII[B)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIII[BI)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIII[BII)V",
+    "Lnet/sf/scuba/smartcards/CommandAPDU;-><init>(IIII[BIII)V",
+    "Lnx/g;-><init>(Lnx/c;Luw/f;)V",
+    "Lnx/g;-><init>(Lnx/c;[B)V",
+    "Lnx/u;-><init>(Luw/i;Lux/a;Lux/h;Lnx/f;)V",
+    "Lnx/u;-><init>(Luw/i;Lux/a;Lux/h;Lnx/f;Lnx/a;Lnx/a;)V",
+    "Lnx/u;-><init>(Luw/i;Lux/a;Lux/h;Lnx/f;Z)V",
+    "Lnx/w;-><init>(Luw/j;Lsw/n;Lnx/c;[B)V",
+    "Loa/s0;-><init>(ILoa/n;Lqb/k;Loa/l;)V",
+    "Lorg/bouncycastle/asn1/ASN1BitString;-><init>([BI)V",
+    "Lorg/bouncycastle/asn1/ASN1BitString;-><init>([BZ)V",
+    "Lorg/bouncycastle/asn1/ASN1GeneralizedTime;-><init>([B)V",
+    "Lorg/bouncycastle/asn1/ASN1GeneralizedTime;->createPrimitive([B)Lorg/bouncycastle/asn1/ASN1GeneralizedTime;",
+    "Lorg/bouncycastle/asn1/ASN1IA5String;-><init>(Ljava/lang/String;Z)V",
+    "Lorg/bouncycastle/asn1/ASN1NumericString;-><init>(Ljava/lang/String;Z)V",
+    "Lorg/bouncycastle/asn1/ASN1UTCTime;-><init>([B)V",
+    "Lorg/bouncycastle/asn1/ASN1UTCTime;->createPrimitive([B)Lorg/bouncycastle/asn1/ASN1UTCTime;",
+    "Lorg/bouncycastle/asn1/DefiniteLengthInputStream;-><init>(Ljava/io/InputStream;II)V",
+    "Lorg/bouncycastle/asn1/IndefiniteLengthInputStream;-><init>(Ljava/io/InputStream;I)V",
+    "Lorg/bouncycastle/asn1/cryptopro/GOST3410PublicKeyAlgParameters;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/asn1/cryptopro/GOST3410PublicKeyAlgParameters;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/cryptopro/GOST3410PublicKeyAlgParameters;",
+    "Lorg/bouncycastle/asn1/cryptopro/GOST3410PublicKeyAlgParameters;->getInstance(Lorg/bouncycastle/asn1/ASN1TaggedObject;Z)Lorg/bouncycastle/asn1/cryptopro/GOST3410PublicKeyAlgParameters;",
+    "Lorg/bouncycastle/asn1/pkcs/PBES2Parameters;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/asn1/pkcs/PBES2Parameters;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/pkcs/PBES2Parameters;",
+    "Lorg/bouncycastle/asn1/pkcs/PBMAC1Params;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/asn1/pkcs/PBMAC1Params;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/pkcs/PBMAC1Params;",
+    "Lorg/bouncycastle/asn1/x509/BasicConstraints;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/asn1/x509/BasicConstraints;-><init>(Z)V",
+    "Lorg/bouncycastle/asn1/x509/BasicConstraints;->fromExtensions(Lorg/bouncycastle/asn1/x509/Extensions;)Lorg/bouncycastle/asn1/x509/BasicConstraints;",
+    "Lorg/bouncycastle/asn1/x509/BasicConstraints;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/x509/BasicConstraints;",
+    "Lorg/bouncycastle/asn1/x509/BasicConstraints;->getInstance(Lorg/bouncycastle/asn1/ASN1TaggedObject;Z)Lorg/bouncycastle/asn1/x509/BasicConstraints;",
+    "Lorg/bouncycastle/asn1/x509/GeneralName;-><init>(ILjava/lang/String;)V",
+    "Lorg/bouncycastle/asn1/x509/Holder;-><init>(Lorg/bouncycastle/asn1/ASN1TaggedObject;)V",
+    "Lorg/bouncycastle/asn1/x509/IssuerSerial;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/asn1/x509/IssuerSerial;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/x509/IssuerSerial;",
+    "Lorg/bouncycastle/asn1/x509/IssuerSerial;->getInstance(Lorg/bouncycastle/asn1/ASN1TaggedObject;Z)Lorg/bouncycastle/asn1/x509/IssuerSerial;",
+    "Lorg/bouncycastle/asn1/x509/IssuingDistributionPoint;-><init>(Lorg/bouncycastle/asn1/x509/DistributionPointName;ZZ)V",
+    "Lorg/bouncycastle/asn1/x509/IssuingDistributionPoint;-><init>(Lorg/bouncycastle/asn1/x509/DistributionPointName;ZZLorg/bouncycastle/asn1/x509/ReasonFlags;ZZ)V",
+    "Lorg/bouncycastle/asn1/x509/Time;-><init>(Lorg/bouncycastle/asn1/ASN1Primitive;)V",
+    "Lorg/bouncycastle/asn1/x509/Time;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/x509/Time;",
+    "Lorg/bouncycastle/asn1/x509/Time;->getInstance(Lorg/bouncycastle/asn1/ASN1TaggedObject;Z)Lorg/bouncycastle/asn1/x509/Time;",
+    "Lorg/bouncycastle/asn1/x509/qualified/TypeOfBiometricData;-><init>(I)V",
+    "Lorg/bouncycastle/asn1/x509/qualified/TypeOfBiometricData;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/asn1/x509/qualified/TypeOfBiometricData;",
+    "Lorg/bouncycastle/asn1/x9/X9FieldID;-><init>(II)V",
+    "Lorg/bouncycastle/asn1/x9/X9FieldID;-><init>(IIII)V",
+    "Lorg/bouncycastle/crypto/agreement/jpake/JPAKEPrimeOrderGroup;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/crypto/agreement/jpake/JPAKEPrimeOrderGroup;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Z)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>()V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>([B)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>([BI[B[B)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>([BI[B[BLorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2bDigest;-><init>([BLorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2sDigest;-><init>()V",
+    "Lorg/bouncycastle/crypto/digests/Blake2sDigest;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2sDigest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2sDigest;-><init>([BI[B[B)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2sDigest;-><init>([BI[B[BLorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2xsDigest;-><init>()V",
+    "Lorg/bouncycastle/crypto/digests/Blake2xsDigest;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2xsDigest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2xsDigest;-><init>(I[B)V",
+    "Lorg/bouncycastle/crypto/digests/Blake2xsDigest;-><init>(I[B[B[BLorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/CSHAKEDigest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;[B[B)V",
+    "Lorg/bouncycastle/crypto/digests/CSHAKEDigest;-><init>(I[B[B)V",
+    "Lorg/bouncycastle/crypto/digests/DSTU7564Digest;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/digests/DSTU7564Digest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/SHA512tDigest;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/digests/SHA512tDigest;-><init>(ILorg/bouncycastle/crypto/CryptoServicePurpose;)V",
+    "Lorg/bouncycastle/crypto/digests/SHA512tDigest;-><init>([B)V",
+    "Lorg/bouncycastle/crypto/digests/SparkleDigest;-><init>(Lorg/bouncycastle/crypto/digests/SparkleDigest$SparkleParameters;)V",
+    "Lorg/bouncycastle/crypto/engines/DSTU7624Engine;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/engines/ElephantEngine;-><init>(Lorg/bouncycastle/crypto/engines/ElephantEngine$ElephantParameters;)V",
+    "Lorg/bouncycastle/crypto/engines/RijndaelEngine;-><init>()V",
+    "Lorg/bouncycastle/crypto/engines/RijndaelEngine;-><init>(I)V",
+    "Lorg/bouncycastle/crypto/engines/TwofishEngine;-><init>()V",
+    "Lorg/bouncycastle/crypto/kems/ECIESKEMExtractor;-><init>(Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;ILorg/bouncycastle/crypto/DerivationFunction;ZZZ)V",
+    "Lorg/bouncycastle/crypto/kems/ECIESKEMGenerator;-><init>(ILorg/bouncycastle/crypto/DerivationFunction;Ljava/security/SecureRandom;ZZZ)V",
+    "Lorg/bouncycastle/crypto/kems/ECIESKeyEncapsulation;-><init>(Lorg/bouncycastle/crypto/DerivationFunction;Ljava/security/SecureRandom;ZZZ)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;II)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;IILjava/math/BigInteger;Lorg/bouncycastle/crypto/params/DHValidationParameters;)V",
+    "Lorg/bouncycastle/crypto/params/DHParameters;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Lorg/bouncycastle/crypto/params/DHValidationParameters;)V",
+    "Lorg/bouncycastle/crypto/params/ECGOST3410Parameters;-><init>(Lorg/bouncycastle/crypto/params/ECDomainParameters;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;)V",
+    "Lorg/bouncycastle/crypto/params/ECGOST3410Parameters;-><init>(Lorg/bouncycastle/crypto/params/ECDomainParameters;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;)V",
+    "Lorg/bouncycastle/crypto/params/HKDFParameters;-><init>([BZ[B[B)V",
+    "Lorg/bouncycastle/crypto/params/HKDFParameters;-><init>([B[B[B)V",
+    "Lorg/bouncycastle/crypto/params/HKDFParameters;->defaultParameters([B)Lorg/bouncycastle/crypto/params/HKDFParameters;",
+    "Lorg/bouncycastle/crypto/params/HKDFParameters;->skipExtractParameters([B[B)Lorg/bouncycastle/crypto/params/HKDFParameters;",
+    "Lorg/bouncycastle/crypto/params/KDFCounterParameters;-><init>([B[BI)V",
+    "Lorg/bouncycastle/crypto/params/KDFCounterParameters;-><init>([B[B[BI)V",
+    "Lorg/bouncycastle/crypto/params/KDFDoublePipelineIterationParameters;-><init>([B[BIZ)V",
+    "Lorg/bouncycastle/crypto/params/KDFDoublePipelineIterationParameters;->createWithCounter([B[BI)Lorg/bouncycastle/crypto/params/KDFDoublePipelineIterationParameters;",
+    "Lorg/bouncycastle/crypto/params/KDFDoublePipelineIterationParameters;->createWithoutCounter([B[B)Lorg/bouncycastle/crypto/params/KDFDoublePipelineIterationParameters;",
+    "Lorg/bouncycastle/crypto/params/KDFFeedbackParameters;-><init>([B[B[BIZ)V",
+    "Lorg/bouncycastle/crypto/params/KDFFeedbackParameters;->createWithCounter([B[B[BI)Lorg/bouncycastle/crypto/params/KDFFeedbackParameters;",
+    "Lorg/bouncycastle/crypto/params/KDFFeedbackParameters;->createWithoutCounter([B[B[B)Lorg/bouncycastle/crypto/params/KDFFeedbackParameters;",
+    "Lorg/bouncycastle/crypto/params/RSAKeyParameters;-><init>(ZLjava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/crypto/params/RSAKeyParameters;-><init>(ZLjava/math/BigInteger;Ljava/math/BigInteger;Z)V",
+    "Lorg/bouncycastle/crypto/params/XDHUPublicParameters;-><init>(Lorg/bouncycastle/crypto/params/AsymmetricKeyParameter;Lorg/bouncycastle/crypto/params/AsymmetricKeyParameter;)V",
+    "Lorg/bouncycastle/crypto/prng/drbg/CTRSP800DRBG;-><init>(Lorg/bouncycastle/crypto/BlockCipher;IILorg/bouncycastle/crypto/prng/EntropySource;[B[B)V",
+    "Lorg/bouncycastle/crypto/prng/drbg/HMacSP800DRBG;-><init>(Lorg/bouncycastle/crypto/Mac;ILorg/bouncycastle/crypto/prng/EntropySource;[B[B)V",
+    "Lorg/bouncycastle/crypto/prng/drbg/HashSP800DRBG;-><init>(Lorg/bouncycastle/crypto/Digest;ILorg/bouncycastle/crypto/prng/EntropySource;[B[B)V",
+    "Lorg/bouncycastle/crypto/util/JournaledAlgorithm;-><init>([B)V",
+    "Lorg/bouncycastle/crypto/util/JournaledAlgorithm;-><init>([BLjava/security/SecureRandom;)V",
+    "Lorg/bouncycastle/crypto/util/JournaledAlgorithm;->getState(Ljava/io/File;Ljava/security/SecureRandom;)Lorg/bouncycastle/crypto/util/JournaledAlgorithm;",
+    "Lorg/bouncycastle/crypto/util/JournaledAlgorithm;->getState(Ljava/io/InputStream;Ljava/security/SecureRandom;)Lorg/bouncycastle/crypto/util/JournaledAlgorithm;",
+    "Lorg/bouncycastle/internal/asn1/misc/ScryptParams;-><init>(Lorg/bouncycastle/asn1/ASN1Sequence;)V",
+    "Lorg/bouncycastle/internal/asn1/misc/ScryptParams;->getInstance(Ljava/lang/Object;)Lorg/bouncycastle/internal/asn1/misc/ScryptParams;",
+    "Lorg/bouncycastle/jcajce/CompositePrivateKey;-><init>(Lorg/bouncycastle/asn1/x509/AlgorithmIdentifier;[Ljava/security/PrivateKey;[Ljava/security/Provider;)V",
+    "Lorg/bouncycastle/jcajce/CompositePrivateKey;-><init>(Lorg/bouncycastle/asn1/x509/AlgorithmIdentifier;[Ljava/security/PrivateKey;[Ljava/security/Provider;Lorg/bouncycastle/jcajce/CompositePrivateKey$1;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PublicKey;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PublicKey;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/dstu/BCDSTU4145PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ec/BCECPrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/ec/BCECPublicKey;Ljava/security/spec/ECParameterSpec;Lorg/bouncycastle/jcajce/provider/config/ProviderConfiguration;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ec/BCECPublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Ljava/security/spec/ECParameterSpec;Lorg/bouncycastle/jcajce/provider/config/ProviderConfiguration;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ec/BCECPublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Lorg/bouncycastle/jce/spec/ECParameterSpec;Lorg/bouncycastle/jcajce/provider/config/ProviderConfiguration;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ec/BCECPublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/jce/spec/ECPublicKeySpec;Lorg/bouncycastle/jcajce/provider/config/ProviderConfiguration;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PublicKey;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PublicKey;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost/BCECGOST3410PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PublicKey;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PublicKey;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/ecgost12/BCECGOST3410_2012PublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/edec/BCEdDSAPrivateKey;-><init>(Lorg/bouncycastle/asn1/pkcs/PrivateKeyInfo;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/edec/BCEdDSAPrivateKey;-><init>(Lorg/bouncycastle/crypto/params/AsymmetricKeyParameter;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/edec/BCXDHPrivateKey;-><init>(Lorg/bouncycastle/asn1/pkcs/PrivateKeyInfo;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/edec/BCXDHPrivateKey;-><init>(Lorg/bouncycastle/crypto/params/AsymmetricKeyParameter;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/rsa/PSSSignatureSpi;-><init>(Lorg/bouncycastle/crypto/AsymmetricBlockCipher;Ljava/security/spec/PSSParameterSpec;)V",
+    "Lorg/bouncycastle/jcajce/provider/asymmetric/rsa/PSSSignatureSpi;-><init>(Lorg/bouncycastle/crypto/AsymmetricBlockCipher;Ljava/security/spec/PSSParameterSpec;Z)V",
+    "Lorg/bouncycastle/jce/X509LDAPCertStoreParameters$Builder;-><init>()V",
+    "Lorg/bouncycastle/jce/X509LDAPCertStoreParameters$Builder;-><init>(Ljava/lang/String;Ljava/lang/String;)V",
+    "Lorg/bouncycastle/jce/provider/JCEECPrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jce/provider/JCEECPublicKey;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jce/provider/JCEECPrivateKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPrivateKeyParameters;Lorg/bouncycastle/jce/provider/JCEECPublicKey;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jce/provider/JCEECPublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Ljava/security/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jce/provider/JCEECPublicKey;-><init>(Ljava/lang/String;Lorg/bouncycastle/crypto/params/ECPublicKeyParameters;Lorg/bouncycastle/jce/spec/ECParameterSpec;)V",
+    "Lorg/bouncycastle/jce/provider/OldPKCS12ParametersGenerator;-><init>(Lorg/bouncycastle/crypto/Digest;)V",
+    "Lorg/bouncycastle/jce/spec/IESParameterSpec;-><init>([B[BI)V",
+    "Lorg/bouncycastle/jce/spec/IESParameterSpec;-><init>([B[BII[B)V",
+    "Lorg/bouncycastle/jce/spec/IESParameterSpec;-><init>([B[BII[BZ)V",
+    "Lorg/bouncycastle/math/ec/ECCurve$Fp;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/math/ec/ECCurve$Fp;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;)V",
+    "Lorg/bouncycastle/math/ec/ECCurve$Fp;-><init>(Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Z)V",
+    "Lorg/bouncycastle/pqc/crypto/falcon/FalconNIST;-><init>(IILjava/security/SecureRandom;)V",
+    "Lorg/bouncycastle/pqc/crypto/mldsa/MLDSAPrivateKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/mldsa/MLDSAParameters;[B)V",
+    "Lorg/bouncycastle/pqc/crypto/mldsa/MLDSAPrivateKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/mldsa/MLDSAParameters;[BLorg/bouncycastle/pqc/crypto/mldsa/MLDSAPublicKeyParameters;)V",
+    "Lorg/bouncycastle/pqc/crypto/mlkem/MLKEMPrivateKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/mlkem/MLKEMParameters;[B)V",
+    "Lorg/bouncycastle/pqc/crypto/mlkem/MLKEMPrivateKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/mlkem/MLKEMParameters;[BLorg/bouncycastle/pqc/crypto/mlkem/MLKEMPublicKeyParameters;)V",
+    "Lorg/bouncycastle/pqc/crypto/saber/SABEREngine;-><init>(IIZZ)V",
+    "Lorg/bouncycastle/pqc/crypto/snova/SnovaEngine;-><init>(Lorg/bouncycastle/pqc/crypto/snova/SnovaParameters;)V",
+    "Lorg/bouncycastle/pqc/crypto/sphincsplus/SPHINCSPlusEngine;-><init>(ZIIIIII)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/BDS;ILorg/bouncycastle/asn1/ASN1ObjectIdentifier;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/BDS;Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/BDS;[B[BLorg/bouncycastle/pqc/crypto/xmss/OTSHashAddress;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;->getNextState([B[BLorg/bouncycastle/pqc/crypto/xmss/OTSHashAddress;)Lorg/bouncycastle/pqc/crypto/xmss/BDS;",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;->withMaxIndex(ILorg/bouncycastle/asn1/ASN1ObjectIdentifier;)Lorg/bouncycastle/pqc/crypto/xmss/BDS;",
+    "Lorg/bouncycastle/pqc/crypto/xmss/BDS;->withWOTSDigest(Lorg/bouncycastle/asn1/ASN1ObjectIdentifier;)Lorg/bouncycastle/pqc/crypto/xmss/BDS;",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSMTPublicKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSMTPublicKeyParameters$Builder;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSMTPublicKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSMTPublicKeyParameters$Builder;Lorg/bouncycastle/pqc/crypto/xmss/XMSSMTPublicKeyParameters$1;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSParameters;-><clinit>()V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSParameters;-><init>(ILorg/bouncycastle/asn1/ASN1ObjectIdentifier;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSParameters;-><init>(ILorg/bouncycastle/crypto/Digest;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSPublicKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSPublicKeyParameters$Builder;)V",
+    "Lorg/bouncycastle/pqc/crypto/xmss/XMSSPublicKeyParameters;-><init>(Lorg/bouncycastle/pqc/crypto/xmss/XMSSPublicKeyParameters$Builder;Lorg/bouncycastle/pqc/crypto/xmss/XMSSPublicKeyParameters$1;)V",
+    "Lorg/jsoup/select/CombiningEvaluator$Or;-><init>(Ljava/util/Collection;)V",
+    "Lorg/jsoup/select/CombiningEvaluator$Or;-><init>([Lorg/jsoup/select/Evaluator;)V",
+    "Lorg/threeten/bp/DayOfWeek;-><clinit>()V",
+    "Lorg/threeten/bp/DayOfWeek;-><init>(Ljava/lang/String;I)V",
+    "Lorg/threeten/bp/DayOfWeek;->adjustInto(Lorg/threeten/bp/temporal/Temporal;)Lorg/threeten/bp/temporal/Temporal;",
+    "Lorg/threeten/bp/DayOfWeek;->from(Lorg/threeten/bp/temporal/TemporalAccessor;)Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/DayOfWeek;->get(Lorg/threeten/bp/temporal/TemporalField;)I",
+    "Lorg/threeten/bp/DayOfWeek;->getDisplayName(Lorg/threeten/bp/format/TextStyle;Ljava/util/Locale;)Ljava/lang/String;",
+    "Lorg/threeten/bp/DayOfWeek;->getLong(Lorg/threeten/bp/temporal/TemporalField;)J",
+    "Lorg/threeten/bp/DayOfWeek;->getValue()I",
+    "Lorg/threeten/bp/DayOfWeek;->isSupported(Lorg/threeten/bp/temporal/TemporalField;)Z",
+    "Lorg/threeten/bp/DayOfWeek;->minus(J)Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/DayOfWeek;->of(I)Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/DayOfWeek;->plus(J)Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/DayOfWeek;->query(Lorg/threeten/bp/temporal/TemporalQuery;)Ljava/lang/Object;",
+    "Lorg/threeten/bp/DayOfWeek;->range(Lorg/threeten/bp/temporal/TemporalField;)Lorg/threeten/bp/temporal/ValueRange;",
+    "Lorg/threeten/bp/DayOfWeek;->valueOf(Ljava/lang/String;)Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/DayOfWeek;->values()[Lorg/threeten/bp/DayOfWeek;",
+    "Lorg/threeten/bp/Month;-><clinit>()V",
+    "Lorg/threeten/bp/Month;-><init>(Ljava/lang/String;I)V",
+    "Lorg/threeten/bp/Month;->adjustInto(Lorg/threeten/bp/temporal/Temporal;)Lorg/threeten/bp/temporal/Temporal;",
+    "Lorg/threeten/bp/Month;->firstDayOfYear(Z)I",
+    "Lorg/threeten/bp/Month;->firstMonthOfQuarter()Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->from(Lorg/threeten/bp/temporal/TemporalAccessor;)Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->get(Lorg/threeten/bp/temporal/TemporalField;)I",
+    "Lorg/threeten/bp/Month;->getDisplayName(Lorg/threeten/bp/format/TextStyle;Ljava/util/Locale;)Ljava/lang/String;",
+    "Lorg/threeten/bp/Month;->getLong(Lorg/threeten/bp/temporal/TemporalField;)J",
+    "Lorg/threeten/bp/Month;->getValue()I",
+    "Lorg/threeten/bp/Month;->isSupported(Lorg/threeten/bp/temporal/TemporalField;)Z",
+    "Lorg/threeten/bp/Month;->length(Z)I",
+    "Lorg/threeten/bp/Month;->maxLength()I",
+    "Lorg/threeten/bp/Month;->minLength()I",
+    "Lorg/threeten/bp/Month;->minus(J)Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->of(I)Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->plus(J)Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->query(Lorg/threeten/bp/temporal/TemporalQuery;)Ljava/lang/Object;",
+    "Lorg/threeten/bp/Month;->range(Lorg/threeten/bp/temporal/TemporalField;)Lorg/threeten/bp/temporal/ValueRange;",
+    "Lorg/threeten/bp/Month;->valueOf(Ljava/lang/String;)Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/Month;->values()[Lorg/threeten/bp/Month;",
+    "Lorg/threeten/bp/ZoneId;-><init>()V",
+    "Lorg/threeten/bp/format/DateTimeFormatterBuilder$ReducedPrinterParser;-><init>(Lorg/threeten/bp/temporal/TemporalField;IIILorg/threeten/bp/chrono/ChronoLocalDate;)V",
+    "Lorg/xmlpull/v1/builder/adapter/XmlElementAdapter;-><init>(Lorg/xmlpull/v1/builder/XmlElement;)V",
+    "Lp8/r$a;-><clinit>()V",
+    "Lp8/r$a;-><init>(Ljava/util/Set;ZZZZ)V",
+    "Lp8/r$a;->e(Ljava/util/Set;ZZZZ)Lp8/r$a;",
+    "Lp8/r$a;->i(Lp8/r;)Lp8/r$a;",
+    "Lp8/r$a;->k(Lp8/r$a;Lp8/r$a;)Lp8/r$a;",
+    "Lp8/r$a;->l(Lp8/r$a;)Lp8/r$a;",
+    "Lr1/c;-><init>(I)V",
+    "Lretrofit2/o;-><init>(Ljava/lang/String;Lou/v;Ljava/lang/String;Lou/u;Lou/x;ZZZ)V",
+    "Ls7/i;-><init>(Ls7/i$a;)V",
+    "Lsigngate/core/provider/SignGATE;-><init>()V",
+    "Lsigngate/core/provider/SignGATE;->addProvider()V",
+    "Lsigngate/core/provider/SignGATE;->addProvider(I)V",
+    "Lsr/g;->a(Lrs/c;)Ljava/io/InputStream;",
+    "Lsw/b;-><init>([BI)V",
+    "Lsw/w0;-><init>(Ljava/lang/String;)V",
+    "Lsw/w0;-><init>(Ljava/lang/String;Z)V",
+    "Lsw/z;-><init>(ZILsw/e;)V",
+    "Ltr/y;->O([Ljava/lang/reflect/Type;[[Ljava/lang/annotation/Annotation;Z)Ljava/util/List;",
+    "Ltr/y;->getName()Lrs/f;",
+    "Lts/i$f;-><init>(Lts/p;Ljava/lang/Object;Lts/p;Lts/i$e;Ljava/lang/Class;)V",
+    "Lut/l;->d(Ljava/lang/Object;)Ljava/lang/Object;",
+    "Lut/l;->f(Ljava/lang/Object;)Ljava/lang/Object;",
+    "Luw/j;-><init>(Lsw/t;)V",
+    "Luw/j;-><init>(Luw/i;Lix/a;Lsw/v;Lix/a;Lsw/o;Lsw/v;)V",
+    "Luw/j;->y(Ljava/lang/Object;)Luw/j;",
+    "Luw/k;-><init>(Ljava/util/Date;)V",
+    "Luw/k;-><init>(Lsw/s;)V",
+    "Luw/k;->n(Ljava/lang/Object;)Luw/k;",
+    "Lwg/a;-><init>(Lwg/d;Ljava/lang/String;[Lwg/b;)V",
+    "Lx0/k;-><init>(Ljava/lang/String;[FLx0/m;[FLxq/l;Lxq/l;FFLx0/l;I)V",
+    "Lx0/k;-><init>(Lx0/k;[FLx0/m;)V",
+    "Lx0/l;-><init>(DDDDDDD)V",
+    "Lx3/h;-><init>(Ljava/lang/Object;Lx3/i;)V",
+    "Ly6/g;-><init>(Lcom/airbnb/lottie/f;Le7/a;Ld7/m;)V",
+    "Ly6/n;-><init>(Lcom/airbnb/lottie/f;Le7/a;Ld7/i;)V",
+    "Ly8/s;-><init>()V",
+    "Ly8/s;-><init>(Lq8/d;)V",
+    "Ly8/s;-><init>(Lq8/d;Lm9/j;Lb9/k;)V",
+    "Lyg/k;-><init>(ZILyg/u;)V",
+    "Lyg/z;-><init>(Ljava/lang/String;)V",
+    "Lyg/z;-><init>(Ljava/lang/String;Z)V",
+    "Lz6/o;-><init>(Lc7/l;)V"
+  ],
+  "lost": [
+    "Lat/c;->b(Lis/g;)Lnr/e;",
+    "Les/m;->b(Les/m;Lis/y;)Lfs/b1;",
+    "Les/m;->c(Les/m;Lis/y;)Lfs/b1;",
+    "Lfs/b;->g(Lfs/b;Lis/r;)Z",
+    "Lfs/b;->h(Lfs/b;Lis/r;)Z",
+    "Lfs/g0;->h0(Lfs/g0;Les/k;Lfs/g0$a;)Lnr/e;",
+    "Lfs/g0;->i0(Lfs/g0;Les/k;Lfs/g0$a;)Lnr/e;",
+    "Lfs/g0;->k0(Lis/g;)Lnr/e;",
+    "Lfs/g0;->v(Lct/d;Lxq/l;)Ljava/util/Set;",
+    "Lfs/s;->invoke()Ljava/lang/Object;",
+    "Lfs/z0;->D(Lct/d;Lxq/l;)Ljava/util/Set;",
+    "Lfs/z0;->x(Lct/d;Lxq/l;)Ljava/util/Set;",
+    "Lfs/z;->D(Lct/d;Lxq/l;)Ljava/util/Set;",
+    "Lfs/z;->E0(Lqr/i;)Ljava/util/List;",
+    "Lfs/z;->F0()Lnr/d;",
+    "Lfs/z;->i1(Lfs/z;Les/k;Lrs/f;)Lnr/e;",
+    "Lfs/z;->m0(Lfs/z;Les/k;Lrs/f;)Lnr/e;",
+    "Lfs/z;->s0(Ljava/util/List;Lnr/l;ILis/r;Lkt/r0;Lkt/r0;)V",
+    "Lfs/z;->x(Lct/d;Lxq/l;)Ljava/util/Set;",
+    "Lfs/z;->x0(Lct/d;Lxq/l;)Ljava/util/LinkedHashSet;",
+    "Lft/c;->d(Lft/c;Lrs/c;)Lnr/n0;",
+    "Lft/c;->f(Lft/c;Lrs/c;)Lnr/n0;",
+    "Lht/m$f;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+    "Lmr/w;->e(Lrs/c;)Lft/r;",
+    "Lx7/m;->c(Lcom/bumptech/glide/load/ImageHeaderParser$ImageType;Lx7/s;Lx7/m$b;Lr7/d;Lx7/l;IIIIILandroid/graphics/BitmapFactory$Options;)V",
+    "Lx7/m;->h(Lx7/s;Landroid/graphics/BitmapFactory$Options;Lx7/l;Lo7/b;Lo7/i;ZIIZLx7/m$b;)Landroid/graphics/Bitmap;",
+    "Lx7/m;->i(Lx7/s;Landroid/graphics/BitmapFactory$Options;Lx7/m$b;Lr7/d;)Landroid/graphics/Bitmap;",
+    "Lx7/m;->m(Lx7/s;Landroid/graphics/BitmapFactory$Options;Lx7/m$b;Lr7/d;)[I",
+    "Lx7/y;->c(Ljava/io/InputStream;IILo7/h;)Lq7/v;"
+  ]
+}

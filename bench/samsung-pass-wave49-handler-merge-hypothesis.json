@@ -1,0 +1,11 @@
+{
+  "method_index": 167,
+  "hypothesis": "cleanup all-incoming Exception check inspects downstream capture block105",
+  "state": "disproved_by_code_and_original_graph",
+  "actual_capture_key": "original catch.entry Block104 Phi104",
+  "actual_incoming": "six genuine Exception edges166/168/199-202",
+  "downstream_capture": "Block105 Opaque102 reached by Unconditional64; not captures map key",
+  "source_evidence": "crates/backend-java/src/exception_dispatch.rs:99-160",
+  "proposed_normalized_entry_guard_added": false,
+  "goal_complete": false
+}

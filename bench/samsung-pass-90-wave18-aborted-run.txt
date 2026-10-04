@@ -1,0 +1,22 @@
+START apps=102 workers=1 artifacts=/tmp/opencode/decomphify-java-corpus/run-1790947062970324754-1478585
+PARALLELISM app_workers=1 class_workers=1
+DONE blade.verification.h64e21eb06c46 seconds=0.049 report=true errors=0
+DONE blade.verification.h7382541e0413 seconds=0.054 report=true errors=0
+DONE blade.verification.h052cb49cf25f seconds=0.051 report=true errors=0
+DONE blade.verification.h5f17c79f3423 seconds=0.051 report=true errors=0
+DONE blade.verification seconds=0.056 report=true errors=0
+DONE blade.verification.h5ceb7065c65f seconds=0.063 report=true errors=0
+DONE blade.verification.h2ac626c3faad seconds=0.064 report=true errors=0
+DONE blade.verification.h4bac0eb61661 seconds=0.071 report=true errors=0
+DONE com.samsung.android.brightnessbackupservice seconds=0.061 report=true errors=0
+DONE com.samsung.android.bbc.bbcagent seconds=0.111 report=true errors=0
+DONE com.samsung.android.bluelightfilter seconds=0.195 report=true errors=0
+DONE com.samsung.android.aircommandmanager seconds=1.226 report=true errors=0
+DONE com.samsung.android.allshare.service.mediashare seconds=2.394 report=true errors=0
+DONE com.samsung.android.app.earphonetypec seconds=4.924 report=true errors=0
+DONE com.samsung.android.beaconmanager seconds=5.311 report=true errors=0
+DONE com.samsung.android.app.clipboardedge seconds=7.382 report=true errors=0
+DONE com.samsung.android.app.taskedge seconds=8.419 report=true errors=0
+DONE com.samsung.android.audiomirroring seconds=23.614 report=true errors=0
+DONE com.samsung.android.app.watchmanagerstub seconds=18.999 report=true errors=0
+DONE com.samsung.android.app.esimkeystring seconds=14.786 report=true errors=0

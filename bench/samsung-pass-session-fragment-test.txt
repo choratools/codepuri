@@ -1,0 +1,28 @@
+warning: variant `Dispatch` is never constructed
+   --> crates/decomp/src/java_exception_regions.rs:119:5
+    |
+117 | enum RangeMode {
+    |      --------- variant in this enum
+118 |     Structured,
+119 |     Dispatch,
+    |     ^^^^^^^^
+    |
+    = note: `RangeMode` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `from_dex_dispatch` is never used
+   --> crates/decomp/src/java_exception_regions.rs:584:8
+    |
+584 | pub fn from_dex_dispatch(
+    |        ^^^^^^^^^^^^^^^^^
+
+warning: `decomp` (lib) generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/java_session.rs (target/debug/deps/java_session-db814f6c3e10c437)
+
+running 1 test
+test samsung_fragment_snapshot_replays_attested_static_prefix has been running for over 60 seconds
+error: test failed, to rerun pass `-p decomp --test java_session`
+
+Caused by:
+  process didn't exit successfully: `/storage_0/decomphify/target/debug/deps/java_session-db814f6c3e10c437 samsung_fragment --ignored` (signal: 15, SIGTERM: termination signal)

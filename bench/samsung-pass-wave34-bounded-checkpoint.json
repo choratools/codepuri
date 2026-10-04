@@ -1,0 +1,75 @@
+{
+  "updated_at": "2026-10-04T02:07:15.412860+00:00",
+  "state": "terminal_accepted_progress_goal_incomplete",
+  "accepted_baseline": "wave34",
+  "latest_full_candidate": "wave33_unaccepted_nine_identity_losses",
+  "source_contract_actual_probe": {
+    "terminal_exit": 0,
+    "log": "/tmp/opencode/wave34-six-source-bridge-final.log",
+    "emitted_roots": [
+      46352,
+      46603
+    ],
+    "still_rejected_roots": [
+      43824,
+      43830,
+      45524,
+      60310
+    ],
+    "coverage_gain_not_measured": true,
+    "runtime_domain_remains_unknown": true
+  },
+  "workspace_candidate": {
+    "terminal_exit": 101,
+    "log": "/tmp/opencode/wave34-root-workspace-tests.log",
+    "failure": "real_facade_checked_throws_boundary_and_same_class_call",
+    "observation": "complete_methods expected one, actual two; compiler/runtime evidence required before expectation revision",
+    "superseded_by": "/tmp/opencode/wave34-root-workspace-final.log",
+    "strengthened_existing_fixture_passed": true
+  },
+  "next_proof": "whole-body caller-local source-contract bridge with unchanged expression ordering",
+  "full_export_started": true,
+  "constructor_prefix": {
+    "source_stable": true,
+    "actual_samsung_54616_gain_not_measured": true,
+    "original_jvm_vs_emitted_java25_observations": 72,
+    "backend_lib_tests": {
+      "passed": 273,
+      "failed": 0,
+      "ignored": 11
+    },
+    "focused_log": "/tmp/opencode/wave34-prefix-focused3.log"
+  },
+  "scheduler": {
+    "window_changed_from": 240,
+    "window_changed_to": 960,
+    "workers": 30,
+    "ordering_cancellation_tests_passed": 4,
+    "bounded_replay_report": "bench/samsung-pass-wave34-scheduler-bounded.json",
+    "actual_full_export_speedup_not_measured": true
+  },
+  "whole_body_bridge": {
+    "bounded_backend_tests_passed": 6,
+    "actual_six_roots_all_emitted": true,
+    "original_headers_preserved": true,
+    "selected_callee_contracts_preserved": true,
+    "runtime_unknown_preserved": true,
+    "full_unit_compilation_not_established": true,
+    "source_stable": true,
+    "log": "/tmp/opencode/wave34-six-whole-body.log"
+  },
+  "frozen_run_root": "/tmp/opencode/samsung-pass-100-wave34",
+  "driver_session": 51017,
+  "workspace_session": 92384,
+  "root_preflight": {
+    "fmt": 0,
+    "strict_workspace_all_targets_clippy": 0,
+    "release_example_build": 0,
+    "session": 92361
+  },
+  "objective_complete": false,
+  "driver_terminal_exit": 0,
+  "workspace_terminal_exit": 0,
+  "final_summary": "bench/samsung-pass-wave34-final.json",
+  "source_freeze_released": true
+}

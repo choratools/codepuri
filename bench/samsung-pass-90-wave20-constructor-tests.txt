@@ -1,0 +1,16 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.57s
+     Running tests/samsung_constructor_body_subset_new.rs (target/debug/deps/samsung_constructor_body_subset_new-1c228d46f146ee75)
+
+running 1 test
+test real_static_final_classes_retain_constructor_bodies ... ignored, requires retained Samsung APK and explicit local JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/samsung_reachable_constructor_new.rs (target/debug/deps/samsung_reachable_constructor_new-187f88f72064a6a9)
+
+running 1 test
+test actual_constructor_overload_subset_keeps_original_catalog ... ignored, requires retained Samsung APK and JDK17
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

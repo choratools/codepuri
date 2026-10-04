@@ -1,0 +1,22 @@
+{
+  "original": "classes4.dex #7696 DeltaCertificateDescriptor(ASN1Sequence)",
+  "status": "seeded_original_constructor_plan_accepted",
+  "whole_class_compile": "pending",
+  "production_publication": "pending",
+  "source_grammar_changes": false,
+  "proof": "8 final assignments exactly once after original superclass constructor",
+  "files": {
+    "/tmp/opencode/wave30-delta-suffix-replay.log": {
+      "sha256": "ed32a28e61dd6178f744ec2e2ec63ff5c2f0d7c2e176d2a600df635c7f3597f9",
+      "bytes": 60056
+    },
+    "/tmp/opencode/wave30-delta-replay-7696.java": {
+      "sha256": "2825d4e0dc632a81685e38cb10cda91bf0b66cf9a849ecef563f20da53d362c8",
+      "bytes": 9023
+    },
+    "/tmp/opencode/wave30-delta-suffix-jadx.java": {
+      "sha256": "f94bdd98330ffe95c2671588760c8c8ece3996bd6984600878be53a223897e41",
+      "bytes": 9174
+    }
+  }
+}

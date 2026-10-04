@@ -1,0 +1,42 @@
+{
+  "state": "terminal_candidate_rejected_no_loss_gate",
+  "started_at": "2026-10-04T00:49:05.338623+00:00",
+  "accepted_baseline": "wave29",
+  "root": "/tmp/opencode/samsung-pass-100-wave33",
+  "sessions": {
+    "full_driver": 2265,
+    "workspace_tests": 96491
+  },
+  "root_completed_gates": {
+    "release": "terminal0 40.92s",
+    "strict_clippy": "terminal0 workspace all-targets 11.15s",
+    "fmt": "terminal0"
+  },
+  "bounded_evidence": {
+    "numeric_inference": "116 all-targets tests passed 0failed 6ignored; exact #122 now reaches allocation cleanup gate",
+    "allocation_cleanup": "52 dispatcher tests passed 0failed 2ignored; 8 JVM fixture runs; original #23985/#122 recovery pending fullreceipt",
+    "receiver_checked_target": "four actual AEAD original-method requirements+backend emission passed; real JDK17 metadata; whole-unit/runtime not established"
+  },
+  "no_loss_baselines": [
+    "wave29",
+    "wave26"
+  ],
+  "source_mutations": "none until both terminal; freeze released",
+  "coverage_claim": {
+    "recovered": 183078,
+    "denominator": 194286,
+    "percent": 94.23118495413978,
+    "remaining": 11208
+  },
+  "objective_complete": false,
+  "terminal_evidence": "bench/samsung-pass-wave33-final.json",
+  "workspace_tests": {
+    "terminal_exit": 0,
+    "passed": 1085,
+    "failed": 0,
+    "ignored": 151,
+    "suites": 185,
+    "log": "/tmp/opencode/wave33-root-workspace-tests.log",
+    "sha256": "ee2ec6d1e42c3ac460715cc527ede7935bc95f6518f962720b731a477fe14e00"
+  }
+}

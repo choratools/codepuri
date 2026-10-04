@@ -1,0 +1,48 @@
+{
+  "objective": "100% Samsung Pass decompilation; no fallback or omitted original counted as complete",
+  "accepted_baseline": "wave50",
+  "goal_complete": false,
+  "requirements": [
+    {
+      "requirement": "all original executable definitions recovered",
+      "required": 194286,
+      "proven": 186105,
+      "state": "incomplete",
+      "evidence": "bench/samsung-pass-wave50-final.json"
+    },
+    {
+      "requirement": "all original method forms retained",
+      "required": 205497,
+      "state": "incomplete",
+      "note": "8,181 executable originals plus 28 bodyless forms remain unresolved",
+      "proven": 197288
+    },
+    {
+      "requirement": "all emitted source parses",
+      "state": "proven_for_wave50_only",
+      "files": 32555,
+      "evidence": "bench/samsung-pass-wave50-final.json"
+    },
+    {
+      "requirement": "whole emitted Java compiles with genuine dependencies",
+      "state": "contradicted",
+      "javac_exit": 1,
+      "diagnostics": 44884
+    },
+    {
+      "requirement": "original execution semantics preserved across target",
+      "state": "unproven",
+      "note": "selected JVM differential fixtures establish only their exact scope; no whole Android execution proof"
+    },
+    {
+      "requirement": "native/resource scope accounted for",
+      "state": "incomplete",
+      "note": "four native libraries and original app resources are not established as fully decompiled/rebuilt"
+    }
+  ],
+  "active_verification": {
+    "session": 16542,
+    "driver": "/tmp/opencode/run_samsung_wave50_gates.py",
+    "state": "terminal_exit_0_not_goal_complete"
+  }
+}

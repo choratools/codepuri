@@ -1,0 +1,64 @@
+{
+  "wave": 38,
+  "goal_complete": false,
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave38",
+  "export_terminal": {
+    "finished_at": "2026-10-04T04:37:59.107510+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "coverage": {
+    "denominator": 205497,
+    "code_bearing_definitions": 194286,
+    "strict_code_bearing_accepted": 184067,
+    "strict_code_bearing_percent": 94.74022832319365,
+    "original_form_accepted": 195250,
+    "original_form_percent": 95.01355250928238,
+    "remaining_code_bearing_to_target": 10219,
+    "genuine_bodyless_declarations": 11183,
+    "statuses": {
+      "complete_body": 183638,
+      "rejected_in_written_unit": 7456,
+      "declaration_only": 11183,
+      "rejected_without_written_unit": 2791,
+      "proven_enum_equivalence": 429
+    }
+  },
+  "gained": 217,
+  "lost": 0,
+  "gained_categories": {
+    "static_initializer": 59,
+    "ordinary": 149,
+    "constructor": 9
+  },
+  "syntax_exit_code": 0,
+  "javac_exit_code": 1,
+  "javac_diagnostics": 50613,
+  "diagnostic_cap_reached": false,
+  "no_loss_gate": {
+    "exit_code": 0,
+    "baseline": "wave37",
+    "finished_at": "2026-10-04T04:41:01.935022+00:00"
+  },
+  "no_loss_wave26_gate": {
+    "exit_code": 0,
+    "baseline": "wave26",
+    "finished_at": "2026-10-04T04:41:05.910831+00:00"
+  },
+  "export_wall_seconds": 244.22,
+  "peak_rss_kib": 16911304,
+  "workspace_tests": {
+    "passed": 1108,
+    "failed": 0,
+    "ignored": 157,
+    "suites": 186,
+    "exit_code": 0,
+    "log": "/tmp/opencode/wave38-workspace-tests.log"
+  },
+  "scoped_strict_clippy_exit_code": 0,
+  "fmt_exit_code": 0,
+  "release_exit_code": 0
+}

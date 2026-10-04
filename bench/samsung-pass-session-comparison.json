@@ -1,0 +1,20 @@
+{
+  "cold_export_s": 189.116653,
+  "warm_export_s": 1.436368,
+  "warm_replay_speedup": 131.66309260579462,
+  "warm_elapsed_reduction_pct": 99.24048571227621,
+  "peak_process_rss_kib": 9942396,
+  "source_text_bytes": 278620077,
+  "cold_files": 30543,
+  "warm_files": 30543,
+  "added_paths": [],
+  "missing_paths": [],
+  "changed_files": [],
+  "reports_equal": true,
+  "same_process": true,
+  "cold_speedup_claimed": false,
+  "renders": 1,
+  "successful_replays": 1,
+  "tests_passed": 6,
+  "whole_app_compilation_claimed": false
+}

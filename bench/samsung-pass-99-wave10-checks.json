@@ -1,0 +1,17 @@
+[
+  {
+    "name": "fmt-final",
+    "exit_code": 0,
+    "seconds": 4.65379928285256
+  },
+  {
+    "name": "clippy-final",
+    "exit_code": 0,
+    "seconds": 7.128458153922111
+  },
+  {
+    "name": "build-final",
+    "exit_code": 0,
+    "seconds": 33.3864135351032
+  }
+]

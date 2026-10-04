@@ -1,0 +1,26 @@
+{
+  "denominator": 205497,
+  "target_percent": 99.0,
+  "required_definitions": 203443,
+  "strict_accepted": 176378,
+  "strict_percent": 85.82996345445433,
+  "code_bearing_definitions": 194286,
+  "required_code_bearing_definitions": 192344,
+  "strict_code_bearing_accepted": 176378,
+  "strict_code_bearing_percent": 90.7826606137344,
+  "remaining_code_bearing_to_target": 15966,
+  "genuine_bodyless_declarations": 11177,
+  "original_form_accepted": 187555,
+  "original_form_percent": 91.26897229643255,
+  "remaining_original_forms_to_target": 15888,
+  "remaining_to_target": 27065,
+  "statuses": {
+    "complete_body": 176045,
+    "rejected_in_written_unit": 14758,
+    "declaration_only": 11177,
+    "rejected_without_written_unit": 3184,
+    "proven_enum_equivalence": 333
+  },
+  "ledger": "/tmp/opencode/samsung-pass-99-wave5/java25/method-coverage.jsonl",
+  "ledger_sha256": "697e85f17928c0fc839644ee96ae468b8728b1b16a7195f3d7bfc4a7f48d238b"
+}

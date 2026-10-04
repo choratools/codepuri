@@ -1,0 +1,3 @@
+    Blocking waiting for file lock on build directory
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 18.24s

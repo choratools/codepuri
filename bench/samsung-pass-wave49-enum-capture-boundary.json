@@ -1,0 +1,19 @@
+{
+  "target": "Lcom/google/protobuf/FieldType;",
+  "provisional_recovered_identities": 16,
+  "accepted_recovered_identities": 0,
+  "reason": "captured roots may be mutated by unproved foreign class initializers; source static capture lifetime also differs on abrupt failure",
+  "exact_initializer_chain": [
+    "JavaType.<clinit>#11291 reads ByteString.EMPTY",
+    "ByteString.<clinit>#4933@9 invokes Android.isOnAndroidDevice#4071",
+    "Android.<clinit>#4067 invokes getClassForName#4069",
+    "getClassForName#4069@0 invokes Class.forName#45875 with initialize=true"
+  ],
+  "evidence": [
+    "/tmp/opencode/wave48-ByteString-neutral.log",
+    "/tmp/opencode/wave48-Android-neutral.log",
+    "/tmp/opencode/wave48-Android-getClassForName-neutral.log"
+  ],
+  "main_integrated": false,
+  "goal_complete": false
+}

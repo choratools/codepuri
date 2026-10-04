@@ -1,0 +1,22 @@
+{
+  "scope": "bounded real Samsung class, not aggregate",
+  "baseline": "wave29",
+  "artifact": "/tmp/opencode/wave30-array-original-profile",
+  "source_sha256": "3db343f2e3a7d05e66b5e0c7bc21f694c101a72a200354559c1bf48145680727",
+  "original": "La4/a$c;->k(Ljava/nio/ByteOrder;)Ljava/lang/Object;",
+  "method_index": 122,
+  "previous_gate": "Unknown Phi containing double[] producer-copy",
+  "previous_gate_eliminated": true,
+  "remaining_rejections": [
+    [
+      711,
+      "// unavailable original method index 122: Some(MethodKey { owner: \"La4/a$c;\", name: \"k\", parameters: [\"Ljava/nio/ByteOrder;\"], return_type: \"Ljava/lang/Object;\" }): backend: Metadata(\"unresolved native protected source contract: Invoke { kind: Special, result: None, method: MethodRef(85), args: [ValueId(4v1), ValueId(6v1)] }\")"
+    ],
+    [
+      713,
+      "// Global method source closure: caller=MethodKey { owner: \"La4/a$c;\", name: \"h\", parameters: [\"Ljava/nio/ByteOrder;\"], return_type: \"D\" }; missing={MethodKey { owner: \"La4/a$c;\", name: \"k\", parameters: [\"Ljava/nio/ByteOrder;\"], return_type: \"Ljava/lang/Object;\" }, MethodKey { owner: \"La4/a$g;\", name: \"a\", parameters: [], return_type: \"D\" }}"
+    ]
+  ],
+  "full_method_recovered": false,
+  "aggregate_executable_coverage_unchanged_until_fresh_full_measurement": true
+}

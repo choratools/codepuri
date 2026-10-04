@@ -1,0 +1,22 @@
+{
+  "jadx_version_verified": "1.5.1",
+  "references": [
+    {
+      "class": "DividerButtonLayout",
+      "path": "/tmp/opencode/wave49-DividerButtonLayout-jadx.java",
+      "contrast": "jadx emitted final boolean without original stores; source compiler and original bytecode validate entry-default recipe separately"
+    },
+    {
+      "method": "La4/a;->r([B)Z",
+      "path": "/tmp/opencode/wave37-jadx-a4.java",
+      "contrast": "two original primary cleanup paths crosschecked; jadx source does not establish compile or local initialization correctness"
+    },
+    {
+      "method": "SmartSwitchPassCXFBackup coroutine invokeSuspend classes2#21296",
+      "contrast": "installed jadx fails duplicate region/coroutine reconstruction; actual Phi and catchall roots traced from original DEX"
+    }
+  ],
+  "unknowns_checked_against_original_dex": true,
+  "compiler_or_runtime_oracle_required": true,
+  "goal_complete": false
+}

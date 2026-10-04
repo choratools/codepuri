@@ -1,0 +1,57 @@
+{
+  "accepted_baseline": "wave49",
+  "candidate": "wave49",
+  "driver_session": 35425,
+  "driver": "/tmp/opencode/run_samsung_wave49_gates.py",
+  "status": "terminal0_recovery_accepted_full_compile_failed",
+  "main_frozen": false,
+  "integrated": [
+    "typed NewArray and Int/Long Div/Rem source origins",
+    "exact nonempty Throw and typed ArrayGet contracts",
+    "exact original single-catchall unchecked Throw cleanup"
+  ],
+  "comparison_baseline": "/tmp/opencode/samsung-pass-100-wave48-runtime-metadata",
+  "actual154_strict_recovered_in_selected_class": true,
+  "aggregate_gain_unverified": false,
+  "goal_complete": false,
+  "next_isolated_tracks": [
+    "shared primary exception cleanup proof; exact rejection pending",
+    "multilevel protected receiver selection",
+    "constructor untrusted-family provenance and default-final pre-super proof",
+    "cache-free enum void-check expression",
+    "exact generic Throwable source identity prototype"
+  ],
+  "gate_results": [
+    {
+      "gate": "fmt",
+      "exit_code": 0
+    },
+    {
+      "gate": "tests",
+      "exit_code": 0
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 0
+    },
+    {
+      "gate": "release",
+      "exit_code": 0
+    }
+  ],
+  "workspace_tests": {
+    "passed": 1209,
+    "failed": 0,
+    "ignored": 165,
+    "suites": 195
+  },
+  "provisional_coverage": {
+    "accepted": 185918,
+    "denominator": 194286,
+    "percent": 95.69294751037131,
+    "gained": 160,
+    "lost": 0,
+    "confirmed": true
+  },
+  "full_compiler_errors": 45055
+}

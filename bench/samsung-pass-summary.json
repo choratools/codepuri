@@ -1,0 +1,191 @@
+{
+  "tests": {
+    "passed": 407,
+    "failed": 0,
+    "ignored": 11
+  },
+  "test_failures": false,
+  "dex_count": 4,
+  "native_libraries": [
+    {
+      "name": "lib/arm64-v8a/libDiagMonKey.so",
+      "bytes": 4776
+    },
+    {
+      "name": "lib/arm64-v8a/libquram_ocr.so",
+      "bytes": 3368256
+    },
+    {
+      "name": "lib/armeabi-v7a/libDiagMonKey.so",
+      "bytes": 3432
+    },
+    {
+      "name": "lib/armeabi-v7a/libquram_ocr.so",
+      "bytes": 2432648
+    }
+  ],
+  "assets": {
+    "count": 37,
+    "uncompressed_bytes": 3457123,
+    "decompiled": false
+  },
+  "identity_status": {
+    "complete_body": 79365,
+    "rejected_in_written_unit": 90534,
+    "rejected_without_written_unit": 24201,
+    "declaration_only": 11140,
+    "proven_enum_equivalence": 257
+  },
+  "source_status": {
+    "written_units": 24752,
+    "honest_subset_fallback_units": 24698,
+    "proven_enum_equivalence_units": 54,
+    "unavailable_initialization_marker_units": 16322
+  },
+  "samsung_original_package_methods": 51941,
+  "samsung_original_package_status": {
+    "complete_body": 21762,
+    "rejected_in_written_unit": 22937,
+    "rejected_without_written_unit": 4960,
+    "declaration_only": 2211,
+    "proven_enum_equivalence": 71
+  },
+  "samsung_original_package_units_written": 7402,
+  "samsung_gained_identity_samples": [
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/ExportFailureSummary;\", name: \"g\", parameters: [\"Lcom/samsung/android/samsungpass/ExportFailureSummary;\", \"J\"], return_type: \"V\" })",
+      "method_pool_index": 19582,
+      "unit": "com/samsung/android/samsungpass/ExportFailureSummary.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/ExportFailureSummary;\", name: \"i\", parameters: [\"Lcom/samsung/android/samsungpass/ExportFailureSummary;\", \"J\"], return_type: \"V\" })",
+      "method_pool_index": 19593,
+      "unit": "com/samsung/android/samsungpass/ExportFailureSummary.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/application/e;\", name: \"invoke\", parameters: [], return_type: \"Ljava/lang/Object;\" })",
+      "method_pool_index": 20152,
+      "unit": "com/samsung/android/samsungpass/application/e.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/backupandrestore/CxfJsonData;\", name: \"hashCode\", parameters: [], return_type: \"I\" })",
+      "method_pool_index": 20582,
+      "unit": "com/samsung/android/samsungpass/backupandrestore/CxfJsonData.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/backupandrestore/CxfJsonData;\", name: \"toString\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      "method_pool_index": 20583,
+      "unit": "com/samsung/android/samsungpass/backupandrestore/CxfJsonData.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/backupandrestore/IndexJsonData;\", name: \"hashCode\", parameters: [], return_type: \"I\" })",
+      "method_pool_index": 20789,
+      "unit": "com/samsung/android/samsungpass/backupandrestore/IndexJsonData.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/backupandrestore/IndexJsonData;\", name: \"toString\", parameters: [], return_type: \"Ljava/lang/String;\" })",
+      "method_pool_index": 20791,
+      "unit": "com/samsung/android/samsungpass/backupandrestore/IndexJsonData.java"
+    },
+    {
+      "identity": "Some(MethodKey { owner: \"Lcom/samsung/android/samsungpass/backupandrestore/SmartSwitchAddressRestorePreparer$SyncServerInfo;\", name: \"hashCode\", parameters: [], return_type: \"I\" })",
+      "method_pool_index": 20914,
+      "unit": "com/samsung/android/samsungpass/backupandrestore/SmartSwitchAddressRestorePreparer$SyncServerInfo.java"
+    }
+  ],
+  "top_categories": {
+    "constructor": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        19156
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        3173
+      ],
+      [
+        "initialization: unused constructor parameter",
+        1720
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        461
+      ],
+      [
+        "enum: missing initializer",
+        153
+      ],
+      [
+        "field requires external class closure",
+        135
+      ],
+      [
+        "initialization: exception family proof unavailable",
+        116
+      ]
+    ],
+    "ordinary": [
+      [
+        "backend: Type(\"unresolved or uninitialized type Zero\")",
+        16170
+      ],
+      [
+        "required complete method body unavailable",
+        14762
+      ],
+      [
+        "field requires external class closure",
+        11063
+      ],
+      [
+        "structure: unsupported CFG structure: OverlappingRegion(ID)",
+        10949
+      ],
+      [
+        "special invocation: exact Java super target proof unavailable",
+        3730
+      ],
+      [
+        "unresolved field metadata",
+        3694
+      ],
+      [
+        "backend: Instruction(\"observable or throwing operation before initializer\")",
+        3370
+      ]
+    ],
+    "static_initializer": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        4830
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        434
+      ],
+      [
+        "final field write requires atomic initialization proof",
+        82
+      ],
+      [
+        "field requires external class closure",
+        77
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        63
+      ],
+      [
+        "enum: unavailable constructor input",
+        15
+      ],
+      [
+        "initialization proof: InvalidMetadata",
+        10
+      ]
+    ]
+  },
+  "facade_complete_percent": 38.74606441943192,
+  "explicit_body_percent": 38.62100176644915,
+  "rejected_all_methods_percent": 55.832931867618505
+}

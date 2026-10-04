@@ -1,0 +1,29 @@
+{
+  "patch": "/tmp/opencode/wave49-throwable-prototype/integration.patch",
+  "sha256": "d642ee49009741b1af09dd13052f948fd032c194a06694823605a89a879a26df",
+  "main_integrated": true,
+  "peer_review": "bounded acceptance no must-fix",
+  "parent_new_backend_tests_passed": 3,
+  "exact_frontend_binding": "in progress isolated",
+  "actual_original_recovered_identities": 0,
+  "whole_source_equivalence": false,
+  "limits": [
+    "synthetic helper reflective identity",
+    "transient JVM frame",
+    "possible additional stack exhaustion point"
+  ],
+  "goal_complete": false,
+  "frontend_catalog": "once per complete export; exact original owner/code/pool field binding",
+  "parent_backend_bound_tests": 3,
+  "parent_bridge_regressions": 6,
+  "parent_main_canonical_test": {
+    "passed": 1,
+    "original_method_identities": [
+      51318,
+      51320
+    ],
+    "log": "/tmp/opencode/wave51-bound-throwable-main-actual.log"
+  },
+  "scope_clippy": "passed after test expect-used lint correction",
+  "aggregate_recovery_pending": true
+}

@@ -1,0 +1,46 @@
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+error: this `if` statement can be collapsed
+   --> crates/decomp/tests/java_required_throws_new.rs:406:13
+    |
+406 | /             if let managed_ir::insn::ManagedInsn::Invoke { method, .. } = instruction {
+407 | |                 if let Some(contract) = r.invocation_contract(*method) {
+408 | |                     if let Some(target) = contract.source_target {
+409 | |                         pending.push(target);
+...   |
+412 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+406 ~             if let managed_ir::insn::ManagedInsn::Invoke { method, .. } = instruction
+407 ~                 && let Some(contract) = r.invocation_contract(*method) {
+408 |                     if let Some(target) = contract.source_target {
+409 |                         pending.push(target);
+410 |                     }
+411 ~                 }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/decomp/tests/java_required_throws_new.rs:407:17
+    |
+407 | /                 if let Some(contract) = r.invocation_contract(*method) {
+408 | |                     if let Some(target) = contract.source_target {
+409 | |                         pending.push(target);
+410 | |                     }
+411 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+407 ~                 if let Some(contract) = r.invocation_contract(*method)
+408 ~                     && let Some(target) = contract.source_target {
+409 |                         pending.push(target);
+410 ~                     }
+    |
+
+error: could not compile `decomp` (test "java_required_throws_new") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

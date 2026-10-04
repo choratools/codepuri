@@ -1,0 +1,44 @@
+{
+  "acquired_at": "2026-10-03T07:31:46.293648+00:00",
+  "serial": "R3CW70LC55D",
+  "device_model": "SM_F731N",
+  "build_fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSU6GZDU:user/release-keys",
+  "remote_path": "/system/framework/framework.jar",
+  "artifact": "/tmp/opencode/samsung-platform-metadata-20261003/framework-android16.jar",
+  "bytes": 53917961,
+  "sha256": "1360ba6c76b98c2715117ed396fc12d63a162f8c53ba4c8dd896d1a6576cfdcb",
+  "original_apk_runtime_compatible": false,
+  "compatibility_status": "candidate Android16 runtime; original APK source device currently absent",
+  "selected_into_baseline": false,
+  "javac_classpath": false,
+  "dex_entries": [
+    {
+      "name": "classes.dex",
+      "bytes": 8910900
+    },
+    {
+      "name": "classes2.dex",
+      "bytes": 8058392
+    },
+    {
+      "name": "classes3.dex",
+      "bytes": 8765024
+    },
+    {
+      "name": "classes4.dex",
+      "bytes": 8975968
+    },
+    {
+      "name": "classes5.dex",
+      "bytes": 8155288
+    },
+    {
+      "name": "classes6.dex",
+      "bytes": 9555392
+    },
+    {
+      "name": "classes7.dex",
+      "bytes": 1454356
+    }
+  ]
+}

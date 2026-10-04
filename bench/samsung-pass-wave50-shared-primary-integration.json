@@ -1,0 +1,10 @@
+{
+  "patch": "/tmp/opencode/wave50-shared-primary-patch/owned.patch",
+  "main_integrated": true,
+  "review": "bounded acceptance no must-fix",
+  "actual_isolated_method": 167,
+  "derived_source_throws": "java.io.IOException",
+  "whole_class_compile_proven": false,
+  "full_cohort_coverage_pending": true,
+  "goal_complete": false
+}

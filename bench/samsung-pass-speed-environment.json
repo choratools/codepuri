@@ -1,0 +1,15 @@
+{
+  "apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "apk_bytes": 54063076,
+  "workers": 30,
+  "source_profile": "Java17",
+  "classpath": [
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+  ],
+  "baseline": "/tmp/opencode/samsung-pass-speed-before",
+  "benchmark_sink": "DirectorySink + ordered diagnostic checksum",
+  "perf_sampling": "unavailable: perf_event_paranoid 4; stage timers used instead"
+}

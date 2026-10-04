@@ -1,0 +1,14 @@
+{
+  "original_identity": "Landroidx/compose/ui/platform/AndroidComposeView;->findViewByAccessibilityIdTraversal(I)Landroid/view/View;",
+  "dex": "classes.dex",
+  "method_index": 9557,
+  "jadx_output": "/tmp/opencode/wave46-jadx-AndroidComposeView.java",
+  "verbatim_method_fixture": "/tmp/opencode/wave46-jadx-reflection-checked/JadxReflectionBoundary.java",
+  "fixture_sha256": "ae273eacd0c6b8628f47c7460703c72f20fd637441fd4780cc8d6ff3f0f84e35",
+  "jdk17_android35_javac_exit": 1,
+  "diagnostic": "unreported exception IllegalAccessException; must be caught or declared to be thrown",
+  "scope": "exact original method extracted from JADX into minimal wrapper; not whole-class compilation or Android execution",
+  "action": "repair original override boundary through proven checked-source bridge; do not omit escaping checked exceptions",
+  "jdk25_android35_javac_exit": 1,
+  "jadx_version_verified": "1.5.1"
+}

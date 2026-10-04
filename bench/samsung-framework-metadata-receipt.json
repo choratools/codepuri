@@ -1,0 +1,60 @@
+{
+  "collected_utc": "2026-10-03T02:44:02.385668+00:00",
+  "serial": "R3CW704ZNRP",
+  "remote_path": "/system/framework/framework.jar",
+  "local_path": "/tmp/opencode/samsung-framework-metadata/framework.jar",
+  "world_readable_mode": "-rw-r--r--",
+  "fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "android_release": "16",
+  "sdk": "36",
+  "model": "SM-F731N",
+  "security_patch": "2026-09-05",
+  "file_size": 53923233,
+  "sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "device_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "apk_build_match": "not_attested",
+  "dex_inventory": [
+    {
+      "name": "classes.dex",
+      "size": 8911052,
+      "compressed_size": 8911052,
+      "sha256": "5273884587f9f7afdda67271f6e62d0eb3574777c53ea5dbc20f8507dbd1e892"
+    },
+    {
+      "name": "classes2.dex",
+      "size": 8058392,
+      "compressed_size": 8058392,
+      "sha256": "8906b802173fca2b0f4ef9b08246053abc80fd8195d8a1cb103cf6e4a0ab3914"
+    },
+    {
+      "name": "classes3.dex",
+      "size": 8765124,
+      "compressed_size": 8765124,
+      "sha256": "37eac8ae275fbc6d0ab390be1ae0eeac7f0d6b01711f1bd05b129be6fc5eac47"
+    },
+    {
+      "name": "classes4.dex",
+      "size": 8975988,
+      "compressed_size": 8975988,
+      "sha256": "24d959ab6c339263de37b20ecb3bbbb6e6c61316929a6c779a4650d31e666afa"
+    },
+    {
+      "name": "classes5.dex",
+      "size": 8157212,
+      "compressed_size": 8157212,
+      "sha256": "252490d9e245a9c388b0daa736485cebd3089c4032215c5dc6d2ed37ef39e00e"
+    },
+    {
+      "name": "classes6.dex",
+      "size": 9556076,
+      "compressed_size": 9556076,
+      "sha256": "4526e4fc628de752b65bb84e87e9ff9142dfc855de44c03596385c3d06226067"
+    },
+    {
+      "name": "classes7.dex",
+      "size": 1456748,
+      "compressed_size": 1456748,
+      "sha256": "3a5cec48326378c5e989725d43fd94dd1b78332da9b7d095228453521ec73fe6"
+    }
+  ]
+}

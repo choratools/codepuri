@@ -1,0 +1,43 @@
+    Checking backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+error[E0061]: this function takes 8 arguments but 7 arguments were supplied
+   --> crates/decomp/src/java_source_throws_integration.rs:714:18
+    |
+714 |                   &collect_roots_with_workers(
+    |  __________________^^^^^^^^^^^^^^^^^^^^^^^^^^-
+715 | |                     &files,
+716 | |                     &aliases,
+717 | |                     &catalog,
+...   |
+721 | |                     workers,
+722 | |                 ),
+    | |_________________- argument #8 of type `Option<&java_integration::ssa_cache::SsaCache>` is missing
+    |
+note: function defined here
+   --> crates/decomp/src/java_source_throws_integration.rs:397:4
+    |
+397 | fn collect_roots_with_workers(
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+405 |     cache: Option<&ssa_cache::SsaCache>,
+    |     -----------------------------------
+help: provide the argument
+    |
+714 |                 &collect_roots_with_workers(
+...
+721 |                     workers,
+722 ~                     /* Option<&java_integration::ssa_cache::SsaCache> */,
+723 ~                 ),
+    |
+
+error[E0063]: missing field `cache_ssa` in initializer of `JavaOptions`
+  --> crates/decomp/tests/java_integration.rs:28:10
+   |
+28 |         &JavaOptions {
+   |          ^^^^^^^^^^^ missing `cache_ssa`
+
+For more information about this error, try `rustc --explain E0063`.
+error: could not compile `decomp` (test "java_integration") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `decomp` (lib test) due to 1 previous error

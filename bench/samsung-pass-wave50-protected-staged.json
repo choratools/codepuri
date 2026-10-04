@@ -1,0 +1,30 @@
+{
+  "patch": "/tmp/opencode/wave50-protected-patch/protected.patch",
+  "sha256": "45a32dd9b4bfef93f8bba9b7c3840e2564317e4cc828a6705866a1b09c7abd44",
+  "main_integrated": true,
+  "parent_current_isolated_workspace_tests": {
+    "passed": 3,
+    "failed": 0,
+    "log": "/tmp/opencode/wave50-protected-parent-tests.log"
+  },
+  "actual6494": {
+    "identity": "ActionBarOverlayLayout.onMeasure",
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true,
+    "source": "/tmp/opencode/wave50-overlay-protected-final/sources/androidx/appcompat/widget/ActionBarOverlayLayout.java"
+  },
+  "whole_unit_compilation": {
+    "exit_code": 1,
+    "transitive_errors": 355,
+    "emitted_class_file": false,
+    "proof": "not whole-unit compilation proof"
+  },
+  "goal_complete": false,
+  "review": "no production must-fix",
+  "test_increment": {
+    "patch": "/tmp/opencode/wave50-protected-patch/runtime-test.patch",
+    "sha256": "ca7e7c4f5698d98a577a53afed3517158925c0c6e06f1501b4baea908f66484e"
+  },
+  "main_focused_tests": "passed: allocation defaults 3; inventory 1; constructor diagnostic 1; protected 3"
+}

@@ -1,0 +1,51 @@
+    Blocking waiting for file lock on build directory
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+error: this `if` statement can be collapsed
+    --> crates/decomp/src/java_declaration_initializers.rs:1173:9
+     |
+1173 | /         if let ManagedInsn::FieldPut { object, field, .. } = insn
+1174 | |             && field.index() == field_index
+1175 | |         {
+1176 | |             if object.is_some()
+...    |
+1188 | |         }
+     | |_________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+     = note: `-D clippy::collapsible-if` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+     |
+1174 ~             && field.index() == field_index
+1175 ~             && (object.is_some()
+1176 |                 || !retained.insert(write_inventory::WriteSite {
+ ...
+1182 |                     is_static: true,
+1183 ~                 }))
+1184 |             {
+1185 |                 return Err(Error::FieldInitializationUnavailable);
+1186 ~             }
+     |
+
+error: this `if` can be collapsed into the outer `match`
+    --> crates/decomp/src/java_declaration_initializers.rs:1255:17
+     |
+1255 | /                 if object.is_some() || !assigned.insert(field.index()) {
+1256 | |                     return Err(Error::FieldInitializationUnavailable);
+1257 | |                 }
+     | |_________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+     = note: `-D clippy::collapsible-match` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::collapsible_match)]`
+help: collapse nested if block
+     |
+1254 ~             ManagedInsn::FieldPut { object, field, .. } if finals.contains(&field.index())
+1255 ~                 && (object.is_some() || !assigned.insert(field.index())) => {
+1256 |                     return Err(Error::FieldInitializationUnavailable);
+1257 ~                 }
+     |
+
+error: could not compile `decomp` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `decomp` (lib test) due to 2 previous errors

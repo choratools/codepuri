@@ -1,0 +1,111 @@
+{
+  "source": "/tmp/opencode/samsung-pass-100-wave18",
+  "configured_workers": 30,
+  "effective_active_workers": 14.009,
+  "source_throws_seconds": 14.467565,
+  "ssa_hits": 268348,
+  "resolution_hits": 5826877,
+  "cache_only_speedup_verified": false,
+  "slow_classes": [
+    {
+      "dex": "2",
+      "class": "6574",
+      "descriptor": "Lcom/samsung/android/sdk/smp/common/database/DBHandler;",
+      "start_s": "44.624693049",
+      "elapsed_s": "23.332905246",
+      "methods": "100",
+      "stages": "{\"closure_pruning\": 30.293\u00b5s, \"frontend\": 1.198143ms, \"initialization_family\": 151.289527ms, \"source_collection\": 122.374\u00b5s, \"source_serialization\": 9.570259ms, \"structure_backend\": 22.844657701s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 775.408\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "2",
+      "class": "6609",
+      "descriptor": "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;",
+      "start_s": "44.840013981",
+      "elapsed_s": "16.687235638",
+      "methods": "116",
+      "stages": "{\"closure_pruning\": 11.632\u00b5s, \"frontend\": 1.275054ms, \"initialization_family\": 1.163477757s, \"source_collection\": 27.047\u00b5s, \"source_serialization\": 3.443336ms, \"structure_backend\": 15.184420572s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 793.392\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "0",
+      "class": "5319",
+      "descriptor": "Lcom/google/firebase/remoteconfig/internal/d;",
+      "start_s": "33.604396834",
+      "elapsed_s": "12.262945068",
+      "methods": "32",
+      "stages": "{\"closure_pruning\": 22.025\u00b5s, \"frontend\": 667.666\u00b5s, \"initialization_family\": 556.295671ms, \"source_collection\": 17.426\u00b5s, \"source_serialization\": 8.851919ms, \"structure_backend\": 11.686434059s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 438.38\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "1",
+      "class": "4137",
+      "descriptor": "Lcom/samsung/android/samsungpass/common/db/migration/DbMigrationV31;",
+      "start_s": "38.938126022",
+      "elapsed_s": "8.854464459",
+      "methods": "16",
+      "stages": "{\"closure_pruning\": 2.084\u00b5s, \"frontend\": 260.35\u00b5s, \"initialization_family\": 33.338757ms, \"source_collection\": 6.66\u00b5s, \"source_serialization\": 429.144\u00b5s, \"structure_backend\": 8.814452422s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 164.991\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "0",
+      "class": "5999",
+      "descriptor": "Lf8/k;",
+      "start_s": "48.990305733",
+      "elapsed_s": "8.675487826",
+      "methods": "19",
+      "stages": "{\"closure_pruning\": 7.56\u00b5s, \"frontend\": 352.978\u00b5s, \"initialization_family\": 81.750044ms, \"source_collection\": 28.663\u00b5s, \"source_serialization\": 1.961464ms, \"structure_backend\": 8.506772798s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 232.053\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "0",
+      "class": "5998",
+      "descriptor": "Lf8/j;",
+      "start_s": "48.980567838",
+      "elapsed_s": "8.247559534",
+      "methods": "34",
+      "stages": "{\"closure_pruning\": 70.633\u00b5s, \"frontend\": 585.18\u00b5s, \"initialization_family\": 441.102124ms, \"source_collection\": 73.227\u00b5s, \"source_serialization\": 19.917215ms, \"structure_backend\": 7.267253443s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 371.49\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "0",
+      "class": "5987",
+      "descriptor": "Lf8/b;",
+      "start_s": "48.962635595",
+      "elapsed_s": "7.613677567",
+      "methods": "20",
+      "stages": "{\"closure_pruning\": 7.657\u00b5s, \"frontend\": 386.105\u00b5s, \"initialization_family\": 125.133553ms, \"source_collection\": 23.276\u00b5s, \"source_serialization\": 1.716596ms, \"structure_backend\": 7.461209222s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 244.844\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "1",
+      "class": "4080",
+      "descriptor": "Lcom/samsung/android/samsungpass/common/db/autoFillForm/AutoFillFormDBManager;",
+      "start_s": "38.217781450",
+      "elapsed_s": "7.431577092",
+      "methods": "90",
+      "stages": "{\"closure_pruning\": 38.838\u00b5s, \"frontend\": 1.069305ms, \"initialization_family\": 86.633023ms, \"source_collection\": 13.866\u00b5s, \"source_serialization\": 1.517341ms, \"structure_backend\": 7.333644199s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 645.836\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "1",
+      "class": "2075",
+      "descriptor": "Lcom/samsung/android/authfw/sdk/pass/PassOperation;",
+      "start_s": "14.624193514",
+      "elapsed_s": "7.167561352",
+      "methods": "88",
+      "stages": "{\"closure_pruning\": 18.471\u00b5s, \"frontend\": 1.222428ms, \"initialization_family\": 75.158692ms, \"source_collection\": 45.912\u00b5s, \"source_serialization\": 3.74873ms, \"structure_backend\": 6.994261334s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 787.132\u00b5s, \"verification\": 0ns}"
+    },
+    {
+      "dex": "1",
+      "class": "2671",
+      "descriptor": "Lcom/samsung/android/samsungpass/backupandrestore/FileUtils;",
+      "start_s": "25.027785637",
+      "elapsed_s": "7.024572663",
+      "methods": "22",
+      "stages": "{\"closure_pruning\": 3.764\u00b5s, \"frontend\": 198.439\u00b5s, \"initialization_family\": 81.25949ms, \"source_collection\": 3.842\u00b5s, \"source_serialization\": 349.516\u00b5s, \"structure_backend\": 6.9419588s}",
+      "ssa": "{\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 121.412\u00b5s, \"verification\": 0ns}"
+    }
+  ]
+}

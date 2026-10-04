@@ -1,0 +1,20 @@
+{
+  "rejected_callers": 594,
+  "callers_referencing_cq_m0_b": 486,
+  "cq_m0_b_call_sites": 1053,
+  "candidate_not_exact_failure_attribution": true,
+  "representatives": [
+    {
+      "method_index": 9649,
+      "name": "invokeSuspend",
+      "boundary": "inherited no-throws override"
+    },
+    {
+      "method_index": 6494,
+      "name": "onMeasure",
+      "boundary": "platform callback no-throws override"
+    }
+  ],
+  "report": "/tmp/opencode/wave49-callee-residual-report.md",
+  "production_fix_integrated": false
+}

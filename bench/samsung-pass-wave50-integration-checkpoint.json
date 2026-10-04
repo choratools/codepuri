@@ -1,0 +1,53 @@
+{
+  "accepted_baseline": "wave50",
+  "candidate": "wave50",
+  "driver_session": 16542,
+  "driver": "/tmp/opencode/run_samsung_wave50_gates.py",
+  "status": "terminal0_recovery_accepted_full_compile_failed",
+  "main_frozen": false,
+  "goal_complete": false,
+  "integrated": [
+    "exact constructor diagnostic",
+    "Java25 complete family allocation default recipe",
+    "genuine multilevel protected receiver",
+    "shared primary cleanup with transactional renderer slots"
+  ],
+  "comparison_baseline": "/tmp/opencode/samsung-pass-100-wave49-runtime-metadata",
+  "claimed_full_cohort_gain": null,
+  "gate_results": [
+    {
+      "gate": "fmt",
+      "exit_code": 0
+    },
+    {
+      "gate": "tests",
+      "exit_code": 0
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 0
+    },
+    {
+      "gate": "release",
+      "exit_code": 0
+    }
+  ],
+  "workspace_tests": {
+    "passed": 1218,
+    "failed": 0,
+    "ignored": 166,
+    "suites": 197
+  },
+  "export_terminal": {
+    "finished_at": "2026-10-04T12:40:04.435102+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "runtime_metadata_unchanged": true,
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  },
+  "all_input_hashes_unchanged": true,
+  "full_compiler_errors": 44884,
+  "aggregate_gain_unverified": false
+}

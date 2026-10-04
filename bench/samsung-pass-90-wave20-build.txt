@@ -1,0 +1,4 @@
+   Compiling backend-java v0.1.0 (/storage_0/decomphify/crates/backend-java)
+   Compiling dex-decompiler v0.1.0 (/storage_0/decomphify/crates/dex-decompiler)
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `release` profile [optimized] target(s) in 23.03s

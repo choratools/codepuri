@@ -1,0 +1,1252 @@
+[
+  {
+    "dex": "classes3.dex",
+    "method_index": 42458,
+    "identity": "Lcom/yessign/fido/jce/provider/JCEKeyGenerator$ARIA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42459,
+    "identity": "Lcom/yessign/fido/jce/provider/JCEKeyGenerator$DES;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42460,
+    "identity": "Lcom/yessign/fido/jce/provider/JCEKeyGenerator$SEED;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42679,
+    "identity": "Lcom/yessign/fido/jce/provider/JDKDSASigner$ECDSA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42680,
+    "identity": "Lcom/yessign/fido/jce/provider/JDKDSASigner$KCDSA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/yessign/fido/jce/provider/JDKDSASigner$KCDSA.java",
+    "reason": "initialization proof: FieldInitializationUnavailable"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42688,
+    "identity": "Lcom/yessign/fido/jce/provider/JDKDSASigner$SHA256KCDSA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "com/yessign/fido/jce/provider/JDKDSASigner$SHA256KCDSA.java",
+    "reason": "initialization proof: FieldInitializationUnavailable"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42836,
+    "identity": "Lcom/yessign/fido/jce/provider/JDKPSSSigner$SHA1withRSA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes3.dex",
+    "method_index": 42837,
+    "identity": "Lcom/yessign/fido/jce/provider/JDKPSSSigner$SHA256withRSA;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17552,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/DSTU7564$KeyGenerator256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17553,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/DSTU7564$KeyGenerator384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17554,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/DSTU7564$KeyGenerator512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17572,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/GOST3411$KeyGenerator2012_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17573,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/GOST3411$KeyGenerator2012_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17574,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/GOST3411$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17600,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Keccak$KeyGenerator224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17601,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Keccak$KeyGenerator256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17602,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Keccak$KeyGenerator288;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17603,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Keccak$KeyGenerator384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17604,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Keccak$KeyGenerator512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17612,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/MD2$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17620,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/MD4$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17628,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/MD5$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17636,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/RIPEMD128$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17644,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/RIPEMD160$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17654,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/RIPEMD256$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17662,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/RIPEMD320$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17671,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA1$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17682,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA224$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17691,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA256$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17742,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA384$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17761,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA512$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17762,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA512$KeyGeneratorT224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17763,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SHA512$KeyGeneratorT256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17772,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/SM3$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17796,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_1024_1024;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17797,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_1024_384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17798,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_1024_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17799,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_256_128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17800,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_256_160;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17801,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_256_224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17802,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_256_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17803,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17804,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_160;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17805,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17806,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17807,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17808,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$HMacKeyGenerator_512_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17826,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_1024_1024;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17827,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_1024_384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17828,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_1024_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17829,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_256_128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17830,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_256_160;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17831,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_256_224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17832,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_256_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17833,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17834,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_160;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17835,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_224;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17836,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17837,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_384;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17838,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Skein$SkeinMacKeyGenerator_512_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17856,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Tiger$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 17867,
+    "identity": "Lorg/bouncycastle/jcajce/provider/digest/Whirlpool$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18349,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/AES$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18374,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/AES$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18389,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/ARC4$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18432,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/ARIA$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18438,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/ARIA$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18448,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Blowfish$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18466,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/CAST5$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18477,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/CAST6$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18482,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/CAST6$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18502,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Camellia$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18507,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Camellia$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18521,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/ChaCha$KeyGen7539;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18522,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/ChaCha$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18544,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/DES$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "org/bouncycastle/jcajce/provider/symmetric/DES$KeyGenerator.java",
+    "reason": "initialization proof: FieldInitializationUnavailable"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18572,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/DESede$KeyGenerator3;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18573,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/DESede$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_in_written_unit",
+    "source_unit": "org/bouncycastle/jcajce/provider/symmetric/DESede$KeyGenerator.java",
+    "reason": "initialization proof: FieldInitializationUnavailable"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18626,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/DSTU7624$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18664,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/GOST28147$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18678,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/GOST3412_2015$KeyGen;-><init>(I)V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18686,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Grain128$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18694,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Grainv1$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18702,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/HC128$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18710,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/HC256$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18738,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/IDEA$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18755,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Noekeon$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18760,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Noekeon$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18824,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Poly1305$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18846,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/RC2$KeyGenerator;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18870,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/RC5$KeyGen32;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18871,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/RC5$KeyGen64;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18888,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/RC6$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18894,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/RC6$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18901,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Rijndael$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18925,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SEED$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18930,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SEED$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18943,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SM4$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18948,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SM4$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18953,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Salsa20$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18980,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Serpent$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18989,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Serpent$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 18996,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Serpent$TKeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19009,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Shacal2$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19014,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SipHash$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19020,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/SipHash128$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19031,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Skipjack$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19045,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/TEA$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19081,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Threefish$KeyGen_1024;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19082,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Threefish$KeyGen_256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19083,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Threefish$KeyGen_512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19094,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Twofish$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19101,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Twofish$Poly1305KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19104,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/VMPC$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19111,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/VMPCKSA3$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19119,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/XSalsa20$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19127,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/XTEA$KeyGen;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19134,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Zuc$KeyGen128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 19135,
+    "identity": "Lorg/bouncycastle/jcajce/provider/symmetric/Zuc$KeyGen256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 28231,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/lms/LMSSignatureSpi$generic;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29139,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$generic;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29140,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withSha256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29141,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withSha256andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29142,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withSha512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29143,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withSha512andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29144,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withShake128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29146,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withShake128andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29147,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withShake256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29149,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSMTSignatureSpi$withShake256andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29164,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$generic;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29165,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withSha256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29166,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withSha256andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29167,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withSha512;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29168,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withSha512andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29169,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withShake128;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29171,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withShake128andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29172,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withShake256;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  },
+  {
+    "dex": "classes4.dex",
+    "method_index": 29174,
+    "identity": "Lorg/bouncycastle/pqc/jcajce/provider/xmss/XMSSSignatureSpi$withShake256andPrehash;-><init>()V",
+    "category": "constructor",
+    "access_flags": 65537,
+    "has_code": true,
+    "status": "rejected_without_written_unit"
+  }
+]

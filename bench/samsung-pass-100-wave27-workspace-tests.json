@@ -1,0 +1,11 @@
+{
+  "log": "/tmp/opencode/wave27-final-workspace-tests.log",
+  "passed": 1022,
+  "failed": 0,
+  "ignored": 144,
+  "suites": 176,
+  "terminal_exit_code": 0,
+  "clippy_terminal_exit_code": 0,
+  "fmt_terminal_exit_code": 0,
+  "release_terminal_exit_code": 0
+}

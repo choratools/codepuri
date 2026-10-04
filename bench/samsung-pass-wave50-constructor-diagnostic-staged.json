@@ -1,0 +1,14 @@
+{
+  "patch": "/tmp/opencode/wave49-constructor-diagnostic.patch",
+  "sha256": "b0ceffa7021091ef8913cdf6d8131ec8ef428d1aaef9a02b79a174e13aaf2e5a",
+  "review": "no must-fix; diagnostic-only",
+  "main_integrated": true,
+  "actual_family": "DividerButtonLayout five original constructors",
+  "observed_original_failure": "Metadata(untrusted constructor family)",
+  "candidate_recipe_actual_recovered": 5,
+  "candidate_recipe_receipt": "/tmp/opencode/wave49-divider-default-after",
+  "synthetic_default_store_is_not_original_dex_store": true,
+  "goal_complete": false,
+  "peer_review": "no must-fix; original descriptor/DEX-local constructor indices retained; no success relaxation",
+  "main_focused_tests": "passed: allocation defaults 3; inventory 1; constructor diagnostic 1; protected 3"
+}

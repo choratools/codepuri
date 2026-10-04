@@ -1,0 +1,48 @@
+[
+  {
+    "release": 17,
+    "command": [
+      "/tmp/opencode/samsung-pass-99-java-release-wave1/java_profile",
+      "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+      "/tmp/opencode/samsung-pass-99-java-release-wave1/java17",
+      "--workers",
+      "30",
+      "--source-release",
+      "17",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+      "--classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 291.65554272569716,
+    "output": "/tmp/opencode/samsung-pass-99-java-release-wave1/java17"
+  },
+  {
+    "release": 25,
+    "command": [
+      "/tmp/opencode/samsung-pass-99-java-release-wave1/java_profile",
+      "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+      "/tmp/opencode/samsung-pass-99-java-release-wave1/java25",
+      "--workers",
+      "30",
+      "--source-release",
+      "25",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod",
+      "--classpath",
+      "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod",
+      "--classpath",
+      "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 290.0175509620458,
+    "output": "/tmp/opencode/samsung-pass-99-java-release-wave1/java25"
+  }
+]

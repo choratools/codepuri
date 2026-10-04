@@ -1,0 +1,108 @@
+{
+  "coverage": {
+    "denominator": 205497,
+    "strict_statuses": {
+      "complete_body": 89026,
+      "rejected_in_written_unit": 99062,
+      "declaration_only": 11140,
+      "rejected_without_written_unit": 6001,
+      "proven_enum_equivalence": 268
+    },
+    "semantic_explicit_bodies": 104161,
+    "outside_strict_sameclass_closure": 15135
+  },
+  "deltas": {
+    "original": {
+      "strict_gained": 9697,
+      "strict_lost": 0,
+      "semantic_gained": 24821,
+      "semantic_lost": 0
+    },
+    "prior": {
+      "strict_gained": 7203,
+      "strict_lost": 0,
+      "semantic_gained": 6962,
+      "semantic_lost": 0
+    }
+  },
+  "diagnostic_comparison": {
+    "original": {
+      "common": {
+        "files": 24749,
+        "before": {
+          "missing_declaration": 34344,
+          "constructor_selection_or_missing_overload": 2881,
+          "code_or_type_error": 933
+        },
+        "after": {
+          "missing_declaration": 42412,
+          "code_or_type_error": 2719,
+          "constructor_selection_or_missing_overload": 4869
+        }
+      },
+      "old_only": {
+        "files": 0,
+        "before": {},
+        "after": {}
+      },
+      "new_only": {
+        "files": 4649,
+        "before": {},
+        "after": {
+          "missing_declaration": 6770,
+          "constructor_selection_or_missing_overload": 241,
+          "code_or_type_error": 234
+        }
+      }
+    },
+    "prior": {
+      "common": {
+        "files": 26270,
+        "before": {
+          "missing_declaration": 44102,
+          "code_or_type_error": 2936,
+          "constructor_selection_or_missing_overload": 4264
+        },
+        "after": {
+          "missing_declaration": 45787,
+          "code_or_type_error": 2770,
+          "constructor_selection_or_missing_overload": 4998
+        }
+      },
+      "old_only": {
+        "files": 0,
+        "before": {},
+        "after": {}
+      },
+      "new_only": {
+        "files": 3128,
+        "before": {},
+        "after": {
+          "missing_declaration": 3395,
+          "code_or_type_error": 183,
+          "constructor_selection_or_missing_overload": 112
+        }
+      }
+    }
+  },
+  "fixed_wholeclass_successes": [
+    "androidx/constraintlayout/widget/l$a.java",
+    "androidx/viewpager/widget/ViewPager$a.java",
+    "com/google/android/material/appbar/CollapsingToolbarLayout$d.java",
+    "em/f$type.java",
+    "nx/a$type.java",
+    "androidx/appcompat/widget/Toolbar$g.java"
+  ],
+  "recovered_constructor_wholeclass_successes": [
+    "com/yessign/fido/jce/spec/KCDSAPrivateKeySpec.java",
+    "i3/j0$type.java",
+    "la/y$type.java",
+    "com/google/android/material/appbar/CollapsingToolbarLayout$d.java",
+    "androidx/appcompat/widget/Toolbar$g.java"
+  ],
+  "recovered_constructor_count": 206,
+  "global_direct_missing_method_callers": 29225,
+  "global_field_blocked_callers": 51051,
+  "source_missing_initialization_callers": 50568,
+  "source_missing_initialization_units": 20646
+}

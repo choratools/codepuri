@@ -1,0 +1,16 @@
+{
+  "denominator": 205497,
+  "required_90_percent": 184948,
+  "strict_accepted": 160560,
+  "strict_percent": 78.13252748215302,
+  "remaining_to_target": 24388,
+  "statuses": {
+    "complete_body": 160254,
+    "rejected_in_written_unit": 29668,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 4129,
+    "proven_enum_equivalence": 306
+  },
+  "ledger": "/tmp/opencode/decomphify-java-corpus/run-1790955482601570562-2642916/com.samsung.android.samsungpass/method-coverage.jsonl",
+  "ledger_sha256": "557855a2bd933c24399e70c137f43d7f16c60a704e5102571fefb9fc42f03314"
+}

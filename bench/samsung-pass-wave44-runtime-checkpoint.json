@@ -1,0 +1,25 @@
+{
+  "accepted_baseline": "wave43",
+  "goal_complete": false,
+  "full_runtime_experiment": {
+    "session": 36591,
+    "pid": 1259609,
+    "last_observed_elapsed": "06:57",
+    "last_observed_cpu_percent": 1715,
+    "last_observed_rss_kib": 28339800,
+    "state": "terminal_rejected",
+    "artifact": "/tmp/opencode/samsung-pass-100-wave44-runtime-metadata",
+    "driver_exit": 1
+  },
+  "progress_classification": "verified wait plus exact root-cause evidence",
+  "checked_contract_hypothesis": "private/static exclusion disproven; genuine missing View.semSetHoverPopupType(I)V declaration confirmed in same-device framework",
+  "pending": "source-contract repeat and full original-identity/compile gates",
+  "updated_at": "2026-10-04T07:43:07.761548+00:00",
+  "new_evidence": {
+    "constructor": "original14894 shared original init33 incorrectly retains prior exclusive-arm materialization; candidate patch isolated, pending verification",
+    "enum": "original37899 first predicate rejects proved ChronoUnit to TemporalUnit upcast; isolated patch pending canonical next gate",
+    "runtime_review": "no must-fix source-admission blocker, runtime not javac availability",
+    "perf_probe": "failed due perf_event_paranoid4; no system change"
+  },
+  "candidate_receipt": "bench/samsung-pass-wave44-runtime-candidate.json"
+}

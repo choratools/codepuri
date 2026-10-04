@@ -1,0 +1,34 @@
+{
+  "state": "validated_terminal",
+  "root": "/tmp/opencode/samsung-pass-100-wave36",
+  "strict_code_bearing_accepted": 183732,
+  "strict_code_bearing_percent": 94.56780210617337,
+  "gained_original_identities": 86,
+  "lost_original_identities": 0,
+  "remaining_code_bearing": 10554,
+  "sources": 32420,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "diagnostic_count": 50658,
+  "export_wall_seconds": 305.12,
+  "peak_rss_kib": 16493356,
+  "workspace_prior_broad": {
+    "passed": 1093,
+    "failed": 1,
+    "ignored": 155,
+    "failure": "fixture constructor_suffix_selected_paths missing genuine final flags"
+  },
+  "failed_target_after_fixture_fix": {
+    "passed": 3,
+    "failed": 0
+  },
+  "final_workspace_log": "/tmp/opencode/wave36-root-workspace-verified.log",
+  "actual_android_runtime_verified": false,
+  "goal_complete": false,
+  "workspace_final": {
+    "passed": 1094,
+    "failed": 0,
+    "ignored": 155,
+    "suites": 184
+  }
+}

@@ -1,0 +1,38 @@
+# Wave15 engineering checkpoint
+
+LastauthoritativeWave14accepted149777/20549772.88525%,35171remainingto90.
+559tests,30344syntax0,fulljavac63317stillfails. Goalactive.
+CanonicalPhi-onlyreleasebuild7540terminal0. Wrongdescriptorfiltered34107
+wasconfirmedPID914778andexplicitlyterminated143becausewrongscope, nottimeout.
+Correctfilter47249terminal0 at /tmp/opencode/wave15-exception-phi-source-correct,
+original39652stillPhi mismatch. NOTrecovered; failureanalysisassignedexceptions
+owner. No fullWave15exportstarteduntilactualsupportedpathverified.
+
+Loopworkeractualf1 nondeterminism correction direct/control100/100 passes,
+forwardreject100/100; focusedsemantic/negative tests pending. Ownloop_control
+only; noacceptanceclaimbeforecanonicalwholeledger. SourcechangesnextWave15.
+
+Constructorworker implementing actualSimpleBigDecimal21256suffixordinary
+throwobject initializer; originalsuperthenbranchnegativeexceptionpositive2final
+writes. No globalunknownwaiver. Arrayworker confirmedhelperInvokealreadyexists;
+actualDerUtil14425 alreadycomplete, so duplicatefeaturebranchkilled. Fluent
+StringBuilder discardedresult witness requiresnewexactreceiver/effectproof,
+not genericdiscardedcallwaiver.
+
+Canonicalfinalbuild2638terminal0 includes deterministicloopcontrol+suffixordinary
+throwobject+typedPhi/privateplanner+precisediagnostics. FullWave15export85290LIVE
+PID1013677 rootrun-1790943290242677242-1013677, logbench/samsung-pass-90-wave15-run.txt/time.txt.
+Workspace54975LIVE, log-tests.txt. No bytecode/bodycoverageclaim untilinventory.
+Loopactualsamef1100/100directandbackend, forwardreject100; structure39tests+
+80JDKtracechecks pass. Ctornew2JDKtests+13regressions+Clippy pass.
+
+35317diagnosticfilteredterminal0:39652 remainsrejected atPhi29 inputZero1,
+checkeddeclNone; concretecandidateClassandroidx.activity.result.b$type bothPhi29/30
+checked_phi_plan→IndeterminateUnknownValue. Correct class416 isActivityResultLauncher,
+notActivity. Exactfailureanalysisconsumercollectorlooks backwardMoves12→6/18→14,
+Compareoffset5/22 peersZero7/15: ty(Zero)None leadsfalseUnknown. Equality-only
+provenliteralpeer contextual correction assignedexceptionworker forWave16;
+NOTincluded in runningWave15binary. Wholeconsumer/type/edgeproofs preserved.
+
+NativefullJavaABI/resources/APKexecutionunverified;90%goalnotachieved. Same immutable
+205497definitiondenominator andstrictstatuses; Wave14 latest14977772.88525%.

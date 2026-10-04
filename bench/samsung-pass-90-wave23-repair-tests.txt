@@ -1,0 +1,39 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.31s
+     Running tests/explicit_store_initialization.rs (target/debug/deps/explicit_store_initialization-272ba50805635728)
+
+running 6 tests
+test actual_a4_constructors_keep_original_store_owner_and_delegation ... ignored, explicit local Samsung corpus
+test out_of_constructor_store_is_not_filtered_even_when_unreachable ... ok
+test native_capability_retained_while_encoded_blank_final_is_not_inlined ... ok
+test malformed_opaque_and_duplicate_inputs_do_not_become_runtime_capabilities ... ok
+test atomic_explicit_contract_keeps_encoded_prefix_and_runtime_capabilities ... ok
+test reflected_final_remains_runtime_mutable_without_constant_inlining ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+     Running tests/explicit_store_inventory_new.rs (target/debug/deps/explicit_store_inventory_new-6523e127aa917df9)
+
+running 6 tests
+test samsung_final_constructor_explicit_store_probe ... ignored, bounded real APK inventory probe
+test capability_does_not_erase_scoped_flags_or_special_invocation_uncertainty ... ok
+test capability_only_native_retains_strict_failure_and_complete_explicit_writes ... ok
+test resolved_reflection_is_capability_but_unknown_target_and_decode_failures_are_structural ... ok
+test cross_dex_unreachable_original_stores_are_not_dropped ... ok
+test blank_final_reflection_preserves_actual_field_read ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.96s
+
+     Running tests/java_field_publication.rs (target/debug/deps/java_field_publication-7f82cff8543d7cb0)
+
+running 7 tests
+test samsung_single_dex_actual_reads_close_on_android_classpath ... ignored, one real SamsungPass DEX, field-read closure only; no APK export
+test interface_finals_and_instance_finals_keep_explicit_partial_initialization ... ok
+test aliased_encoded_final_uses_original_identity_and_unsupported_body_stays_partial ... ok
+test duplicate_owners_invalid_flags_and_pool_only_members_never_publish ... ok
+test caller_access_does_not_make_private_or_cross_package_fields_inherited ... ok
+test alias_hidden_protected_field_rejects_illegal_owner_cast ... ok
+test two_dex_actual_owner_hidden_and_protected_fields_compile_and_initialize ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.13s
+

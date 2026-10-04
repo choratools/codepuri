@@ -1,0 +1,797 @@
+{
+  "schema": "samsung-pass-rejection-inventory.v1",
+  "artifact_root": "/tmp/opencode/decomphify-java-corpus/run-1790912079467647626-1495733/com.samsung.android.samsungpass",
+  "ledger_sha256": "26c26e16233171517bdaf0c644ba1369ad9cf1f7ace811bf79dc59fbb658bbd0",
+  "original_definition_denominator": 205497,
+  "ledger_status_counts": {
+    "complete_body": 89026,
+    "rejected_in_written_unit": 99062,
+    "declaration_only": 11140,
+    "rejected_without_written_unit": 6001,
+    "proven_enum_equivalence": 268
+  },
+  "rejections_with_reason": 99062,
+  "rejected_without_saved_reason": 6001,
+  "top20_ledger_first_reasons": [
+    {
+      "reason": "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+      "count": 23961,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "constructor": 19136,
+        "static_initializer": 4825
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 6,
+          "identity": "La1/b;-><init>(Landroid/view/View;)V",
+          "category": "constructor",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a1/b$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 14,
+          "identity": "La2/a$c;-><clinit>()V",
+          "category": "static_initializer",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$c.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 15,
+          "identity": "La2/a$c;-><init>(ZLjava/lang/Throwable;)V",
+          "category": "constructor",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$c.java"
+        }
+      ]
+    },
+    {
+      "reason": "required complete method body unavailable",
+      "count": 15212,
+      "stage_group": "legacy_complete_body_closure",
+      "category_counts": {
+        "ordinary": 15135,
+        "constructor": 74,
+        "static_initializer": 3
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 3,
+          "identity": "La/b;->a(Ljava/lang/Throwable;Ljava/lang/String;)Ljava/lang/StackTraceElement;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a/b$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 88,
+          "identity": "La4/a$b;->c()J",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 97,
+          "identity": "La4/a$b;->readDouble()D",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: Type(\"comparison types\")",
+      "count": 12355,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 12355
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 48,
+          "identity": "La2/a;->i(La2/a$e;)La2/a$e;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 50,
+          "identity": "La2/a;->isDone()Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 58,
+          "identity": "La2/a;->q()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: Type(\"unresolved or uninitialized type Null\")",
+      "count": 5142,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 5142
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 38,
+          "identity": "La2/a$h;->b()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$h.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 52,
+          "identity": "La2/a;->k(La2/a;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 57,
+          "identity": "La2/a;->p()Ljava/lang/String;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: Instruction(\"observable or throwing operation before initializer\")",
+      "count": 4194,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 4194
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 91,
+          "identity": "La4/a$b;->mark(I)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 108,
+          "identity": "La4/a$b;->reset()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 109,
+          "identity": "La4/a$b;->skipBytes(I)I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        }
+      ]
+    },
+    {
+      "reason": "special invocation: exact Java super target proof unavailable",
+      "count": 4142,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 4142
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 67,
+          "identity": "La2/c;->s(Ljava/lang/Object;)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/c$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 268,
+          "identity": "La6/e;->clearColorFilter()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a6/e$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 269,
+          "identity": "La6/e;->getCurrent()Landroid/graphics/drawable/Drawable;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a6/e$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: ControlFlow(\"Type(\\\"comparison types\\\")\")",
+      "count": 4008,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 4008
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 42,
+          "identity": "La2/a;->cancel(Z)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 64,
+          "identity": "La2/a;->v()Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 145,
+          "identity": "La4/a;->J(La4/a$b;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: UnsupportedInstruction(InsnId(*))\")",
+      "count": 3675,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 3675
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 54,
+          "identity": "La2/a;->m(Ljava/lang/Object;)Ljava/lang/Object;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 140,
+          "identity": "La4/a;->E(La4/a$b;)Ljava/nio/ByteOrder;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 153,
+          "identity": "La4/a;->d(Ljava/lang/String;)La4/a$c;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "initialization proof: FieldInitializationUnavailable",
+      "count": 3122,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "static_initializer": 46,
+        "constructor": 3076
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 5,
+          "identity": "La0/d;-><clinit>()V",
+          "category": "static_initializer",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a0/d$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 8,
+          "identity": "La2/a$b;-><init>(La2/a$a;)V",
+          "category": "constructor",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 28,
+          "identity": "La2/a$g;-><init>()V",
+          "category": "constructor",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$g.java"
+        }
+      ]
+    },
+    {
+      "reason": "callee exceptions not declared by caller",
+      "count": 2467,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 2467
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 87,
+          "identity": "La4/a$b;->available()I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 92,
+          "identity": "La4/a$b;->read()I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 93,
+          "identity": "La4/a$b;->read([BII)I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: Structure(OverlappingRegion(BlockId(*)))\")",
+      "count": 2119,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 2119
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 138,
+          "identity": "La4/a;->C(La4/a$b;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 391,
+          "identity": "La6/f;->draw(Landroid/graphics/Canvas;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a6/f$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 31858,
+          "identity": "Lcom/google/android/material/navigation/c;->a(Lcom/google/android/material/navigation/c;Landroid/view/View;IIIIIIII)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "com/google/android/material/navigation/c$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: Instruction(\"repeated or unpaired initializer\")",
+      "count": 2004,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 2004
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 53,
+          "identity": "La2/a;->l(Ljava/lang/Runnable;Ljava/util/concurrent/Executor;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 139,
+          "identity": "La4/a;->D()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 493,
+          "identity": "La9/e$a;->d(Ljava/lang/Object;Ljava/lang/Object;)La9/e;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a9/e$a.java"
+        }
+      ]
+    },
+    {
+      "reason": "exception region: multiple/nested source ranges require a separate proof",
+      "count": 1973,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 1973
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 122,
+          "identity": "La4/a$c;->k(Ljava/nio/ByteOrder;)Ljava/lang/Object;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$c.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 137,
+          "identity": "La4/a;->B(Ljava/io/InputStream;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 154,
+          "identity": "La4/a;->e(La4/a$h;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "structure: unsupported CFG structure: OverlappingRegion(BlockId(*))",
+      "count": 1822,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 1822
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 90,
+          "identity": "La4/a$b;->f(I)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$b.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 142,
+          "identity": "La4/a;->G(La4/a$h;I)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 165,
+          "identity": "La4/a;->p(La4/a$b;Ljava/util/HashMap;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: TypeMismatch(ValueId(*))\")",
+      "count": 1397,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 1397
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 168,
+          "identity": "La4/a;->s([B)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 136,
+          "identity": "La4/a;->A([B)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 170,
+          "identity": "La4/a;->u([B)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "exception region: exception structure: Unsupported(\"overlapping or cyclic exception region\")",
+      "count": 990,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 990
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 41,
+          "identity": "La2/a;->b(Ljava/lang/StringBuilder;)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 62,
+          "identity": "La2/a;->toString()Ljava/lang/String;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 151,
+          "identity": "La4/a;->b(Ljava/lang/String;)Ljava/lang/String;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: Type(\"arithmetic operand widths/types\")",
+      "count": 977,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 977
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 291,
+          "identity": "La6/f$c;->b([I)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a6/f$c.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 370,
+          "identity": "La6/f$h;->h([I)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a6/f$h.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 10703,
+          "identity": "Landroidx/core/app/ComponentActivity;->shouldDumpInternalState([Ljava/lang/String;)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "androidx/core/app/ComponentActivity.java"
+        }
+      ]
+    },
+    {
+      "reason": "managed synchronized method requires verified monitor scaffold",
+      "count": 932,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 932
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 17,
+          "identity": "La2/a$d$a;->fillInStackTrace()Ljava/lang/Throwable;",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a2/a$d$a.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 7244,
+          "identity": "Landroidx/appcompat/widget/SeslProgressBar;->A(IIZZZ)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "androidx/appcompat/widget/SeslProgressBar.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 7254,
+          "identity": "Landroidx/appcompat/widget/SeslProgressBar;->K()Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "androidx/appcompat/widget/SeslProgressBar.java"
+        }
+      ]
+    },
+    {
+      "reason": "exception region: multiple normal exits from exact source range",
+      "count": 925,
+      "stage_group": "publication_metadata_initialization_or_structure_gate",
+      "category_counts": {
+        "ordinary": 925
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 81,
+          "identity": "La4/a$a;->readAt(J[BII)I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "a4/a$a.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 591,
+          "identity": "Laf/a;->close()V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "af/a$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 594,
+          "identity": "Laf/a;->read()I",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "af/a$type.java"
+        }
+      ]
+    },
+    {
+      "reason": "backend: ControlFlow(\"exception plan: Unsupported(\\\"throwing-site metadata mismatch\\\")\")",
+      "count": 881,
+      "stage_group": "backend_source_failure",
+      "category_counts": {
+        "ordinary": 881
+      },
+      "representatives": [
+        {
+          "dex": "classes.dex",
+          "method_index": 603,
+          "identity": "Laf/b;->write([B)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "af/b$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 604,
+          "identity": "Laf/b;->write([BII)V",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "af/b$type.java"
+        },
+        {
+          "dex": "classes.dex",
+          "method_index": 13670,
+          "identity": "Landroidx/fragment/app/Fragment;->s(Landroid/content/Context;)Z",
+          "category": "ordinary",
+          "status": "rejected_in_written_unit",
+          "source_unit": "androidx/fragment/app/Fragment.java"
+        }
+      ]
+    }
+  ],
+  "report_reason_total": 105063,
+  "report_top20": [
+    {
+      "reason": "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+      "count": 23961
+    },
+    {
+      "reason": "required complete method body unavailable",
+      "count": 15212
+    },
+    {
+      "reason": "backend: Type(\"comparison types\")",
+      "count": 12486
+    },
+    {
+      "reason": "backend: Type(\"unresolved or uninitialized type Null\")",
+      "count": 5229
+    },
+    {
+      "reason": "initialization proof: FieldInitializationUnavailable",
+      "count": 4844
+    },
+    {
+      "reason": "special invocation: exact Java super target proof unavailable",
+      "count": 4286
+    },
+    {
+      "reason": "backend: Instruction(\"observable or throwing operation before initializer\")",
+      "count": 4265
+    },
+    {
+      "reason": "backend: ControlFlow(\"Type(\\\"comparison types\\\")\")",
+      "count": 4071
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: UnsupportedInstruction(InsnId(*))\")",
+      "count": 3738
+    },
+    {
+      "reason": "enum initialization: EnumConstructorsUnavailable",
+      "count": 2702
+    },
+    {
+      "reason": "callee exceptions not declared by caller",
+      "count": 2496
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: Structure(OverlappingRegion(BlockId(*)))\")",
+      "count": 2156
+    },
+    {
+      "reason": "backend: Instruction(\"repeated or unpaired initializer\")",
+      "count": 2036
+    },
+    {
+      "reason": "exception region: multiple/nested source ranges require a separate proof",
+      "count": 2001
+    },
+    {
+      "reason": "structure: unsupported CFG structure: OverlappingRegion(BlockId(*))",
+      "count": 1866
+    },
+    {
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: TypeMismatch(ValueId(*))\")",
+      "count": 1429
+    },
+    {
+      "reason": "exception region: exception structure: Unsupported(\"overlapping or cyclic exception region\")",
+      "count": 1018
+    },
+    {
+      "reason": "backend: Type(\"arithmetic operand widths/types\")",
+      "count": 981
+    },
+    {
+      "reason": "managed synchronized method requires verified monitor scaffold",
+      "count": 942
+    },
+    {
+      "reason": "exception region: multiple normal exits from exact source range",
+      "count": 934
+    }
+  ],
+  "methodology": [
+    "Stream every JSONL ledger row exactly once; include only rejected statuses for the first-reason histogram.",
+    "Normalize volatile ValueId/InsnId/BlockId/EdgeId generation identifiers only; retain all original MethodKey identities.",
+    "Choose first three matching identities in ledger order; these are examples, not independently reproduced root causes.",
+    "Read reason TAB count TAB text entries from report.txt separately; do not treat its counts as body coverage.",
+    "Legacy strict closure rejection can include already generated semantic bodies; it is distinct from backend emission failure.",
+    "Absent source units have no saved per-method reason in this ledger; all 6001 are counted as unknown cause, never inferred from aggregate report."
+  ],
+  "limitations": [
+    "Historical completed sourceclosure artifact is the latest full export referenced by the checked docs; current worktree changes are not benchmarked here.",
+    "No original-method execution or compiler validation was performed by this inventory.",
+    "Histogram stores selected first failures, not all blockers affecting each method."
+  ]
+}

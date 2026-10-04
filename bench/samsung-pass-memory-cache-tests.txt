@@ -1,0 +1,118 @@
+warning: unused import: `std::process::Command`
+ --> crates/decomp/src/java_enum_payload_tests.rs:8:5
+  |
+8 | use std::process::Command;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Resolver` is never constructed
+ --> crates/decomp/src/java_enum_payload_tests.rs:9:12
+  |
+9 |     struct Resolver<'a>(&'a DexFile);
+  |            ^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `SPAN` is never used
+  --> crates/decomp/src/java_enum_payload_tests.rs:63:7
+   |
+63 | const SPAN: RawSpan = RawSpan { offset: 0, size: 0 };
+   |       ^^^^
+
+warning: function `string` is never used
+  --> crates/decomp/src/java_enum_payload_tests.rs:64:4
+   |
+64 | fn string(dex: &mut DexFile, text: &str) -> u32 {
+   |    ^^^^^^
+
+warning: function `ty` is never used
+  --> crates/decomp/src/java_enum_payload_tests.rs:71:4
+   |
+71 | fn ty(dex: &mut DexFile, text: &str) -> u32 {
+   |    ^^
+
+warning: function `fixture` is never used
+  --> crates/decomp/src/java_enum_payload_tests.rs:80:4
+   |
+80 | fn fixture(flags: u32) -> (DexFile, ClassDef) {
+   |    ^^^^^^^
+
+warning: function `element` is never used
+   --> crates/decomp/src/java_enum_payload_tests.rs:101:4
+    |
+101 | fn element(dex: &mut DexFile, class: &mut ClassDef, name: &str, descriptor: &str) -> EncodedMethod {
+    |    ^^^^^^^
+
+warning: function `field` is never used
+   --> crates/decomp/src/java_enum_payload_tests.rs:133:4
+    |
+133 | fn field(dex: &mut DexFile, class: &mut ClassDef, name: &str, descriptor: &str, flags: u32) -> u32 {
+    |    ^^^^^
+
+warning: struct `Builder` is never constructed
+   --> crates/decomp/src/java_enum_payload_tests.rs:155:8
+    |
+155 | struct Builder {
+    |        ^^^^^^^
+
+warning: methods `value`, `parameter`, `push`, and `finish` are never used
+   --> crates/decomp/src/java_enum_payload_tests.rs:160:8
+    |
+159 | }impl Builder {
+    |  ------------ methods in this implementation
+160 |     fn value(&mut self, ty: ManagedType, make: impl FnOnce(ValueId) -> ManagedInsn) -> ValueId {
+    |        ^^^^^
+...
+170 |     fn parameter(&mut self) -> ValueId {
+    |        ^^^^^^^^^
+...
+180 |     fn push(&mut self, insn: ManagedInsn) {
+    |        ^^^^
+...
+183 |     fn finish(self) -> MethodIr<SsaForm> {
+    |        ^^^^^^
+
+warning: function `enum_fixture` is never used
+   --> crates/decomp/src/java_enum_payload_tests.rs:194:4
+    |
+194 | fn enum_fixture(
+    |    ^^^^^^^^^^^^
+
+warning: function `plan_class_initialization_shared_explicit_stores_attested` is never used
+   --> crates/decomp/src/java_declaration_initializers.rs:246:15
+    |
+246 | pub(crate) fn plan_class_initialization_shared_explicit_stores_attested<
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `plan_static_initializer_shared_explicit_stores_attested` is never used
+   --> crates/decomp/src/java_declaration_initializers.rs:854:15
+    |
+854 | pub(crate) fn plan_static_initializer_shared_explicit_stores_attested<
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `decomp` (lib test) generated 13 warnings (run `cargo fix --lib -p decomp --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 17 tests
+test java_class_kinds::initializers::write_inventory::capability_cache_tests::capability_snapshots_are_isolated_across_inventory_mutation ... ok
+test java_class_kinds::initializers::write_inventory::capability_cache_tests::concurrent_readers_share_one_capability_snapshot ... ok
+test java_class_kinds::initializers::write_inventory::capability_cache_tests::shared_capabilities_preserve_exact_kinds_order_and_reasons ... ok
+test java_class_kinds::initializers::write_inventory::capability_cache_tests::shared_routes_keep_structural_coverage_and_final_store_rejections ... ok
+test java_class_kinds::initializers::write_inventory::capability_cache_tests::shared_and_public_plans_preserve_complete_source_and_capability_evidence ... ok
+test java_integration::resolution_cache::tests::disabled_cache_recomputes_without_values_or_counters ... ok
+test java_integration::resolution_cache::tests::indexes_and_pool_instances_are_isolated_and_results_are_cloned ... ok
+test java_integration::resolution_cache::tests::out_of_bounds_indexes_do_not_invoke_lookup ... ok
+test java_integration::resolution_cache::tests::concurrent_lookup_computes_once_including_none ... ok
+test java_integration::ssa_cache::tests::changed_seed_types_produce_separate_typed_frontend_results ... ok
+test java_integration::ssa_cache::tests::concurrent_same_key_runs_frontend_once_and_shares_result ... ok
+test java_integration::ssa_cache::tests::disabled_cache_computes_every_time_and_retains_nothing ... ok
+test java_integration::ssa_cache::tests::export_sessions_do_not_share_entries ... ok
+test java_integration::ssa_cache::tests::frontend_computation_does_not_hold_global_map_lock ... ok
+test java_integration::ssa_cache::tests::frontend_errors_are_cached_and_counted_once ... ok
+test java_integration::ssa_cache::tests::every_input_identity_component_distinguishes_entries ... ok
+test output_tests::unvalidated_symlink_is_rejected_below_cached_parent ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 84 filtered out; finished in 0.01s
+

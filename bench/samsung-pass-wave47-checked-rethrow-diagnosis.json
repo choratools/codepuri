@@ -1,0 +1,30 @@
+{
+  "candidate_evidence": "terminal46 rejected snapshot; current47 export active",
+  "investigated_originals": [
+    {
+      "dex": "classes.dex",
+      "method_index": 137,
+      "failed_original_offset": 182,
+      "kind": "handler identity rethrow"
+    },
+    {
+      "dex": "classes.dex",
+      "method_index": 154,
+      "failed_original_offset": 320,
+      "kind": "handler identity rethrow; actual IOException escapes"
+    },
+    {
+      "dex": "classes.dex",
+      "method_index": 167,
+      "failed_original_offset": 165,
+      "kind": "handler identity rethrow"
+    }
+  ],
+  "disproved_hypothesis": "protected explicit Throw emitter asymmetry was not the actual failure in these methods",
+  "observed_failure": "unprotected handler rethrow checked as nominal Throwable, lexical capture precision lost",
+  "next_proof_target": "137/167 ordered earlier catches consume checked domains; establish precise original captured-object rethrow and cleanup scope",
+  "boundary": "154 escaping IOException must retain genuine derived or bridge checked contract; no blanket Throwable exemption",
+  "artifacts": "/tmp/opencode/wave47-a4-throws/diagnostic",
+  "main_modified": false,
+  "recovery_claim": false
+}

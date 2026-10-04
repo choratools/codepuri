@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-10-04T15:11:29.015866+00:00",
+  "source_commit": "5691a2f3a82cee2203251dc8989de3cb5477b63f",
+  "gates": [
+    {
+      "gate": "fmt",
+      "exit_code": 0
+    },
+    {
+      "gate": "tests",
+      "exit_code": 0
+    },
+    {
+      "gate": "clippy",
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "suites": 199,
+    "passed": 1235,
+    "failed": 0,
+    "ignored": 168
+  },
+  "logs_local": "bench/local-artifacts/git-checkpoint-validation",
+  "actual_alias_regression": "Worker verified actual Samsung Pass APK hierarchy and return-collision regression; JDK17 dispatch runtime oracle uses explicit fixture bodies",
+  "last_recorded_full_baseline": "bench/samsung-pass-wave50-final.json",
+  "current_full_export_rerun_completed": false,
+  "whole_apk_compilation_verified": false,
+  "goal_complete": false
+}

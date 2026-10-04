@@ -1,0 +1,16 @@
+{
+  "passed": 1031,
+  "failed": 0,
+  "ignored": 145,
+  "suites": 178,
+  "terminal_exit_code": 0,
+  "clippy_terminal_exit_code": 0,
+  "fmt_terminal_exit_code": 0,
+  "release_terminal_exit_code": 0,
+  "latest_super_argument_root_recheck": {
+    "passed": 2,
+    "failed": 0,
+    "log": "/tmp/opencode/wave28-root-super-arguments.log"
+  },
+  "changed_frozen_sources_at_test_receipt": []
+}

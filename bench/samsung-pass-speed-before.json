@@ -1,0 +1,39 @@
+{
+  "input": "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+  "workers": 30,
+  "artifact": "/tmp/opencode/samsung-pass-speed-before",
+  "header": "apk=tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk workers=30 no_io=false unprofiled=false parse_s=0.266844 export_wall_s=256.204694 sources=30525 bytes=278045782 ordered_checksum=ac713e7ef272da21",
+  "stages": [
+    "serial\talias_build\t11.299381\twall_pct=4.410",
+    "serial\talias_inventory\t0.737287\twall_pct=0.288",
+    "serial\tresolver_prepare\t0.605220\twall_pct=0.236",
+    "serial\tsink_io\t1.383142\twall_pct=0.540",
+    "task_stage\tclosure_pruning\t0.147751\ttask_sum_pct=0.006",
+    "task_stage\tfrontend\t206.608970\ttask_sum_pct=8.994",
+    "task_stage\tinitialization_family\t965.477259\ttask_sum_pct=42.028",
+    "task_stage\tsource_collection\t0.113694\ttask_sum_pct=0.005",
+    "task_stage\tsource_serialization\t10.404900\ttask_sum_pct=0.453",
+    "task_stage\tstructure_backend\t738.393467\ttask_sum_pct=32.143"
+  ],
+  "scheduler": [
+    "scheduler\tdex=0\ttasks=9757\tcapacity=30\treorder_capacity=240\twall_s=29.331116\tactive_s=464.526961\tqueue_wait_s=367.898476\tdispatch_idle_s=0.076028\tworker_lifetime_s=832.501465",
+    "scheduler\tdex=1\ttasks=7128\tcapacity=30\treorder_capacity=240\twall_s=29.219447\tactive_s=510.732707\tqueue_wait_s=360.734236\tdispatch_idle_s=0.071721\tworker_lifetime_s=871.538663",
+    "scheduler\tdex=2\ttasks=10482\tcapacity=30\treorder_capacity=240\twall_s=58.459015\tactive_s=954.253977\tqueue_wait_s=783.741543\tdispatch_idle_s=0.137909\tworker_lifetime_s=1738.133429",
+    "scheduler\tdex=3\ttasks=7212\tcapacity=30\treorder_capacity=240\twall_s=61.534142\tactive_s=367.745635\tqueue_wait_s=1454.567091\tdispatch_idle_s=1.982428\tworker_lifetime_s=1824.295154"
+  ],
+  "top_classes": [
+    "top_class\tdex=3\tLorg/bouncycastle/pqc/crypto/falcon/FalconSmallPrimeList;\telapsed_s=40.117134\tmethods=2\tstages={\"closure_pruning\": 1.638\u00b5s, \"frontend\": 60.1023ms, \"initialization_family\": 39.970006449s, \"source_collection\": 19.774\u00b5s, \"source_serialization\": 1.122763ms, \"structure_backend\": 84.895811ms}\tssa={\"analysis\": 129.82\u00b5s, \"decode\": 901.596\u00b5s, \"inference\": 9.680268ms, \"lift\": 6.66871ms, \"liveness\": 2.3158ms, \"materialize\": 4.27962ms, \"merge\": 18.01963ms, \"phi_cleanup\": 375ns, \"phi_placement\": 834.353\u00b5s, \"placement\": 3.341364ms, \"rename\": 832.451\u00b5s, \"type_context_prepare\": 4.355\u00b5s, \"verification\": 12.622358ms}",
+    "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/database/DBHandler;\telapsed_s=11.146525\tmethods=100\tstages={\"closure_pruning\": 9.331\u00b5s, \"frontend\": 2.777405991s, \"initialization_family\": 166.454\u00b5s, \"source_collection\": 5.242\u00b5s, \"source_serialization\": 383.557\u00b5s, \"structure_backend\": 8.148840735s}\tssa={\"analysis\": 6.53001ms, \"decode\": 2.67953296s, \"inference\": 6.424415ms, \"lift\": 40.641316ms, \"liveness\": 5.052108ms, \"materialize\": 5.074205ms, \"merge\": 10.849376ms, \"phi_cleanup\": 2.434816ms, \"phi_placement\": 1.427968ms, \"placement\": 3.83939ms, \"rename\": 3.055111ms, \"type_context_prepare\": 491.249\u00b5s, \"verification\": 10.578104ms}",
+    "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/preference/PrefManager;\telapsed_s=8.808382\tmethods=116\tstages={\"closure_pruning\": 9.874\u00b5s, \"frontend\": 2.007395915s, \"initialization_family\": 562.326609ms, \"source_collection\": 4.811\u00b5s, \"source_serialization\": 513.871\u00b5s, \"structure_backend\": 5.703700093s}\tssa={\"analysis\": 2.73423ms, \"decode\": 1.36058723s, \"inference\": 2.546521ms, \"lift\": 561.166607ms, \"liveness\": 2.223622ms, \"materialize\": 1.972064ms, \"merge\": 66.754172ms, \"phi_cleanup\": 115.512\u00b5s, \"phi_placement\": 525.589\u00b5s, \"placement\": 2.008386ms, \"rename\": 1.369035ms, \"type_context_prepare\": 559.864\u00b5s, \"verification\": 3.959373ms}",
+    "top_class\tdex=1\tLcom/samsung/android/samsungpass/DataBinderMapperImpl;\telapsed_s=4.382217\tmethods=9\tstages={\"closure_pruning\": 4.898\u00b5s, \"frontend\": 16.762575ms, \"initialization_family\": 274.351\u00b5s, \"source_collection\": 14.943\u00b5s, \"source_serialization\": 881.038\u00b5s, \"structure_backend\": 4.360584141s}\tssa={\"analysis\": 430.208\u00b5s, \"decode\": 378.227\u00b5s, \"inference\": 1.755476ms, \"lift\": 1.92735ms, \"liveness\": 846.994\u00b5s, \"materialize\": 1.335463ms, \"merge\": 4.274822ms, \"phi_cleanup\": 2.07\u00b5s, \"phi_placement\": 237.391\u00b5s, \"placement\": 1.206728ms, \"rename\": 406.98\u00b5s, \"type_context_prepare\": 25.228\u00b5s, \"verification\": 3.531742ms}",
+    "top_class\tdex=2\tLcom/samsung/android/sdk/mobileservice/social/IMobileServiceSocial$Stub$Proxy;\telapsed_s=3.757212\tmethods=113\tstages={\"closure_pruning\": 6.884\u00b5s, \"frontend\": 735.855574ms, \"initialization_family\": 6.548816ms, \"source_collection\": 25.795\u00b5s, \"source_serialization\": 2.619811ms, \"structure_backend\": 2.931286269s}\tssa={\"analysis\": 5.067035ms, \"decode\": 671.850187ms, \"inference\": 5.711667ms, \"lift\": 11.94551ms, \"liveness\": 4.288211ms, \"materialize\": 4.622309ms, \"merge\": 9.966604ms, \"phi_cleanup\": 3.07601ms, \"phi_placement\": 1.291341ms, \"placement\": 3.919854ms, \"rename\": 2.749408ms, \"type_context_prepare\": 582.97\u00b5s, \"verification\": 9.434121ms}"
+  ],
+  "complete_methods": 131550,
+  "complete_constructors": 25050,
+  "complete_static_initializers": 4137,
+  "declaration_only_methods": 11140,
+  "unsupported_methods": 24465,
+  "unavailable_constructors": 9155,
+  "classes_seen": 34579,
+  "fields_emitted": 173503
+}

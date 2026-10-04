@@ -1,0 +1,33 @@
+warning: variant `Dispatch` is never constructed
+   --> crates/decomp/src/java_exception_regions.rs:119:5
+    |
+117 | enum RangeMode {
+    |      --------- variant in this enum
+118 |     Structured,
+119 |     Dispatch,
+    |     ^^^^^^^^
+    |
+    = note: `RangeMode` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `from_dex_dispatch` is never used
+   --> crates/decomp/src/java_exception_regions.rs:584:8
+    |
+584 | pub fn from_dex_dispatch(
+    |        ^^^^^^^^^^^^^^^^^
+
+warning: `decomp` (lib) generated 2 warnings
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `release` profile [optimized] target(s) in 5.53s
+     Running tests/java_session.rs (target/release/deps/java_session-4b2ed77c0cd2634a)
+
+running 6 tests
+test failed_render_never_installs_a_partial_snapshot ... ok
+test failed_sink_retains_snapshot_and_retry_starts_at_first_original_source ... ok
+test empty_selection_is_a_valid_cached_result_and_other_sessions_are_isolated ... ok
+test warm_replay_preserves_all_sources_reports_order_and_clear_lifetime ... ok
+test classpath_is_snapshotted_before_its_file_is_removed ... ok
+test samsung_fragment_snapshot_replays_attested_static_prefix ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 48.23s
+

@@ -1,0 +1,79 @@
+{
+  "root": "/tmp/opencode/samsung-pass-cache-current-1790980102076446329/replay",
+  "verified": true,
+  "cold_export_s": 297.882489,
+  "warm_export_s": 1.58411,
+  "replay_speedup": 188.04406827808677,
+  "cold_files": 31100,
+  "warm_files": 31100,
+  "source_text_bytes": 300481064,
+  "missing_paths": [],
+  "added_paths": [],
+  "changed_files": [],
+  "reports_equal": true,
+  "phase_metrics": {
+    "cold": {
+      "phase": "cold",
+      "export_wall_s": "297.882489",
+      "sources": "31100",
+      "bytes": "300481064",
+      "checksum": "3e64ee75f7545da9",
+      "complete_methods": "137909",
+      "constructors": "31111",
+      "static_initializers": "5112",
+      "unsupported_methods": "17094",
+      "unavailable_constructors": "3094",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "0",
+        "sources": "31100",
+        "source_text_bytes": "300481064",
+        "ready": "true"
+      }
+    },
+    "warm": {
+      "phase": "warm",
+      "export_wall_s": "1.584110",
+      "sources": "31100",
+      "bytes": "300481064",
+      "checksum": "3e64ee75f7545da9",
+      "complete_methods": "137909",
+      "constructors": "31111",
+      "static_initializers": "5112",
+      "unsupported_methods": "17094",
+      "unavailable_constructors": "3094",
+      "declaration_only": "11177",
+      "stats": {
+        "renders": "1",
+        "replays": "1",
+        "sources": "31100",
+        "source_text_bytes": "300481064",
+        "ready": "true"
+      }
+    }
+  },
+  "cold_speedup_claimed": false,
+  "whole_app_compilation_claimed": false,
+  "peak_process_rss_kib": 12896428,
+  "snapshot_text_mib": 286.56107330322266,
+  "peak_process_rss_gib": 12.298992156982422,
+  "configuration": {
+    "workers": 30,
+    "source_release": 25,
+    "same_process": true,
+    "real_file_writes_both_phases": true,
+    "cache_persists_across_processes": false,
+    "workspace_tests_concurrent_with_benchmark": true
+  },
+  "changed_source_files_since_freeze": [],
+  "validation": {
+    "workspace_tests_passed": 784,
+    "workspace_tests_failed": 0,
+    "workspace_tests_ignored": 60,
+    "workspace_all_target_clippy": "passed",
+    "workspace_fmt": "passed",
+    "diff_whitespace_check": "passed",
+    "replay_verifier": "passed"
+  }
+}

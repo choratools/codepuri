@@ -1,0 +1,297 @@
+{
+  "status": "candidate_regressed_not_accepted",
+  "baseline": "wave29",
+  "gained": 808,
+  "lost": 419,
+  "lost_reason_groups": [
+    [
+      "callee exceptions not declared by caller",
+      127
+    ],
+    [
+      "required complete method body unavailable",
+      124
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.threeten.bp.temporal.TemporalAccessor\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.threeten.bp.temporal.TemporalAccessor\\\")\")",
+      24
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Metadata(\"invoke checked exceptions are not declared by caller\")",
+      23
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\")",
+      20
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.CharSequence\\\") to Class(\\\"java.lang.String\\\")\")",
+      8
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.String\\\")\")",
+      7
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\")",
+      5
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.CharSequence\\\") to Class(\\\"java.lang.String\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.CharSequence\\\") to Class(\\\"java.lang.String\\\")\")",
+      4
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Long\\\")\")",
+      3
+    ],
+    [
+      "initialization explicit-store definite assignment: FieldInitializationUnavailable",
+      3
+    ],
+    [
+      "backend: Metadata(\"cleanup requires original native ordered catches\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Array(Byte)\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"y8.j$type\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.AutoCloseable\\\") to Class(\\\"android.database.Cursor\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.net.Uri\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.net.Uri\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.CharSequence\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Boolean\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"org.bouncycastle.crypto.CipherParameters\\\") to Class(\\\"org.bouncycastle.crypto.params.AsymmetricKeyParameter\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"org.bouncycastle.crypto.CipherParameters\\\") to Class(\\\"org.bouncycastle.crypto.params.ECKeyParameters\\\")\")",
+      2
+    ],
+    [
+      "initializer exceptions not declared by caller",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.bouncycastle.asn1.x500.X500Name\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.security.Key\\\") to Class(\\\"signgate.core.javax.crypto.j$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.security.Key\\\") to Class(\\\"signgate.core.javax.crypto.j$type\\\")\")",
+      2
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.Constructor\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.Constructor\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.Method\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.reflect.Method\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"android.content.Context\\\") to Class(\\\"androidx.appcompat.widget.e1$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Class\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"androidx.navigation.g$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.util.concurrent.Executor\\\") to Class(\\\"java.util.concurrent.ExecutorService\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.content.pm.PackageInfo\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.app.Fragment\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Enum\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"q7.t$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"f8.d$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"y8.j$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"y8.j$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"android.content.Intent\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"n9.l$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"androidx.fragment.app.Fragment\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"s7.c$a\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"y8.k$type\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"java.lang.Class\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.List\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"com.google.protobuf.ByteString\\\\\\\") to Class(\\\\\\\"com.google.protobuf.RopeByteString\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.CharSequence\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.CharSequence\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.backupandrestore.NoteCredential\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"com.samsung.android.samsungpass.base.common.google.i18n.addressinput.common.JsoMap\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"android.content.BroadcastReceiver\\\") to Class(\\\"com.samsung.android.samsungpass.common.sim.SimStateChangedReceiver\\\")\"); exception dispatch: Type(\"assignment Class(\\\"android.content.BroadcastReceiver\\\") to Class(\\\"com.samsung.android.samsungpass.common.sim.SimStateChangedReceiver\\\")\")",
+      1
+    ],
+    [
+      "result ValueId(70v1) Unknown, input ValueId(50v1) Reference(ClassRef(7788)), edge EdgeId(90v1); checked declaration None\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.util.Collection\\\") to Class(\\\"java.util.ArrayList\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"sf.q$type\\\") to Class(\\\"qg.a$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.util.List\\\") to Class(\\\"java.util.ArrayList\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.lang.Integer\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"ou.v$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"ou.v$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"org.jsoup.select.Elements\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"com.yessign.fido.crypto.CipherParameters\\\") to Class(\\\"com.yessign.fido.crypto.params.AsymmetricKeyParameter\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"nr.a$type\\\\\\\") to Class(\\\\\\\"nr.z$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"nr.a$type\\\\\\\") to Class(\\\\\\\"nr.b$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"java.lang.Throwable\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"ts.d$type\\\\\\\") to Class(\\\\\\\"ts.t$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"android.os.Parcelable\\\") to Class(\\\"android.os.ParcelFileDescriptor\\\")\"); exception dispatch: Type(\"assignment Class(\\\"android.os.Parcelable\\\") to Class(\\\"android.os.ParcelFileDescriptor\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"du.b$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"eu.l0$type\\\") to Class(\\\"fu.z$type\\\")\"); exception dispatch: Type(\"assignment Class(\\\"eu.l0$type\\\") to Class(\\\"fu.z$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"java.util.concurrent.ScheduledThreadPoolExecutor\\\")\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"gu.r$type\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")",
+      1
+    ],
+    [
+      "backend: Metadata(\"invoke checked exceptions are not declared by caller\"); exception dispatch: Metadata(\"original cleanup rethrow has undeclared checked contract\")",
+      1
+    ],
+    [
+      "backend: ControlFlow(\"Type(\\\"assignment Class(\\\\\\\"java.lang.Object\\\\\\\") to Class(\\\\\\\"org.bouncycastle.pqc.crypto.xmss.XMSSNode\\\\\\\")\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"org.bouncycastle.crypto.params.AsymmetricKeyParameter\\\") to Class(\\\"org.bouncycastle.pqc.crypto.xmss.XMSSPrivateKeyParameters\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"ou.i$type\\\")\")",
+      1
+    ],
+    [
+      "backend: Type(\"assignment Class(\\\"java.lang.Object\\\") to Class(\\\"retrofit2.r$type\\\")\")",
+      1
+    ]
+  ],
+  "workspace_test_status": "failed_type_lattice_property_then_focused_repair_passed_workspace_rerun_pending",
+  "frozen_export_terminal": {
+    "finished_at": "2026-10-03T22:45:41.703347+00:00",
+    "exit_code": 0,
+    "changed_sources": [],
+    "binary_unchanged": true,
+    "apk_unchanged": true,
+    "classpath_unchanged": true
+  }
+}

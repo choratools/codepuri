@@ -1,0 +1,12 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.89s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 4 tests
+test java_integration::resolution_cache::tests::disabled_cache_recomputes_without_values_or_counters ... ok
+test java_integration::resolution_cache::tests::indexes_and_pool_instances_are_isolated_and_results_are_cloned ... ok
+test java_integration::resolution_cache::tests::out_of_bounds_indexes_do_not_invoke_lookup ... ok
+test java_integration::resolution_cache::tests::concurrent_lookup_computes_once_including_none ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 92 filtered out; finished in 0.00s
+

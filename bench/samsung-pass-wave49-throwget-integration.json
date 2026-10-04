@@ -1,0 +1,29 @@
+{
+  "patch": "/tmp/opencode/wave49-throwget-patch/owned.patch",
+  "sha256": "8f2d8260609c4429a4d4b2245f5eb65e1d67d51004e92ed7352139f846064e08",
+  "main_integrated": true,
+  "parent_isolated_tests": {
+    "passed": 2,
+    "failed": 0
+  },
+  "review_production_must_fix": false,
+  "review_alleged_test_duplicates": "verified absent by exact patch and passing compilation",
+  "main_test_session": 60594,
+  "main_clippy_session": 30259,
+  "main_fmt_session": 88288,
+  "actual154": "progresses to unchecked cleanup gate; not recovered yet",
+  "goal_complete": false,
+  "main_focused_tests": {
+    "passed": 2,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "main_fmt_exit": 0,
+  "main_clippy_exit": 0,
+  "parent_actual154_observed_emission": {
+    "source": "/tmp/opencode/wave49-uncheckedthrow-actual/sources/a4/a$type.java",
+    "signature": "public final void e(a4.a$h p0) throws java.io.EOFException, java.io.IOException",
+    "strict_closure": "await worker exact identity receipt",
+    "new_cleanup_patch_integrated": false
+  }
+}

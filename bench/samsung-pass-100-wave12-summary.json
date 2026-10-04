@@ -1,0 +1,26 @@
+{
+  "denominator": 205497,
+  "code_bearing_definitions": 194286,
+  "strict_code_bearing_accepted": 179915,
+  "strict_code_bearing_percent": 92.60317264239318,
+  "remaining_code_bearing_to_target": 14371,
+  "genuine_bodyless_declarations": 11177,
+  "original_form_accepted": 191092,
+  "original_form_percent": 92.99016530654949,
+  "remaining_original_forms_to_target": 14405,
+  "statuses": {
+    "complete_body": 179573,
+    "rejected_in_written_unit": 11292,
+    "declaration_only": 11177,
+    "rejected_without_written_unit": 3113,
+    "proven_enum_equivalence": 342
+  },
+  "gained": 121,
+  "lost": 55,
+  "source_files": 31232,
+  "javac_diagnostics": 56434,
+  "syntax_exit": 0,
+  "javac_exit": 1,
+  "goal_complete": false,
+  "artifact_root": "/tmp/opencode/samsung-pass-100-wave12"
+}

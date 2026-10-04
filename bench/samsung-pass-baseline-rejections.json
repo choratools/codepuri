@@ -1,0 +1,231 @@
+{
+  "workspace_tests": null,
+  "source_files": 24552,
+  "unavailable_initialization_units": 16165,
+  "category_totals": {
+    "constructor": 25093,
+    "ordinary": 85752,
+    "static_initializer": 5559
+  },
+  "top_recorded_rules": {
+    "constructor": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        19156
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        3199
+      ],
+      [
+        "initialization: unused constructor parameter",
+        1721
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        461
+      ],
+      [
+        "enum: missing initializer",
+        153
+      ],
+      [
+        "field requires external class closure",
+        126
+      ],
+      [
+        "initialization: exception family proof unavailable",
+        116
+      ],
+      [
+        "required complete method body unavailable",
+        78
+      ],
+      [
+        "constructor hierarchy outside safe root subset",
+        33
+      ],
+      [
+        "protected access: aliased hierarchy identity proof unavailable",
+        20
+      ],
+      [
+        "enum: unavailable constructor input",
+        15
+      ],
+      [
+        "initialization proof: InvalidMetadata",
+        7
+      ]
+    ],
+    "ordinary": [
+      [
+        "backend: Type(\"unresolved or uninitialized type Zero\")",
+        16268
+      ],
+      [
+        "required complete method body unavailable",
+        14178
+      ],
+      [
+        "field requires external class closure",
+        11064
+      ],
+      [
+        "structure: unsupported CFG structure: OverlappingRegion(ID)",
+        10949
+      ],
+      [
+        "special invocation: exact Java super target proof unavailable",
+        3730
+      ],
+      [
+        "unresolved field metadata",
+        3694
+      ],
+      [
+        "backend: Instruction(\"observable or throwing operation before initializer\")",
+        3323
+      ],
+      [
+        "backend: ControlFlow(\"unsupported Java branch plan: UnsupportedInstruction(ID)\")",
+        3107
+      ],
+      [
+        "backend: Metadata(\"invoke argument count\")",
+        2257
+      ],
+      [
+        "exception region: multiple/nested source ranges require a separate proof",
+        2001
+      ],
+      [
+        "backend: ControlFlow(\"unsupported Java branch plan: TypeMismatch(ID)\")",
+        1849
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        1807
+      ]
+    ],
+    "static_initializer": [
+      [
+        "initialization: whole-input final-write proof indeterminate (2135 unknown observations)",
+        4837
+      ],
+      [
+        "enum initialization: EnumConstructorsUnavailable",
+        434
+      ],
+      [
+        "final field write requires atomic initialization proof",
+        82
+      ],
+      [
+        "field requires external class closure",
+        77
+      ],
+      [
+        "initialization proof: FieldInitializationUnavailable",
+        73
+      ],
+      [
+        "enum: unavailable constructor input",
+        15
+      ],
+      [
+        "initialization proof: InvalidMetadata",
+        10
+      ],
+      [
+        "initialization: exception family proof unavailable",
+        10
+      ],
+      [
+        "annotation declaration: NotAbstractDeclaration",
+        7
+      ],
+      [
+        "required complete method body unavailable",
+        4
+      ],
+      [
+        "enum member: EnumConstructorsUnavailable",
+        2
+      ],
+      [
+        "structure: unsupported CFG structure: OverlappingRegion(ID)",
+        2
+      ]
+    ]
+  },
+  "identity_samples": {
+    "constructor": [
+      {
+        "unit": "n5/o$a.java",
+        "identity_and_rejection": "// unavailable original method index 50817: Some(MethodKey { owner: \"Ln5/o$a;\", name: \"<init>\", parameters: [\"Ln5/o;\", \"Ljq/e;\"], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "n5/p$h.java",
+        "identity_and_rejection": "// unavailable original method index 50862: Some(MethodKey { owner: \"Ln5/p$h;\", name: \"<init>\", parameters: [\"Ln5/p;\", \"Ljq/e;\"], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "n5/h$a.java",
+        "identity_and_rejection": "// unavailable original method index 50699: Some(MethodKey { owner: \"Ln5/h$a;\", name: \"<init>\", parameters: [\"Ln5/h;\", \"Ljq/e;\"], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "n5/n.java",
+        "identity_and_rejection": "// unavailable original method index 50812: Some(MethodKey { owner: \"Ln5/n;\", name: \"<init>\", parameters: [\"Ls5/d;\", \"Ljava/lang/String;\", \"Lxq/p;\"], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "n5/k$a$a$a.java",
+        "identity_and_rejection": "// unavailable original method index 50762: Some(MethodKey { owner: \"Ln5/k$a$a$a;\", name: \"<init>\", parameters: [\"Ln5/k$a$a;\", \"Ljq/e;\"], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      }
+    ],
+    "ordinary": [
+      {
+        "unit": "n5/n.java",
+        "identity_and_rejection": "// unavailable original method index 50813: Some(MethodKey { owner: \"Ln5/n;\", name: \"B0\", parameters: [\"Z\", \"Lxq/p;\", \"Ljq/e;\"], return_type: \"Ljava/lang/Object;\" }): field requires external class closure"
+      },
+      {
+        "unit": "n5/n.java",
+        "identity_and_rejection": "// unavailable original method index 50816: Some(MethodKey { owner: \"Ln5/n;\", name: \"close\", parameters: [], return_type: \"V\" }): backend: Type(\"unresolved or uninitialized type Zero\")"
+      },
+      {
+        "unit": "n5/l.java",
+        "identity_and_rejection": "// unavailable original method index 50788: Some(MethodKey { owner: \"Ln5/l;\", name: \"a\", parameters: [\"Ljava/lang/String;\", \"Lxq/l;\", \"Ljq/e;\"], return_type: \"Ljava/lang/Object;\" }): exception region: multiple/nested source ranges require a separate proof"
+      },
+      {
+        "unit": "n5/l.java",
+        "identity_and_rejection": "// unavailable original method index 50789: Some(MethodKey { owner: \"Ln5/l;\", name: \"b\", parameters: [\"Ljq/e;\"], return_type: \"Ljava/lang/Object;\" }): structure: unsupported CFG structure: OverlappingRegion(BlockId(14v1))"
+      },
+      {
+        "unit": "n5/l.java",
+        "identity_and_rejection": "// unavailable original method index 50790: Some(MethodKey { owner: \"Ln5/l;\", name: \"c\", parameters: [\"Landroidx/room/e2$a;\", \"Lxq/p;\", \"Ljq/e;\"], return_type: \"Ljava/lang/Object;\" }): backend: Type(\"unresolved or uninitialized type Zero\")"
+      }
+    ],
+    "static_initializer": [
+      {
+        "unit": "n5/n$a.java",
+        "identity_and_rejection": "// unavailable original method index 50799: Some(MethodKey { owner: \"Ln5/n$a;\", name: \"<clinit>\", parameters: [], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "da/i$a.java",
+        "identity_and_rejection": "// unavailable original method index 38318: Some(MethodKey { owner: \"Lda/i$a;\", name: \"<clinit>\", parameters: [], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "da/m0.java",
+        "identity_and_rejection": "// unavailable original method index 38351: Some(MethodKey { owner: \"Lda/m0;\", name: \"<clinit>\", parameters: [], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "da/j$a.java",
+        "identity_and_rejection": "// unavailable original method index 38327: Some(MethodKey { owner: \"Lda/j$a;\", name: \"<clinit>\", parameters: [], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      },
+      {
+        "unit": "da/e.java",
+        "identity_and_rejection": "// unavailable original method index 38288: Some(MethodKey { owner: \"Lda/e;\", name: \"<clinit>\", parameters: [], return_type: \"V\" }): initialization: whole-input final-write proof indeterminate (2135 unknown observations)"
+      }
+    ]
+  },
+  "scope": "Recorded rejection causes, not an enumeration of all latent defects."
+}

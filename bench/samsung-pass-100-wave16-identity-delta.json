@@ -1,0 +1,804 @@
+{
+  "transitions": {
+    "complete_body -> complete_body": 180145,
+    "rejected_in_written_unit -> rejected_in_written_unit": 10782,
+    "declaration_only -> declaration_only": 11183,
+    "rejected_without_written_unit -> rejected_without_written_unit": 2966,
+    "rejected_in_written_unit -> complete_body": 33,
+    "proven_enum_equivalence -> proven_enum_equivalence": 388
+  },
+  "changed": [
+    {
+      "identity": "Landroidx/activity/ImmLeaksCleaner;->c(Landroidx/lifecycle/t;Landroidx/lifecycle/j$a;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 5062,
+        "identity": "Landroidx/activity/ImmLeaksCleaner;->c(Landroidx/lifecycle/t;Landroidx/lifecycle/j$a;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/activity/ImmLeaksCleaner.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 5062,
+        "identity": "Landroidx/activity/ImmLeaksCleaner;->c(Landroidx/lifecycle/t;Landroidx/lifecycle/j$a;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/activity/ImmLeaksCleaner.java"
+      }
+    },
+    {
+      "identity": "Landroidx/databinding/i;->b()Landroidx/databinding/i;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11694,
+        "identity": "Landroidx/databinding/i;->b()Landroidx/databinding/i;",
+        "category": "ordinary",
+        "access_flags": 131073,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/databinding/i$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11694,
+        "identity": "Landroidx/databinding/i;->b()Landroidx/databinding/i;",
+        "category": "ordinary",
+        "access_flags": 131073,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/databinding/i$type.java"
+      }
+    },
+    {
+      "identity": "Landroidx/databinding/i;->clone()Ljava/lang/Object;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 11696,
+        "identity": "Landroidx/databinding/i;->clone()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "androidx/databinding/i$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 11696,
+        "identity": "Landroidx/databinding/i;->clone()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "androidx/databinding/i$type.java"
+      }
+    },
+    {
+      "identity": "Lbb/a;->a(Landroid/content/Context;)Z",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 22811,
+        "identity": "Lbb/a;->a(Landroid/content/Context;)Z",
+        "category": "ordinary",
+        "access_flags": 131081,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "bb/a$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 22811,
+        "identity": "Lbb/a;->a(Landroid/content/Context;)Z",
+        "category": "ordinary",
+        "access_flags": 131081,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "bb/a$type.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/JsonStreamParser;->b()Lcom/google/gson/JsonElement;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3049,
+        "identity": "Lcom/google/gson/JsonStreamParser;->b()Lcom/google/gson/JsonElement;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/JsonStreamParser.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3049,
+        "identity": "Lcom/google/gson/JsonStreamParser;->b()Lcom/google/gson/JsonElement;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/JsonStreamParser.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/JsonStreamParser;->hasNext()Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3050,
+        "identity": "Lcom/google/gson/JsonStreamParser;->hasNext()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/JsonStreamParser.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3050,
+        "identity": "Lcom/google/gson/JsonStreamParser;->hasNext()Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/JsonStreamParser.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/JsonStreamParser;->next()Ljava/lang/Object;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3051,
+        "identity": "Lcom/google/gson/JsonStreamParser;->next()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/JsonStreamParser.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3051,
+        "identity": "Lcom/google/gson/JsonStreamParser;->next()Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/JsonStreamParser.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3389,
+        "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/bind/DateTypeAdapter.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3389,
+        "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/bind/DateTypeAdapter.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3390,
+        "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/bind/DateTypeAdapter.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3390,
+        "identity": "Lcom/google/gson/internal/bind/DateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/bind/DateTypeAdapter.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3406,
+        "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 2,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3406,
+        "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->e(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 2,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/bind/DefaultDateTypeAdapter.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 3407,
+        "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 3407,
+        "identity": "Lcom/google/gson/internal/bind/DefaultDateTypeAdapter;->f(Lcom/google/gson/stream/JsonReader;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/gson/internal/bind/DefaultDateTypeAdapter.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/LazyFieldLite;->ensureInitialized(Lcom/google/protobuf/MessageLite;)V",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11321,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->ensureInitialized(Lcom/google/protobuf/MessageLite;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11321,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->ensureInitialized(Lcom/google/protobuf/MessageLite;)V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/LazyFieldLite;->equals(Ljava/lang/Object;)Z",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11322,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->equals(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11322,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->equals(Ljava/lang/Object;)Z",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/LazyFieldLite;->getValue(Lcom/google/protobuf/MessageLite;)Lcom/google/protobuf/MessageLite;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 11325,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->getValue(Lcom/google/protobuf/MessageLite;)Lcom/google/protobuf/MessageLite;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 11325,
+        "identity": "Lcom/google/protobuf/LazyFieldLite;->getValue(Lcom/google/protobuf/MessageLite;)Lcom/google/protobuf/MessageLite;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/google/protobuf/LazyFieldLite.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/base/common/SamsungPassApplicationContext;->getApplicationContext()Landroid/content/Context;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 22115,
+        "identity": "Lcom/samsung/android/samsungpass/base/common/SamsungPassApplicationContext;->getApplicationContext()Landroid/content/Context;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/base/common/SamsungPassApplicationContext.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 22115,
+        "identity": "Lcom/samsung/android/samsungpass/base/common/SamsungPassApplicationContext;->getApplicationContext()Landroid/content/Context;",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/base/common/SamsungPassApplicationContext.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/base/common/utils/PackageUtil;->getSamsungPayPackageInfo(Landroid/content/Context;)Landroid/content/pm/PackageInfo;",
+      "before": {
+        "dex": "classes2.dex",
+        "method_index": 23694,
+        "identity": "Lcom/samsung/android/samsungpass/base/common/utils/PackageUtil;->getSamsungPayPackageInfo(Landroid/content/Context;)Landroid/content/pm/PackageInfo;",
+        "category": "ordinary",
+        "access_flags": 131097,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/base/common/utils/PackageUtil.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes2.dex",
+        "method_index": 23694,
+        "identity": "Lcom/samsung/android/samsungpass/base/common/utils/PackageUtil;->getSamsungPayPackageInfo(Landroid/content/Context;)Landroid/content/pm/PackageInfo;",
+        "category": "ordinary",
+        "access_flags": 131097,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/base/common/utils/PackageUtil.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 7669,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 7669,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Void;)Ljava/lang/Boolean;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 7668,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Void;)Ljava/lang/Boolean;",
+        "category": "ordinary",
+        "access_flags": 129,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 7668,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask;->doInBackground([Ljava/lang/Void;)Ljava/lang/Boolean;",
+        "category": "ordinary",
+        "access_flags": 129,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/billing/BillingServiceConnection$WaitingConnectionTask.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLibProvider;->getCryptoLib()Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLib;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 11948,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLibProvider;->getCryptoLib()Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLib;",
+        "category": "ordinary",
+        "access_flags": 131081,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLibProvider.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 11948,
+        "identity": "Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLibProvider;->getCryptoLib()Lcom/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLib;",
+        "category": "ordinary",
+        "access_flags": 131081,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/passservice/mdl/crypto/CryptoLibProvider.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 14298,
+        "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 14298,
+        "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Object;)Ljava/lang/Object;",
+        "category": "ordinary",
+        "access_flags": 4161,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Void;)Ljava/lang/Void;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 14299,
+        "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Void;)Ljava/lang/Void;",
+        "category": "ordinary",
+        "access_flags": 129,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 14299,
+        "identity": "Lcom/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker;->doInBackground([Ljava/lang/Void;)Ljava/lang/Void;",
+        "category": "ordinary",
+        "access_flags": 129,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/plugin/honeyboard/biometrics/AuthenticationDialog$InputMethodPickerChecker.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/websignin/signindb/AutoFillFormProvider;->waitForSamsungPassService()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 26600,
+        "identity": "Lcom/samsung/android/samsungpass/websignin/signindb/AutoFillFormProvider;->waitForSamsungPassService()V",
+        "category": "ordinary",
+        "access_flags": 2,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/samsungpass/websignin/signindb/AutoFillFormProvider.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 26600,
+        "identity": "Lcom/samsung/android/samsungpass/websignin/signindb/AutoFillFormProvider;->waitForSamsungPassService()V",
+        "category": "ordinary",
+        "access_flags": 2,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/samsungpass/websignin/signindb/AutoFillFormProvider.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/scloud/oem/lib/sync/SyncService;->onCreate()V",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 31960,
+        "identity": "Lcom/samsung/android/scloud/oem/lib/sync/SyncService;->onCreate()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/scloud/oem/lib/sync/SyncService.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 31960,
+        "identity": "Lcom/samsung/android/scloud/oem/lib/sync/SyncService;->onCreate()V",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/scloud/oem/lib/sync/SyncService.java"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;->getVibratePattern()[J",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 35358,
+        "identity": "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;->getVibratePattern()[J",
+        "category": "ordinary",
+        "access_flags": 131073,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "com/samsung/android/sdk/smp/common/preference/PrefManager.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 35358,
+        "identity": "Lcom/samsung/android/sdk/smp/common/preference/PrefManager;->getVibratePattern()[J",
+        "category": "ordinary",
+        "access_flags": 131073,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "com/samsung/android/sdk/smp/common/preference/PrefManager.java"
+      }
+    },
+    {
+      "identity": "Ld9/h$b;->O(Lq8/i;Ly8/g;)Ljava/util/Date;",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 37731,
+        "identity": "Ld9/h$b;->O(Lq8/i;Ly8/g;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "d9/h$b.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 37731,
+        "identity": "Ld9/h$b;->O(Lq8/i;Ly8/g;)Ljava/util/Date;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "d9/h$b.java"
+      }
+    },
+    {
+      "identity": "Lla/b0;->a()I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 49189,
+        "identity": "Lla/b0;->a()I",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "la/b0$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 49189,
+        "identity": "Lla/b0;->a()I",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "la/b0$type.java"
+      }
+    },
+    {
+      "identity": "Lla/n;->run()V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 49229,
+        "identity": "Lla/n;->run()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "la/n$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 49229,
+        "identity": "Lla/n;->run()V",
+        "category": "ordinary",
+        "access_flags": 17,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "la/n$type.java"
+      }
+    },
+    {
+      "identity": "Lnet/sf/scuba/smartcards/CardFileInputStream;->read()I",
+      "before": {
+        "dex": "classes4.dex",
+        "method_index": 4914,
+        "identity": "Lnet/sf/scuba/smartcards/CardFileInputStream;->read()I",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "net/sf/scuba/smartcards/CardFileInputStream.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes4.dex",
+        "method_index": 4914,
+        "identity": "Lnet/sf/scuba/smartcards/CardFileInputStream;->read()I",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "net/sf/scuba/smartcards/CardFileInputStream.java"
+      }
+    },
+    {
+      "identity": "Lqa/l0;->a(Landroid/content/Context;)I",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 56183,
+        "identity": "Lqa/l0;->a(Landroid/content/Context;)I",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "qa/l0$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 56183,
+        "identity": "Lqa/l0;->a(Landroid/content/Context;)I",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "qa/l0$type.java"
+      }
+    },
+    {
+      "identity": "Lqa/l0;->b(Landroid/content/Context;)V",
+      "before": {
+        "dex": "classes.dex",
+        "method_index": 56184,
+        "identity": "Lqa/l0;->b(Landroid/content/Context;)V",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "qa/l0$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes.dex",
+        "method_index": 56184,
+        "identity": "Lqa/l0;->b(Landroid/content/Context;)V",
+        "category": "ordinary",
+        "access_flags": 9,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "qa/l0$type.java"
+      }
+    },
+    {
+      "identity": "Lzn/b;->b(Lzn/c;Ljava/lang/String;Ljava/util/Map;)Lzn/d;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 65226,
+        "identity": "Lzn/b;->b(Lzn/c;Ljava/lang/String;Ljava/util/Map;)Lzn/d;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "zn/b$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 65226,
+        "identity": "Lzn/b;->b(Lzn/c;Ljava/lang/String;Ljava/util/Map;)Lzn/d;",
+        "category": "ordinary",
+        "access_flags": 1,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "zn/b$type.java"
+      }
+    },
+    {
+      "identity": "Lzn/b;->c()Ljavax/net/ssl/SSLSocketFactory;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 65227,
+        "identity": "Lzn/b;->c()Ljavax/net/ssl/SSLSocketFactory;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "zn/b$type.java",
+        "reason": "required complete method body unavailable"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 65227,
+        "identity": "Lzn/b;->c()Ljavax/net/ssl/SSLSocketFactory;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "zn/b$type.java"
+      }
+    },
+    {
+      "identity": "Lzn/b;->d()Ljavax/net/ssl/SSLSocketFactory;",
+      "before": {
+        "dex": "classes3.dex",
+        "method_index": 65228,
+        "identity": "Lzn/b;->d()Ljavax/net/ssl/SSLSocketFactory;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "rejected_in_written_unit",
+        "source_unit": "zn/b$type.java",
+        "reason": "backend: Metadata(\"original cleanup rethrow has undeclared checked contract\")"
+      },
+      "after": {
+        "dex": "classes3.dex",
+        "method_index": 65228,
+        "identity": "Lzn/b;->d()Ljavax/net/ssl/SSLSocketFactory;",
+        "category": "ordinary",
+        "access_flags": 131089,
+        "has_code": true,
+        "status": "complete_body",
+        "source_unit": "zn/b$type.java"
+      }
+    }
+  ]
+}

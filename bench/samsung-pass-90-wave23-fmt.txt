@@ -1,0 +1,12 @@
+Diff in /storage_0/decomphify/crates/backend-java/tests/dispatch_production.rs:301:
+     for (bad_type, unbound) in [(true, false), (false, true)] {
+         let (ir, bindings) = fixture(bad_type, unbound);
+         let result = emit(&ir, &bindings);
+[31m-        assert!(matches!(result, SourceResult::Unsupported(_)), "bad_type={bad_type} unbound={unbound}: {result:?}");
+(B[m[32m+        assert!(
+(B[m[32m+            matches!(result, SourceResult::Unsupported(_)),
+(B[m[32m+            "bad_type={bad_type} unbound={unbound}: {result:?}"
+(B[m[32m+        );
+(B[m     }
+ }
+ 

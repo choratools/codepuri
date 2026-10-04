@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-10-03T15:03:57.016550+00:00",
+  "serial": "R3CW704ZNRP",
+  "package": "com.samsung.android.samsungpass",
+  "installed_apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "same_as_test_apk": true,
+  "live_framework_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "same_as_retained_framework": true,
+  "live_build_fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "commands": [
+    "adb -s R3CW704ZNRP shell pm path com.samsung.android.samsungpass",
+    "adb -s R3CW704ZNRP shell getprop ro.build.fingerprint",
+    "adb -s R3CW704ZNRP shell sha256sum <exact base.apk path>",
+    "adb -s R3CW704ZNRP shell sha256sum /system/framework/framework.jar"
+  ],
+  "interpretation": "Exact retained APK is currently installed on this device with retained framework; historical APK build match and application execution not established. Runtime DEX metadata is not javac classpath. Baseline metadata unchanged.",
+  "app_launched": false,
+  "selected_into_baseline": false
+}

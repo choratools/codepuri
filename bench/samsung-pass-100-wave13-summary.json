@@ -1,0 +1,26 @@
+{
+  "denominator": 205497,
+  "code_bearing_definitions": 194286,
+  "strict_code_bearing_accepted": 179925,
+  "strict_code_bearing_percent": 92.60831969364752,
+  "remaining_code_bearing_to_target": 14361,
+  "genuine_bodyless_declarations": 11183,
+  "original_form_accepted": 191108,
+  "original_form_percent": 92.9979513082916,
+  "remaining_original_forms_to_target": 14389,
+  "statuses": {
+    "complete_body": 179580,
+    "rejected_in_written_unit": 11293,
+    "declaration_only": 11183,
+    "rejected_without_written_unit": 3096,
+    "proven_enum_equivalence": 345
+  },
+  "gained": 13,
+  "lost": 3,
+  "source_files": 31234,
+  "javac_diagnostics": 55037,
+  "syntax_exit": 0,
+  "javac_exit": 1,
+  "goal_complete": false,
+  "artifact_root": "/tmp/opencode/samsung-pass-100-wave13"
+}

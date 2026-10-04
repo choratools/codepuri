@@ -1,0 +1,309 @@
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.56s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 1 test
+test java_integration::index_tests::alias_access_tests::aliased_cross_package_protected_super_uses_original_hierarchy ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 135 filtered out; finished in 0.53s
+
+     Running unittests src/main.rs (target/debug/deps/decomp-6e209bef6248e6f2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/checked_exception_evidence.rs (target/debug/deps/checked_exception_evidence-778c6baddeda55db)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/constructor_write_inventory_new.rs (target/debug/deps/constructor_write_inventory_new-7eeb74a116528b37)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/explicit_store_initialization.rs (target/debug/deps/explicit_store_initialization-272ba50805635728)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/explicit_store_inventory_new.rs (target/debug/deps/explicit_store_inventory_new-6523e127aa917df9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/field_write_scope.rs (target/debug/deps/field_write_scope-099090856161ab6c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.00s
+
+     Running tests/java_access_dispatch_new.rs (target/debug/deps/java_access_dispatch_new-9dd40e3aefec4416)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/java_class_kinds.rs (target/debug/deps/java_class_kinds-e6fe610be617e6f8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/java_classpath.rs (target/debug/deps/java_classpath-be49081d6d3bfba0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/java_constructor_source25.rs (target/debug/deps/java_constructor_source25-14de17ed1d6351da)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_constructor_source25_effects_actual.rs (target/debug/deps/java_constructor_source25_effects_actual-6b46fb953cc5c807)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/java_constructor_suffix_actual.rs (target/debug/deps/java_constructor_suffix_actual-752ebebdb4e49308)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/java_declaration_initializers.rs (target/debug/deps/java_declaration_initializers-82e9201f657517aa)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 0.00s
+
+     Running tests/java_descriptors.rs (target/debug/deps/java_descriptors-5d53f9a885ac107d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/java_enum_production_family_new.rs (target/debug/deps/java_enum_production_family_new-890d56d390a4d3d9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/java_enum_reference_payload_new.rs (target/debug/deps/java_enum_reference_payload_new-ff2b81634670b69b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_enum_static_tail_new.rs (target/debug/deps/java_enum_static_tail_new-761392acb788b186)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_external_fields.rs (target/debug/deps/java_external_fields-40737156dcc002e4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/java_field_publication.rs (target/debug/deps/java_field_publication-7f82cff8543d7cb0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/java_hierarchy.rs (target/debug/deps/java_hierarchy-a8c4198640d3290d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/java_incoming_registers.rs (target/debug/deps/java_incoming_registers-208e1bde23cd2543)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/java_initial_parameters.rs (target/debug/deps/java_initial_parameters-8cbb5ccc402feb87)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+     Running tests/java_initial_parameters_index_new.rs (target/debug/deps/java_initial_parameters_index_new-6bae5d1c6bae0f42)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_inner_classes.rs (target/debug/deps/java_inner_classes-ddce6d8ce1b0c569)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/java_integration.rs (target/debug/deps/java_integration-3f92e57267442a67)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/java_member_index_new.rs (target/debug/deps/java_member_index_new-e5fc0d6edefc7e3f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/java_members.rs (target/debug/deps/java_members-e26bdf0c128ef918)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/java_nested_object_arguments_actual.rs (target/debug/deps/java_nested_object_arguments_actual-a5097a4b3a86ad69)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_object_arguments_wave2_actual.rs (target/debug/deps/java_object_arguments_wave2_actual-329e1506f37867c9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/java_object_capture_actual.rs (target/debug/deps/java_object_capture_actual-0094acda30afbb8d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/java_object_code.rs (target/debug/deps/java_object_code-67bcb59fa8aa19af)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/java_required_throws_new.rs (target/debug/deps/java_required_throws_new-5420602527514b3a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 23 filtered out; finished in 0.00s
+
+     Running tests/java_scheduler_facade_new.rs (target/debug/deps/java_scheduler_facade_new-acba69f23fc74958)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/java_scheduler_new.rs (target/debug/deps/java_scheduler_new-b9c44bc2f5efd3f9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/java_session.rs (target/debug/deps/java_session-db814f6c3e10c437)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/java_source_closure_new.rs (target/debug/deps/java_source_closure_new-3dbd553d8ccfb601)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/java_super_resolution.rs (target/debug/deps/java_super_resolution-46ffe0548e7886a4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/java_synchronized_modifiers.rs (target/debug/deps/java_synchronized_modifiers-8088ec9b0a42b4bd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/protected_abstract_list_fields.rs (target/debug/deps/protected_abstract_list_fields-97690d36023534ce)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/samsung_branch_static_body_new.rs (target/debug/deps/samsung_branch_static_body_new-91a8c7c5622b40b7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_constructor_body_subset_new.rs (target/debug/deps/samsung_constructor_body_subset_new-1c228d46f146ee75)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_constructor_evidence_new.rs (target/debug/deps/samsung_constructor_evidence_new-09a43ebac86d0492)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_instance_final_body_subset_new.rs (target/debug/deps/samsung_instance_final_body_subset_new-4ac9b77881899189)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_reachable_constructor_new.rs (target/debug/deps/samsung_reachable_constructor_new-187f88f72064a6a9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_shared_regions.rs (target/debug/deps/samsung_shared_regions-7704767370797633)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_static_body_subset_new.rs (target/debug/deps/samsung_static_body_subset_new-3279856d071eef3c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/samsung_static_final_proofs.rs (target/debug/deps/samsung_static_final_proofs-3608eef667a09c0c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/static_explicit_initialization.rs (target/debug/deps/static_explicit_initialization-c15e38e5e104589a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/wave2_initialization_evidence.rs (target/debug/deps/wave2_initialization_evidence-ca3da0001eee62e2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/write_inventory_metadata.rs (target/debug/deps/write_inventory_metadata-7ce4f3d552efab88)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+

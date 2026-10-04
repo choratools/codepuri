@@ -1,0 +1,25 @@
+{
+  "patch": "/tmp/opencode/wave47-selected-phi-receiver.patch",
+  "sha256": "f4295b50893585752b397f09979b62600f8be64877bcd6cc6fa9168fe5963d27",
+  "state": "integrated_parent_focused_tests_passed_pending_next_full_corpus",
+  "reason_deferred": null,
+  "scope": "constructor requirements field receiver evidence only",
+  "actual_original": "classes.dex#313 La6/f$d; constructor(La6/f$d;Lb0/a;)V",
+  "actual_artifact": "/tmp/opencode/wave47-a6-fd-receiver-after",
+  "actual_completeness": {
+    "complete_body": true,
+    "semantic_complete": true,
+    "dependency_complete": true
+  },
+  "review": "no production must-fix; static review",
+  "worker_tests_passed": 2,
+  "worker_clippy_exit": 0,
+  "whole_unit_compile": "not established",
+  "aggregate_gain": "unverified",
+  "proof_boundary": "only Unknown Phi/Move with full-consumer declaration plan and genuine class reverse mapping; original backend availability/final/init proof remains required",
+  "parent_tests": {
+    "passed": 2,
+    "failed": 0,
+    "log": "/tmp/opencode/wave48-parent-receiver-tests.log"
+  }
+}

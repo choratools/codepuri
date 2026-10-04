@@ -1,0 +1,40 @@
+{
+  "status": "candidate_rejected_no_loss_gate",
+  "goal_complete": false,
+  "accepted_baseline": "wave40",
+  "accepted_executable_percent": 94.88537516856593,
+  "frozen_root": "/tmp/opencode/samsung-pass-100-wave41",
+  "driver_session": 95263,
+  "implemented": [
+    "single-origin cyclic monitor aliases",
+    "child loop exit to active parent header",
+    "capture selected Phi incoming-edge availability"
+  ],
+  "actual_proven_gains_before_whole_corpus": {
+    "x509_constructors": 6,
+    "alert_controller_method": 1
+  },
+  "monitor_actual_next_gate": "throw checked exception is not declared by caller",
+  "fmt_exit_code": 0,
+  "scoped_strict_clippy_exit_code": 0,
+  "release_exit_code": 0,
+  "root_capture_tests": 17,
+  "root_child_exit_tests": 3,
+  "backend_before_latest_two_patches": {
+    "passed": 471,
+    "failed": 0,
+    "ignored": 13
+  },
+  "workspace_test_session": 19189,
+  "source_frozen": false,
+  "driver_exit_code": 1,
+  "workspace_tests": {
+    "passed": 1130,
+    "failed": 0,
+    "ignored": 159,
+    "suites": 190,
+    "exit_code": 0
+  },
+  "gained": 27,
+  "lost": 1
+}

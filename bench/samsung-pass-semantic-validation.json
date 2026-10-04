@@ -1,0 +1,50 @@
+{
+  "command": [
+    "/home/jtjisgod/tools/jdk-17.0.13+11/bin/javac",
+    "-J-Xmx8g",
+    "-proc:none",
+    "-Xmaxerrs",
+    "5000",
+    "-classpath",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar",
+    "-sourcepath",
+    "/tmp/opencode/samsung-pass-validation/empty-sourcepath",
+    "-d",
+    "/tmp/opencode/samsung-pass-validation/semantic-classes",
+    "@/tmp/opencode/samsung-pass-validation/semantic-sources.args"
+  ],
+  "exit_code": 1,
+  "seconds": 26.39291906170547,
+  "input_units": 24750,
+  "excluded_known_invalid_units": [
+    "com/samsung/android/samsungpass/certificate/viewmodel/CertificateViewModel.java",
+    "m0/b0.java"
+  ],
+  "diagnostic_cap": 5000,
+  "cap_reached": true,
+  "observed_categories_not_total_defect_counts": {
+    "package exists in another module: java.xml": 37,
+    "cannot find symbol": 4842,
+    "package yq does not exist": 39,
+    "package um does not exist": 23,
+    "cyclic inheritance involving q0": 1,
+    "cyclic inheritance involving m0": 1,
+    "modifier public not allowed here": 2,
+    "package androidx.window.extensions.area does not exist": 1,
+    "cyclic inheritance involving c": 1,
+    "package org.apache.http does not exist": 1,
+    "package androidx.legacy.content does not exist": 1,
+    "package ae does not exist": 1,
+    "package com.samsung.android.honeyboard.plugins.keyscafe.honeytea.keyinfo does not exist": 1,
+    "package com.samsung.android.samsungpass.intro.state does not exist": 22,
+    "package com.samsung.android.samsungpass.ocr.data does not exist": 3,
+    "package com.samsung.android.fingerprint does not exist": 10,
+    "package com.samsung.android.samsungpass.base.common.activity does not exist": 3,
+    "package com.samsung.android.bio.fingerprint does not exist": 7,
+    "package com.samsung.android.bio.iris does not exist": 1,
+    "package vg does not exist": 2,
+    "package lf does not exist": 1
+  },
+  "compiled_apk": false,
+  "scope": "Partial diagnostic pass; original emitted files unchanged."
+}

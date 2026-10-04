@@ -1,0 +1,14 @@
+    Checking decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+error[E0599]: no method named `source_targets` found for struct `MethodRequirements` in the current scope
+   --> crates/decomp/src/java_source_throws_integration.rs:412:36
+    |
+412 |                 queue.extend(value.source_targets().cloned());
+    |                                    ^^^^^^^^^^^^^^ method not found in `MethodRequirements`
+    |
+   ::: crates/decomp/src/java_required_throws.rs:95:1
+    |
+ 95 | pub struct MethodRequirements {
+    | ----------------------------- method `source_targets` not found for this struct
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `decomp` (lib) due to 1 previous error

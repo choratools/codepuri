@@ -1,0 +1,28 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling decomp v0.1.0 (/storage_0/decomphify/crates/decomp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.89s
+     Running unittests src/lib.rs (target/debug/deps/decomp-686dc49db81aa0cd)
+
+running 18 tests
+test java_integration::index_tests::numeric_instruction_targets_are_exact_and_do_not_alias_dex_pool ... ok
+test java_integration::index_tests::protected_receiver_proof_uses_original_access_and_exact_metadata ... ok
+test java_integration::index_tests::static_positions_match_first_position_and_initializer_boundary ... ok
+test java_integration::index_tests::indexed_annotations_match_raw_duplicates_and_malformed_throws ... ok
+test java_integration::index_tests::facade_native_reference_requires_declaration_not_native_body ... ok
+test java_integration::index_tests::interface_blank_fields_are_unavailable_even_with_implicit_flags ... ok
+test java_integration::index_tests::analyst_field_inventory_does_not_publish_a_winner_for_three_duplicate_declarations ... ok
+test java_integration::index_tests::facade_retains_exact_same_owner_private_static_call ... ok
+test java_integration::index_tests::facade_preserves_same_owner_direct_private_dispatch ... ok
+test java_integration::index_tests::real_facade_small_metadata_preserves_sources_and_counters ... ok
+test java_integration::index_tests::real_facade_checked_throws_boundary_and_same_class_call ... ok
+test java_integration::index_tests::production_protected_field_receiver_uses_global_source_lookup_across_two_parents ... ok
+test java_integration::index_tests::production_crossdex_publication_uses_defining_pool_and_owner_fields ... ok
+test java_integration::index_tests::closure_exhaustive_three_node_graphs_preserve_reasons ... ok
+test java_integration::index_tests::interface_field_usage_is_rejected_and_exact_subset_compiles_java17 ... ok
+test java_integration::index_tests::closure_chain_and_recursive_cycles_match_baseline ... ok
+test java_integration::index_tests::production_inherited_android_field_uses_actual_owner_and_exact_jar ... ok
+test java_integration::index_tests::original_samsung_lost_identity_is_restored has been running for over 60 seconds
+test java_integration::index_tests::original_samsung_lost_identity_is_restored ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 103.88s
+

@@ -1,0 +1,396 @@
+Starting program: /storage_0/decomphify/target/release/examples/java_corpus > bench/samsung-pass-90-wave18-run.txt 2> bench/samsung-pass-90-wave18-program-stderr.txt
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff7bff6c0 (LWP 1478607)]
+[New Thread 0x7ffff79fe6c0 (LWP 1478609)]
+[Thread 0x7ffff79fe6c0 (LWP 1478609) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478610)]
+[Thread 0x7ffff79fe6c0 (LWP 1478610) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478612)]
+[Thread 0x7ffff79fe6c0 (LWP 1478612) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478613)]
+[Thread 0x7ffff79fe6c0 (LWP 1478613) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478672)]
+[Thread 0x7ffff79fe6c0 (LWP 1478672) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478673)]
+[Thread 0x7ffff79fe6c0 (LWP 1478673) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478674)]
+[Thread 0x7ffff79fe6c0 (LWP 1478674) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478675)]
+[Thread 0x7ffff79fe6c0 (LWP 1478675) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478676)]
+[Thread 0x7ffff79fe6c0 (LWP 1478676) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478677)]
+[Thread 0x7ffff79fe6c0 (LWP 1478677) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478686)]
+[Thread 0x7ffff79fe6c0 (LWP 1478686) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478687)]
+[Thread 0x7ffff79fe6c0 (LWP 1478687) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478699)]
+[Thread 0x7ffff79fe6c0 (LWP 1478699) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478700)]
+[Thread 0x7ffff79fe6c0 (LWP 1478700) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478701)]
+[Thread 0x7ffff79fe6c0 (LWP 1478701) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478702)]
+[Thread 0x7ffff79fe6c0 (LWP 1478702) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478714)]
+[Thread 0x7ffff79fe6c0 (LWP 1478714) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478754)]
+[Thread 0x7ffff79fe6c0 (LWP 1478754) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478821)]
+[Thread 0x7ffff79fe6c0 (LWP 1478821) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478865)]
+[Thread 0x7ffff79fe6c0 (LWP 1478865) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1478981)]
+[Thread 0x7ffff79fe6c0 (LWP 1478981) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1479370)]
+[Thread 0x7ffff79fe6c0 (LWP 1479370) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1479788)]
+[Thread 0x7ffff79fe6c0 (LWP 1479788) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1480424)]
+[Thread 0x7ffff79fe6c0 (LWP 1480424) exited]
+[New Thread 0x7ffff79fe6c0 (LWP 1481290)]
+[Thread 0x7ffff79fe6c0 (LWP 1481290) exited]
+
+Thread 1 "java_corpus" received signal SIGINT, Interrupt.
+syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+warning: 38	../sysdeps/unix/sysv/linux/x86_64/syscall.S: No such file or directory
+
+Thread 2 (Thread 0x7ffff7bff6c0 (LWP 1478607) "java_corpus"):
+#0  0x00007ffff7d91133 in __memcmp_avx2_movbe_rtm () at ../sysdeps/x86_64/multiarch/memcmp-avx2-movbe.S:171
+#1  0x000055555570c27c in alloc::collections::btree::search::<impl alloc::collections::btree::node::NodeRef<BorrowType,K,V,alloc::collections::btree::node::marker::LeafOrInternal>>::search_tree ()
+#2  0x00005555556ab1fd in alloc::collections::btree::map::BTreeMap<K,V,A>::insert ()
+#3  0x000055555579e13b in decomp::java_aliases::AliasInventory::add_method ()
+#4  0x00005555557c429d in decomp::java_integration::export_inventory ()
+#5  0x0000555555633eba in decomp::java_integration::emit_inner ()
+#6  0x00005555556496ec in decomp::java_integration::emit ()
+#7  0x000055555566476a in java_corpus::app ()
+(More stack frames follow...)
+
+Thread 1 (Thread 0x7ffff7f7b7c0 (LWP 1478585) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x000055555598c9a6 in <std::thread::thread::Thread>::park ()
+#2  0x0000555555684959 in std::thread::scoped::scope ()
+#3  0x0000555555666f6a in java_corpus::main ()
+#4  0x00005555556750c3 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#5  0x000055555567a629 in std::rt::lang_start::{{closure}} ()
+#6  0x0000555555993c94 in std::rt::lang_start_internal ()
+#7  0x0000555555669e55 in main ()
+Continuing.
+
+Thread 1 "java_corpus" received signal SIGINT, Interrupt.
+syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+38	in ../sysdeps/unix/sysv/linux/x86_64/syscall.S
+[Inferior 1 (process 1478585) killed]
+Argument list to give program being debugged when it is started is "--workers 30 --classpath /home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod --classpath /home/jtjisgod/Android/Sdk/platforms/android-35/android.jar --app tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk".
+Starting program: /storage_0/decomphify/target/release/examples/java_corpus --workers 30 --classpath /home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod --classpath /home/jtjisgod/Android/Sdk/platforms/android-35/android.jar --app tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Thread 1 "java_corpus" received signal SIGINT, Interrupt.
+syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+warning: 38	../sysdeps/unix/sysv/linux/x86_64/syscall.S: No such file or directory
+
+Thread 122 (Thread 0x7ffff56e56c0 (LWP 1526508) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 121 (Thread 0x7ffff58e66c0 (LWP 1526507) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 120 (Thread 0x7ffff5ae76c0 (LWP 1526506) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 119 (Thread 0x7ffff5ce86c0 (LWP 1526505) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 118 (Thread 0x7ffff5ee96c0 (LWP 1526504) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 117 (Thread 0x7ffff60ea6c0 (LWP 1526503) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 116 (Thread 0x7ffff62eb6c0 (LWP 1526502) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 115 (Thread 0x7ffff6c876c0 (LWP 1526501) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 114 (Thread 0x7ffff6e886c0 (LWP 1526500) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 113 (Thread 0x7ffff70896c0 (LWP 1526499) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 112 (Thread 0x7ffff728a6c0 (LWP 1526498) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 111 (Thread 0x7ffff49756c0 (LWP 1526497) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 110 (Thread 0x7ffff47746c0 (LWP 1526496) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 109 (Thread 0x7ffff45736c0 (LWP 1526495) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 108 (Thread 0x7ffff43726c0 (LWP 1526494) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 107 (Thread 0x7fffeffff6c0 (LWP 1526493) "java_corpus"):
+#0  __memcmp_avx2_movbe_rtm () at ../sysdeps/x86_64/multiarch/memcmp-avx2-movbe.S:415
+#1  0x000055555570bd49 in alloc::collections::btree::search::<impl alloc::collections::btree::node::NodeRef<BorrowType,K,V,alloc::collections::btree::node::marker::LeafOrInternal>>::search_tree ()
+#2  0x00005555557e9fd2 in decomp::java_integration::source_throws::source ()
+#3  0x00005555557d348f in <decomp::java_integration::Resolver as backend_java::JavaResolver>::method ()
+#4  0x0000555555733a33 in backend_java::object_plan::arguments::reads ()
+#5  0x00005555557143fa in <core::iter::adapters::flatten::FlatMap<I,U,F> as core::iter::traits::iterator::Iterator>::next ()
+#6  0x00005555557295ef in <alloc::vec::Vec<T> as alloc::vec::spec_from_iter::SpecFromIter<T,I>>::from_iter ()
+#7  0x00005555557594b3 in backend_java::object_plan::<impl backend_java::Emitter<R>>::object_plan ()
+#8  0x000055555575a4ac in backend_java::object_plan::<impl backend_java::Emitter<R>>::planned_object_instruction ()
+#9  0x0000555555762542 in backend_java::Emitter<R>::instruction ()
+#10 0x0000555555790b1b in <backend_java::exception_emitter::ExceptionEmitter<R> as backend_java::exceptions::TypedEmitter>::instruction ()
+#11 0x00005555557f8917 in backend_java::exceptions::render_regions ()
+(More stack frames follow...)
+
+Thread 106 (Thread 0x7fffefdfe6c0 (LWP 1526492) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 105 (Thread 0x7fffefbfd6c0 (LWP 1526491) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 104 (Thread 0x7fffef9fc6c0 (LWP 1526490) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 103 (Thread 0x7fffef7fb6c0 (LWP 1526489) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 102 (Thread 0x7fffef5fa6c0 (LWP 1526488) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 101 (Thread 0x7fffef3f96c0 (LWP 1526487) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 100 (Thread 0x7fffef1f86c0 (LWP 1526486) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 99 (Thread 0x7fffeeff76c0 (LWP 1526485) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 98 (Thread 0x7fffeedf66c0 (LWP 1526484) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 97 (Thread 0x7fffeebf56c0 (LWP 1526483) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 96 (Thread 0x7fffee9f46c0 (LWP 1526482) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 95 (Thread 0x7fffee7f36c0 (LWP 1526481) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 94 (Thread 0x7fffee5f26c0 (LWP 1526480) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 93 (Thread 0x7fffee3f16c0 (LWP 1526479) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00005555559846d5 in <std::sys::sync::condvar::futex::Condvar>::wait ()
+#2  0x0000555555673d95 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#3  0x000055555567e77a in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+#4  0x00005555559993af in <std::sys::thread::unix::Thread>::new::thread_start ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 2 (Thread 0x7ffff7bff6c0 (LWP 1497812) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x000055555598c9a6 in <std::thread::thread::Thread>::park ()
+#2  0x00005555556909b6 in std::sync::mpmc::list::Channel<T>::recv::{{closure}} ()
+#3  0x000055555569046b in std::sync::mpmc::list::Channel<T>::recv ()
+#4  0x000055555567ac9b in std::sync::mpmc::Receiver<T>::recv ()
+#5  0x0000555555684f46 in std::thread::scoped::scope ()
+#6  0x000055555567cd18 in decomp::java_integration::scheduler::run ()
+#7  0x0000555555636554 in decomp::java_integration::emit_inner ()
+#8  0x00005555556496ec in decomp::java_integration::emit ()
+#9  0x000055555566476a in java_corpus::app ()
+#10 0x00005555556748c3 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#11 0x000055555567e991 in core::ops::function::FnOnce::call_once{{vtable.shim}} ()
+(More stack frames follow...)
+
+Thread 1 (Thread 0x7ffff7f7b7c0 (LWP 1497799) "java_corpus"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x000055555598c9a6 in <std::thread::thread::Thread>::park ()
+#2  0x0000555555684959 in std::thread::scoped::scope ()
+#3  0x0000555555666f6a in java_corpus::main ()
+#4  0x00005555556750c3 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#5  0x000055555567a629 in std::rt::lang_start::{{closure}} ()
+#6  0x0000555555993c94 in std::rt::lang_start_internal ()
+#7  0x0000555555669e55 in main ()
+Continuing.
+[Inferior 1 (process 1497799) exited normally]

@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-10-03T16:35:48.974841+00:00",
+  "serial": "R3CW704ZNRP",
+  "package": "com.samsung.android.samsungpass",
+  "installed_apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "same_as_test_apk": true,
+  "live_framework_sha256": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+  "same_as_retained_framework": true,
+  "live_build_fingerprint": "samsung/b5qksx/b5q:16/BP4A.251205.006/F731NKSS6GZI1:user/release-keys",
+  "app_launched": false,
+  "historical_build_match_established": false,
+  "experiment_root": "/tmp/opencode/samsung-pass-100-wave21-runtime",
+  "runtime_dex_is_javac_classpath": false,
+  "baseline_binary": "/tmp/opencode/samsung-pass-100-wave20/java_profile.frozen",
+  "baseline_javac_classpath_changed": false
+}

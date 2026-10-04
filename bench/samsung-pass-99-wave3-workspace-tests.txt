@@ -1,0 +1,39 @@
+
+running 148 tests
+....................................................................................... 87/148
+...................i.........................................
+test result: ok. 147 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 9.87s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+
+running 22 tests
+........ 8/22
+production_shared_tail_compiles_and_preserves_selected_return --- FAILED
+........ 17/22
+production_checked_phi_families_compile_execute_and_reject_mixed_escapes --- FAILED
+....
+failures:
+
+---- production_shared_tail_compiles_and_preserves_selected_return stdout ----
+
+thread 'production_shared_tail_compiles_and_preserves_selected_return' (1562593) panicked at crates/backend-java/tests/branching.rs:358:42:
+called `Result::unwrap()` on an `Err` value: NotPresent
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- production_checked_phi_families_compile_execute_and_reject_mixed_escapes stdout ----
+
+thread 'production_checked_phi_families_compile_execute_and_reject_mixed_escapes' (1562592) panicked at crates/backend-java/tests/branching.rs:274:42:
+called `Result::unwrap()` on an `Err` value: NotPresent
+
+
+failures:
+    production_checked_phi_families_compile_execute_and_reject_mixed_escapes
+    production_shared_tail_compiles_and_preserves_selected_return
+
+test result: FAILED. 20 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+error: test failed, to rerun pass `-p backend-java --test branching`

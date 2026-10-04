@@ -1,0 +1,431 @@
+{
+  "schema": "samsung-pass-closure-root-impact.v2",
+  "baseline": "wave6 cold JavaSession export",
+  "analysis_artifact_wave": "wave7",
+  "ledger": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/method-coverage.jsonl",
+  "ledger_sha256": "800f69b19b5f3e1b103c6a3d2ea2ff9fd6adde9276f520df8af2170e9a824c49",
+  "original_definition_denominator": 205497,
+  "closure_reject_count": 5676,
+  "wave3_closure_reject_count": 6124,
+  "closure_reject_delta_vs_wave3": -448,
+  "recorded_comment_edges": 3680,
+  "recorded_comment_callers": 3497,
+  "graph_edges": 6290,
+  "original_dex_only_edges": 2610,
+  "decoded_current_closure_bodies": 5676,
+  "decoded_union_for_former_root_comparison": 6514,
+  "terminal_rejected_roots": 3038,
+  "scc_count": 5641,
+  "cyclic_scc_count": 46,
+  "largest_scc_size": 9,
+  "closure_victims_reaching_terminal_root": 5676,
+  "unexplained_closure_victims": [],
+  "top5_unique_victim_union": 133,
+  "ranking_truncated_to": 8,
+  "ranking": [
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+      "dex": "classes2.dex",
+      "method_index": 37968,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: Instruction(\"observable or throwing operation before initializer\")",
+      "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+      "direct_closure_victims": 16,
+      "transitive_unique_closure_victims": 45,
+      "downstream_scc_count": 45,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 16,
+        "recorded_unavailable_dependency_comment": 16
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->agreementDataFromSignedView$lambda$2(Lcom/samsung/android/samsungpass/intro/WelcomeFragment;Ljava/lang/Boolean;)Lcq/a1;",
+          "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        },
+        {
+          "caller": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->changePageMode$lambda$0(ZLcom/samsung/android/samsungpass/intro/WelcomeFragment;Lcom/samsung/android/samsungpass/remote/tnc/AgreementData;)Lcq/a1;",
+          "source_unit": "com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/samsung/android/samsungpass/intro/WelcomeFragment.java",
+        "line": 5297,
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/launcher/WalletDeeplinkActivity;->startCertificateSign(Landroid/net/Uri;Landroid/os/Bundle;)V",
+      "dex": "classes2.dex",
+      "method_index": 39995,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "callee exceptions not declared by caller",
+      "source_unit": "com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+      "direct_closure_victims": 1,
+      "transitive_unique_closure_victims": 30,
+      "downstream_scc_count": 28,
+      "downstream_cyclic_scc_count": 1,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 1,
+        "recorded_unavailable_dependency_comment": 1
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/samsung/android/samsungpass/launcher/WalletDeeplinkActivity;->handleHostCertificate(Landroid/net/Uri;ZLandroid/os/Bundle;)V",
+          "source_unit": "com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+        "line": 6430,
+        "reason": "callee exceptions not declared by caller"
+      }
+    },
+    {
+      "identity": "Lcom/google/android/material/tabs/TabLayout;->C0(Lcom/google/android/material/tabs/TabLayout$n;)V",
+      "dex": "classes.dex",
+      "method_index": 33268,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(BlockId(42v1))); forward planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\")\")",
+      "source_unit": "com/google/android/material/tabs/TabLayout.java",
+      "direct_closure_victims": 1,
+      "transitive_unique_closure_victims": 29,
+      "downstream_scc_count": 29,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 1,
+        "recorded_unavailable_dependency_comment": 1
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/google/android/material/tabs/TabLayout;->F0()V",
+          "source_unit": "com/google/android/material/tabs/TabLayout.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/google/android/material/tabs/TabLayout.java",
+        "line": 9619,
+        "reason": "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(BlockId(42v1))); forward planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\")\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/launcher/WalletDeeplinkActivity;->handleHostLaunch(Landroid/net/Uri;ZLandroid/os/Bundle;)V",
+      "dex": "classes2.dex",
+      "method_index": 39939,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "callee exceptions not declared by caller",
+      "source_unit": "com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+      "direct_closure_victims": 1,
+      "transitive_unique_closure_victims": 29,
+      "downstream_scc_count": 27,
+      "downstream_cyclic_scc_count": 1,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 1,
+        "recorded_unavailable_dependency_comment": 1
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/samsung/android/samsungpass/launcher/WalletDeeplinkActivity;->launchPassMenu(Landroid/net/Uri;Landroid/os/Bundle;Ljava/lang/String;Z)V",
+          "source_unit": "com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/samsung/android/samsungpass/launcher/WalletDeeplinkActivity.java",
+        "line": 6416,
+        "reason": "callee exceptions not declared by caller"
+      }
+    },
+    {
+      "identity": "Lda/m0;->e1(Lda/m0$d;Lda/m0$b;)Ljava/lang/Object;",
+      "dex": "classes.dex",
+      "method_index": 38394,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: Type(\"comparison types: Class(\\\"fa.a$type\\\") LessThan Class(\\\"fa.a$type\\\")\")",
+      "source_unit": "da/m0$type.java",
+      "direct_closure_victims": 2,
+      "transitive_unique_closure_victims": 29,
+      "downstream_scc_count": 29,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 2,
+        "recorded_unavailable_dependency_comment": 2
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lda/m0;->N0(Landroid/database/sqlite/SQLiteDatabase;)V",
+          "source_unit": "da/m0$type.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        },
+        {
+          "caller": "Lda/m0;->Q0()Landroid/database/sqlite/SQLiteDatabase;",
+          "source_unit": "da/m0$type.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/da/m0$type.java",
+        "line": 2095,
+        "reason": "backend: Type(\"comparison types: Class(\\\"fa.a$type\\\") LessThan Class(\\\"fa.a$type\\\")\")"
+      }
+    },
+    {
+      "identity": "Landroidx/viewpager/widget/ViewPager;->infoForAnyChild(Landroid/view/View;)Landroidx/viewpager/widget/ViewPager$f;",
+      "dex": "classes.dex",
+      "method_index": 21016,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: Type(\"unresolved or uninitialized type Unknown\")",
+      "source_unit": "androidx/viewpager/widget/ViewPager.java",
+      "direct_closure_victims": 1,
+      "transitive_unique_closure_victims": 24,
+      "downstream_scc_count": 24,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 1,
+        "recorded_unavailable_dependency_comment": 1
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Landroidx/viewpager/widget/ViewPager;->populate(I)V",
+          "source_unit": "androidx/viewpager/widget/ViewPager.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/androidx/viewpager/widget/ViewPager.java",
+        "line": 22322,
+        "reason": "backend: Type(\"unresolved or uninitialized type Unknown\")"
+      }
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/sdk/SamsungPassAuthService;->doSvcAuthOperation(ILcom/samsung/android/pass/IPassListener;Ljava/lang/String;[B)V",
+      "dex": "classes3.dex",
+      "method_index": 20398,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: Instruction(\"allocation control-flow barrier\")",
+      "source_unit": "com/samsung/android/samsungpass/sdk/SamsungPassAuthService.java",
+      "direct_closure_victims": 1,
+      "transitive_unique_closure_victims": 22,
+      "downstream_scc_count": 22,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 1,
+        "recorded_unavailable_dependency_comment": 1
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/samsung/android/samsungpass/sdk/SamsungPassAuthService;->svcAuthOperation(ILjava/lang/Object;Ljava/lang/String;[B)V",
+          "source_unit": "com/samsung/android/samsungpass/sdk/SamsungPassAuthService.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/samsung/android/samsungpass/sdk/SamsungPassAuthService.java",
+        "line": 12074,
+        "reason": "backend: Instruction(\"allocation control-flow barrier\")"
+      }
+    },
+    {
+      "identity": "Lcom/google/protobuf/CodedOutputStream$ArrayEncoder;->writeUInt32NoTag(I)V",
+      "dex": "classes2.dex",
+      "method_index": 5433,
+      "category": "ordinary",
+      "has_code": true,
+      "status": "rejected_in_written_unit",
+      "reason": "backend: Instruction(\"observable or throwing operation before initializer\"); exception dispatch: Instruction(\"observable or throwing operation before initializer\")",
+      "source_unit": "com/google/protobuf/CodedOutputStream$ArrayEncoder.java",
+      "direct_closure_victims": 10,
+      "transitive_unique_closure_victims": 21,
+      "downstream_scc_count": 21,
+      "downstream_cyclic_scc_count": 0,
+      "direct_edge_proof_counts": {
+        "original_dex_same_owner_invoke": 10,
+        "recorded_unavailable_dependency_comment": 10
+      },
+      "direct_edge_examples": [
+        {
+          "caller": "Lcom/google/protobuf/CodedOutputStream$ArrayEncoder;->writeByteArrayNoTag([BII)V",
+          "source_unit": "com/google/protobuf/CodedOutputStream$ArrayEncoder.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        },
+        {
+          "caller": "Lcom/google/protobuf/CodedOutputStream$ArrayEncoder;->writeByteBuffer(ILjava/nio/ByteBuffer;)V",
+          "source_unit": "com/google/protobuf/CodedOutputStream$ArrayEncoder.java",
+          "proof": [
+            "original_dex_same_owner_invoke",
+            "recorded_unavailable_dependency_comment"
+          ]
+        }
+      ],
+      "terminal_rejection_source": {
+        "file": "/tmp/opencode/samsung-pass-cache-wave6/replay/cold/sources/com/google/protobuf/CodedOutputStream$ArrayEncoder.java",
+        "line": 399,
+        "reason": "backend: Instruction(\"observable or throwing operation before initializer\"); exception dispatch: Instruction(\"observable or throwing operation before initializer\")"
+      }
+    }
+  ],
+  "former_wave3_top_roots": [
+    {
+      "identity": "Lcom/samsung/android/samsungpass/intro/WelcomeFragment;->getViewHolder()Lcom/samsung/android/samsungpass/intro/WelcomeFragmentViewHolder;",
+      "dex": "classes2.dex",
+      "method_index": 37968,
+      "wave3_transitive_closure_victims": 51,
+      "current_status": "rejected_in_written_unit",
+      "current_reason": "backend: Instruction(\"observable or throwing operation before initializer\")",
+      "still_terminal_rejected_root": true,
+      "current_transitive_closure_victims": 45,
+      "former_victims_now_accepted": 0,
+      "former_victims_still_closure_rejected": 48,
+      "former_victims_now_other_rejection": 3,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lzn/d;->u()Ljava/net/Proxy;",
+      "dex": "classes3.dex",
+      "method_index": 65305,
+      "wave3_transitive_closure_victims": 35,
+      "current_status": "complete_body",
+      "current_reason": null,
+      "still_terminal_rejected_root": false,
+      "current_transitive_closure_victims": 0,
+      "former_victims_now_accepted": 32,
+      "former_victims_still_closure_rejected": 3,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lts/e;->S(I)Z",
+      "dex": "classes3.dex",
+      "method_index": 61132,
+      "wave3_transitive_closure_victims": 34,
+      "current_status": "complete_body",
+      "current_reason": null,
+      "still_terminal_rejected_root": false,
+      "current_transitive_closure_victims": 0,
+      "former_victims_now_accepted": 34,
+      "former_victims_still_closure_rejected": 0,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/launcher/WalletDeeplinkActivity;->handleDeeplink(Landroid/net/Uri;Landroid/os/Bundle;)V",
+      "dex": "classes2.dex",
+      "method_index": 39936,
+      "wave3_transitive_closure_victims": 32,
+      "current_status": "rejected_in_written_unit",
+      "current_reason": "required complete method body unavailable",
+      "still_terminal_rejected_root": false,
+      "current_transitive_closure_victims": 0,
+      "former_victims_now_accepted": 0,
+      "former_victims_still_closure_rejected": 31,
+      "former_victims_now_other_rejection": 1,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lcom/samsung/android/samsungpass/base/common/logging/dump/EventLogger$Companion;->getInstance()Lcom/samsung/android/samsungpass/base/common/logging/dump/EventLogger;",
+      "dex": "classes2.dex",
+      "method_index": 22708,
+      "wave3_transitive_closure_victims": 30,
+      "current_status": "complete_body",
+      "current_reason": null,
+      "still_terminal_rejected_root": false,
+      "current_transitive_closure_victims": 0,
+      "former_victims_now_accepted": 30,
+      "former_victims_still_closure_rejected": 0,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lorg/jsoup/parser/CharacterReader;->bufferUp()V",
+      "dex": "classes4.dex",
+      "method_index": 31531,
+      "wave3_transitive_closure_victims": 30,
+      "current_status": "complete_body",
+      "current_reason": null,
+      "still_terminal_rejected_root": false,
+      "current_transitive_closure_victims": 0,
+      "former_victims_now_accepted": 30,
+      "former_victims_still_closure_rejected": 0,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lcom/google/android/material/tabs/TabLayout;->C0(Lcom/google/android/material/tabs/TabLayout$n;)V",
+      "dex": "classes.dex",
+      "method_index": 33268,
+      "wave3_transitive_closure_victims": 29,
+      "current_status": "rejected_in_written_unit",
+      "current_reason": "backend: ControlFlow(\"unsupported Java branch plan: InvalidIr(\\\"structured planner: unsupported Java branch plan: InvalidIr(\\\\\\\"strict planner: unsupported Java branch plan: Structure(OverlappingRegion(BlockId(42v1))); forward planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\\\\\"); dispatch planner: unsupported Java branch plan: TypeMismatch(ValueId(97v1))\\\")\")",
+      "still_terminal_rejected_root": true,
+      "current_transitive_closure_victims": 29,
+      "former_victims_now_accepted": 0,
+      "former_victims_still_closure_rejected": 29,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    },
+    {
+      "identity": "Lda/m0;->e1(Lda/m0$d;Lda/m0$b;)Ljava/lang/Object;",
+      "dex": "classes.dex",
+      "method_index": 38394,
+      "wave3_transitive_closure_victims": 29,
+      "current_status": "rejected_in_written_unit",
+      "current_reason": "backend: Type(\"comparison types: Class(\\\"fa.a$type\\\") LessThan Class(\\\"fa.a$type\\\")\")",
+      "still_terminal_rejected_root": true,
+      "current_transitive_closure_victims": 29,
+      "former_victims_now_accepted": 0,
+      "former_victims_still_closure_rejected": 29,
+      "former_victims_now_other_rejection": 0,
+      "attribution_limit": "Observed identity status transition only; multiple dependency roots may overlap."
+    }
+  ],
+  "methodology": "Recorded missing-callee comments seed exact same-owner dependencies. Original DEX invokes fill unrecorded/transitive edges. SCC condensation handles cycles; reverse reachability counts each closure victim once per terminal rejected root. Former-root comparison redecodes only the union of old/current closure bodies and verifies old eight reachability counts. No other APK bodies decoded. No export or production edits.",
+  "limitations": "Transitive counts are reachability bounds, not guaranteed recoveries; root sets overlap and victims may retain other roots, fields, types, or exception blockers. Cross-class dependencies excluded. Current statuses derive only from frozen wave6 ledger, not pending wave7 source. Original DEX method identities, not emitted aliases, define vertices."
+}

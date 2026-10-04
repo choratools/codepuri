@@ -1,0 +1,27 @@
+{
+  "updated_at": "2026-10-04T01:46:34.923257+00:00",
+  "scope": "actual scheduler with actual per-class durations scaled to 1/100; not APK decompilation runtime",
+  "trace": "/tmp/opencode/samsung-pass-100-wave33/java25/classes.tsv",
+  "task_count": 34579,
+  "workers": 30,
+  "legacy_window": 240,
+  "candidate_window": 960,
+  "legacy_scaled_wall_s": 2.901827,
+  "candidate_scaled_wall_s": 1.732266,
+  "legacy_admission_wait_s": 44.344796,
+  "candidate_admission_wait_s": 8.985826,
+  "same_ordered_checksum": "3226095825714375327",
+  "scheduler_tests": {
+    "passed": 4,
+    "failed": 0,
+    "log": "/tmp/opencode/wave34-root-scheduler-tests.log"
+  },
+  "artifact": "/tmp/opencode/wave34-scheduler-replay/results.txt",
+  "actual_full_export_speedup_not_measured": true,
+  "source_size_context_only": {
+    "files": 32417,
+    "total_bytes": 327453586,
+    "largest960_file_bytes": 121429397,
+    "does_not_bound_IR_reports_or_actual_process_memory": true
+  }
+}

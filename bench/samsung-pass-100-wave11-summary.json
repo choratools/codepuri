@@ -1,0 +1,26 @@
+{
+  "original_defined_methods": 205497,
+  "code_bearing_methods": 194286,
+  "explicit_bodies": 179507,
+  "enum_equivalents": 342,
+  "code_accepted": 179849,
+  "code_percent": 92.56920210411455,
+  "retained_bodyless": 11177,
+  "original_forms_accepted": 191026,
+  "original_forms_percent": 92.95804804936326,
+  "remaining_code_to_100": 14437,
+  "remaining_bodyless_to_100": 34,
+  "gained": 1342,
+  "lost": 169,
+  "source_files": 31227,
+  "syntax_exit": 0,
+  "full_javac_exit": 1,
+  "full_javac_diagnostics": 56425,
+  "export_seconds": 332.312127,
+  "peak_rss_kib": 15594284,
+  "swaps": 0,
+  "goal_complete": false,
+  "post_measurement_worktree_changes": [
+    "constructor receiver-identity patch, scoped validation passed; not remeasured"
+  ]
+}

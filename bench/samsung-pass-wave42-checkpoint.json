@@ -1,0 +1,24 @@
+{
+  "status": "candidate_not_accepted_regression_detected",
+  "accepted_baseline": "wave40",
+  "candidate": "wave42",
+  "source_frozen": false,
+  "root": "/tmp/opencode/samsung-pass-100-wave42",
+  "driver_session": 21227,
+  "workspace_session": 30509,
+  "focused_source_scope_tests": {
+    "passed": 4,
+    "failed": 0
+  },
+  "eccurve_20966_original_body_restored": true,
+  "goal_complete": false,
+  "updated_at": "2026-10-04T06:30:14.867130+00:00",
+  "candidate_gained": 104,
+  "candidate_lost": [
+    "Lcom/samsung/android/sdk/mobileservice/social/share/ShareApiImpl;->requestShare(Ljava/lang/String;Ljava/util/List;Lcom/samsung/android/sdk/mobileservice/social/share/ShareApi$ShareResultCallback;Landroid/app/PendingIntent;Landroid/os/Bundle;)Lcom/samsung/android/sdk/mobileservice/social/share/ShareController;"
+  ],
+  "candidate_code_bearing_accepted": 184452,
+  "driver_terminal": 1,
+  "workspace_terminal": 0,
+  "workspace_passed": 1138
+}

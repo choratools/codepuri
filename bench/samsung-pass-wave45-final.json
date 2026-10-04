@@ -1,0 +1,26 @@
+{
+  "goal_complete": false,
+  "accepted_baseline": "wave43",
+  "candidate": "wave45 rejected",
+  "code_bearing_accepted": 185101,
+  "code_bearing_percent": 95.27243342289202,
+  "gained": 541,
+  "lost": [
+    "Landroidx/compose/ui/platform/AndroidComposeView;->findViewByAccessibilityIdTraversal(I)Landroid/view/View;",
+    "Landroidx/fragment/app/x;->b(Landroid/content/Context;Landroidx/fragment/app/Fragment;ZZ)Landroidx/fragment/app/x$a;",
+    "Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPresenter;->getXmlData(Ljava/lang/String;I)V",
+    "Lcom/samsung/android/samsungpass/websignin/ui/manage/ManageAddressSearchPresenter;->start(Ljava/lang/String;I)V",
+    "Llh/b;->readObject()Ljava/lang/Object;"
+  ],
+  "syntax_exit": 0,
+  "full_javac_exit": 1,
+  "diagnostic_count": 49972,
+  "export_exit": 0,
+  "driver_exit": 1,
+  "source_hashes_unchanged": true,
+  "no_loss43_exit": 1,
+  "no_loss26_exit": 1,
+  "wall_seconds": 416.63,
+  "max_rss_kib": 29469876,
+  "compiled_apk": false
+}
