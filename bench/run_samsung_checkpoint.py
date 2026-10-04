@@ -18,6 +18,13 @@ def sha(path):
     return result.hexdigest()
 
 
+def rust_inputs(repo):
+    """Include additions/deletions as well as edits in the frozen source set."""
+    sources = sorted([*repo.glob("crates/**/*.rs"), *repo.glob("crates/**/Cargo.toml"),
+                      repo / "Cargo.toml", repo / "Cargo.lock"])
+    return {str(path.relative_to(repo)): sha(path) for path in sources}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path, help="New artifact directory")
@@ -42,7 +49,10 @@ def main():
 
     try:
         run("restore-inputs", [sys.executable, str(repo / "bench/restore_samsung_validation.py"), "--receipt", str(root / "inputs.json")])
+        build_source_hashes = rust_inputs(repo)
         run("release-build", ["cargo", "build", "--release", "-p", "decomp", "--example", "java_profile"])
+        if rust_inputs(repo) != build_source_hashes:
+            raise ValueError("Source set changed during release build")
         binary = root / "java_profile.frozen"
         shutil.copy2(repo / "target/release/examples/java_profile", binary)
         inputs = json.loads((root / "inputs.json").read_text())
@@ -53,9 +63,9 @@ def main():
               Path("/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar"),
               Path("/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod"),
               Path("/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod")]
-        sources = sorted([*repo.glob("crates/**/*.rs"), *repo.glob("crates/**/Cargo.toml"), repo / "Cargo.toml", repo / "Cargo.lock"])
-        source_hashes = {str(path.relative_to(repo)): sha(path) for path in sources}
-        for path in sources:
+        source_hashes = build_source_hashes
+        for name in source_hashes:
+            path = repo / name
             destination = root / "source-snapshot" / path.relative_to(repo)
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(path, destination)
@@ -73,7 +83,9 @@ def main():
         for path in cp:
             command.extend(["--classpath", str(path)])
         run("export", command)
-        changed = [name for name, digest in source_hashes.items() if not (repo / name).exists() or sha(repo / name) != digest]
+        current_sources = rust_inputs(repo)
+        changed = sorted(name for name in source_hashes.keys() | current_sources.keys()
+                         if source_hashes.get(name) != current_sources.get(name))
         if changed or any(sha(Path(name)) != digest for name, digest in hashes.items()):
             raise ValueError(f"Frozen experiment inputs changed: {changed}")
         for line in (root / "export.log").open():
