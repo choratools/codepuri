@@ -20,5 +20,18 @@
     "coverage.json": "0c54c027052fd52c44ffc102e72820e913fc9054a8c639b832ead7370ffcc811",
     "terminal.json": "68efbfbac46838e5b5b97617b93465f33f238522bdabad36f803614c039d805d",
     "validation25/validation.json": "999f4411d506c6809db1972d8b0395f517b5f260b1479a99f90ccecfbe2e73ec"
+  },
+  "newly_verified_limits": {
+    "enum_blocked_owners": 390,
+    "enum_owners_with_public_constructors": 356,
+    "enum_owners_all_private_constructors": 34,
+    "enum_census_source": "isolated enum_remaining_recovery original DEX census; detailed constructor evidence pending integration",
+    "alias_actual_k0_descendants": [
+      "Lds/f;",
+      "Lds/d;",
+      "Lht/n0;"
+    ],
+    "alias_actual_descendant_broad_slot_override_found": false,
+    "alias_open_world_counterexample": "Legal broad-only subclass override loses effects after alias reassignment; JDK17 -Xverify:all differential confirmed."
   }
 }
