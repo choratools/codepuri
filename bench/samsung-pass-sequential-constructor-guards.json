@@ -14,23 +14,41 @@
   "artifacts": [
     {
       "path": "/tmp/opencode/constructor-guards-before-report.txt",
-      "sha256": "03bd64e9f4847046f0710c756dfa9cb26561227312f8e40ed150653c810241cb"
+      "sha256": "03bd64e9f4847046f0710c756dfa9cb26561227312f8e40ed150653c810241cb",
+      "preserved_path": "bench/local-artifacts/sequential-constructor-guards/constructor-guards-before-report.txt"
     },
     {
       "path": "/tmp/opencode/constructor-guards-after-report.txt",
-      "sha256": "b6705f2da8a1486f0fee4b09faf95ca75430bcc0fa395ae759b49b2514fb1fc3"
+      "sha256": "b6705f2da8a1486f0fee4b09faf95ca75430bcc0fa395ae759b49b2514fb1fc3",
+      "preserved_path": "bench/local-artifacts/sequential-constructor-guards/constructor-guards-after-report.txt"
     },
     {
       "path": "/tmp/opencode/constructor-guards-tests.txt",
-      "sha256": "cc5cc16d2ad15afdf6fa5667d3882148db2952cb6f324c5fcf6836a6db4c5518"
+      "sha256": "cc5cc16d2ad15afdf6fa5667d3882148db2952cb6f324c5fcf6836a6db4c5518",
+      "preserved_path": "bench/local-artifacts/sequential-constructor-guards/constructor-guards-tests.txt"
     },
     {
       "path": "/tmp/opencode/constructor-guards-regression.txt",
-      "sha256": "61506a44e1c3a8fb4437beb6bb36e8216013f7664a45a257ba3e14a77ede2103"
+      "sha256": "61506a44e1c3a8fb4437beb6bb36e8216013f7664a45a257ba3e14a77ede2103",
+      "preserved_path": "bench/local-artifacts/sequential-constructor-guards/constructor-guards-regression.txt"
     },
     {
       "path": "/tmp/opencode/constructor-guards-original-after/kt/c2$type.java",
-      "sha256": "1cd314501343e3965c03e6c803ec6c460e27065dc3e4c18d323938a65ca8a25b"
+      "sha256": "1cd314501343e3965c03e6c803ec6c460e27065dc3e4c18d323938a65ca8a25b",
+      "preserved_path": "bench/local-artifacts/sequential-constructor-guards/c2$type.java"
     }
-  ]
+  ],
+  "root_focused_tests": {
+    "passed": 2,
+    "failed": 0
+  },
+  "root_backend_clippy_exit": 0,
+  "root_fmt_exit": 0,
+  "root_constructor_regression": {
+    "passed": 35,
+    "failed": 0,
+    "ignored": 1,
+    "log": "bench/local-artifacts/constructor-guards-root-regression.log",
+    "sha256": "09106e5d3ce9a09cc761a8d6f7ca3719febaf66b5d512a0a96bdab4eb8a48e8c"
+  }
 }
