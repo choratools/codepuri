@@ -1,6 +1,8 @@
 //! Explicit constructor lowering and atomic, metadata-proven family planning.
 use super::*;
 use decomp_core::ids::BlockId;
+#[path = "constructor_arguments_guards.rs"]
+mod argument_guards;
 #[path = "constructor_arguments.rs"]
 mod arguments;
 #[path = "constructor_exception_suffix.rs"]
@@ -1268,6 +1270,12 @@ pub fn plan_constructor_declaration<R: ConstructorResolver>(
                 if original_order_prelude
                     && let Some(next) =
                         emit_abrupt_pre_init_branch(&mut e, m, block, &aliases, &mut seen)?
+                {
+                    block = next;
+                    has_prelude = true;
+                } else if original_order_prelude
+                    && let Some(next) =
+                        argument_guards::emit(&mut e, m, block, &aliases, &mut seen)?
                 {
                     block = next;
                     has_prelude = true;
@@ -2764,3 +2772,7 @@ mod contextual_prefix_tests;
 #[cfg(test)]
 #[path = "constructor_fcm_receiver_prefix_tests.rs"]
 mod fcm_receiver_prefix_tests;
+
+#[cfg(test)]
+#[path = "constructor_arguments_guards_tests.rs"]
+mod arguments_guards_tests;

@@ -1,0 +1,36 @@
+{
+  "original_owner": "Lkt/c2;",
+  "original_constructor_indices": [
+    52061,
+    52062
+  ],
+  "focused_export_before_complete_constructors": 0,
+  "focused_export_after_complete_constructors": 2,
+  "whole_apk_measurement": false,
+  "whole_original_unit_dependency_compile_verified": false,
+  "fixture_scope": "isolated equivalent constructor signatures; raw JVM versus Java25 generated source; 24 executions",
+  "root_original_unit_syntax_errors": 0,
+  "goal_complete": false,
+  "artifacts": [
+    {
+      "path": "/tmp/opencode/constructor-guards-before-report.txt",
+      "sha256": "03bd64e9f4847046f0710c756dfa9cb26561227312f8e40ed150653c810241cb"
+    },
+    {
+      "path": "/tmp/opencode/constructor-guards-after-report.txt",
+      "sha256": "b6705f2da8a1486f0fee4b09faf95ca75430bcc0fa395ae759b49b2514fb1fc3"
+    },
+    {
+      "path": "/tmp/opencode/constructor-guards-tests.txt",
+      "sha256": "cc5cc16d2ad15afdf6fa5667d3882148db2952cb6f324c5fcf6836a6db4c5518"
+    },
+    {
+      "path": "/tmp/opencode/constructor-guards-regression.txt",
+      "sha256": "61506a44e1c3a8fb4437beb6bb36e8216013f7664a45a257ba3e14a77ede2103"
+    },
+    {
+      "path": "/tmp/opencode/constructor-guards-original-after/kt/c2$type.java",
+      "sha256": "1cd314501343e3965c03e6c803ec6c460e27065dc3e4c18d323938a65ca8a25b"
+    }
+  ]
+}
