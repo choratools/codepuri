@@ -36,3 +36,13 @@ The current pre-commit quality-gate summary is saved separately in
 `bench/git-checkpoint-validation.json`. Full APK recovery, source compilation,
 native-library recovery, resources, and Android execution equivalence remain
 unproven.
+
+## Rebuild the current full evidence
+
+Run `python3 bench/run_samsung_checkpoint.py bench/local-artifacts/NEW-RUN`.
+The directory must not exist. The runner freezes the compiled release binary,
+Rust sources and input hashes, then collects all-method coverage, unchanged
+source syntax checks and uncapped compiler diagnostics. With no previous ledger,
+identity gains/losses remain unknown; this is never a zero-regression claim.
+Use `--baseline PREVIOUS-RUN/java25` only when that exact ledger is available.
+Collector exit zero is not a successful APK compile or a 100% goal verdict.

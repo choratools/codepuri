@@ -11,7 +11,8 @@ import sys
 import time
 
 parser_args = argparse.ArgumentParser()
-parser_args.add_argument('before', type=pathlib.Path)
+parser_args.add_argument('before', type=pathlib.Path, nargs='?',
+                         help='Optional previous export; omit when its identity ledger is unavailable')
 parser_args.add_argument('after', type=pathlib.Path)
 parser_args.add_argument('out', type=pathlib.Path)
 parser_args.add_argument('--jdk-home', type=pathlib.Path,
@@ -24,16 +25,20 @@ jdk = options.jdk_home/'bin'
 android = '/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar'
 def identities(root):
     return {r['identity']: r for r in map(json.loads, (root/'method-coverage.jsonl').read_text().splitlines())}
-a, b = identities(before), identities(after)
-assert a.keys() == b.keys()
+a = identities(before) if before is not None else None
+b = identities(after)
 accepted = {'complete_body', 'proven_enum_equivalence'}
-# Preserve exact statuses rather than assuming coverage schema names.
 statuses = collections.Counter(r['status'] for r in b.values())
-transitions = collections.Counter((a[k]['status'], b[k]['status']) for k in a)
-changed = [{'identity': k, 'before': a[k], 'after': b[k]} for k in sorted(a) if a[k]['status'] != b[k]['status']]
-gained = [k for k in sorted(a) if a[k]['status'] not in accepted and b[k]['status'] in accepted]
-lost = [k for k in sorted(a) if a[k]['status'] in accepted and b[k]['status'] not in accepted]
-(out/'identity-delta.json').write_text(json.dumps({'transitions': {f'{x} -> {y}': n for (x,y),n in transitions.items()}, 'changed': changed}, indent=2)+'\n')
+gained = lost = None
+identity_delta = None
+if a is not None:
+    assert a.keys() == b.keys()
+    transitions = collections.Counter((a[k]['status'], b[k]['status']) for k in a)
+    changed = [{'identity': k, 'before': a[k], 'after': b[k]} for k in sorted(a) if a[k]['status'] != b[k]['status']]
+    gained = [k for k in sorted(a) if a[k]['status'] not in accepted and b[k]['status'] in accepted]
+    lost = [k for k in sorted(a) if a[k]['status'] in accepted and b[k]['status'] not in accepted]
+    identity_delta = out/'identity-delta.json'
+    identity_delta.write_text(json.dumps({'transitions': {f'{x} -> {y}': n for (x,y),n in transitions.items()}, 'changed': changed}, indent=2)+'\n')
 sources = after/'sources'
 paths = sorted(sources.rglob('*.java'))
 hashes = {str(p.relative_to(sources)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
@@ -72,6 +77,6 @@ for relative in ['com/samsung/android/samsungpass/passservice/bi/BiInfoColumns.j
     item['source_path'] = str(path)
     item['sha256'] = hashes[str(path.relative_to(sources))]
     representatives.append(item)
-result = {'source_root': str(sources), 'input_units': len(paths), 'identity_status_counts': statuses, 'identity_delta': str(out/'identity-delta.json'), 'gained_bodies': len(gained), 'lost_bodies': len(lost), 'syntax_gate': parser, 'full_compile': full, 'diagnostics': diagnostics, 'diagnostic_count': sum(diagnostics.values()), 'diagnostic_cap': 2147483647, 'diagnostic_cap_reached': sum(diagnostics.values()) >= 2147483647, 'source_hashes_unchanged': True, 'representatives': representatives, 'compiled_apk': False}
+result = {'source_root': str(sources), 'input_units': len(paths), 'identity_status_counts': statuses, 'baseline_available': a is not None, 'identity_delta': str(identity_delta) if identity_delta else None, 'gained_bodies': len(gained) if gained is not None else None, 'lost_bodies': len(lost) if lost is not None else None, 'syntax_gate': parser, 'full_compile': full, 'diagnostics': diagnostics, 'diagnostic_count': sum(diagnostics.values()), 'diagnostic_cap': 2147483647, 'diagnostic_cap_reached': sum(diagnostics.values()) >= 2147483647, 'source_hashes_unchanged': True, 'representatives': representatives, 'compiled_apk': False}
 (out/'validation.json').write_text(json.dumps(result, indent=2)+'\n')
 print(json.dumps({k:v for k,v in result.items() if k != 'diagnostics'}, indent=2))
