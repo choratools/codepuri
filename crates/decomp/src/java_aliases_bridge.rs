@@ -157,6 +157,18 @@ pub(super) fn align_obligations(
             continue;
         }
         let selected = candidates[0];
+        // A nonfinal owner permits descendants to override the broad JVM
+        // descriptor alone. Renaming that bridge and emitting a compiler bridge
+        // routes broad calls through the narrow slot, bypassing such overrides.
+        // Input-only absence of descendants cannot exclude external subclasses.
+        // Private delegates have no inherited virtual slot and remain eligible.
+        if input.owners[owner].1.access_flags & 0x10 == 0
+            && family
+                .iter()
+                .any(|k| k != selected && input.methods[k].1.access_flags & 2 == 0)
+        {
+            continue;
+        }
         // Every nonprivate alternative can affect JVM descriptor dispatch,
         // even if it did not receive the base alias. Require the same pure
         // forwarding witness before a compiler may synthesize broad bridges.
@@ -862,13 +874,42 @@ mod obligation_tests {
             aliases.method_name(&private).unwrap(),
             &MethodAlias::Ordinary("getAuthService".into())
         );
+        // Actual qr/k0 is open: no input descendant inventory can rule out
+        // legal external broad-only overrides. Its family stays unchanged.
+        assert_eq!(input.owners[&real.owner].1.access_flags & 0x10, 0);
+        assert_eq!(aliases.method_name(&real), original.method_name(&real));
+        assert_eq!(aliases.method_name(&bridge), original.method_name(&bridge));
+        assert!(
+            !report
+                .changes
+                .iter()
+                .any(|(k, _, _)| k == &real || k == &bridge)
+        );
+        // Flag mutation fixture proves the final-owner boundary separately;
+        // the genuine APK bridge bytes and all ancestor metadata remain intact.
+        let mut final_files = files.clone();
+        for dex in &mut final_files {
+            let indices: BTreeSet<_> = dex
+                .classes
+                .iter()
+                .filter(|c| ty(dex, c.class_idx).as_deref() == Some(&real.owner))
+                .map(|c| c.class_idx)
+                .collect();
+            for class in &mut dex.classes {
+                if indices.contains(&class.class_idx) {
+                    class.access_flags |= 0x10;
+                }
+            }
+        }
+        let mut final_aliases = original.clone();
+        final_aliases.align_override_obligations(&final_files, &cp, &hierarchy);
         assert_eq!(
-            aliases.method_name(&real).unwrap(),
-            &MethodAlias::Ordinary("c".into())
+            final_aliases.method_name(&real),
+            Some(&MethodAlias::Ordinary("c".into()))
         );
         assert_ne!(
-            aliases.method_name(&bridge).unwrap(),
-            &MethodAlias::Ordinary("c".into())
+            final_aliases.method_name(&bridge),
+            Some(&MethodAlias::Ordinary("c".into()))
         );
         assert!(report.changes.iter().any(|(k, _, _)| k == &public));
         assert!(
@@ -883,7 +924,7 @@ mod obligation_tests {
         assert_eq!(unknown.method_name(&public), original.method_name(&public));
         // An altered invocation opcode cannot attest the unchanged virtual
         // dispatch; bridge flags alone never authorize source reassignment.
-        let mut effectful = files.clone();
+        let mut effectful = final_files.clone();
         for dex in &mut effectful {
             let indices: BTreeSet<_> = (0..dex.method_ids.len())
                 .filter(|i| key(dex, *i as u32).as_ref() == Some(&bridge))
@@ -907,7 +948,7 @@ mod obligation_tests {
         altered.align_override_obligations(&effectful, &cp, &hierarchy);
         assert_eq!(altered.method_name(&real), original.method_name(&real));
         // A second genuine invocation can repeat target side effects and rejects.
-        let mut extra = files.clone();
+        let mut extra = final_files.clone();
         for dex in &mut extra {
             let indices: BTreeSet<_> = (0..dex.method_ids.len())
                 .filter(|i| key(dex, *i as u32).as_ref() == Some(&bridge))
@@ -955,7 +996,7 @@ mod obligation_tests {
   if(!"child:x".equals(n.c("x")) || !n.c("x").equals(w.c("x")) || !n.c("x").equals(b.{displaced}("x"))) throw new AssertionError();
  }}
 }}"#,
-            displaced = match aliases.method_name(&bridge).unwrap() {
+            displaced = match final_aliases.method_name(&bridge).unwrap() {
                 MethodAlias::Ordinary(n) => n,
                 _ => panic!(),
             }
@@ -1007,5 +1048,104 @@ mod obligation_tests {
         let mut rejected = original.clone();
         rejected.align_override_obligations(&ambiguous, &cp, &hierarchy);
         assert_eq!(rejected.method_name(&public), original.method_name(&public));
+    }
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod descendant_inventory_review {
+    use super::*;
+    use std::io::Read;
+    #[test]
+    #[ignore = "requires genuine local JDK17 and Python3"]
+    fn broad_only_descendant_dispatch_requires_final_owner() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let result = std::process::Command::new("python3")
+            .arg(root.join("bench/alias-descendant-dispatch-witness.py"))
+            .output()
+            .unwrap();
+        assert!(
+            result.status.success(),
+            "{}",
+            String::from_utf8_lossy(&result.stderr)
+        );
+        let stdout = String::from_utf8(result.stdout).unwrap();
+        assert!(
+            stdout.contains("\"dispatch_preserved\": false"),
+            "{}",
+            stdout
+        );
+        println!("{}", stdout.trim());
+    }
+    #[test]
+    #[ignore = "read-only genuine Samsung APK descendant inventory"]
+    fn actual_samsung_k0_descendant_slots() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let apk = std::fs::File::open(
+            root.join("tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk"),
+        )
+        .unwrap();
+        let mut archive = zip::ZipArchive::new(apk).unwrap();
+        let mut files = Vec::new();
+        for i in 0..archive.len() {
+            let mut entry = archive.by_index(i).unwrap();
+            if entry.name().ends_with(".dex") {
+                let mut bytes = Vec::new();
+                entry.read_to_end(&mut bytes).unwrap();
+                files.push(DexFile::from_bytes(&bytes).unwrap());
+            }
+        }
+        let input = Input::collect(&files).unwrap();
+        let owner = "Lqr/k0;";
+        println!(
+            "OWNER {} flags={:#x}",
+            owner, input.owners[owner].1.access_flags
+        );
+        let mut children = BTreeMap::<String, Vec<String>>::new();
+        for (name, (dex, class)) in &input.owners {
+            if class.superclass_idx != u32::MAX {
+                children
+                    .entry(ty(dex, class.superclass_idx).unwrap())
+                    .or_default()
+                    .push(name.clone());
+            }
+        }
+        let mut pending = children.get(owner).cloned().unwrap_or_default();
+        let mut descendants = BTreeSet::new();
+        while let Some(child) = pending.pop() {
+            if !descendants.insert(child.clone()) {
+                continue;
+            }
+            pending.extend(children.get(&child).cloned().unwrap_or_default());
+        }
+        assert_eq!(
+            descendants,
+            BTreeSet::from(["Lds/d;".into(), "Lds/f;".into(), "Lht/n0;".into()])
+        );
+        assert_eq!(input.owners[owner].1.access_flags, 1);
+        assert!(!input.methods.keys().any(|k| descendants.contains(&k.owner)
+            && k.name == "c"
+            && k.parameters == ["Lkt/f2;"]));
+        println!("DESCENDANTS count={}", descendants.len());
+        for child in &descendants {
+            let (dex, class) = input.owners[child];
+            println!(
+                "DESCENDANT {} parent={} flags={:#x}",
+                child,
+                ty(dex, class.superclass_idx).unwrap(),
+                class.access_flags
+            );
+        }
+        for (k, (_, m)) in &input.methods {
+            if (k.owner == owner || descendants.contains(&k.owner))
+                && k.name == "c"
+                && k.parameters == ["Lkt/f2;"]
+            {
+                println!(
+                    "SLOT {}->{}({:?}){} flags={:#x}",
+                    k.owner, k.name, k.parameters, k.return_type, m.access_flags
+                );
+            }
+        }
     }
 }
