@@ -1,0 +1,24 @@
+{
+  "artifact_root": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-post-checkpoint-20261005",
+  "collector_finished": true,
+  "accepted_semantic_baseline": false,
+  "acceptance_blocker": "Alias reassignment of nonfinal broad bridge can bypass broad-only descendant overrides; exact JVM differential witness confirmed; repair pending.",
+  "baseline_available": false,
+  "identity_delta": null,
+  "executable_definitions": 194286,
+  "accepted_body_or_enum_candidates": 187169,
+  "candidate_percent": 96.3368436222888,
+  "remaining_executable_candidates": 7117,
+  "source_units": 32556,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "compiler_diagnostic_total": 44745,
+  "export_wall_seconds": 429.22,
+  "export_peak_rss_kib": 34972552,
+  "goal_complete": false,
+  "receipt_hashes": {
+    "coverage.json": "0c54c027052fd52c44ffc102e72820e913fc9054a8c639b832ead7370ffcc811",
+    "terminal.json": "68efbfbac46838e5b5b97617b93465f33f238522bdabad36f803614c039d805d",
+    "validation25/validation.json": "999f4411d506c6809db1972d8b0395f517b5f260b1479a99f90ccecfbe2e73ec"
+  }
+}
