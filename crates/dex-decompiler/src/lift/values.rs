@@ -31,6 +31,7 @@ const PLACEHOLDER: ManagedInsn = ManagedInsn::Opaque {
 
 /// Arenas plus the register-file view used while walking one method.
 pub(crate) struct ValueTable {
+    initial_types: HashMap<(u16, bool), ManagedType>,
     pub(crate) insns: InsnArena,
     pub(crate) values: ValueArena,
     pub(crate) reg_slots: RegisterSlotArena,
@@ -46,8 +47,9 @@ pub(crate) struct ValueTable {
 }
 
 impl ValueTable {
-    pub(crate) fn new() -> Self {
+    pub(crate) fn new(initial_types: HashMap<(u16, bool), ManagedType>) -> Self {
         Self {
+            initial_types,
             insns: InsnArena::with_key(),
             values: ValueArena::with_key(),
             reg_slots: RegisterSlotArena::with_key(),
@@ -157,7 +159,12 @@ impl ValueTable {
         if let Some(value) = self.by_width.get(&(reg, width)) {
             return *value;
         }
-        let value = self.synthetic_def(ManagedType::Unknown, |value| ManagedInsn::Opaque {
+        let initial_type = self
+            .initial_types
+            .get(&(reg, wide))
+            .cloned()
+            .unwrap_or(ManagedType::Unknown);
+        let value = self.synthetic_def(initial_type, |value| ManagedInsn::Opaque {
             family_tag: TAG_INITIAL,
             reads: Vec::new(),
             writes: vec![value],

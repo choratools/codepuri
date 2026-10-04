@@ -142,6 +142,7 @@ pub(crate) fn is_hard_terminator(insn: &ManagedInsn) -> bool {
         | ManagedInsn::Phi { .. }
         | ManagedInsn::Arithmetic { .. }
         | ManagedInsn::Compare { .. }
+        | ManagedInsn::OrderingCompare { .. }
         | ManagedInsn::Neg { .. }
         | ManagedInsn::Not { .. }
         | ManagedInsn::FieldGet { .. }
@@ -151,6 +152,7 @@ pub(crate) fn is_hard_terminator(insn: &ManagedInsn) -> bool {
         | ManagedInsn::ArrayLength { .. }
         | ManagedInsn::NewInstance { .. }
         | ManagedInsn::NewArray { .. }
+        | ManagedInsn::NewFilledArray { .. }
         | ManagedInsn::FillArray { .. }
         | ManagedInsn::Invoke { .. }
         | ManagedInsn::Cast { .. }

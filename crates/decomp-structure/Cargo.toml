@@ -1,0 +1,13 @@
+[package]
+name = "decomp-structure"
+description = "Language-independent control-flow region discovery"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+decomp-core = { path = "../decomp-core" }
+
+[lints]
+workspace = true

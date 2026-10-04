@@ -41,7 +41,17 @@ pub(crate) fn lift_stream(
             )
         })
         .collect();
-    let mut values = ValueTable::new();
+    let mut initial_types = HashMap::new();
+    if let Some(start) = code.registers_size.checked_sub(code.ins_size) {
+        for register in start..code.registers_size {
+            for wide in [false, true] {
+                if let Some(ty) = ctx.initial_register_type(register, wide) {
+                    initial_types.insert((register, wide), ty);
+                }
+            }
+        }
+    }
+    let mut values = ValueTable::new(initial_types);
     let mut handler_values: HashMap<u32, ValueId> = HashMap::new();
     let mut lifted: Vec<LiftedInsn> = Vec::new();
     let stream = &recovered.insns;
@@ -54,6 +64,34 @@ pub(crate) fn lift_stream(
         };
         if info.opcode == 0x00 {
             continue;
+        }
+        if matches!(info.opcode, 0x24 | 0x25) {
+            let type_index = insn.pool_index.unwrap_or_default();
+            let error = |reason: &str| LiftError::InvalidFilledArray {
+                offset: insn.offset,
+                type_index,
+                reason: reason.into(),
+            };
+            match ctx.type_at(type_index) {
+                Some(ManagedType::Array { element, .. })
+                    if matches!(
+                        *element,
+                        ManagedType::Boolean
+                            | ManagedType::Byte
+                            | ManagedType::Short
+                            | ManagedType::Char
+                            | ManagedType::Int
+                            | ManagedType::Float
+                            | ManagedType::Reference(_)
+                            | ManagedType::Array { .. }
+                    ) => {}
+                Some(_) => {
+                    return Err(error(
+                        "requires an array with category-one component (not long/double)",
+                    ));
+                }
+                None => return Err(error("unresolved array descriptor")),
+            }
         }
         let fused = fusion_result(stream, index, insn, info.opcode);
         if fused.is_some() {
@@ -145,6 +183,9 @@ fn fusion_result(
     insn: &DecodedInsn,
     byte: u8,
 ) -> Option<super::lowering::FusedResult> {
+    if !matches!(byte, 0x24 | 0x25 | 0x6e..=0x72 | 0x74..=0x78) {
+        return None;
+    }
     let following = stream.get(next)?;
     let width = u32::from(insn.format.width()?);
     if following.offset != insn.offset.checked_add(width)? {

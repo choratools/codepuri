@@ -12,8 +12,6 @@
 
 use std::collections::{HashMap, HashSet};
 
-use decomp_core::analysis::dominators;
-use decomp_core::cfg::Cfg;
 use decomp_core::ids::BlockId;
 use managed_ir::effects::EffectFlags;
 use managed_ir::insn::ManagedInsn;
@@ -39,14 +37,15 @@ pub(crate) struct Renamed {
 /// Rewrites every operand to its reaching definition and completes phi
 /// inputs over the mirror graph.
 pub(crate) fn rename(
-    cfg: &Cfg<usize>,
+    analysis: &super::analysis::Analysis<'_>,
     chains: &mut Chains,
     insns: &mut InsnArena,
     values: &mut ValueArena,
     vars: &Variables,
     phis: &mut Phis,
 ) -> Renamed {
-    let doms = dominators(cfg);
+    let cfg = analysis.cfg;
+    let doms = &analysis.doms;
     let mut children: HashMap<BlockId, Vec<BlockId>> = HashMap::new();
     for block in cfg.block_ids() {
         if let Some(idom) = doms.immediate_dominator(block) {

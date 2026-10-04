@@ -14,7 +14,6 @@
 
 use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 
-use decomp_core::analysis::{Dominators, dominance_frontier, dominators};
 use decomp_core::cfg::Cfg;
 use decomp_core::ids::{BlockId, EdgeId};
 use managed_ir::insn::ManagedInsn;
@@ -39,16 +38,14 @@ pub(crate) struct PhiDef {
     pub var: u32,
     /// One input per incoming edge; filled by renaming.
     pub inputs: Vec<(EdgeId, Option<ValueId>)>,
+    input_index: HashMap<EdgeId, usize>,
 }
 
 impl PhiDef {
     /// Records the value flowing along one predecessor edge.
     pub fn fill(&mut self, edge: EdgeId, value: ValueId) {
-        for (candidate, input) in &mut self.inputs {
-            if *candidate == edge {
-                *input = Some(value);
-                return;
-            }
+        if let Some(&index) = self.input_index.get(&edge) {
+            self.inputs[index].1 = Some(value);
         }
     }
 }
@@ -90,7 +87,7 @@ impl Phis {
 
 /// Inserts pruned phis for every multi-def register variable.
 pub(crate) fn place(
-    cfg: &Cfg<usize>,
+    analysis: &super::analysis::Analysis<'_>,
     chains: &super::chains::Chains,
     insns: &mut InsnArena,
     values: &mut ValueArena,
@@ -98,6 +95,7 @@ pub(crate) fn place(
     candidates: &[u32],
     live: &super::liveness::Liveness,
 ) -> Phis {
+    let cfg = analysis.cfg;
     let insn_block: HashMap<InsnId, BlockId> = cfg
         .block_ids()
         .flat_map(|block| {
@@ -113,7 +111,7 @@ pub(crate) fn place(
                 .map(move |insn| (*insn, block))
         })
         .collect();
-    let frontier = dominance_frontier(cfg, &dominators(cfg));
+    let frontier = &analysis.frontier;
     let mut phis = Phis::default();
     let mut placed: HashMap<BlockId, HashSet<u32>> = HashMap::new();
     let mut pending: VecDeque<BlockId> = VecDeque::new();
@@ -176,11 +174,17 @@ fn new_phi(
                 .collect::<Vec<_>>()
         })
         .unwrap_or_default();
+    let input_index = inputs
+        .iter()
+        .enumerate()
+        .map(|(index, (edge, _))| (*edge, index))
+        .collect();
     PhiDef {
         insn,
         result,
         var,
         inputs,
+        input_index,
     }
 }
 
@@ -191,12 +195,15 @@ fn new_phi(
 ///
 /// Returns the number of eliminated phis.
 pub(crate) fn eliminate(
-    cfg: &Cfg<usize>,
+    analysis: &super::analysis::Analysis<'_>,
     chains: &Chains,
     insns: &mut InsnArena,
     values: &mut ValueArena,
     phis: &mut Phis,
 ) -> usize {
+    if phis.by_block.is_empty() {
+        return 0;
+    }
     let by_result: HashMap<ValueId, (InsnId, Vec<ValueId>)> = phis
         .by_block
         .values()
@@ -216,19 +223,32 @@ pub(crate) fn eliminate(
         })
         .collect();
     let mut replacement: HashMap<ValueId, ValueId> = HashMap::new();
-    let mut changed = true;
-    while changed {
-        changed = false;
-        for (result, (_, inputs)) in &by_result {
-            let resolved: HashSet<ValueId> = inputs
-                .iter()
-                .map(|value| resolve(&replacement, *value))
-                .collect();
-            if resolved.len() == 1 {
-                let target = *resolved.iter().next().unwrap_or(result);
-                if target != *result && replacement.get(result) != Some(&target) {
-                    replacement.insert(*result, target);
-                    changed = true;
+    // A separate compressed resolution index leaves candidate links intact
+    // for the dominance gate below.
+    let mut canonical = HashMap::new();
+    let mut dependents: HashMap<ValueId, HashSet<ValueId>> = HashMap::new();
+    let mut pending: VecDeque<_> = phis.all().map(|phi| phi.result).collect();
+    let mut queued: HashSet<_> = pending.iter().copied().collect();
+    while let Some(result) = pending.pop_front() {
+        queued.remove(&result);
+        let Some((_, inputs)) = by_result.get(&result) else {
+            continue;
+        };
+        let mut resolved = HashSet::new();
+        for input in inputs {
+            let target = resolve_compressed(&mut canonical, *input);
+            dependents.entry(target).or_default().insert(result);
+            resolved.insert(target);
+        }
+        if resolved.len() == 1 {
+            let target = *resolved.iter().next().unwrap_or(&result);
+            if target != result && replacement.get(&result) != Some(&target) {
+                replacement.insert(result, target);
+                canonical.insert(result, target);
+                for dependent in dependents.get(&result).into_iter().flatten() {
+                    if queued.insert(*dependent) {
+                        pending.push_back(*dependent);
+                    }
                 }
             }
         }
@@ -236,11 +256,16 @@ pub(crate) fn eliminate(
     for value in cyclic_keys(&replacement) {
         replacement.remove(&value);
     }
-    if !dominance_safe(cfg, chains, insns, phis, &mut replacement) {
+    if !dominance_safe(analysis, chains, insns, phis, &mut replacement) {
         return 0;
     }
     if replacement.is_empty() {
         return 0;
+    }
+    // Flatten only after cycle rejection and dominance filtering: compression
+    // must not hide a cycle or a link that the safety check needs to reject.
+    for value in replacement.keys().copied().collect::<Vec<_>>() {
+        resolve_compressed(&mut replacement, value);
     }
     for (_, insn) in insns.iter_mut() {
         if matches!(insn, ManagedInsn::Phi { .. }) {
@@ -277,38 +302,57 @@ pub(crate) fn eliminate(
     removed
 }
 
-/// Follows replacement links to their fixpoint; bounded by the map size.
+/// Reads the flattened replacement graph after cycle and dominance filtering.
 fn resolve(replacement: &HashMap<ValueId, ValueId>, value: ValueId) -> ValueId {
+    replacement.get(&value).copied().unwrap_or(value)
+}
+
+fn resolve_compressed(replacement: &mut HashMap<ValueId, ValueId>, value: ValueId) -> ValueId {
+    let mut path = Vec::new();
     let mut cursor = value;
-    let mut guard = 0_usize;
-    while let Some(next) = replacement.get(&cursor) {
-        cursor = *next;
-        guard += 1;
-        if guard > replacement.len() {
+    while let Some(next) = replacement.get(&cursor).copied() {
+        path.push(cursor);
+        cursor = next;
+        if path.len() > replacement.len() {
             return value;
         }
+    }
+    for member in path {
+        replacement.insert(member, cursor);
     }
     cursor
 }
 
 /// Returns replacement keys that participate in a follow cycle.
 fn cyclic_keys(replacement: &HashMap<ValueId, ValueId>) -> HashSet<ValueId> {
-    replacement
-        .keys()
-        .copied()
-        .filter(|start| {
-            let mut seen = HashSet::new();
-            let mut cursor = *start;
-            loop {
-                if !seen.insert(cursor) {
-                    return true;
-                }
-                match replacement.get(&cursor) {
-                    Some(next) => cursor = *next,
-                    None => return false,
-                }
+    let mut status: HashMap<ValueId, bool> = HashMap::new();
+    for start in replacement.keys().copied() {
+        if status.contains_key(&start) {
+            continue;
+        }
+        let mut path = Vec::new();
+        let mut seen = HashSet::new();
+        let mut cursor = start;
+        let cyclic = loop {
+            if let Some(cyclic) = status.get(&cursor) {
+                break *cyclic;
             }
-        })
+            if !seen.insert(cursor) {
+                break true;
+            }
+            let Some(next) = replacement.get(&cursor) else {
+                break false;
+            };
+            path.push(cursor);
+            cursor = *next;
+        };
+        for value in path {
+            status.insert(value, cyclic);
+        }
+    }
+    status
+        .into_iter()
+        .filter_map(|(value, cyclic)| cyclic.then_some(value))
         .collect()
 }
 
@@ -325,13 +369,14 @@ const CHAIN_END: usize = usize::MAX;
 /// Filters the replacement map down to dominance-safe entries, returning
 /// whether anything survived.
 fn dominance_safe(
-    cfg: &Cfg<usize>,
+    analysis: &super::analysis::Analysis<'_>,
     chains: &Chains,
     insns: &InsnArena,
     phis: &Phis,
     replacement: &mut HashMap<ValueId, ValueId>,
 ) -> bool {
-    let doms = dominators(cfg);
+    let cfg = analysis.cfg;
+    let intervals = dominance_intervals(analysis);
     let phi_counts: HashMap<usize, usize> = phis
         .by_block
         .iter()
@@ -406,31 +451,26 @@ fn dominance_safe(
             }
         }
     }
-    loop {
-        let mut changed = false;
-        for result in replacement.keys().copied().collect::<Vec<_>>() {
-            let Some(target) = replacement.get(&result).copied() else {
-                continue;
-            };
-            let Some(target_site) = def_sites.get(&target) else {
-                replacement.remove(&result);
-                changed = true;
-                continue;
-            };
-            let safe = uses_of.get(&result).is_none_or(|sites| {
-                sites
-                    .iter()
-                    .all(|site| dominates(&doms, cfg, *target_site, *site))
-            });
-            if !safe {
-                replacement.remove(&result);
-                changed = true;
-            }
-        }
-        if !changed {
-            return !replacement.is_empty();
+    // Sites are immutable and filtering never changes any direct target.
+    // Each candidate therefore needs exactly one safety check.
+    for result in replacement.keys().copied().collect::<Vec<_>>() {
+        let Some(target) = replacement.get(&result).copied() else {
+            continue;
+        };
+        let Some(target_site) = def_sites.get(&target) else {
+            replacement.remove(&result);
+            continue;
+        };
+        let safe = uses_of.get(&result).is_none_or(|sites| {
+            sites
+                .iter()
+                .all(|site| dominates(analysis, &intervals, *target_site, *site))
+        });
+        if !safe {
+            replacement.remove(&result);
         }
     }
+    !replacement.is_empty()
 }
 
 fn def_value(insns: &InsnArena, insn: InsnId) -> Option<ValueId> {
@@ -443,22 +483,239 @@ fn def_value(insns: &InsnArena, insn: InsnId) -> Option<ValueId> {
 /// Returns whether a definition site dominates a use site. Phi-edge uses
 /// sit at the end of the predecessor chain, so any definition inside that
 /// chain dominates them.
-fn dominates(doms: &Dominators, cfg: &Cfg<usize>, def: Site, use_site: Site) -> bool {
+fn dominance_intervals(
+    analysis: &super::analysis::Analysis<'_>,
+) -> HashMap<BlockId, (usize, usize)> {
+    let mut children: HashMap<BlockId, Vec<BlockId>> = HashMap::new();
+    for block in analysis.cfg.block_ids() {
+        if let Some(parent) = analysis.doms.immediate_dominator(block) {
+            children.entry(parent).or_default().push(block);
+        }
+    }
+    let mut intervals = HashMap::new();
+    let mut clock = 0;
+    let mut pending = vec![(analysis.cfg.entry(), false)];
+    while let Some((block, exiting)) = pending.pop() {
+        if exiting {
+            if let Some(interval) = intervals.get_mut(&block) {
+                let (_, end) = interval;
+                *end = clock;
+            }
+        } else {
+            intervals.insert(block, (clock, clock));
+            clock += 1;
+            pending.push((block, true));
+            for child in children.get(&block).into_iter().flatten().rev() {
+                pending.push((*child, false));
+            }
+        }
+    }
+    intervals
+}
+
+fn dominates(
+    analysis: &super::analysis::Analysis<'_>,
+    intervals: &HashMap<BlockId, (usize, usize)>,
+    def: Site,
+    use_site: Site,
+) -> bool {
     if def.chain == use_site.chain {
         return def.position < use_site.position;
     }
-    let Some(def_block) = block_of_chain(cfg, def.chain) else {
+    let Some(def_block) = analysis.block_of_chain(def.chain) else {
         return false;
     };
-    let Some(use_block) = block_of_chain(cfg, use_site.chain) else {
+    let Some(use_block) = analysis.block_of_chain(use_site.chain) else {
         return false;
     };
-    doms.dominates(def_block, use_block)
+    match (intervals.get(&def_block), intervals.get(&use_block)) {
+        (Some(&(start, end)), Some(&(position, _))) => start <= position && position < end,
+        _ => false,
+    }
 }
 
-fn block_of_chain(cfg: &Cfg<usize>, chain: usize) -> Option<BlockId> {
-    cfg.block_ids().find(|block| {
-        cfg.block(*block)
-            .is_ok_and(|record| *record.payload() == chain)
-    })
+#[cfg(test)]
+mod tests {
+    #![allow(clippy::unwrap_used)]
+    use super::*;
+
+    #[test]
+    fn trivial_phi_with_bypassed_definition_is_not_eliminated() {
+        let mut cfg = Cfg::new(0);
+        let left = cfg.add_block(1);
+        let right = cfg.add_block(2);
+        let join = cfg.add_block(3);
+        for target in [left, right] {
+            cfg.add_edge(
+                cfg.entry(),
+                target,
+                decomp_core::cfg::EdgeKind::Unconditional,
+            )
+            .unwrap();
+            cfg.add_edge(target, join, decomp_core::cfg::EdgeKind::Unconditional)
+                .unwrap();
+        }
+        let mut insns = InsnArena::with_key();
+        let mut values = ValueArena::with_key();
+        let constant = insns.insert(PHI_PLACEHOLDER);
+        let value = values.insert(Value::new(constant, ManagedType::Int));
+        insns[constant] = ManagedInsn::Const {
+            result: value,
+            value: managed_ir::ops::Constant::Int(1),
+        };
+        let mut phi = new_phi(&cfg, &mut insns, &mut values, 0, join);
+        for (_, input) in &mut phi.inputs {
+            *input = Some(value);
+        }
+        let result = phi.result;
+        let ret = insns.insert(ManagedInsn::Return {
+            value: Some(result),
+        });
+        let chains = Chains {
+            payloads: vec![vec![], vec![constant], vec![], vec![ret]],
+            ..Chains::default()
+        };
+        let mut phis = Phis::default();
+        phis.results.insert(result);
+        phis.block_mut(join).push(phi);
+        let analysis = super::super::analysis::Analysis::new(&cfg);
+        assert_eq!(
+            eliminate(&analysis, &chains, &mut insns, &mut values, &mut phis),
+            0
+        );
+        assert!(values.contains_key(result));
+        assert_eq!(phis.len(), 1);
+        assert!(
+            matches!(insns[ret], ManagedInsn::Return { value: Some(value) } if value == result)
+        );
+    }
+
+    #[test]
+    fn high_indegree_fill_preserves_edge_order_and_unknown_edge() {
+        let mut cfg = Cfg::new(0);
+        let join = cfg.add_block(1);
+        let mut edges = Vec::new();
+        for _ in 0..4096 {
+            edges.push(
+                cfg.add_edge(cfg.entry(), join, decomp_core::cfg::EdgeKind::Unconditional)
+                    .unwrap(),
+            );
+        }
+        let unknown = cfg
+            .add_edge(join, cfg.entry(), decomp_core::cfg::EdgeKind::Unconditional)
+            .unwrap();
+        let mut insns = InsnArena::with_key();
+        let mut values = ValueArena::with_key();
+        let mut phi = new_phi(&cfg, &mut insns, &mut values, 0, join);
+        for edge in edges.iter().rev() {
+            phi.fill(*edge, phi.result);
+        }
+        phi.fill(unknown, phi.result);
+        assert_eq!(phi.inputs.len(), edges.len());
+        assert_eq!(phi.input_index.len(), edges.len());
+        let mut scan_comparisons = 0;
+        for (index, edge) in edges.iter().enumerate() {
+            let scanned = phi.inputs.iter().position(|(candidate, _)| {
+                scan_comparisons += 1;
+                candidate == edge
+            });
+            assert_eq!(scanned, Some(index));
+            assert_eq!(phi.input_index[edge], index);
+            assert_eq!(phi.inputs[index], (*edge, Some(phi.result)));
+        }
+        assert_eq!(scan_comparisons, 8_390_656);
+        assert_eq!(edges.len(), 4096);
+    }
+
+    #[test]
+    fn dominance_intervals_match_parent_walk_including_unreachable_blocks() {
+        let mut cfg = Cfg::new(0);
+        let left = cfg.add_block(1);
+        let right = cfg.add_block(2);
+        let join = cfg.add_block(3);
+        cfg.add_block(4);
+        for (source, target) in [
+            (cfg.entry(), left),
+            (cfg.entry(), right),
+            (left, join),
+            (right, join),
+            (join, left),
+        ] {
+            cfg.add_edge(source, target, decomp_core::cfg::EdgeKind::Unconditional)
+                .unwrap();
+        }
+        let analysis = super::super::analysis::Analysis::new(&cfg);
+        let intervals = dominance_intervals(&analysis);
+        for def in cfg.block_ids() {
+            for use_block in cfg.block_ids() {
+                let indexed = match (intervals.get(&def), intervals.get(&use_block)) {
+                    (Some(&(start, end)), Some(&(position, _))) => {
+                        start <= position && position < end
+                    }
+                    _ => false,
+                };
+                assert_eq!(indexed, analysis.doms.dominates(def, use_block));
+            }
+        }
+    }
+
+    #[test]
+    fn reverse_phi_dependencies_collapse_and_cycles_survive() {
+        let mut insns = InsnArena::with_key();
+        let mut values = ValueArena::with_key();
+        let constant = insns.insert(PHI_PLACEHOLDER);
+        let initial = values.insert(Value::new(constant, ManagedType::Int));
+        insns[constant] = ManagedInsn::Const {
+            result: initial,
+            value: managed_ir::ops::Constant::Int(1),
+        };
+        let mut chains = Chains {
+            payloads: vec![vec![constant]],
+            ..Chains::default()
+        };
+        let mut cfg = chains.analysis_cfg();
+        let edge = cfg
+            .add_edge(
+                cfg.entry(),
+                cfg.entry(),
+                decomp_core::cfg::EdgeKind::Unconditional,
+            )
+            .unwrap();
+        let mut phis = Phis::default();
+        let mut results = Vec::new();
+        for _ in 0..2048 {
+            let phi = new_phi(&cfg, &mut insns, &mut values, 0, cfg.entry());
+            results.push(phi.result);
+            phis.results.insert(phi.result);
+            phis.block_mut(cfg.entry()).push(phi);
+        }
+        for (index, phi) in phis.at_mut(cfg.entry()).iter_mut().enumerate() {
+            phi.inputs = vec![(
+                edge,
+                Some(results.get(index + 1).copied().unwrap_or(initial)),
+            )];
+        }
+        let ret = insns.insert(ManagedInsn::Return {
+            value: Some(results[0]),
+        });
+        chains.payloads[0].push(ret);
+        let analysis = super::super::analysis::Analysis::new(&cfg);
+        assert_eq!(
+            eliminate(&analysis, &chains, &mut insns, &mut values, &mut phis),
+            2048
+        );
+        assert!(
+            matches!(insns[ret], ManagedInsn::Return { value: Some(value) } if value == initial)
+        );
+        let replacement = HashMap::from([
+            (results[0], results[1]),
+            (results[1], results[0]),
+            (results[2], results[0]),
+            (results[3], initial),
+        ]);
+        assert_eq!(
+            cyclic_keys(&replacement),
+            HashSet::from([results[0], results[1], results[2]])
+        );
+    }
 }

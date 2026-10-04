@@ -15,6 +15,7 @@ use std::collections::HashMap;
 use decomp_core::cfg::{Cfg, EdgeKind};
 use decomp_core::ids::{BlockId, EdgeId};
 use managed_ir::value::InsnId;
+use managed_ir::{insn::ManagedInsn, method::InsnArena};
 
 use crate::merge::MergedMethod;
 
@@ -34,6 +35,31 @@ pub(crate) struct Chains {
 }
 
 impl Chains {
+    /// Make method invocation an explicit predecessor of a loop at original
+    /// entry. Without this edge, SSA would see only backedges at that header
+    /// and could omit the initial input or execute initial definitions again.
+    /// The offset-free branch has no effects and introduces no exception edge.
+    pub fn add_invocation_entry(&mut self, insns: &mut InsnArena) {
+        if !self.edges.iter().any(|(_, target, _)| *target == 0) {
+            return;
+        }
+        // Null is not an identity allocated by any genuine CFG edge arena. It
+        // names this one synthetic edge until materialization remaps all edges.
+        let invocation_edge = EdgeId::default();
+        let branch = insns.insert(ManagedInsn::Branch {
+            condition: None,
+            then_edge: invocation_edge,
+            else_edge: None,
+        });
+        self.payloads.insert(0, vec![branch]);
+        for (source, target, _) in &mut self.edges {
+            *source += 1;
+            *target += 1;
+        }
+        self.edges.push((0, 1, EdgeKind::Unconditional));
+        self.merged_edges.push(invocation_edge);
+    }
+
     /// Copies the fused-chain graph out of a merged method.
     ///
     /// Chains are numbered in the merged CFG's block order, so the entry

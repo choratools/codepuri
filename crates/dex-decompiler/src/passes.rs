@@ -19,6 +19,19 @@ use crate::ssa::{SsaError, SsaMethod, to_ssa_with};
 #[derive(Debug, Clone, Copy, Default)]
 pub struct DexPasses;
 
+/// Caller-owned frontend elapsed measurements, containing nested SSA timings.
+#[derive(Debug, Default)]
+pub struct FrontendTimings {
+    /// Recovering Dalvik decoding.
+    pub decode: std::time::Duration,
+    /// Register-form lifting and CFG construction.
+    pub lift: std::time::Duration,
+    /// Chain fusion.
+    pub merge: std::time::Duration,
+    /// Existing SSA, inference and verification stages.
+    pub ssa: crate::ssa::SsaTimings,
+}
+
 impl DexPasses {
     /// Runs lift (2.2), normalization, and CFG construction + validation
     /// (2.3) for one method.
@@ -26,7 +39,24 @@ impl DexPasses {
     /// # Errors
     /// Returns the first stage failure: decode-abort or CFG error.
     pub fn run(code_item: &CodeItem) -> Result<LiftedMethod, LiftError> {
-        let lifted = crate::lift_method(code_item)?;
+        Self::run_with(code_item, &crate::infer::NoTypes)
+    }
+
+    /// Runs the original register-form lift and CFG validation with genuine
+    /// descriptor metadata. No chain fusion or SSA rewriting is performed;
+    /// instruction offsets remain original bytecode provenance. Instructions
+    /// such as filled-new-array require a resolved array descriptor even before
+    /// SSA construction. Missing or contradictory descriptors fail closed.
+    ///
+    /// # Errors
+    /// Returns decode, descriptor, lifting, or CFG validation failures.
+    pub fn run_with(
+        code_item: &CodeItem,
+        ctx: &dyn TypeContext,
+    ) -> Result<LiftedMethod, LiftError> {
+        let recovered =
+            crate::decode_method_recovering(code_item, crate::decode::DEFAULT_ERROR_LIMIT);
+        let lifted = crate::lift::lift_recovered_with(&recovered, code_item, ctx)?;
         lifted.ir().cfg().validate()?;
         Ok(lifted)
     }
@@ -57,6 +87,32 @@ impl DexPasses {
         let merged = crate::merge_method(lifted)?;
         let ssa = to_ssa_with(merged, ctx)?;
         Ok(ssa)
+    }
+
+    /// Identical frontend pipeline with caller-owned SSA substage timings.
+    /// Decode, lift and merge are separate from the nested SSA timings.
+    pub fn run_ssa_with_timings(
+        code_item: &CodeItem,
+        ctx: &dyn TypeContext,
+        timings: &mut FrontendTimings,
+    ) -> Result<SsaMethod, StageError> {
+        *timings = FrontendTimings::default();
+        let start = std::time::Instant::now();
+        let recovered =
+            crate::decode_method_recovering(code_item, crate::decode::DEFAULT_ERROR_LIMIT);
+        timings.decode = start.elapsed();
+        let start = std::time::Instant::now();
+        let lifted = crate::lift::lift_recovered_with(&recovered, code_item, ctx);
+        timings.lift = start.elapsed();
+        let lifted = lifted?;
+        let start = std::time::Instant::now();
+        let merged = crate::merge_method(lifted);
+        timings.merge = start.elapsed();
+        Ok(crate::ssa::to_ssa_with_timings(
+            merged?,
+            ctx,
+            &mut timings.ssa,
+        )?)
     }
 }
 

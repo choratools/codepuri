@@ -28,6 +28,8 @@ name = "backend-java"
 version = "0.1.0"
 dependencies = [
  "decomp-core",
+ "decomp-structure",
+ "managed-ir",
  "proptest",
 ]
 
@@ -86,9 +88,11 @@ dependencies = [
  "backend-java",
  "decomp-core",
  "decomp-emit",
+ "decomp-structure",
  "dex-decompiler",
  "dex-format",
  "managed-ir",
+ "zip",
 ]
 
 [[package]]
@@ -106,6 +110,13 @@ version = "0.1.0"
 dependencies = [
  "proptest",
  "thiserror",
+]
+
+[[package]]
+name = "decomp-structure"
+version = "0.1.0"
+dependencies = [
+ "decomp-core",
 ]
 
 [[package]]

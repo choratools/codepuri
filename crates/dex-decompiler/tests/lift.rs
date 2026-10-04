@@ -6,7 +6,7 @@ use decomp_core::cfg::{Cfg, EdgeKind};
 use dex_decompiler::{LiftError, lift_method};
 use dex_format::RawSpan;
 use dex_format::code::{CodeItem, EncodedCatchHandler, TryItem, TypeAddrPair};
-use managed_ir::insn::{Constant, InvokeKind, ManagedInsn};
+use managed_ir::insn::{Constant, InvokeKind, ManagedInsn, OrderingOp};
 use managed_ir::value::InsnId;
 
 fn must<T, E: Debug>(result: Result<T, E>) -> T {
@@ -145,6 +145,55 @@ fn packed_switch_resolves_payload_cases() {
         }
         other => panic!("expected switch at entry, got {other:?}"),
     }
+}
+
+#[test]
+fn three_way_compares_lift_to_typed_ordering_ir() {
+    // 0: cmp-long v0, v2, v4 ; 2: cmpl-float v1, v6, v7 ; 4: cmpg-double v8, v10, v12
+    let item = code(
+        16,
+        &[0x0031, 0x0402, 0x012d, 0x0706, 0x0830, 0x0c0a, 0x000e],
+    );
+    let lifted = must(lift_method(&item));
+    let mut ops = Vec::new();
+    let mut opaque_cmp = 0;
+    for id in lifted.ir().instructions().keys() {
+        match lifted.ir().instructions().get(id) {
+            Some(ManagedInsn::OrderingCompare {
+                op,
+                result,
+                lhs,
+                rhs,
+            }) => {
+                assert_eq!(
+                    lifted.ir().values().get(*result).map(|v| v.ty()),
+                    Some(&managed_ir::types::ManagedType::Int)
+                );
+                assert_ne!(lhs, rhs, "operands remain distinct values");
+                ops.push(*op);
+            }
+            Some(ManagedInsn::Opaque { family_tag, .. }) if (0x2d..=0x31).contains(family_tag) => {
+                opaque_cmp += 1;
+            }
+            _ => {}
+        }
+    }
+    ops.sort_by_key(|op| match op {
+        OrderingOp::CmpLowFloat => 0,
+        OrderingOp::CmpHighFloat => 1,
+        OrderingOp::CmpLowDouble => 2,
+        OrderingOp::CmpHighDouble => 3,
+        OrderingOp::CmpLong => 4,
+    });
+    assert_eq!(
+        ops,
+        vec![
+            OrderingOp::CmpLowFloat,
+            OrderingOp::CmpHighDouble,
+            OrderingOp::CmpLong,
+        ]
+    );
+    assert_eq!(opaque_cmp, 0, "cmp* opcodes must not degrade to opaque");
 }
 
 #[test]

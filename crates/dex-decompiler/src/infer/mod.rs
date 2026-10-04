@@ -21,14 +21,22 @@ mod tests;
 
 #[cfg(test)]
 mod array_cast_regressions;
+#[cfg(test)]
+mod comparison_promotion_tests;
+#[cfg(test)]
+mod contextual_tests;
 
-pub use context::{DexTypes, NoTypes};
+mod expansion;
+#[cfg(test)]
+mod expansion_tests;
+
+pub use context::{DexMetadata, DexTypes, NoTypes};
 
 use std::collections::{HashMap, HashSet, VecDeque};
 
 use decomp_core::cfg::Cfg;
 use decomp_core::diagnostics::{Diagnostic, Severity};
-use managed_ir::insn::{ArithOp, Constant, ManagedInsn};
+use managed_ir::insn::{ArithOp, Constant, ManagedInsn, OrderingOp};
 use managed_ir::method::InsnArena;
 use managed_ir::types::{self, ManagedType};
 use managed_ir::value::{InsnId, ValueId};
@@ -40,8 +48,22 @@ const MAX_ARITY_DIAGNOSTICS: usize = 4;
 
 /// Pool-resolution and enclosing-method context for inference.
 pub trait TypeContext {
+    /// Declared incoming type at an attested physical low word and width.
+    fn initial_register_type(&self, _register: u16, _wide: bool) -> Option<ManagedType> {
+        None
+    }
+    /// Exact declaration type keyed by proven SSA initial identity, never a
+    /// current physical register write. Declaration types are immutable seeds.
+    fn initial_type(&self, _value: ValueId) -> Option<ManagedType> {
+        None
+    }
     /// The managed type of string-pool constants, if resolvable.
     fn string_type(&self) -> Option<ManagedType> {
+        None
+    }
+
+    /// Runtime type of a class-literal result, independently of its target.
+    fn class_literal_type(&self) -> Option<ManagedType> {
         None
     }
 
@@ -144,6 +166,42 @@ pub fn infer_types(
     for value in &raw_constants {
         types.insert(*value, ManagedType::Unknown);
     }
+    for value in definitions.keys() {
+        if let Some(declared) = ctx.initial_type(*value) {
+            types.insert(*value, declared);
+        }
+    }
+    // Constant/copy identity is invariant during inference. Build the proven
+    // raw-one family once; never repeat definition walks in hot refinements.
+    let mut raw_ones: HashSet<_> = raw_constants
+        .iter()
+        .copied()
+        .filter(|value| {
+            definitions
+                .get(value)
+                .and_then(|id| insns.get(*id))
+                .is_some_and(|record| {
+                    matches!(
+                        record,
+                        ManagedInsn::Const {
+                            value: Constant::Int(1),
+                            ..
+                        }
+                    )
+                })
+        })
+        .collect();
+    let mut one_pending: VecDeque<_> = raw_ones.iter().copied().collect();
+    while let Some(source) = one_pending.pop_front() {
+        for id in users.get(&source).into_iter().flatten() {
+            if let Some(ManagedInsn::Move { result, value }) = insns.get(*id)
+                && *value == source
+                && raw_ones.insert(*result)
+            {
+                one_pending.push_back(*result);
+            }
+        }
+    }
     let mut engine = Engine {
         insns,
         types,
@@ -152,6 +210,7 @@ pub fn infer_types(
         phi_results: &phi_results,
         definitions: &definitions,
         raw_constants: &raw_constants,
+        raw_ones,
         users: &users,
         pending: insns.keys().collect(),
         queued: insns.keys().collect(),
@@ -160,6 +219,9 @@ pub fn infer_types(
         arity_overflow: 0,
         arity_diagnostics: 0,
         params: Vec::new(),
+        expansions: expansion::Expansions::default(),
+        split_zeros: HashSet::new(),
+        split_ones: HashSet::new(),
     };
     engine.run();
     // Unconstrained literals retain the conventional integer interpretation.
@@ -186,6 +248,7 @@ struct Engine<'a> {
     phi_results: &'a HashMap<ValueId, InsnId>,
     definitions: &'a HashMap<ValueId, InsnId>,
     raw_constants: &'a HashSet<ValueId>,
+    raw_ones: HashSet<ValueId>,
     users: &'a HashMap<ValueId, Vec<InsnId>>,
     pending: VecDeque<InsnId>,
     queued: HashSet<InsnId>,
@@ -194,9 +257,35 @@ struct Engine<'a> {
     arity_overflow: usize,
     arity_diagnostics: usize,
     params: Vec<ManagedType>,
+    expansions: expansion::Expansions,
+    // Proven pure literals with independently typed consumers have no single
+    // nominal interpretation. Once split, do not oscillate between contexts.
+    split_zeros: HashSet<ValueId>,
+    split_ones: HashSet<ValueId>,
 }
 
 impl Engine<'_> {
+    fn raw_one(&self, value: ValueId) -> bool {
+        self.raw_ones.contains(&value)
+    }
+    fn raw_zero(&self, mut value: ValueId) -> bool {
+        let mut seen = HashSet::new();
+        while seen.insert(value) {
+            match self
+                .definitions
+                .get(&value)
+                .and_then(|id| self.insns.get(*id))
+            {
+                Some(ManagedInsn::Const {
+                    value: Constant::Zero,
+                    ..
+                }) => return self.raw_constants.contains(&value),
+                Some(ManagedInsn::Move { value: source, .. }) => value = *source,
+                _ => return false,
+            }
+        }
+        false
+    }
     fn run(&mut self) {
         // Collection must finish before applying refinements: some rules read
         // both operands' pre-refinement types. Reuse storage without changing
@@ -262,48 +351,139 @@ impl Engine<'_> {
             self.meet_leaf(value, target, insn_id);
             return;
         }
-        let mut pending = vec![value];
-        let mut seen = HashSet::new();
-        while let Some(value) = pending.pop() {
-            if !seen.insert(value) {
-                continue;
-            }
-            if let Some(phi) = self.phi_results.get(&value) {
-                if let Some(ManagedInsn::Phi { inputs, .. }) = self.insns.get(*phi) {
-                    pending.extend(inputs.iter().map(|(_, value)| *value));
-                }
-            } else {
-                self.meet_leaf(value, target.clone(), insn_id);
-            }
+        let leaves =
+            self.expansions
+                .leaves(value, false, self.insns, self.definitions, self.phi_results);
+        for &value in leaves.iter() {
+            self.meet_leaf_ref(value, &target, insn_id);
         }
     }
 
     fn meet_leaf(&mut self, value: ValueId, target: ManagedType, insn_id: InsnId) {
-        // Raw zero in a reference context denotes null, never an exact
-        // instance of the requested class or array descriptor. Keep it usable
-        // by other reference consumers and by phi joins of different ranks.
-        let target = if self.raw_constants.contains(&value)
+        self.meet_leaf_ref(value, &target, insn_id);
+    }
+
+    fn meet_leaf_ref(&mut self, value: ValueId, target: &ManagedType, insn_id: InsnId) {
+        // One raw category-one literal may independently mean integer 1 or
+        // boolean true. Only a definition-proven constant/copy may split;
+        // arbitrary Int producers remain incompatible with Boolean consumers.
+        // Once mixed, all narrow integral consumers retain the raw Int view;
+        // otherwise Byte -> Int -> Byte refinements would never converge.
+        // Existing nonintegral/conflicting evidence must use ordinary checks.
+        if matches!(
+            target,
+            ManagedType::Byte
+                | ManagedType::Short
+                | ManagedType::Char
+                | ManagedType::Int
+                | ManagedType::Boolean
+        ) && self.raw_one(value)
+            && self.types.get(&value).is_some_and(|current| {
+                matches!(
+                    current,
+                    ManagedType::Unknown
+                        | ManagedType::Byte
+                        | ManagedType::Short
+                        | ManagedType::Char
+                        | ManagedType::Int
+                        | ManagedType::Boolean
+                )
+            })
+        {
+            let Some(current) = self.types.get(&value) else {
+                return;
+            };
+            let mut next = if self.split_ones.contains(&value) {
+                ManagedType::Int
+            } else {
+                types::meet(current, target)
+            };
+            if next == ManagedType::Conflict || next == ManagedType::Zero {
+                self.split_ones.insert(value);
+                next = ManagedType::Int;
+            }
+            if *current != next {
+                self.types.insert(value, next);
+                self.push_users(value);
+            }
+            return;
+        }
+        // An actual DEX zero is a use-site expression, not a nominal value.
+        // Retain the established single-context annotation; mixed contexts
+        // retain Zero instead of an order-dependent contradiction.
+        // This exemption does not apply to arbitrary Zero annotations or phis:
+        // their concrete nonconstant inputs still undergo ordinary checks.
+        if self.raw_zero(value)
             && matches!(
                 target,
-                ManagedType::Reference(_) | ManagedType::Array { nullable: true, .. }
+                ManagedType::Zero
+                    | ManagedType::Null
+                    | ManagedType::Boolean
+                    | ManagedType::Byte
+                    | ManagedType::Short
+                    | ManagedType::Char
+                    | ManagedType::Int
+                    | ManagedType::Float
+                    | ManagedType::Reference(_)
+                    | ManagedType::Array { nullable: true, .. }
             )
-            && matches!(
-                self.definitions
-                    .get(&value)
-                    .and_then(|id| self.insns.get(*id)),
-                Some(ManagedInsn::Const {
-                    value: Constant::Zero,
-                    ..
-                })
-            ) {
-            ManagedType::Null
-        } else {
-            target
-        };
+        {
+            let contextual = match target {
+                ManagedType::Reference(_) | ManagedType::Array { .. } => &ManagedType::Null,
+                _ => target,
+            };
+            let Some(current) = self.types.get(&value) else {
+                return;
+            };
+            let mut next = if self.split_zeros.contains(&value) {
+                ManagedType::Zero
+            } else {
+                types::meet(current, contextual)
+            };
+            if next == ManagedType::Conflict
+                || (next == ManagedType::Zero
+                    && *current != ManagedType::Zero
+                    && *contextual != ManagedType::Zero)
+            {
+                self.split_zeros.insert(value);
+                next = ManagedType::Zero;
+            }
+            if *current != next {
+                self.types.insert(value, next);
+                self.push_users(value);
+            }
+            return;
+        }
         let Some(current) = self.types.get(&value) else {
             return;
         };
-        let next = types::meet(current, &target);
+        let mut next = types::meet(current, target);
+        // Lattice bottom-like literal intersections are not evidence that an
+        // arbitrary runtime value is actually zero/null. In particular an Int
+        // parameter consumed as a reference must remain a contradiction.
+        if next == ManagedType::Zero
+            && *current != ManagedType::Zero
+            && *target != ManagedType::Zero
+        {
+            next = ManagedType::Conflict;
+        }
+        if next == ManagedType::Null
+            && *current != ManagedType::Null
+            && *current != ManagedType::Unknown
+        {
+            if matches!(
+                current,
+                ManagedType::Reference(_) | ManagedType::Array { .. }
+            ) && matches!(
+                target,
+                ManagedType::Reference(_) | ManagedType::Array { .. }
+            ) {
+                // Nominal assignment needs directed hierarchy evidence in the
+                // checked backend; an intersection cannot invent a null value.
+                return;
+            }
+            next = ManagedType::Conflict;
+        }
         if next == ManagedType::Conflict && *current != ManagedType::Conflict {
             if self.diagnostics.len() < MAX_CONFLICT_DIAGNOSTICS {
                 self.diagnostics.push(Diagnostic::new(
@@ -322,14 +502,14 @@ impl Engine<'_> {
             }
             return;
         }
-        if next != *current {
+        if next != *current && self.ctx.initial_type(value).is_none() {
             self.types.insert(value, next);
             self.push_users(value);
         }
     }
 
     fn join_phi(&mut self, insn_id: InsnId) {
-        let Some(ManagedInsn::Phi { result, inputs }) = self.insns.get(insn_id) else {
+        let Some(ManagedInsn::Phi { result, .. }) = self.insns.get(insn_id) else {
             return;
         };
         // Join starts at bottom, not Unknown (the lattice's top). Starting
@@ -338,37 +518,18 @@ impl Engine<'_> {
         // Expand copy/phi cycles to their concrete reaching definitions.
         // Reading a not-yet-inferred loop phi as Unknown would permanently
         // poison the join, despite exact types on every external input.
-        let mut pending: Vec<_> = inputs.iter().map(|(_, value)| *value).collect();
-        let mut seen = HashSet::from([*result]);
-        let mut leaves = 0;
-        while let Some(value) = pending.pop() {
-            if !seen.insert(value) {
-                continue;
-            }
-            match self
-                .definitions
-                .get(&value)
-                .and_then(|def| self.insns.get(*def))
-            {
-                Some(ManagedInsn::Phi { inputs, .. }) => {
-                    pending.extend(inputs.iter().map(|(_, value)| *value));
-                    continue;
-                }
-                Some(ManagedInsn::Move { value, .. }) => {
-                    pending.push(*value);
-                    continue;
-                }
-                _ => {}
-            }
-            leaves += 1;
-            let input = self
-                .types
-                .get(&value)
-                .cloned()
-                .unwrap_or(ManagedType::Unknown);
-            joined = types::join(&joined, &input);
+        let leaves = self.expansions.leaves(
+            *result,
+            true,
+            self.insns,
+            self.definitions,
+            self.phi_results,
+        );
+        for value in leaves.iter() {
+            let input = self.types.get(value).unwrap_or(&ManagedType::Unknown);
+            joined = types::join(&joined, input);
         }
-        if leaves == 0 {
+        if leaves.is_empty() {
             joined = ManagedType::Unknown;
         }
         let result = *result;
@@ -439,6 +600,34 @@ impl Engine<'_> {
                 let left = self.types.get(lhs).cloned();
                 let right = self.types.get(rhs).cloned();
                 refinements.push(Refinement::Meet(*result, ManagedType::Boolean));
+                // A contextual literal one cannot establish the domain of an
+                // as-yet unresolved producer (e.g. a normal-only invoke commit).
+                if (self.raw_one(*lhs)
+                    && right.as_ref().is_some_and(|ty| *ty == ManagedType::Unknown))
+                    || (self.raw_one(*rhs)
+                        && left.as_ref().is_some_and(|ty| *ty == ManagedType::Unknown))
+                {
+                    return;
+                }
+                // Comparing category-one integers does not prove that their
+                // producers have the same narrow domain. For example, comparing
+                // an array length with a byte must not narrow the length to Byte.
+                let word_integer = |ty: &ManagedType| {
+                    matches!(
+                        ty,
+                        ManagedType::Byte
+                            | ManagedType::Short
+                            | ManagedType::Char
+                            | ManagedType::Int
+                    )
+                };
+                if (left.as_ref().is_some_and(word_integer) || self.raw_one(*lhs))
+                    && (right.as_ref().is_some_and(word_integer) || self.raw_one(*rhs))
+                {
+                    refinements.push(Refinement::Meet(*lhs, ManagedType::Int));
+                    refinements.push(Refinement::Meet(*rhs, ManagedType::Int));
+                    return;
+                }
                 if let Some(ty) = left
                     && !matches!(ty, ManagedType::Zero | ManagedType::Null)
                 {
@@ -449,6 +638,21 @@ impl Engine<'_> {
                 {
                     refinements.push(Refinement::Meet(*lhs, ty));
                 }
+            }
+            ManagedInsn::OrderingCompare {
+                op,
+                result,
+                lhs,
+                rhs,
+            } => {
+                refinements.push(Refinement::Meet(*result, ManagedType::Int));
+                let operand = match op {
+                    OrderingOp::CmpLowFloat | OrderingOp::CmpHighFloat => ManagedType::Float,
+                    OrderingOp::CmpLowDouble | OrderingOp::CmpHighDouble => ManagedType::Double,
+                    OrderingOp::CmpLong => ManagedType::Long,
+                };
+                refinements.push(Refinement::Meet(*lhs, operand.clone()));
+                refinements.push(Refinement::Meet(*rhs, operand));
             }
             ManagedInsn::Neg { result, value } | ManagedInsn::Not { result, value } => {
                 let source = self.types.get(value).cloned();
@@ -525,6 +729,24 @@ impl Engine<'_> {
                     refinements.push(Refinement::Meet(*result, array));
                 } else {
                     self.ctx.note_unresolved("type", element.index());
+                }
+            }
+            ManagedInsn::NewFilledArray {
+                result,
+                target,
+                elements,
+            } => {
+                if let Some(array) = self.ctx.type_at(target.index()) {
+                    if let Some(element) = descriptor::element_of(&array) {
+                        for value in elements {
+                            refinements.push(Refinement::Meet(*value, element.clone()));
+                        }
+                    }
+                    if let Some(result) = result {
+                        refinements.push(Refinement::Meet(*result, array));
+                    }
+                } else {
+                    self.ctx.note_unresolved("type", target.index());
                 }
             }
             ManagedInsn::FillArray { array, values } => {
@@ -678,5 +900,6 @@ fn const_type(value: &Constant, ctx: &dyn TypeContext) -> Option<ManagedType> {
         Constant::DoubleBits(_) => Some(ManagedType::Double),
         Constant::Null => Some(ManagedType::Null),
         Constant::String(_) => ctx.string_type(),
+        Constant::ClassLiteral(_) => ctx.class_literal_type(),
     }
 }

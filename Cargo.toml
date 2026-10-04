@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "crates/decomp-core",
+    "crates/decomp-structure",
     "crates/decomp-emit",
     "crates/dex-format",
     "crates/managed-ir",

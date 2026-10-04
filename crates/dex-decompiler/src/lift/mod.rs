@@ -37,6 +37,16 @@ use managed_ir::value::InsnId;
 /// Why a method could not be lifted into managed IR.
 #[derive(Debug, Clone, Error, Eq, PartialEq)]
 pub enum LiftError {
+    /// A filled allocation requires a resolved legal category-one array descriptor.
+    #[error("invalid filled-array type {type_index} at {offset}: {reason}")]
+    InvalidFilledArray {
+        /// DEX instruction offset.
+        offset: u32,
+        /// DEX type pool index.
+        type_index: u32,
+        /// Descriptor validation failure.
+        reason: String,
+    },
     /// The recovering decoder hit its error budget, so the instruction
     /// stream is incomplete beyond recovery and lifting refuses to guess.
     #[error("decode aborted after {budget} budgeted failures")]

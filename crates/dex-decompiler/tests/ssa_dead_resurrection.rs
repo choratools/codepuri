@@ -15,7 +15,8 @@ fn run(units: &[u16]) -> dex_decompiler::SsaMethod {
         handlers: vec![],
         span: RawSpan { offset: 0, size: 0 },
     };
-    DexPasses::run_ssa_with(&body, &dex_decompiler::infer::NoTypes).expect("verified SSA")
+    DexPasses::run_ssa_with(&body, &dex_decompiler::infer::NoTypes)
+        .unwrap_or_else(|error| panic!("verified SSA: {error}"))
 }
 
 #[test]
@@ -35,7 +36,7 @@ fn dead_move_object_does_not_replace_live_register() {
             ManagedInsn::Return { value } => *value,
             _ => None,
         })
-        .expect("return value");
+        .unwrap_or_else(|| panic!("return value"));
     assert!(matches!(
         ssa.ir().instructions()[ssa.ir().values()[returned].def()],
         ManagedInsn::Const {
@@ -68,7 +69,7 @@ fn synthetic_parameter_survives_dead_definition() {
             ManagedInsn::Return { value } => *value,
             _ => None,
         })
-        .expect("return value");
+        .unwrap_or_else(|| panic!("return value"));
     assert!(matches!(
         ssa.ir().instructions()[ssa.ir().values()[returned].def()],
         ManagedInsn::Opaque {
@@ -101,7 +102,7 @@ fn dead_invoke_result_does_not_replace_live_register() {
             ManagedInsn::Return { value } => *value,
             _ => None,
         })
-        .expect("return value");
+        .unwrap_or_else(|| panic!("return value"));
     assert!(matches!(
         ssa.ir().instructions()[ssa.ir().values()[returned].def()],
         ManagedInsn::Const {
@@ -148,8 +149,8 @@ fn handler_input_and_normal_success_commit_survive() {
         }],
         span: RawSpan { offset: 0, size: 0 },
     };
-    let ssa =
-        DexPasses::run_ssa_with(&body, &dex_decompiler::infer::NoTypes).expect("verified SSA");
+    let ssa = DexPasses::run_ssa_with(&body, &dex_decompiler::infer::NoTypes)
+        .unwrap_or_else(|error| panic!("verified SSA: {error}"));
     assert!(ssa.ir().instructions().iter().any(|(_, insn)| matches!(
         insn,
         ManagedInsn::Opaque {
@@ -166,7 +167,7 @@ fn handler_input_and_normal_success_commit_survive() {
                 ManagedInsn::Return { value } if ssa.offset(id) == Some(offset) => *value,
                 _ => None,
             })
-            .expect("return value");
+            .unwrap_or_else(|| panic!("return value"));
         let def = &ssa.ir().instructions()[ssa.ir().values()[value].def()];
         if expected_move {
             assert!(matches!(def, ManagedInsn::Move { .. }));

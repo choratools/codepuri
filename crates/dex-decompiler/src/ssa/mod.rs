@@ -16,9 +16,13 @@
 //! use-dominates-def for registers that are undefined on some paths while
 //! keeping Dalvik's "read an untouched register" behavior representable.
 
+mod analysis;
 mod chains;
+mod initial_context;
 mod liveness;
 mod materialize;
+#[cfg(test)]
+mod performance;
 mod phis;
 mod place;
 mod rename;
@@ -26,6 +30,45 @@ pub(crate) mod uses;
 mod vars;
 
 use std::collections::HashMap;
+use std::time::{Duration, Instant};
+
+/// Caller-owned opt-in pass timings. Completed stages remain available on error.
+#[derive(Debug, Default)]
+pub struct SsaTimings {
+    /// Mirror construction and shared dominance analyses.
+    pub analysis: Duration,
+    /// Synthetic placement and dead-definition cleanup.
+    pub placement: Duration,
+    /// Variable model and liveness.
+    pub liveness: Duration,
+    /// Pruned phi placement.
+    pub phi_placement: Duration,
+    /// Renaming and dead-value cleanup.
+    pub rename: Duration,
+    /// Trivial phi cleanup.
+    pub phi_cleanup: Duration,
+    /// Published CFG materialization and validation.
+    pub materialize: Duration,
+    /// Type inference and literal interpretation.
+    pub inference: Duration,
+    /// Structural SSA verification.
+    pub verification: Duration,
+}
+
+struct Timer<'a> {
+    output: Option<&'a mut SsaTimings>,
+    start: Option<Instant>,
+}
+
+impl Timer<'_> {
+    fn mark(&mut self, field: impl FnOnce(&mut SsaTimings) -> &mut Duration) {
+        if let (Some(output), Some(start)) = (self.output.as_deref_mut(), self.start) {
+            let now = Instant::now();
+            *field(output) = now.duration_since(start);
+            self.start = Some(now);
+        }
+    }
+}
 
 use decomp_core::diagnostics::Diagnostic;
 use decomp_core::ids::BlockId;
@@ -85,6 +128,7 @@ pub struct SsaStats {
 /// A method in verified SSA form with DEX offset provenance.
 #[derive(Debug)]
 pub struct SsaMethod {
+    initial_registers: HashMap<ValueId, Vec<u16>>,
     ir: MethodIr<SsaForm>,
     offsets: HashMap<InsnId, u32>,
     diagnostics: Vec<Diagnostic>,
@@ -92,6 +136,10 @@ pub struct SsaMethod {
 }
 
 impl SsaMethod {
+    /// Physical words attested for synthetic entry definitions in this IR only.
+    pub fn initial_registers(&self) -> &HashMap<ValueId, Vec<u16>> {
+        &self.initial_registers
+    }
     /// Returns the published SSA-form method IR.
     pub const fn ir(&self) -> &MethodIr<SsaForm> {
         &self.ir
@@ -129,6 +177,31 @@ pub fn to_ssa(merged: MergedMethod) -> Result<SsaMethod, SsaError> {
 /// # Errors
 /// Returns [`SsaError`] on structural failure or verifier rejection.
 pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMethod, SsaError> {
+    build_ssa(merged, ctx, None)
+}
+
+/// Builds SSA with caller-controlled stage timings, without library output.
+///
+/// # Errors
+/// Returns the same structural and verification errors as [`to_ssa_with`].
+pub fn to_ssa_with_timings(
+    merged: MergedMethod,
+    ctx: &dyn TypeContext,
+    timings: &mut SsaTimings,
+) -> Result<SsaMethod, SsaError> {
+    *timings = SsaTimings::default();
+    build_ssa(merged, ctx, Some(timings))
+}
+
+fn build_ssa(
+    merged: MergedMethod,
+    ctx: &dyn TypeContext,
+    timings: Option<&mut SsaTimings>,
+) -> Result<SsaMethod, SsaError> {
+    let mut timer = Timer {
+        start: timings.as_ref().map(|_| Instant::now()),
+        output: timings,
+    };
     let mut stats = SsaStats {
         lifted_blocks: merged.lifted_blocks(),
         dropped_gotos: merged.dropped_gotos(),
@@ -139,15 +212,38 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
     let mut chains = chains::Chains::from_merged(&merged);
     stats.merged_blocks = chains.payloads.len();
     let mut insns = merged.insns;
+    chains.add_invocation_entry(&mut insns);
     let mut values = merged.values;
     let reg_slots = merged.reg_slots;
     let width_claims = merged.width_claims;
     let mut offsets = merged.offsets;
+    let mut seeds = HashMap::new();
+    for slot in reg_slots.values() {
+        for value in slot.values() {
+            if let Some(record) = values.get(*value)
+                && matches!(
+                    insns.get(record.def()),
+                    Some(managed_ir::insn::ManagedInsn::Opaque {
+                        family_tag: 0x8001,
+                        ..
+                    })
+                )
+            {
+                let wide = width_claims.get(value) == Some(&managed_ir::types::ValueCategory::Two);
+                if let Some(ty) = ctx.initial_register_type(slot.index(), wide) {
+                    seeds.insert(*value, ty.clone());
+                    values[*value] = Value::new(record.def(), ty);
+                }
+            }
+        }
+    }
 
     let mirror = chains.analysis_cfg();
     let mirror_blocks: Vec<BlockId> = mirror.block_ids().collect();
+    let analysis = analysis::Analysis::new(&mirror);
+    timer.mark(|t| &mut t.analysis);
 
-    let placement = place::place_synthetics(&mirror, &mut chains, &insns, &offsets);
+    let placement = place::place_synthetics(&analysis, &mut chains, &insns, &offsets);
     stats.hoisted_defs = placement.hoisted;
     stats.inserted_defs = placement.inserted;
     stats.dead_defs = placement.dead.len();
@@ -161,12 +257,14 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
         insns.remove(*insn);
         offsets.remove(insn);
     }
+    timer.mark(|t| &mut t.placement);
     let mut vars = vars::Variables::build(&reg_slots, &values, &width_claims);
     let candidates = vars.multi_def_vars();
     let live = liveness::compute(&mirror, &chains, &insns, &vars, &candidates);
+    timer.mark(|t| &mut t.liveness);
 
     let mut phis = phis::place(
-        &mirror,
+        &analysis,
         &chains,
         &mut insns,
         &mut values,
@@ -178,9 +276,10 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
     for phi in phis.all() {
         vars.bind(phi.result, phi.var);
     }
+    timer.mark(|t| &mut t.phi_placement);
 
     let renamed = rename::rename(
-        &mirror,
+        &analysis,
         &mut chains,
         &mut insns,
         &mut values,
@@ -199,6 +298,20 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
             let mut copy = managed_ir::method::RegisterSlot::new(slot.index());
             for value in slot.values() {
                 if values.get(*value).is_some() {
+                    copy.append(*value);
+                }
+            }
+            for (var, value) in &renamed.entry_initials {
+                if vars.register(*var) == Some(slot.index()) {
+                    if let Some(ty) = ctx.initial_register_type(slot.index(), vars.wide(*var)) {
+                        seeds.insert(*value, ty.clone());
+                        let def = values[*value].def();
+                        values[*value] = Value::new(def, ty);
+                    }
+                    copy.append(*value);
+                } else if vars.wide(*var)
+                    && vars.register(*var).and_then(|r| r.checked_add(1)) == Some(slot.index())
+                {
                     copy.append(*value);
                 }
             }
@@ -223,8 +336,10 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
     initial_insns.sort_unstable_by_key(|(var, _)| *var);
     let initial_ids: Vec<InsnId> = initial_insns.into_iter().map(|(_, insn)| insn).collect();
     chains.payloads[0].splice(0..0, initial_ids);
+    timer.mark(|t| &mut t.rename);
 
-    stats.phis_eliminated = phis::eliminate(&mirror, &chains, &mut insns, &mut values, &mut phis);
+    stats.phis_eliminated = phis::eliminate(&analysis, &chains, &mut insns, &mut values, &mut phis);
+    timer.mark(|t| &mut t.phi_cleanup);
 
     let mirror_edge_index = chains::edge_index_map(&mirror, chains.edges.len());
     let cfg = materialize::materialize(
@@ -238,12 +353,14 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
     .map_err(|error| SsaError::Structure(error.to_string()))?;
     stats.ssa_blocks = cfg.block_count();
     cfg.validate()?;
+    timer.mark(|t| &mut t.materialize);
 
     let mut types: HashMap<ValueId, ManagedType> = values
         .iter()
         .map(|(id, record)| (id, record.ty().clone()))
         .collect();
-    let diagnostics = infer::infer_types(&cfg, &insns, &mut types, &offsets, ctx);
+    let seeded_context = initial_context::InitialContext { base: ctx, seeds };
+    let diagnostics = infer::infer_types(&cfg, &insns, &mut types, &offsets, &seeded_context);
 
     // Publish the inferred interpretation of raw DEX constant bits. This is
     // a literal representation change, never a numeric conversion or cast.
@@ -251,6 +368,8 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
         if let managed_ir::insn::ManagedInsn::Const { result, value } = insn {
             use managed_ir::ops::Constant;
             match (types.get(result), *value) {
+                (Some(ManagedType::Boolean), Constant::Int(0)) => *value = Constant::Boolean(false),
+                (Some(ManagedType::Boolean), Constant::Int(1)) => *value = Constant::Boolean(true),
                 (Some(ManagedType::Float), Constant::Int(bits)) => {
                     *value = Constant::FloatBits(bits as u32)
                 }
@@ -272,7 +391,9 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
         }
     }
     let ir = MethodIr::<SsaForm>::from_parts_with_registers(cfg, insns, values, reg_slots);
+    timer.mark(|t| &mut t.inference);
     let findings = managed_ir::verify::SsaVerifier::new().verify(&ir);
+    timer.mark(|t| &mut t.verification);
     if !findings.is_empty() {
         if std::env::var_os("DUMP_SSA_FAIL").is_some() {
             eprintln!("TYPE DIAGNOSTICS {diagnostics:?}");
@@ -294,7 +415,31 @@ pub fn to_ssa_with(merged: MergedMethod, ctx: &dyn TypeContext) -> Result<SsaMet
         }
         return Err(SsaError::Verification(findings));
     }
+    let mut initial_registers = HashMap::<ValueId, Vec<u16>>::new();
+    for slot in ir.register_slots().values() {
+        for value in slot.values() {
+            if let Ok(record) = ir.value(*value)
+                && matches!(
+                    ir.instruction(record.def()),
+                    Ok(managed_ir::insn::ManagedInsn::Opaque {
+                        family_tag: 0x8001 | 0x8003,
+                        ..
+                    })
+                )
+            {
+                initial_registers
+                    .entry(*value)
+                    .or_default()
+                    .push(slot.index());
+            }
+        }
+    }
+    for words in initial_registers.values_mut() {
+        words.sort_unstable();
+        words.dedup();
+    }
     Ok(SsaMethod {
+        initial_registers,
         ir,
         offsets,
         diagnostics,

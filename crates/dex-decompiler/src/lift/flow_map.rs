@@ -9,8 +9,8 @@ use managed_ir::value::ValueId;
 
 use super::lowering::{Built, Lowering, PendingFlow};
 use super::op_maps::{
-    binary_ty, binary_wide, branch_target, invoke_kind, literal_arith, pair_compare, plain_arith,
-    zero_pair_compare,
+    binary_ty, binary_wide, branch_target, invoke_kind, literal_arith, ordering_op, ordering_wide,
+    pair_compare, plain_arith, zero_pair_compare,
 };
 
 /// Lowers one control-transfer, invocation, or arithmetic instruction.
@@ -18,15 +18,17 @@ pub(super) fn lower(state: &mut Lowering<'_>) -> Built {
     let byte = state.byte;
     match byte {
         0x2d..=0x31 => {
-            // DEX cmp{l,g}-float/double and cmp-long produce an integer
-            // ordering (-1, 0, 1), not a Boolean predicate. Preserve the
-            // opcode and operands until IR has an ordering operation.
-            let lhs = state.values.read_typed(state.reg(1), byte >= 0x2f);
-            let rhs = state.values.read_typed(state.reg(2), byte >= 0x2f);
-            let result = state
-                .values
-                .define(state.id, state.reg(0), ManagedType::Int);
-            Built::Managed(state.opaque(vec![lhs, rhs], vec![result], EffectFlags::NONE))
+            let wide = ordering_wide(byte);
+            let lhs = state.values.read_typed(state.reg(1), wide);
+            let rhs = state.values.read_typed(state.reg(2), wide);
+            Built::Managed(ManagedInsn::OrderingCompare {
+                op: ordering_op(byte),
+                result: state
+                    .values
+                    .define(state.id, state.reg(0), ManagedType::Int),
+                lhs,
+                rhs,
+            })
         }
         0x28..=0x2a => Built::Pending(PendingFlow::Goto(branch_target(state.insn))),
         0x2b | 0x2c => {

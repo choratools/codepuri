@@ -16,10 +16,12 @@ use crate::lift::LiftedMethod;
 
 /// Per-block facts snapshot of the lifted CFG.
 struct Facts {
+    entry: BlockId,
     insn_of: HashMap<BlockId, InsnId>,
     out_edges: HashMap<BlockId, Vec<EdgeId>>,
     in_edges: HashMap<BlockId, Vec<EdgeId>>,
     edges: HashMap<EdgeId, (BlockId, BlockId, EdgeKind)>,
+    edge_order: Vec<EdgeId>,
     try_mask: HashMap<BlockId, u64>,
     blocks: Vec<BlockId>,
 }
@@ -48,7 +50,9 @@ impl Facts {
         let mut out_edges: HashMap<BlockId, Vec<EdgeId>> = HashMap::new();
         let mut in_edges: HashMap<BlockId, Vec<EdgeId>> = HashMap::new();
         let mut edges = HashMap::with_capacity(cfg.edge_count());
+        let mut edge_order = Vec::with_capacity(cfg.edge_count());
         for edge in cfg.edge_ids() {
+            edge_order.push(edge);
             let record = cfg.edge(edge).map_err(|_| MergeError::MissingEdge(edge))?;
             out_edges.entry(record.source()).or_default().push(edge);
             in_edges.entry(record.target()).or_default().push(edge);
@@ -59,10 +63,12 @@ impl Facts {
         }
         let try_mask = try_masks(lifted, &offset_of);
         Ok(Self {
+            entry: cfg.entry(),
             insn_of,
             out_edges,
             in_edges,
             edges,
+            edge_order,
             try_mask,
             blocks,
         })
@@ -141,6 +147,16 @@ fn legal(
     tail: BlockId,
     head: BlockId,
 ) -> bool {
+    // Invocation supplies an implicit incoming path to the original entry.
+    // One explicit backedge is therefore not a single-entry seam: absorbing
+    // entry into that predecessor would execute a loop suffix on first entry.
+    // Retain an entry goto too, so every merged entry starts with the exact
+    // original payload; other pure goto seams remain eligible for fusion.
+    if head == facts.entry
+        || tail == facts.entry && arena.get(facts.insn_of[&tail]).is_some_and(is_pure_goto)
+    {
+        return false;
+    }
     if chains.next.contains_key(&tail) || chains.prev.contains_key(&head) {
         return false;
     }
@@ -214,17 +230,30 @@ pub(super) fn fuse(lifted: LiftedMethod) -> Result<MergedMethod, MergeError> {
     let fused = fuse_chains(&facts, &insns);
     let dropped = count_drops(&fused.chains, &insns, &facts);
 
-    let mut payloads: Vec<Vec<InsnId>> = fused
+    let payloads: Vec<Vec<InsnId>> = fused
         .chains
         .iter()
         .map(|chain| chain_payload(chain, &fused.next, &insns, &facts))
         .collect();
+    let entry_chain = fused
+        .chains
+        .iter()
+        .position(|chain| chain.first() == Some(&facts.entry))
+        .ok_or(MergeError::MissingBlock(facts.entry))?;
+    let entry_payload = payloads
+        .get(entry_chain)
+        .filter(|payload| payload.first() == Some(&facts.insn_of[&facts.entry]))
+        .ok_or(MergeError::MissingBlock(facts.entry))?
+        .clone();
     let mut block_map: HashMap<BlockId, BlockId> = HashMap::with_capacity(fused.chains.len());
-    let mut cfg: Cfg<Vec<InsnId>> = Cfg::new(payloads.remove(0));
-    block_map.insert(fused.chains[0][0], cfg.entry());
+    let mut cfg: Cfg<Vec<InsnId>> = Cfg::new(entry_payload);
+    block_map.insert(facts.entry, cfg.entry());
     for (index, payload) in payloads.into_iter().enumerate() {
+        if index == entry_chain {
+            continue;
+        }
         let block = cfg.add_block(payload);
-        block_map.insert(fused.chains[index + 1][0], block);
+        block_map.insert(fused.chains[index][0], block);
     }
 
     let chain_of: HashMap<BlockId, usize> = fused
@@ -234,7 +263,14 @@ pub(super) fn fuse(lifted: LiftedMethod) -> Result<MergedMethod, MergeError> {
         .flat_map(|(index, chain)| chain.iter().map(move |block| (*block, index)))
         .collect();
     let mut edge_remap: HashMap<EdgeId, EdgeId> = HashMap::with_capacity(facts.edges.len());
-    for (edge, (source, target, kind)) in &facts.edges {
+    // Retain source arena edge order, including exceptional priority and
+    // distinct switch edges sharing a target. HashMap iteration here changes
+    // successor scheduling and downstream dispatch state/source numbering.
+    for edge in &facts.edge_order {
+        let (source, target, kind) = facts
+            .edges
+            .get(edge)
+            .ok_or(MergeError::MissingEdge(*edge))?;
         if fused.next.get(source) == Some(target) {
             continue;
         }

@@ -6,7 +6,7 @@ use crate::effects::EffectFlags;
 use crate::refs::{ClassRef, FieldRef, MethodRef, TypeRef};
 use crate::value::ValueId;
 
-pub use crate::ops::{ArithOp, CompareOp, Constant, InvokeKind};
+pub use crate::ops::{ArithOp, CompareOp, Constant, InvokeKind, OrderingOp};
 
 /// A family-neutral managed semantic instruction.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -51,6 +51,17 @@ pub enum ManagedInsn {
         /// Comparison to apply.
         op: CompareOp,
         /// Defined Boolean value.
+        result: ValueId,
+        /// Left operand.
+        lhs: ValueId,
+        /// Right operand.
+        rhs: ValueId,
+    },
+    /// Compares two values and defines an integer ordering value (`-1`, `0`, or `1`).
+    OrderingCompare {
+        /// Ordering comparison to apply.
+        op: OrderingOp,
+        /// Defined integer value.
         result: ValueId,
         /// Left operand.
         lhs: ValueId,
@@ -129,6 +140,15 @@ pub enum ManagedInsn {
         element: TypeRef,
         /// Requested array length.
         length: ValueId,
+    },
+    /// Allocates and initializes a category-one array, even if its result is discarded.
+    NewFilledArray {
+        /// Optional destination of the allocated reference.
+        result: Option<ValueId>,
+        /// Full allocated array type, not its component.
+        target: TypeRef,
+        /// Already evaluated elements in register order.
+        elements: Vec<ValueId>,
     },
     /// Stores a sequence of values into an existing array.
     FillArray {

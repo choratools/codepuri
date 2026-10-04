@@ -123,6 +123,12 @@ fn lift_app(path: &Path) -> AppResult {
                             Err(LiftError::Cfg(_)) => {
                                 *metrics.lift_errors.entry("cfg").or_default() += 1;
                             }
+                            Err(LiftError::InvalidFilledArray { .. }) => {
+                                *metrics
+                                    .lift_errors
+                                    .entry("invalid-filled-array")
+                                    .or_default() += 1;
+                            }
                         }
                     }
                 }

@@ -32,13 +32,13 @@ fn legacy_run(engine: &mut Engine<'_>) {
         for refinement in refinements {
             match refinement {
                 Refinement::Meet(value, target) => legacy_meet(engine, value, target, insn),
-                Refinement::Join => engine.join_phi(insn),
+                Refinement::Join => super::expansion_tests::legacy_join(engine, insn),
             }
         }
     }
 }
 
-fn solve(
+pub(super) fn solve(
     insns: &InsnArena,
     mut types: HashMap<ValueId, ManagedType>,
     legacy: bool,
@@ -62,6 +62,9 @@ fn solve(
         .map(|(n, id)| (id, n as u32))
         .collect();
     let mut engine = Engine {
+        split_zeros: HashSet::new(),
+        split_ones: HashSet::new(),
+        raw_ones: HashSet::new(),
         insns,
         types: &mut types,
         offsets: &offsets,
@@ -77,6 +80,7 @@ fn solve(
         arity_overflow: 0,
         arity_diagnostics: 0,
         params: Vec::new(),
+        expansions: expansion::Expansions::default(),
     };
     if legacy {
         legacy_run(&mut engine);
@@ -274,5 +278,92 @@ fn array_payload_bits_and_index_width_remain_exact() {
         assert_eq!(types[&payload], element);
         assert_eq!(types[&result], element);
         assert_eq!(types[&index], ManagedType::Int);
+    }
+}
+
+fn raw_one_transition_trace(
+    prior: ManagedType,
+    targets: &[ManagedType],
+) -> (Vec<ManagedType>, Vec<Diagnostic>) {
+    let mut ids = SlotMap::<ValueId, ()>::with_key();
+    let value = ids.insert(());
+    let mut insns = InsnArena::with_key();
+    let id = insns.insert(ManagedInsn::Const {
+        result: value,
+        value: Constant::Int(1),
+    });
+    let mut types = HashMap::from([(value, prior)]);
+    let offsets = HashMap::from([(id, 0)]);
+    let definitions = HashMap::from([(value, id)]);
+    let raw_constants = HashSet::from([value]);
+    let phi_results = HashMap::new();
+    let users = HashMap::new();
+    let mut engine = Engine {
+        insns: &insns,
+        types: &mut types,
+        offsets: &offsets,
+        ctx: &NoTypes,
+        phi_results: &phi_results,
+        definitions: &definitions,
+        raw_constants: &raw_constants,
+        raw_ones: HashSet::from([value]),
+        users: &users,
+        pending: VecDeque::new(),
+        queued: HashSet::new(),
+        diagnostics: vec![],
+        conflicts_overflow: 0,
+        arity_overflow: 0,
+        arity_diagnostics: 0,
+        params: vec![],
+        expansions: expansion::Expansions::default(),
+        split_zeros: HashSet::new(),
+        split_ones: HashSet::new(),
+    };
+    let mut trace = vec![];
+    for target in targets {
+        engine.meet_leaf(value, target.clone(), id);
+        trace.push(engine.types[&value].clone());
+    }
+    (trace, engine.finish())
+}
+#[test]
+fn literal_one_narrow_boolean_refinements_are_absorbing_not_oscillating() {
+    for narrow in [ManagedType::Byte, ManagedType::Short, ManagedType::Char] {
+        for first in [true, false] {
+            let pair = if first {
+                [narrow.clone(), ManagedType::Boolean]
+            } else {
+                [ManagedType::Boolean, narrow.clone()]
+            };
+            let targets = pair.iter().cycle().take(100).cloned().collect::<Vec<_>>();
+            let (trace, diagnostics) = raw_one_transition_trace(ManagedType::Unknown, &targets);
+            assert!(diagnostics.is_empty());
+            assert!(
+                trace[1..].iter().all(|ty| *ty == ManagedType::Int),
+                "{trace:?}"
+            );
+            assert!(trace.windows(2).filter(|pair| pair[0] != pair[1]).count() <= 1);
+        }
+    }
+}
+#[test]
+fn literal_one_cannot_launder_existing_nonintegral_or_conflict_domain() {
+    for prior in [
+        ManagedType::Float,
+        ManagedType::Reference(managed_ir::refs::ClassRef::new(0)),
+        ManagedType::Long,
+        ManagedType::Double,
+        ManagedType::Conflict,
+    ] {
+        for pair in [
+            [ManagedType::Boolean, ManagedType::Int],
+            [ManagedType::Int, ManagedType::Boolean],
+        ] {
+            let (trace, diagnostics) = raw_one_transition_trace(prior.clone(), &pair);
+            assert!(trace.iter().all(|ty| ty == &prior), "{prior:?}: {trace:?}");
+            if prior != ManagedType::Conflict {
+                assert!(!diagnostics.is_empty());
+            }
+        }
     }
 }

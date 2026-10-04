@@ -125,9 +125,7 @@ impl Lowering<'_> {
     /// the destination pair.
     pub(crate) fn orphan_result(&mut self, reg: u16) -> Built {
         let writes = if self.byte == 0x0b {
-            vec![self
-                .values
-                .define_wide(self.id, reg, ManagedType::Unknown)]
+            vec![self.values.define_wide(self.id, reg, ManagedType::Unknown)]
         } else {
             vec![self.values.define(self.id, reg, ManagedType::Unknown)]
         };

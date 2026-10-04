@@ -1,6 +1,6 @@
 //! Operators and constants used by managed instructions.
 
-use crate::refs::StringRef;
+use crate::refs::{StringRef, TypeRef};
 
 /// A family-neutral constant payload.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -21,6 +21,10 @@ pub enum Constant {
     Null,
     /// An unresolved string-pool literal.
     String(StringRef),
+    /// Resolves a type-pool entry to its runtime class object, including arrays
+    /// and primitive types. Resolution may throw; this is not the referenced
+    /// type itself as a value.
+    ClassLiteral(TypeRef),
 }
 
 /// A binary arithmetic or bitwise operation.
@@ -67,6 +71,21 @@ pub enum CompareOp {
     GreaterEqual,
 }
 
+/// A Dalvik three-way comparison that defines an `int` ordering value.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub enum OrderingOp {
+    /// Single-precision compare where NaN orders as `-1` (`cmpl-float`).
+    CmpLowFloat,
+    /// Single-precision compare where NaN orders as `1` (`cmpg-float`).
+    CmpHighFloat,
+    /// Double-precision compare where NaN orders as `-1` (`cmpl-double`).
+    CmpLowDouble,
+    /// Double-precision compare where NaN orders as `1` (`cmpg-double`).
+    CmpHighDouble,
+    /// Integer long compare.
+    CmpLong,
+}
+
 /// Dispatch semantics for a managed invocation.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum InvokeKind {
@@ -74,8 +93,10 @@ pub enum InvokeKind {
     Static,
     /// Virtual receiver dispatch.
     Virtual,
-    /// Constructor, private, or superclass dispatch.
+    /// Constructor or private direct dispatch.
     Special,
+    /// Exact superclass dispatch, retaining invoke-super opcode provenance.
+    Super,
     /// Interface receiver dispatch.
     Interface,
     /// Runtime-polymorphic signature dispatch.

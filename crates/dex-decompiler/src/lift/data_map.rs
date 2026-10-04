@@ -64,14 +64,12 @@ pub(super) fn lower(state: &mut Lowering<'_>) -> Built {
                 .define(state.id, state.reg(0), ManagedType::Unknown),
             value: Constant::String(StringRef::new(state.pool())),
         }),
-        0x1c => {
-            let writes = vec![state.values.define(
-                state.id,
-                state.reg(0),
-                ManagedType::Reference(ClassRef::new(state.pool())),
-            )];
-            Built::Managed(state.opaque(Vec::new(), writes, EffectFlags::MAY_THROW))
-        }
+        0x1c => Built::Managed(ManagedInsn::Const {
+            result: state
+                .values
+                .define(state.id, state.reg(0), ManagedType::Unknown),
+            value: Constant::ClassLiteral(TypeRef::new(state.pool())),
+        }),
         0x1d => Built::Managed(ManagedInsn::MonitorEnter {
             object: state.values.read(state.reg(0)),
         }),
@@ -131,11 +129,16 @@ pub(super) fn lower(state: &mut Lowering<'_>) -> Built {
                 .iter()
                 .map(|&r| state.values.read(r))
                 .collect();
-            let writes = state
-                .fused
-                .map(|fused| vec![state.values.define(state.id, fused.dest, array_type())])
-                .unwrap_or_default();
-            Built::Managed(state.opaque(reads, writes, EffectFlags::MAY_THROW))
+            let result = state.fused.map(|fused| {
+                state
+                    .values
+                    .define(state.id, fused.dest, ManagedType::Unknown)
+            });
+            Built::Managed(ManagedInsn::NewFilledArray {
+                result,
+                target: TypeRef::new(state.pool()),
+                elements: reads,
+            })
         }
         0x26 => match state.fill_values.take() {
             Some(elements) => Built::Managed(ManagedInsn::FillArray {

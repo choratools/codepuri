@@ -7,12 +7,14 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+zip.workspace = true
 decomp-core = { path = "../decomp-core" }
 decomp-emit = { path = "../decomp-emit" }
 dex-format = { path = "../dex-format" }
 managed-ir = { path = "../managed-ir" }
 dex-decompiler = { path = "../dex-decompiler" }
 backend-java = { path = "../backend-java" }
+decomp-structure = { path = "../decomp-structure" }
 
 [lints]
 workspace = true

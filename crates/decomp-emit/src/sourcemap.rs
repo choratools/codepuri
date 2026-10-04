@@ -68,6 +68,7 @@ impl Mapping {
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct SourceMap {
     mappings: Vec<Mapping>,
+    requires_scan: bool,
 }
 
 impl SourceMap {
@@ -78,6 +79,15 @@ impl SourceMap {
 
     /// Finds the provenance covering an output coordinate.
     pub fn lookup(&self, position: Position) -> Option<ProvenanceId> {
+        if !self.requires_scan {
+            let index = self
+                .mappings
+                .partition_point(|mapping| mapping.start <= position);
+            return index.checked_sub(1).and_then(|index| {
+                let mapping = self.mappings[index];
+                mapping.contains(position).then_some(mapping.provenance)
+            });
+        }
         self.mappings
             .iter()
             .find(|mapping| mapping.contains(position))
@@ -85,6 +95,13 @@ impl SourceMap {
     }
 
     pub(crate) fn push(&mut self, mapping: Mapping) {
+        // Overlaps and out-of-order input retain the original first-match rule.
+        self.requires_scan |= mapping.start.line != mapping.end.line
+            || mapping.start >= mapping.end
+            || self
+                .mappings
+                .last()
+                .is_some_and(|last| last.end > mapping.start);
         self.mappings.push(mapping);
     }
 }
@@ -96,5 +113,50 @@ impl Mapping {
             end,
             provenance,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn indexed_and_fallback_lookup_match_first_covering_interval() {
+        let cases = [
+            vec![(0, 1, 3), (0, 3, 5), (1, 0, 4), (2, 2, 6)],
+            vec![(0, 1, 6), (0, 2, 3), (0, 1, 4)],
+            vec![(1, 1, 4), (0, 2, 5), (0, 0, 3)],
+            vec![(0, 1, 1), (0, 1, 4), (0, 4, 2)],
+        ];
+        for (case, intervals) in cases.into_iter().enumerate() {
+            let mut map = SourceMap::default();
+            for (id, (line, start, end)) in intervals.into_iter().enumerate() {
+                map.push(Mapping::new(
+                    Position::new(line, start),
+                    Position::new(line, end),
+                    ProvenanceId::new(id as u64),
+                ));
+            }
+            assert_eq!(map.requires_scan, case != 0);
+            for line in 0..4 {
+                for column in 0..8 {
+                    let position = Position::new(line, column);
+                    let expected = map
+                        .mappings()
+                        .iter()
+                        .find(|m| m.contains(position))
+                        .map(|m| m.provenance());
+                    assert_eq!(map.lookup(position), expected);
+                }
+            }
+        }
+        let mut map = SourceMap::default();
+        map.push(Mapping::new(
+            Position::new(0, 0),
+            Position::new(1, 3),
+            ProvenanceId::new(0),
+        ));
+        assert_eq!(map.lookup(Position::new(0, 1)), None);
+        assert_eq!(SourceMap::default().lookup(Position::new(0, 0)), None);
     }
 }

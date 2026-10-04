@@ -5,7 +5,8 @@
 //! *ephemeral* value that belongs to no register, such as lifter-synthesized
 //! constants, branch predicates, initial register reads, and handler inputs.
 //! Ephemeral values have exactly one definition, so they never need phis;
-//! register lineages with two or more definitions are the phi candidates.
+//! register lineages with an explicit definition are phi candidates: a single
+//! conditional definition can merge with an implicit incoming definition.
 //!
 //! Dalvik registers are untyped 32-bit slots, so one register may hold a
 //! category-2 value at one program point and be re-defined as a category-1
@@ -81,9 +82,21 @@ pub(crate) struct Variables {
     homes: HashMap<ValueId, u32>,
     kinds: Vec<VarKind>,
     defs: Vec<Vec<ValueId>>,
+    wide_values: std::collections::HashSet<ValueId>,
 }
 
 impl Variables {
+    pub fn register(&self, var: u32) -> Option<u16> {
+        match self.kinds[var as usize] {
+            VarKind::Register(r) => Some(r),
+            _ => None,
+        }
+    }
+    pub fn wide(&self, var: u32) -> bool {
+        self.defs[var as usize]
+            .iter()
+            .any(|v| self.wide_values.contains(v))
+    }
     /// Builds the model from register histories.
     ///
     /// Slots are processed in ascending register order so a value shared by
@@ -100,7 +113,13 @@ impl Variables {
         let mut slots: Vec<&managed_ir::method::RegisterSlot> = reg_slots.values().collect();
         slots.sort_by_key(|slot| slot.index());
         let mut register_vars: HashMap<(u16, WidthBucket), u32> = HashMap::new();
-        let mut model = Self::default();
+        let mut model = Self {
+            wide_values: values
+                .keys()
+                .filter(|v| bucket_of(values, claims, *v) == WidthBucket::Two)
+                .collect(),
+            ..Self::default()
+        };
         for slot in &slots {
             for &value in slot.values() {
                 let bucket = bucket_of(values, claims, value);
@@ -153,14 +172,18 @@ impl Variables {
         &self.defs[var as usize]
     }
 
-    /// Returns register variables with two or more definitions, in variable
-    /// order. These are the only phi candidates.
+    /// Returns physical register lineages with explicit definitions, in order.
+    /// A single conditional definition can meet the register's entry value;
+    /// counting explicit definitions alone cannot exclude that necessary phi.
+    /// Dominance-frontier placement and live-in pruning decide which candidates
+    /// actually need phis. Ephemeral single-definition values never qualify.
+    /// The historical name is retained for the existing internal caller.
     pub fn multi_def_vars(&self) -> Vec<u32> {
         self.defs
             .iter()
             .enumerate()
             .filter(|(var, defs)| {
-                defs.len() >= 2 && matches!(self.kinds[*var], VarKind::Register(_))
+                !defs.is_empty() && matches!(self.kinds[*var], VarKind::Register(_))
             })
             .map(|(var, _)| var as u32)
             .collect()
@@ -180,5 +203,26 @@ impl Variables {
     /// Returns the number of variables.
     pub fn count(&self) -> usize {
         self.kinds.len()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use managed_ir::{insn::ManagedInsn, method::InsnArena, value::Value};
+
+    #[test]
+    fn absent_physical_lineage_does_not_promote_ephemeral_values() {
+        let mut insns = InsnArena::with_key();
+        let definition = insns.insert(ManagedInsn::Return { value: None });
+        let mut values = ValueArena::with_key();
+        let value = values.insert(Value::new(definition, ManagedType::Int));
+        let variables = Variables::build(
+            &RegisterSlotArena::with_key(),
+            &values,
+            &HashMap::from([(value, ValueCategory::One)]),
+        );
+        assert!(variables.multi_def_vars().is_empty());
+        assert_eq!(variables.register(variables.var_of(value)), None);
     }
 }

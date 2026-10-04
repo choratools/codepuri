@@ -48,7 +48,7 @@ fn shared_null_preserves_multidimensional_phi_and_element_types() {
         let mut insns = InsnArena::with_key();
         insns.insert(ManagedInsn::Const {
             result: null,
-            value: constant.clone(),
+            value: constant,
         });
         // The same null is consumed as [F, [[F, and unrelated nominal refs.
         for field in 0..4 {

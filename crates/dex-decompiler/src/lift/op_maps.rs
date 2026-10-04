@@ -3,7 +3,7 @@
 //! These tables are pure functions of the Dalvik opcode byte and mirror the
 //! opcode metadata in [`crate::decode`].
 
-use managed_ir::insn::{ArithOp, CompareOp, InvokeKind};
+use managed_ir::insn::{ArithOp, CompareOp, InvokeKind, OrderingOp};
 use managed_ir::types::ManagedType;
 
 use crate::decode::DecodedInsn;
@@ -37,7 +37,8 @@ pub(crate) fn branch_target(insn: &DecodedInsn) -> u32 {
 pub(crate) fn invoke_kind(byte: u8) -> InvokeKind {
     match byte {
         0x6e | 0x74 => InvokeKind::Virtual,
-        0x6f | 0x70 | 0x75 | 0x76 => InvokeKind::Special,
+        0x6f | 0x75 => InvokeKind::Super,
+        0x70 | 0x76 => InvokeKind::Special,
         0x71 | 0x77 => InvokeKind::Static,
         0x72 | 0x78 => InvokeKind::Interface,
         _ => InvokeKind::Polymorphic,
@@ -143,5 +144,38 @@ pub(crate) fn zero_pair_compare(byte: u8) -> CompareOp {
         0x3b => CompareOp::GreaterEqual,
         0x3c => CompareOp::GreaterThan,
         _ => CompareOp::LessEqual,
+    }
+}
+
+/// Maps Dalvik three-way compare opcodes to ordering semantics.
+pub(crate) fn ordering_op(byte: u8) -> OrderingOp {
+    match byte {
+        0x2d => OrderingOp::CmpLowFloat,
+        0x2e => OrderingOp::CmpHighFloat,
+        0x2f => OrderingOp::CmpLowDouble,
+        0x30 => OrderingOp::CmpHighDouble,
+        _ => OrderingOp::CmpLong,
+    }
+}
+
+/// Returns whether a three-way compare opcode consumes category-2 operands.
+pub(crate) fn ordering_wide(byte: u8) -> bool {
+    matches!(byte, 0x2f..=0x31)
+}
+
+#[cfg(test)]
+mod invoke_provenance_tests {
+    use super::*;
+    #[test]
+    fn super_and_direct_opcodes_remain_distinct() {
+        for opcode in [0x6f, 0x75] {
+            assert_eq!(invoke_kind(opcode), InvokeKind::Super);
+        }
+        for opcode in [0x70, 0x76] {
+            assert_eq!(invoke_kind(opcode), InvokeKind::Special);
+        }
+        for opcode in [0x6e, 0x74] {
+            assert_eq!(invoke_kind(opcode), InvokeKind::Virtual);
+        }
     }
 }

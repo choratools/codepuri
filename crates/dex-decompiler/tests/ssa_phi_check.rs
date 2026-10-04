@@ -43,8 +43,9 @@ fn for_each_definition(insn: &ManagedInsn, mut visit: impl FnMut(ValueId)) {
         | ManagedInsn::Cast { result, .. }
         | ManagedInsn::InstanceOf { result, .. }
         | ManagedInsn::Arithmetic { result, .. }
-        | ManagedInsn::Compare { result, .. } => visit(*result),
-        ManagedInsn::Invoke { result, .. } => {
+        | ManagedInsn::Compare { result, .. }
+        | ManagedInsn::OrderingCompare { result, .. } => visit(*result),
+        ManagedInsn::Invoke { result, .. } | ManagedInsn::NewFilledArray { result, .. } => {
             if let Some(value) = result {
                 visit(*value);
             }
@@ -81,7 +82,9 @@ fn for_each_use(insn: &ManagedInsn, mut visit: impl FnMut(ValueId)) {
                 visit(*value);
             }
         }
-        ManagedInsn::Arithmetic { lhs, rhs, .. } | ManagedInsn::Compare { lhs, rhs, .. } => {
+        ManagedInsn::Arithmetic { lhs, rhs, .. }
+        | ManagedInsn::Compare { lhs, rhs, .. }
+        | ManagedInsn::OrderingCompare { lhs, rhs, .. } => {
             visit(*lhs);
             visit(*rhs);
         }
@@ -120,7 +123,9 @@ fn for_each_use(insn: &ManagedInsn, mut visit: impl FnMut(ValueId)) {
                 visit(*value);
             }
         }
-        ManagedInsn::Invoke { args, .. } | ManagedInsn::Opaque { reads: args, .. } => {
+        ManagedInsn::NewFilledArray { elements: args, .. }
+        | ManagedInsn::Invoke { args, .. }
+        | ManagedInsn::Opaque { reads: args, .. } => {
             for value in args {
                 visit(*value);
             }

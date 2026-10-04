@@ -8,6 +8,8 @@ license.workspace = true
 
 [dependencies]
 decomp-core = { path = "../decomp-core" }
+decomp-structure = { path = "../decomp-structure" }
+managed-ir = { path = "../managed-ir" }
 
 [dev-dependencies]
 proptest.workspace = true

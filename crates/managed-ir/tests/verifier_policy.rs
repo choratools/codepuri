@@ -3,7 +3,7 @@
 use std::fmt::Debug;
 
 use decomp_core::cfg::{Cfg, EdgeKind};
-use managed_ir::insn::{Constant, ManagedInsn};
+use managed_ir::insn::{Constant, ManagedInsn, OrderingOp};
 use managed_ir::method::{
     InsnArena, MethodIr, RegisterSlot, RegisterSlotArena, SsaForm, ValueArena,
 };
@@ -103,6 +103,72 @@ fn retained_register_history_rejects_half_of_a_wide_value() {
     low.append(value);
     slots.insert(low);
     let method = MethodIr::<SsaForm>::from_parts_with_registers(cfg, insns, values, slots);
+
+    let diagnostics = SsaVerifier::new().verify(&method);
+
+    assert!(has_code(&diagnostics, "MIR_SSA_WIDE_SPLIT"));
+}
+
+#[test]
+fn ordering_compare_result_must_be_category_one() {
+    let mut insns = InsnArena::with_key();
+    let mut values = ValueArena::with_key();
+    let (left_insn, left) = definition(&mut insns, &mut values, ManagedType::Long);
+    insns[left_insn] = ManagedInsn::Const {
+        result: left,
+        value: Constant::Long(1),
+    };
+    let (right_insn, right) = definition(&mut insns, &mut values, ManagedType::Long);
+    insns[right_insn] = ManagedInsn::Const {
+        result: right,
+        value: Constant::Long(2),
+    };
+    let (cmp_insn, result) = definition(&mut insns, &mut values, ManagedType::Long);
+    insns[cmp_insn] = ManagedInsn::OrderingCompare {
+        op: OrderingOp::CmpLong,
+        result,
+        lhs: left,
+        rhs: right,
+    };
+    let mut cfg = Cfg::new(left_insn);
+    let second = cfg.add_block(right_insn);
+    must(cfg.add_edge(cfg.entry(), second, EdgeKind::Unconditional));
+    let third = cfg.add_block(cmp_insn);
+    must(cfg.add_edge(second, third, EdgeKind::Unconditional));
+    let method = MethodIr::<SsaForm>::from_parts(cfg, insns, values);
+
+    let diagnostics = SsaVerifier::new().verify(&method);
+
+    assert!(has_code(&diagnostics, "MIR_SSA_WIDE_SPLIT"));
+}
+
+#[test]
+fn ordering_compare_operands_must_have_matching_width() {
+    let mut insns = InsnArena::with_key();
+    let mut values = ValueArena::with_key();
+    let (left_insn, left) = definition(&mut insns, &mut values, ManagedType::Float);
+    insns[left_insn] = ManagedInsn::Const {
+        result: left,
+        value: Constant::FloatBits(0),
+    };
+    let (right_insn, right) = definition(&mut insns, &mut values, ManagedType::Double);
+    insns[right_insn] = ManagedInsn::Const {
+        result: right,
+        value: Constant::DoubleBits(0),
+    };
+    let (cmp_insn, result) = definition(&mut insns, &mut values, ManagedType::Int);
+    insns[cmp_insn] = ManagedInsn::OrderingCompare {
+        op: OrderingOp::CmpLowFloat,
+        result,
+        lhs: left,
+        rhs: right,
+    };
+    let mut cfg = Cfg::new(left_insn);
+    let second = cfg.add_block(right_insn);
+    must(cfg.add_edge(cfg.entry(), second, EdgeKind::Unconditional));
+    let third = cfg.add_block(cmp_insn);
+    must(cfg.add_edge(second, third, EdgeKind::Unconditional));
+    let method = MethodIr::<SsaForm>::from_parts(cfg, insns, values);
 
     let diagnostics = SsaVerifier::new().verify(&method);
 

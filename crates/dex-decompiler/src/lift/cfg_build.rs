@@ -77,8 +77,11 @@ pub(crate) fn assemble(
                 | ManagedInsn::NewArray { result, .. }
                 | ManagedInsn::Cast { result, .. }
                 | ManagedInsn::InstanceOf { result, .. }
+                | ManagedInsn::OrderingCompare { result, .. }
                 | ManagedInsn::Arithmetic { result, .. } => Some(*result),
-                ManagedInsn::Invoke { result, .. } => *result,
+                ManagedInsn::Invoke { result, .. } | ManagedInsn::NewFilledArray { result, .. } => {
+                    *result
+                }
                 ManagedInsn::Opaque { writes, .. } if writes.len() == 1 => Some(writes[0]),
                 _ => None,
             };
@@ -96,8 +99,10 @@ pub(crate) fn assemble(
                     | ManagedInsn::NewArray { result, .. }
                     | ManagedInsn::Cast { result, .. }
                     | ManagedInsn::InstanceOf { result, .. }
+                    | ManagedInsn::OrderingCompare { result, .. }
                     | ManagedInsn::Arithmetic { result, .. } => *result = temporary,
-                    ManagedInsn::Invoke { result, .. } => *result = Some(temporary),
+                    ManagedInsn::Invoke { result, .. }
+                    | ManagedInsn::NewFilledArray { result, .. } => *result = Some(temporary),
                     ManagedInsn::Opaque { writes, .. } => writes[0] = temporary,
                     _ => unreachable!(),
                 }

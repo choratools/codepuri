@@ -100,6 +100,34 @@ pub fn meet(left: &ManagedType, right: &ManagedType) -> ManagedType {
     if is_subtype(right, left) {
         return right.clone();
     }
+    if let (
+        ManagedType::Array {
+            element: left_element,
+            nullable: left_nullable,
+        },
+        ManagedType::Array {
+            element: right_element,
+            nullable: right_nullable,
+        },
+    ) = (left, right)
+    {
+        // Array shape and nullability are independent constraints. Their
+        // crossing lower bound may exist even when neither whole array is a
+        // subtype of the other. Concrete components remain invariant.
+        let element = if left_element == right_element || is_unknown(right_element) {
+            Some(left_element.clone())
+        } else if is_unknown(left_element) {
+            Some(right_element.clone())
+        } else {
+            None
+        };
+        if let Some(element) = element {
+            return ManagedType::Array {
+                element,
+                nullable: *left_nullable && *right_nullable,
+            };
+        }
+    }
     if is_nullable_reference(left) && is_nullable_reference(right) {
         return ManagedType::Null;
     }
@@ -116,6 +144,28 @@ pub fn join(left: &ManagedType, right: &ManagedType) -> ManagedType {
     }
     if is_subtype(right, left) {
         return left.clone();
+    }
+    if let (
+        ManagedType::Array {
+            element: left_element,
+            nullable: left_nullable,
+        },
+        ManagedType::Array {
+            element: right_element,
+            nullable: right_nullable,
+        },
+    ) = (left, right)
+    {
+        // Unequal invariant components share only the array-shape top,
+        // never a scalar component promotion (e.g. byte[] to short[]).
+        return ManagedType::Array {
+            element: if left_element == right_element {
+                left_element.clone()
+            } else {
+                Box::new(ManagedType::Unknown)
+            },
+            nullable: *left_nullable || *right_nullable,
+        };
     }
     if is_integral(left) && is_integral(right) {
         return ManagedType::Int;

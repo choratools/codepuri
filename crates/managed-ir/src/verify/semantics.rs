@@ -54,8 +54,14 @@ pub(super) fn for_each_definition(insn: &ManagedInsn, mut visit: impl FnMut(Valu
             result,
             lhs: _,
             rhs: _,
+        }
+        | ManagedInsn::OrderingCompare {
+            op: _,
+            result,
+            lhs: _,
+            rhs: _,
         } => visit(*result),
-        ManagedInsn::Invoke { result, .. } => {
+        ManagedInsn::Invoke { result, .. } | ManagedInsn::NewFilledArray { result, .. } => {
             if let Some(value) = result {
                 visit(*value);
             }
@@ -92,7 +98,9 @@ pub(super) fn for_each_use(insn: &ManagedInsn, mut visit: impl FnMut(ValueId, Us
                 visit(*value, UseLocation::PhiEdge(*edge));
             }
         }
-        ManagedInsn::Arithmetic { lhs, rhs, .. } | ManagedInsn::Compare { lhs, rhs, .. } => {
+        ManagedInsn::Arithmetic { lhs, rhs, .. }
+        | ManagedInsn::Compare { lhs, rhs, .. }
+        | ManagedInsn::OrderingCompare { lhs, rhs, .. } => {
             ordinary(*lhs);
             ordinary(*rhs);
         }
@@ -125,7 +133,9 @@ pub(super) fn for_each_use(insn: &ManagedInsn, mut visit: impl FnMut(ValueId, Us
                 ordinary(*value);
             }
         }
-        ManagedInsn::Invoke { args, .. } | ManagedInsn::Opaque { reads: args, .. } => {
+        ManagedInsn::NewFilledArray { elements: args, .. }
+        | ManagedInsn::Invoke { args, .. }
+        | ManagedInsn::Opaque { reads: args, .. } => {
             for value in args {
                 ordinary(*value);
             }
@@ -149,6 +159,7 @@ pub(super) fn phi_inputs(insn: &ManagedInsn) -> Option<&[(EdgeId, ValueId)]> {
         | ManagedInsn::Move { .. }
         | ManagedInsn::Arithmetic { .. }
         | ManagedInsn::Compare { .. }
+        | ManagedInsn::OrderingCompare { .. }
         | ManagedInsn::Neg { .. }
         | ManagedInsn::Not { .. }
         | ManagedInsn::FieldGet { .. }
@@ -158,6 +169,7 @@ pub(super) fn phi_inputs(insn: &ManagedInsn) -> Option<&[(EdgeId, ValueId)]> {
         | ManagedInsn::ArrayLength { .. }
         | ManagedInsn::NewInstance { .. }
         | ManagedInsn::NewArray { .. }
+        | ManagedInsn::NewFilledArray { .. }
         | ManagedInsn::FillArray { .. }
         | ManagedInsn::Invoke { .. }
         | ManagedInsn::Cast { .. }
@@ -198,7 +210,9 @@ pub(super) fn for_each_equal_width(insn: &ManagedInsn, mut visit: impl FnMut(Val
                 visit(*result, *rhs);
             }
         }
-        ManagedInsn::Compare { lhs, rhs, .. } => visit(*lhs, *rhs),
+        ManagedInsn::Compare { lhs, rhs, .. } | ManagedInsn::OrderingCompare { lhs, rhs, .. } => {
+            visit(*lhs, *rhs);
+        }
         ManagedInsn::Const { .. }
         | ManagedInsn::FieldGet { .. }
         | ManagedInsn::FieldPut { .. }
@@ -207,6 +221,7 @@ pub(super) fn for_each_equal_width(insn: &ManagedInsn, mut visit: impl FnMut(Val
         | ManagedInsn::ArrayLength { .. }
         | ManagedInsn::NewInstance { .. }
         | ManagedInsn::NewArray { .. }
+        | ManagedInsn::NewFilledArray { .. }
         | ManagedInsn::FillArray { .. }
         | ManagedInsn::Invoke { .. }
         | ManagedInsn::Cast { .. }
@@ -223,6 +238,14 @@ pub(super) fn for_each_equal_width(insn: &ManagedInsn, mut visit: impl FnMut(Val
 
 pub(super) fn for_each_category_one(insn: &ManagedInsn, mut visit: impl FnMut(ValueId)) {
     match insn {
+        ManagedInsn::NewFilledArray {
+            result, elements, ..
+        } => {
+            visit_optional(*result, &mut visit);
+            for value in elements {
+                visit(*value);
+            }
+        }
         ManagedInsn::Arithmetic {
             op:
                 crate::ops::ArithOp::ShiftLeft
@@ -231,9 +254,9 @@ pub(super) fn for_each_category_one(insn: &ManagedInsn, mut visit: impl FnMut(Va
             rhs,
             ..
         } => visit(*rhs),
-        ManagedInsn::Compare { result, .. } | ManagedInsn::NewInstance { result, .. } => {
-            visit(*result);
-        }
+        ManagedInsn::Compare { result, .. }
+        | ManagedInsn::OrderingCompare { result, .. }
+        | ManagedInsn::NewInstance { result, .. } => visit(*result),
         ManagedInsn::FieldGet { object, .. } | ManagedInsn::FieldPut { object, .. } => {
             visit_optional(*object, &mut visit);
         }
