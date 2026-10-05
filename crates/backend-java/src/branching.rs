@@ -174,6 +174,27 @@ pub fn plan_checked(
     if &structured.root != region {
         return Err(PlanError::RegionMismatch);
     }
+    lower_canonical(ir, region, bindings, declarations)
+}
+
+// Construct and consume the canonical region against the same immutable IR.
+// Unlike the public caller-supplied-region API, there is no snapshot to attest
+// by rebuilding the graph a second time. SSA/edge/availability checks remain.
+pub(crate) fn plan_canonical_checked(
+    ir: &MethodIr<SsaForm>,
+    bindings: &[ValueId],
+    declarations: &HashSet<ValueId>,
+) -> Result<BranchPlan, PlanError> {
+    let structured = decomp_structure::structure(ir.cfg()).map_err(PlanError::Structure)?;
+    lower_canonical(ir, &structured.root, bindings, declarations)
+}
+
+fn lower_canonical(
+    ir: &MethodIr<SsaForm>,
+    region: &Region,
+    bindings: &[ValueId],
+    declarations: &HashSet<ValueId>,
+) -> Result<BranchPlan, PlanError> {
     let (p, definitions, mut available) = prepare_checked(ir, bindings, declarations)?;
     let (steps, _) = p.lower(region, &mut available, &mut Vec::new())?;
     Ok(finish(ir, definitions, steps))
@@ -199,6 +220,25 @@ pub fn plan_extended_checked(
     if &structured.root != region {
         return Err(PlanError::RegionMismatch);
     }
+    lower_extended_canonical(ir, region, bindings, declarations)
+}
+
+pub(crate) fn plan_extended_canonical_checked(
+    ir: &MethodIr<SsaForm>,
+    bindings: &[ValueId],
+    declarations: &HashSet<ValueId>,
+) -> Result<BranchPlan, PlanError> {
+    let structured =
+        decomp_structure::structure_extended(ir.cfg()).map_err(PlanError::Structure)?;
+    lower_extended_canonical(ir, &structured.root, bindings, declarations)
+}
+
+fn lower_extended_canonical(
+    ir: &MethodIr<SsaForm>,
+    region: &decomp_structure::ExtendedRegion,
+    bindings: &[ValueId],
+    declarations: &HashSet<ValueId>,
+) -> Result<BranchPlan, PlanError> {
     let (p, definitions, mut available) = prepare_checked(ir, bindings, declarations)?;
     let (steps, _) = p.lower_extended(region, &mut available)?;
     Ok(finish(ir, definitions, steps))
@@ -986,6 +1026,59 @@ fn reads(insn: &ManagedInsn) -> Vec<ValueId> {
         ManagedInsn::Opaque { reads, .. } => reads.clone(),
         ManagedInsn::Const { .. } | ManagedInsn::Phi { .. } | ManagedInsn::NewInstance { .. } => {
             Vec::new()
+        }
+    }
+}
+
+#[cfg(test)]
+mod canonical_tests {
+    #![allow(clippy::unwrap_used)]
+    use super::*;
+    use decomp_core::cfg::Cfg;
+    use managed_ir::{
+        method::{InsnArena, ValueArena},
+        value::Value,
+    };
+
+    #[test]
+    fn canonical_entrypoints_match_untrusted_region_validation() {
+        for ty in [ManagedType::Boolean, ManagedType::Int] {
+            let mut insns = InsnArena::with_key();
+            let entry = insns.insert(ManagedInsn::Return { value: None });
+            let parameter = insns.insert(ManagedInsn::Return { value: None });
+            let mut values = ValueArena::with_key();
+            let condition = values.insert(Value::new(parameter, ty));
+            let mut cfg = Cfg::new(entry);
+            let left = cfg.add_block(insns.insert(ManagedInsn::Return { value: None }));
+            let right = cfg.add_block(insns.insert(ManagedInsn::Return { value: None }));
+            let then_edge = cfg
+                .add_edge(cfg.entry(), left, EdgeKind::BranchTrue)
+                .unwrap();
+            let else_edge = cfg
+                .add_edge(cfg.entry(), right, EdgeKind::BranchFalse)
+                .unwrap();
+            insns[entry] = ManagedInsn::Branch {
+                condition: Some(condition),
+                then_edge,
+                else_edge: Some(else_edge),
+            };
+            let ir = MethodIr::<SsaForm>::from_parts(cfg, insns, values);
+            for bindings in [vec![condition], vec![]] {
+                let declarations = HashSet::new();
+                let region = decomp_structure::structure(ir.cfg()).unwrap().root;
+                let old = plan_checked(&ir, &region, &bindings, &declarations);
+                let new = plan_canonical_checked(&ir, &bindings, &declarations);
+                assert_eq!(format!("{old:?}"), format!("{new:?}"));
+                let extended = decomp_structure::structure_extended(ir.cfg()).unwrap().root;
+                let old = plan_extended_checked(&ir, &extended, &bindings, &declarations);
+                let new = plan_extended_canonical_checked(&ir, &bindings, &declarations);
+                assert_eq!(format!("{old:?}"), format!("{new:?}"));
+            }
+            let wrong = Region::Sequence(vec![]);
+            assert!(matches!(
+                plan_checked(&ir, &wrong, &[condition], &HashSet::new()),
+                Err(PlanError::RegionMismatch)
+            ));
         }
     }
 }

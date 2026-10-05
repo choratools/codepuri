@@ -694,10 +694,9 @@ pub fn derive_program(
     let mut dirty = catalog.keys().copied().collect::<VecDeque<_>>();
     let mut queued = catalog.keys().copied().collect::<BTreeSet<_>>();
     let mut failures = BTreeMap::new();
-    let mut inherited_degree = catalog
-        .keys()
-        .map(|key| (*key, 0usize))
-        .collect::<BTreeMap<_, _>>();
+    // Only methods with inherited dependencies need degree bookkeeping. Most
+    // original methods have none; avoid allocating two whole-catalog trees.
+    let mut inherited_degree = BTreeMap::<&MethodKey, usize>::new();
     let mut inherited_reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
     for (key, method) in &catalog {
         if let OverrideContract::Declarations(declarations) = &method.overrides {
@@ -716,32 +715,31 @@ pub fn derive_program(
                         ThrowsError::MissingSourceTarget(target.clone()),
                     );
                 } else {
-                    if let Some(degree) = inherited_degree.get_mut(key) {
-                        *degree += 1;
-                    }
+                    *inherited_degree.entry(*key).or_default() += 1;
                     inherited_reverse.entry(target).or_default().insert(*key);
                 }
             }
         }
     }
-    let mut roots = inherited_degree
-        .iter()
-        .filter(|(_, degree)| **degree == 0)
-        .map(|(key, _)| *key)
+    let mut roots = inherited_reverse
+        .keys()
+        .filter(|key| !inherited_degree.contains_key(*key))
+        .copied()
         .collect::<VecDeque<_>>();
-    let mut ordered = BTreeSet::new();
     while let Some(key) = roots.pop_front() {
-        ordered.insert(key);
         for child in inherited_reverse.get(&key).into_iter().flatten() {
             if let Some(degree) = inherited_degree.get_mut(child) {
                 *degree -= 1;
                 if *degree == 0 {
+                    inherited_degree.remove(child);
                     roots.push_back(*child);
                 }
             }
         }
     }
-    for key in catalog.keys().filter(|key| !ordered.contains(*key)) {
+    // Remaining positive degrees are cycles or dependants of cycles, exactly
+    // the nodes absent from the original full-catalog topological traversal.
+    for key in inherited_degree.keys() {
         failures.insert(
             (*key).clone(),
             ThrowsError::Unknown("cyclic inherited source contracts".into()),

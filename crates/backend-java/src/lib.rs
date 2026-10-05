@@ -1436,32 +1436,21 @@ fn emit(
         let mut control = None;
         let mut forward = None;
         let mut dispatch_plan = None;
+        let declarations = e.declarations.keys().copied().collect();
         let plan = if has_switch {
-            decomp_structure::structure_extended(cfg)
-                .map_err(branching::PlanError::Structure)
-                .and_then(|structured| {
-                    branching::plan_extended_checked(
-                        ir,
-                        &structured.root,
-                        &bound,
-                        &e.declarations.keys().copied().collect(),
-                    )
-                })
+            branching::plan_extended_canonical_checked(ir, &bound, &declarations)
         } else {
-            match decomp_structure::structure(cfg) {
-                Ok(structured) => branching::plan_checked(
-                    ir,
-                    &structured.root,
-                    &bound,
-                    &e.declarations.keys().copied().collect(),
-                ),
-                Err(_) => branching::plan_control(ir, &bound).map(|(locals, steps)| {
-                    control = Some(steps);
-                    branching::BranchPlan {
-                        locals,
-                        steps: Vec::new(),
-                    }
-                }),
+            match branching::plan_canonical_checked(ir, &bound, &declarations) {
+                Err(branching::PlanError::Structure(_)) => {
+                    branching::plan_control(ir, &bound).map(|(locals, steps)| {
+                        control = Some(steps);
+                        branching::BranchPlan {
+                            locals,
+                            steps: Vec::new(),
+                        }
+                    })
+                }
+                result => result,
             }
         }
         .or_else(|original| {

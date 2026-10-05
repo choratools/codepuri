@@ -1,0 +1,266 @@
+{
+  "changes": [
+    "sparse inherited-contract degree tracking",
+    "consume canonical CFG structure once inside backend; public region validation retained"
+  ],
+  "paired_measurement": {
+    "runs": [
+      {
+        "pair": 0,
+        "label": "before",
+        "artifact": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-cfg-sparse-paired-20261006/0-before",
+        "wall_seconds": 54.45944390119985,
+        "profile": {
+          "profile_wall_s": "49.626132",
+          "delivered_class_profiles": "34579",
+          "completed_tasks": "34579",
+          "task_elapsed_sum_s": "223.739818",
+          "scheduler_wall_sum_s": "9.610662",
+          "capacity_slot_s": "288.319869",
+          "worker_lifetime_s": "247.857802",
+          "active_task_s": "223.750340",
+          "queue_wait_s": "23.800816",
+          "dispatch_idle_s": "0.306646",
+          "effective_active_workers": "23.281",
+          "capacity_occupancy_pct": "77.605",
+          "lifetime_active_pct": "90.274"
+        },
+        "serial": {
+          "alias_build": 2.605773,
+          "alias_final_bridge_align": 1.742958,
+          "alias_inventory": 1.219263,
+          "alias_override_align": 1.360405,
+          "cache_release": 2.246075,
+          "deferred_annotation_prepare": 3.359868,
+          "field_audit": 0.345946,
+          "final_field_require": 1.531335,
+          "global_indices": 1.431199,
+          "method_closure": 2.213729,
+          "resolver_prepare": 0.508984,
+          "sink_io": 1.838678,
+          "source_throws": 10.817757,
+          "super_index": 0.283496,
+          "write_inventory": 1.714812
+        },
+        "throws_phase": {
+          "aggregation": 0.822799,
+          "derive_program": 4.185145,
+          "parallel_scheduler": 2.793308,
+          "preparation": 1.698999
+        },
+        "task_stage": {
+          "closure_pruning": 0.095941,
+          "frontend": 0.816038,
+          "initialization_family": 60.685438,
+          "source_collection": 0.282136,
+          "source_serialization": 9.44,
+          "structure_backend": 117.783885,
+          "structure_precheck": 15.766817
+        }
+      },
+      {
+        "pair": 0,
+        "label": "after",
+        "artifact": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-cfg-sparse-paired-20261006/0-after",
+        "wall_seconds": 54.94669019943103,
+        "profile": {
+          "profile_wall_s": "49.975068",
+          "delivered_class_profiles": "34579",
+          "completed_tasks": "34579",
+          "task_elapsed_sum_s": "220.658616",
+          "scheduler_wall_sum_s": "9.591296",
+          "capacity_slot_s": "287.738883",
+          "worker_lifetime_s": "246.994013",
+          "active_task_s": "220.669535",
+          "queue_wait_s": "25.867279",
+          "dispatch_idle_s": "0.457199",
+          "effective_active_workers": "23.007",
+          "capacity_occupancy_pct": "76.691",
+          "lifetime_active_pct": "89.342"
+        },
+        "serial": {
+          "alias_build": 2.679202,
+          "alias_final_bridge_align": 1.880548,
+          "alias_inventory": 1.312318,
+          "alias_override_align": 1.398782,
+          "cache_release": 2.154816,
+          "deferred_annotation_prepare": 3.422815,
+          "field_audit": 0.351809,
+          "final_field_require": 1.553098,
+          "global_indices": 1.491806,
+          "method_closure": 2.195096,
+          "resolver_prepare": 0.509161,
+          "sink_io": 1.664732,
+          "source_throws": 10.836981,
+          "super_index": 0.290147,
+          "write_inventory": 1.842492
+        },
+        "throws_phase": {
+          "aggregation": 0.900736,
+          "derive_program": 3.839444,
+          "parallel_scheduler": 2.949606,
+          "preparation": 1.75172
+        },
+        "task_stage": {
+          "closure_pruning": 0.082759,
+          "frontend": 0.806106,
+          "initialization_family": 60.226656,
+          "source_collection": 0.282254,
+          "source_serialization": 9.511774,
+          "structure_backend": 115.662641,
+          "structure_precheck": 15.669794
+        }
+      },
+      {
+        "pair": 1,
+        "label": "after",
+        "artifact": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-cfg-sparse-paired-20261006/1-after",
+        "wall_seconds": 54.13099582539871,
+        "profile": {
+          "profile_wall_s": "49.390997",
+          "delivered_class_profiles": "34579",
+          "completed_tasks": "34579",
+          "task_elapsed_sum_s": "220.220638",
+          "scheduler_wall_sum_s": "9.369356",
+          "capacity_slot_s": "281.080683",
+          "worker_lifetime_s": "243.812282",
+          "active_task_s": "220.231291",
+          "queue_wait_s": "23.259501",
+          "dispatch_idle_s": "0.321491",
+          "effective_active_workers": "23.505",
+          "capacity_occupancy_pct": "78.352",
+          "lifetime_active_pct": "90.328"
+        },
+        "serial": {
+          "alias_build": 2.651971,
+          "alias_final_bridge_align": 1.804542,
+          "alias_inventory": 1.152912,
+          "alias_override_align": 1.381656,
+          "cache_release": 2.190299,
+          "deferred_annotation_prepare": 3.092193,
+          "field_audit": 0.462764,
+          "final_field_require": 1.585622,
+          "global_indices": 1.424099,
+          "method_closure": 2.301724,
+          "resolver_prepare": 0.516724,
+          "sink_io": 1.938533,
+          "source_throws": 10.61484,
+          "super_index": 0.272603,
+          "write_inventory": 1.751948
+        },
+        "throws_phase": {
+          "aggregation": 0.824743,
+          "derive_program": 3.864282,
+          "parallel_scheduler": 2.836329,
+          "preparation": 1.771559
+        },
+        "task_stage": {
+          "closure_pruning": 0.082454,
+          "frontend": 0.809625,
+          "initialization_family": 60.279407,
+          "source_collection": 0.297232,
+          "source_serialization": 9.349463,
+          "structure_backend": 114.948592,
+          "structure_precheck": 15.503471
+        }
+      },
+      {
+        "pair": 1,
+        "label": "before",
+        "artifact": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-cfg-sparse-paired-20261006/1-before",
+        "wall_seconds": 55.27348230732605,
+        "profile": {
+          "profile_wall_s": "50.542159",
+          "delivered_class_profiles": "34579",
+          "completed_tasks": "34579",
+          "task_elapsed_sum_s": "213.875926",
+          "scheduler_wall_sum_s": "9.509621",
+          "capacity_slot_s": "285.288620",
+          "worker_lifetime_s": "241.406038",
+          "active_task_s": "213.885589",
+          "queue_wait_s": "27.183576",
+          "dispatch_idle_s": "0.336873",
+          "effective_active_workers": "22.491",
+          "capacity_occupancy_pct": "74.972",
+          "lifetime_active_pct": "88.600"
+        },
+        "serial": {
+          "alias_build": 2.62952,
+          "alias_final_bridge_align": 1.727247,
+          "alias_inventory": 1.152382,
+          "alias_override_align": 1.349949,
+          "cache_release": 2.175788,
+          "deferred_annotation_prepare": 3.162901,
+          "field_audit": 0.338989,
+          "final_field_require": 1.569623,
+          "global_indices": 1.437925,
+          "method_closure": 2.232965,
+          "resolver_prepare": 0.521006,
+          "sink_io": 3.259999,
+          "source_throws": 10.967792,
+          "super_index": 0.270361,
+          "write_inventory": 1.727443
+        },
+        "throws_phase": {
+          "aggregation": 0.967594,
+          "derive_program": 4.253537,
+          "parallel_scheduler": 2.64162,
+          "preparation": 1.704294
+        },
+        "task_stage": {
+          "closure_pruning": 0.080305,
+          "frontend": 0.760701,
+          "initialization_family": 58.462642,
+          "source_collection": 0.264184,
+          "source_serialization": 8.719349,
+          "structure_backend": 112.713885,
+          "structure_precheck": 15.104378
+        }
+      }
+    ],
+    "median_wall_seconds": {
+      "before": 54.86646310426295,
+      "after": 54.53884301241487
+    },
+    "median_reduction_percent": 0.5971226744204361,
+    "limitations": "Same host, fresh process/output per run; OS cache retained. Repeated exports do not rerun javac. Other host workloads not isolated."
+  },
+  "full_run_seconds": 53.62,
+  "derive_program_seconds": 3.943271,
+  "comparison_previous_derive_program_seconds": 4.226925,
+  "output": {
+    "units": 32556,
+    "gained_bodies": 0,
+    "lost_bodies": 0,
+    "source_comparison": {
+      "missing": [],
+      "added": [],
+      "changed_files": [
+        "com/yessign/fido/jce/cms/CMSSignedDataGenerator.java",
+        "h2/t$type.java",
+        "org/bouncycastle/jcajce/provider/asymmetric/gost__2/BCGOST3410PrivateKey.java",
+        "org/bouncycastle/jcajce/provider/asymmetric/ies__2/AlgorithmParametersSpi.java",
+        "org/bouncycastle/jce/provider/JCEECPrivateKey.java",
+        "org/bouncycastle/pqc/jcajce/provider/sphincs__2/BCSphincs256PrivateKey.java",
+        "org/bouncycastle/pqc/jcajce/provider/sphincs__2/BCSphincs256PublicKey.java",
+        "org/bouncycastle/x509/PKIXCertPathReviewer.java"
+      ],
+      "non_line_comment_changes": []
+    },
+    "syntax_exit": 0,
+    "javac_diagnostics": 44769
+  },
+  "tests": {
+    "decomp_library_passed": 228,
+    "backend_library_passed": 353,
+    "branching_integration_passed": 22,
+    "strict_clippy": "passed",
+    "fmt": "passed"
+  },
+  "limitations": [
+    "About 0.6 percent paired median reduction is too small to establish robust whole-export acceleration.",
+    "Shared host; compiler validation overlapped early paired measurements; OS cache retained.",
+    "Whole Java compilation remains incomplete."
+  ],
+  "artifact": "bench/local-artifacts/samsung-pass-cfg-sparse-final-20261006"
+}
