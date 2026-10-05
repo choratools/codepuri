@@ -1,0 +1,44 @@
+{
+  "source_commit": "1736c7d",
+  "artifact_root": "bench/local-artifacts/samsung-pass-throws-field-speed-20261005",
+  "baseline_artifact": "bench/local-artifacts/samsung-pass-deferred-speed-20261005",
+  "baseline_wall_seconds": 56.77,
+  "wall_seconds": 54.7,
+  "wall_reduction_percent": 3.646,
+  "engine_export_seconds": 50.035496,
+  "peak_rss_kib": 6560676,
+  "source_units": 32556,
+  "strict_code_bearing_percent": 96.3980935322154,
+  "gained": 0,
+  "lost": 0,
+  "source_parity": {
+    "added": 0,
+    "removed": 0,
+    "changed_files": 7,
+    "noncomment_changes": 0,
+    "difference": "Only diagnostic line comments differ"
+  },
+  "syntax_exit": 0,
+  "javac_exit": 1,
+  "javac_diagnostics": 44769,
+  "whole_app_compiles": false,
+  "stages": {
+    "final_field_require_before_seconds": 2.458616,
+    "final_field_require_seconds": 1.342033,
+    "source_throws_before_seconds": 12.581125,
+    "source_throws_seconds": 12.086576
+  },
+  "root_tests": {
+    "passed": 72,
+    "failed": 0,
+    "ignored": 22,
+    "strict_clippy": "passed",
+    "formatting": "passed"
+  },
+  "measurement_limits": "One full run per revision, fresh process, same APK and ordered metadata/classpath, workers30. OS page cache not cleared; no persisted decompile result cache. Small timing differences remain subject to host noise.",
+  "root_log_hashes": {
+    "bench/local-artifacts/samsung-pass-throws-field-speed-20261005/export.time": "b51c4963df22aba9744732a97a0394e876fb8ddbf95388ad9cd400de0b51cbee",
+    "bench/local-artifacts/samsung-pass-throws-field-speed-20261005/coverage.json": "0e99051061735e442a4501ea1da668195df6cc6716472d4090d4a8476800fa15",
+    "bench/local-artifacts/samsung-pass-throws-field-speed-20261005/validation25/validation.json": "09c144a745be120d7d4a80677fbcda2b9a2cf469e9f9c8d25f92bd8762ed368d"
+  }
+}
