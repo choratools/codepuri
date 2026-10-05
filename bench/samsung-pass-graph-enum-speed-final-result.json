@@ -1,0 +1,67 @@
+{
+  "source_commit": "423b132",
+  "changes": [
+    "opt-in source-throws stage and CFG precheck accounting",
+    "borrow immutable method identities throughout exception propagation graph and requirements",
+    "reuse exhaustive enum source-field-access evidence from the complete-input strict decoder scan"
+  ],
+  "before_wall_samples_seconds": [
+    54.81,
+    54.98537085717544,
+    54.4611074491404,
+    55.22778584994376
+  ],
+  "final_wall_samples_seconds": [
+    53.14,
+    53.438982241321355
+  ],
+  "before_median_seconds": 54.89768542858772,
+  "final_median_seconds": 53.28949112066068,
+  "median_reduction_percent": 2.929439183768545,
+  "throws_phases_before_seconds": {
+    "aggregation": 0.820914,
+    "derive_program": 5.666639,
+    "parallel_scheduler": 2.606684,
+    "preparation": 1.690194
+  },
+  "throws_phases_final_seconds": {
+    "aggregation": 0.844592,
+    "derive_program": 4.226925,
+    "parallel_scheduler": 2.637353,
+    "preparation": 1.733918
+  },
+  "strict_executable_accepted": 187288,
+  "executable_definitions": 194286,
+  "java_units": 32556,
+  "changed_method_identities": 0,
+  "syntax_gate_exit_code": 0,
+  "javac_diagnostics": 44769,
+  "full_tests_before_final_borrow": {
+    "passed": 228,
+    "ignored": 69
+  },
+  "final_source_throws_tests": {
+    "passed": 57,
+    "ignored": 13
+  },
+  "clippy": "decomp all-targets -D warnings passed",
+  "intermediate_trial": {
+    "artifact": "bench/local-artifacts/samsung-pass-graph-enum-paired-20261005",
+    "median_reduction_percent": -3.1691075178924555,
+    "note": "Earlier variant did not establish end-to-end improvement; retained rather than omitted."
+  },
+  "artifact": "bench/local-artifacts/samsung-pass-graph-enum-final-20261005",
+  "paired_artifact": "bench/local-artifacts/samsung-pass-graph-enum-final-paired-20261005",
+  "limitations": [
+    "Small sample counts, shared host not isolated, OS file cache retained. Every run used a fresh process and output; no persistent decompile-result cache.",
+    "Nested stage walls and worker-duration sums must not be added as serial CPU times.",
+    "Whole Java compilation and full app equivalence remain incomplete."
+  ],
+  "source_comparison": {
+    "changed_files": 7,
+    "non_line_comment_changes": [],
+    "missing_files": [],
+    "added_files": [],
+    "exact_bytes_equal": false
+  }
+}
