@@ -1,0 +1,14 @@
+{
+  "artifact_root": "bench/local-artifacts/samsung-pass-alias-speed-20261005",
+  "source_commit": "d5a7da3",
+  "wall_seconds": 65.46,
+  "engine_export_seconds": 60.643441,
+  "peak_rss_kib": 6528656,
+  "gained": 0,
+  "lost": 0,
+  "javac_diagnostics": 44769,
+  "whole_export_speedup_established": false,
+  "alias_build_seconds": 2.638273,
+  "deferred_annotation_seconds": 6.166865,
+  "note": "Alias stage faster; total wall time did not improve. Scheduler wall also increased versus baseline. Continue targeted optimization; do not claim global speedup."
+}

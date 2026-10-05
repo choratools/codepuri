@@ -1,0 +1,50 @@
+{
+  "base_revision": "d5a7da3",
+  "patch": "/tmp/decomphify-deferred-annotation.patch",
+  "worktree": "/tmp/decomphify-deferred-annotation",
+  "target_dir": "/tmp/decomphify-source-throws-target",
+  "test": "java_integration::deferred_annotation_worker_tests::deferred_annotation_workers_preserve_sources_reports_and_receipts",
+  "release_test_seconds": 31.22,
+  "retained_original_definitions": [
+    "Lorg/simpleframework/xml/DefaultType;",
+    "Lorg/simpleframework/xml/Default;",
+    "Llq/f;"
+  ],
+  "counts": {
+    "deferred_annotation_tasks": 2,
+    "sources": 3,
+    "classes_emitted": 3,
+    "complete_methods": 2
+  },
+  "equality_workers": [
+    1,
+    2,
+    4,
+    32,
+    4
+  ],
+  "checks": [
+    "GeneratedSource full equality including source text, provenance, source order",
+    "Full JavaReport equality",
+    "Enum sink acknowledgement occurs before dependent annotation",
+    "Denied enum receipt blocks dependent annotation callback for workers1and4"
+  ],
+  "evidence": "/tmp/deferred-annotation-tests.log",
+  "limitations": [
+    "Bounded original slice validates correctness, not full export runtime or exhaustive conflicting-owner inputs",
+    "Published enum registry retains existing mutex; parallel scaling remains to be measured by parent"
+  ],
+  "root_validation": {
+    "actual_samsung_fixture_passed": true,
+    "test_seconds": 135.76,
+    "worker_counts": [
+      1,
+      2,
+      4,
+      32,
+      4
+    ],
+    "clippy": "passed",
+    "full_apk": "pending"
+  }
+}

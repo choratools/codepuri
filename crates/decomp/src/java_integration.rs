@@ -3512,10 +3512,14 @@ fn emit_inner(
     // plans are private and do not enter public closure or successful counts.
     if options.limit.is_none() {
         for (dex_index, dex) in files.iter().enumerate() {
-            let classes = dex.classes.iter().filter(|c| {
-                class_kind(c.access_flags) == Ok(ClassKind::Annotation)
-                    && initializers::annotation_publication::requires_deferred_defaults(dex, c)
-            });
+            let classes: Vec<_> = dex
+                .classes
+                .iter()
+                .filter(|c| {
+                    class_kind(c.access_flags) == Ok(ClassKind::Annotation)
+                        && initializers::annotation_publication::requires_deferred_defaults(dex, c)
+                })
+                .collect();
             let metadata = dex_decompiler::infer::DexMetadata::new(dex);
             let mut r = Resolver::with_catalog(dex, &aliases, &metadata, Some(catalog));
             r.inputs = files;
@@ -3536,22 +3540,34 @@ fn emit_inner(
             r.annotation_guards = Some(&annotation_guards);
             r.publications = Some(&deferred_publications);
             // No global owner/field/publication token is promoted during preview.
-            for class in classes {
-                let mut sources = Vec::new();
-                let mut collect = |s: &GeneratedSource| {
-                    sources.push(s.clone());
+            // The frozen resolver is shared; dependency receipts remain quarantined
+            // until the existing serial acknowledgement pass below.
+            let (result, _) = scheduler::run(
+                classes.len(),
+                options.workers,
+                |index| {
+                    let mut sources = Vec::new();
+                    let mut collect = |s: &GeneratedSource| {
+                        sources.push(s.clone());
+                        Ok(())
+                    };
+                    let part = emit_classes(
+                        dex,
+                        &r,
+                        std::slice::from_ref(classes[index]),
+                        options,
+                        &mut collect,
+                        &mut None,
+                    );
+                    (part, sources)
+                },
+                |_, (part, sources)| {
+                    deferred_sources.push((part?, sources));
                     Ok(())
-                };
-                let part = emit_classes(
-                    dex,
-                    &r,
-                    std::slice::from_ref(class),
-                    options,
-                    &mut collect,
-                    &mut None,
-                )?;
-                deferred_sources.push((part, sources));
-            }
+                },
+                || OutputError::Io(std::io::Error::other("Java annotation worker panicked")),
+            );
+            result?;
         }
     }
     drop(phase_timer);
@@ -5449,3 +5465,122 @@ mod enum_classification_route_tests;
 #[cfg(test)]
 #[path = "java_checked_bound_targets_actual_tests.rs"]
 mod checked_bound_targets_actual_tests;
+
+#[cfg(test)]
+mod deferred_annotation_worker_tests {
+    #![allow(clippy::unwrap_used)]
+    use super::*;
+
+    #[test]
+    #[ignore = "bounded original Samsung annotation/enum slice and local JDK17"]
+    fn deferred_annotation_workers_preserve_sources_reports_and_receipts() {
+        let mut files = dex_format::apk::parse_apk_path(
+            "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+        )
+        .unwrap();
+        for dex in &mut files {
+            dex.classes = dex
+                .classes
+                .iter()
+                .filter(|class| {
+                    matches!(
+                        descriptor(dex, class.class_idx),
+                        Some(
+                            "Lorg/simpleframework/xml/DefaultType;"
+                                | "Lorg/simpleframework/xml/Default;"
+                                | "Llq/f;"
+                        )
+                    )
+                })
+                .cloned()
+                .collect();
+        }
+        let deferred: usize = files
+            .iter()
+            .map(|dex| {
+                dex.classes
+                    .iter()
+                    .filter(|class| {
+                        class_kind(class.access_flags) == Ok(ClassKind::Annotation)
+                            && initializers::annotation_publication::requires_deferred_defaults(
+                                dex, class,
+                            )
+                    })
+                    .count()
+            })
+            .sum();
+        assert_eq!(
+            deferred, 2,
+            "the bounded slice must exercise multiple deferred tasks"
+        );
+        let options = JavaOptions {
+            classpath: vec!["/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod".into()],
+            ..JavaOptions::default()
+        };
+        let emit = |workers| {
+            let mut sources = Vec::new();
+            let report = crate::dex_java::emit_java(
+                &files,
+                &JavaOptions {
+                    workers,
+                    ..options.clone()
+                },
+                &mut |source: &GeneratedSource| {
+                    sources.push(source.clone());
+                    Ok(())
+                },
+            )
+            .unwrap();
+            (report, sources)
+        };
+        let (expected_report, expected_sources) = emit(1);
+        assert_eq!(expected_sources.len(), 3);
+        for workers in [2, 4, 32, 4] {
+            let (report, sources) = emit(workers);
+            assert_eq!(report, expected_report, "workers={workers}");
+            assert_eq!(sources, expected_sources, "workers={workers}");
+        }
+        let enum_position = expected_sources
+            .iter()
+            .position(|source| {
+                source.provenance.descriptor == "Lorg/simpleframework/xml/DefaultType;"
+            })
+            .unwrap();
+        let annotation_position = expected_sources
+            .iter()
+            .position(|source| source.provenance.descriptor == "Lorg/simpleframework/xml/Default;")
+            .unwrap();
+        assert!(enum_position < annotation_position);
+        for workers in [1, 4] {
+            let mut callbacks = Vec::new();
+            let result = crate::dex_java::emit_java(
+                &files,
+                &JavaOptions {
+                    workers,
+                    ..options.clone()
+                },
+                &mut |source: &GeneratedSource| {
+                    callbacks.push(source.provenance.descriptor.clone());
+                    if source.provenance.descriptor == "Lorg/simpleframework/xml/DefaultType;" {
+                        return Err(OutputError::Io(std::io::Error::other(
+                            "intentional enum receipt denial",
+                        )));
+                    }
+                    Ok(())
+                },
+            );
+            assert!(result.is_err());
+            assert!(
+                !callbacks
+                    .iter()
+                    .any(|owner| owner == "Lorg/simpleframework/xml/Default;")
+            );
+        }
+        eprintln!(
+            "deferred_annotation parity deferred={deferred} sources={} classes={} methods={} workers=1,2,4,32,4 receipt_denial=1,4",
+            expected_sources.len(),
+            expected_report.classes_emitted,
+            expected_report.complete_methods
+        );
+    }
+}
