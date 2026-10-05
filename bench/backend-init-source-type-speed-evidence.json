@@ -1,0 +1,82 @@
+{
+  "base_commit": "1b455c4",
+  "class": "Lcom/samsung/android/samsungpass/base/common/deeplink/DeeplinkConstants;",
+  "class_methods": [
+    22259,
+    22260
+  ],
+  "runs": [
+    {
+      "run": "backend-init-probe1",
+      "result": "apk=/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk workers=1 source_release=25 no_io=true unprofiled=false parse_s=0.273261 export_wall_s=81.243799 sources=1 bytes=26217 ordered_checksum=621698f929ce4a91",
+      "report": "report=JavaReport { unpublished_method_reasons: {}, unavailable_initialization_units: 0, category_reasons: {}, complete_constructors: 1, complete_static_initializers: 1, semantic_bodies_with_unresolved_dependencies: 0, semantic_bodies_outside_strict_dependency_closure: 0, declaration_only_methods: 0, fields_emitted: 172, classes_seen: 34579, classes_emitted: 1, complete_methods: 0, unsupported_methods: 0, unavailable_constructors: 0, skipped_classes: 34578, reasons: {} }",
+      "timers_seconds": {
+        "java_declaration_initializers.rs:plan_encoded_initialization_contract": 0.000509,
+        "java_declaration_initializers.rs:plan_static_initializer_body_subset_contract": 1.76408,
+        "java_declaration_initializers.rs:plan_class_initialization_with_inventory_contract": 3.501604,
+        "java_integration.rs:initialization_source": 3.502386
+      },
+      "log_sha256": "405ac404a5cb94ac109a3b27f6bada176755d09cf9aded336d85fabf00dc3fca",
+      "preserved_log": "bench/local-artifacts/init-source-type-speed/backend-init-probe1.log"
+    },
+    {
+      "run": "backend-init-probe2",
+      "result": "apk=/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk workers=1 source_release=25 no_io=true unprofiled=false parse_s=0.273867 export_wall_s=86.035556 sources=1 bytes=26217 ordered_checksum=621698f929ce4a91",
+      "report": "report=JavaReport { unpublished_method_reasons: {}, unavailable_initialization_units: 0, category_reasons: {}, complete_constructors: 1, complete_static_initializers: 1, semantic_bodies_with_unresolved_dependencies: 0, semantic_bodies_outside_strict_dependency_closure: 0, declaration_only_methods: 0, fields_emitted: 172, classes_seen: 34579, classes_emitted: 1, complete_methods: 0, unsupported_methods: 0, unavailable_constructors: 0, skipped_classes: 34578, reasons: {} }",
+      "timers_seconds": {
+        "java_declaration_initializers.rs:plan_encoded_initialization_contract": 0.00053,
+        "java_declaration_initializers.rs:prove_original_static_final_paths": 0.003787,
+        "static_initializer.rs:emit_static_initializer_body_contract": 0.000135,
+        "java_declaration_initializers.rs:plan_static_initializer_body_subset_contract": 1.707631,
+        "constructors.rs:plan_constructor_group": 0.000119,
+        "java_declaration_initializers.rs:plan_class_initialization_with_inventory_contract": 3.385687,
+        "java_integration.rs:initialization_source": 3.386433
+      },
+      "log_sha256": "ad4598540d9dba0640937de4fc1f268b760b92077731d38606c3d42c4e7e51d9",
+      "preserved_log": "bench/local-artifacts/init-source-type-speed/backend-init-probe2.log"
+    },
+    {
+      "run": "backend-init-opt1",
+      "result": "apk=/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk workers=1 source_release=25 no_io=true unprofiled=false parse_s=0.267692 export_wall_s=94.193993 sources=1 bytes=26217 ordered_checksum=621698f929ce4a91",
+      "report": "report=JavaReport { unpublished_method_reasons: {}, unavailable_initialization_units: 0, category_reasons: {}, complete_constructors: 1, complete_static_initializers: 1, semantic_bodies_with_unresolved_dependencies: 0, semantic_bodies_outside_strict_dependency_closure: 0, declaration_only_methods: 0, fields_emitted: 172, classes_seen: 34579, classes_emitted: 1, complete_methods: 0, unsupported_methods: 0, unavailable_constructors: 0, skipped_classes: 34578, reasons: {} }",
+      "timers_seconds": {
+        "java_declaration_initializers.rs:plan_encoded_initialization_contract": 0.000553,
+        "java_declaration_initializers.rs:prove_original_static_final_paths": 0.004006,
+        "static_initializer.rs:emit_static_initializer_body_contract": 0.000142,
+        "java_declaration_initializers.rs:plan_static_initializer_body_subset_contract": 0.011831,
+        "constructors.rs:plan_constructor_group": 0.000111,
+        "java_declaration_initializers.rs:plan_class_initialization_with_inventory_contract": 0.018879,
+        "java_integration.rs:initialization_source": 0.019586
+      },
+      "log_sha256": "86aee0be23ae98667ebcb120a4c22d66cfed5f9bfa0458c1499cffcffa7fb544",
+      "preserved_log": "bench/local-artifacts/init-source-type-speed/backend-init-opt1.log"
+    },
+    {
+      "run": "backend-init-opt2",
+      "result": "apk=/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk workers=1 source_release=25 no_io=true unprofiled=false parse_s=0.285330 export_wall_s=79.251722 sources=1 bytes=26217 ordered_checksum=621698f929ce4a91",
+      "report": "report=JavaReport { unpublished_method_reasons: {}, unavailable_initialization_units: 0, category_reasons: {}, complete_constructors: 1, complete_static_initializers: 1, semantic_bodies_with_unresolved_dependencies: 0, semantic_bodies_outside_strict_dependency_closure: 0, declaration_only_methods: 0, fields_emitted: 172, classes_seen: 34579, classes_emitted: 1, complete_methods: 0, unsupported_methods: 0, unavailable_constructors: 0, skipped_classes: 34578, reasons: {} }",
+      "timers_seconds": {
+        "java_declaration_initializers.rs:plan_encoded_initialization_contract": 0.000548,
+        "java_declaration_initializers.rs:prove_original_static_final_paths": 0.004126,
+        "static_initializer.rs:emit_static_initializer_body_contract": 0.000128,
+        "java_declaration_initializers.rs:plan_static_initializer_body_subset_contract": 0.012999,
+        "java_declaration_initializers.rs:plan_class_initialization_with_inventory_contract": 0.020012,
+        "java_integration.rs:initialization_source": 0.020724
+      },
+      "log_sha256": "7b7deee61698799a7132f65d61d8e0b90820281e2ff92e013d3758d2fb4725e3",
+      "preserved_log": "bench/local-artifacts/init-source-type-speed/backend-init-opt2.log"
+    }
+  ],
+  "parity": "same source count1 bytes26217 orderedFNV and full JavaReport, no IO or full-method ledger claimed",
+  "tests": "source_type legacy equivalence1, original initializer24, decomp strict all-target clippy passed",
+  "wall_limit": "after1 overlapped initial test compilation; global eagerSSA dominates bounded export wall; no full APK speed claim",
+  "patch": "/tmp/opencode/backend-init-source-type.patch",
+  "root_validation_pending": "full APK benchmark",
+  "root_validation": {
+    "legacy_lookup_equivalence_passed": 1,
+    "initializer_regression_passed": 24,
+    "failed": 0,
+    "strict_decomp_all_targets_clippy": 0,
+    "fmt": 0
+  }
+}

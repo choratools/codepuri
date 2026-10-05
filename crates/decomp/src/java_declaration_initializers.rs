@@ -2136,15 +2136,16 @@ fn source_type(
     ) -> Result<String, Error> {
         Ok(match t {
             JavaType::Class(n) => {
+                // Resolve the same first descriptor identity without parsing and
+                // allocating a Java class name for every preceding pool entry.
+                let wanted = format!("L{};", n.replace('.', "/"));
                 let index = dex
                     .type_ids
                     .iter()
                     .enumerate()
-                    .find_map(|(i, _)| {
-                        class_name(dex, i as u32)
-                            .ok()
-                            .filter(|s| s == n)
-                            .map(|_| i as u32)
+                    .find_map(|(i, raw)| {
+                        (dex.string(raw.descriptor_idx).ok() == Some(wanted.as_str()))
+                            .then_some(i as u32)
                     })
                     .ok_or(Error::InvalidMetadata)?;
                 name(index)?
@@ -2649,5 +2650,58 @@ mod constructor_planning_diagnostic_tests {
             }
         );
         assert_ne!(error, Error::FieldInitializationUnavailable);
+    }
+}
+
+#[cfg(test)]
+mod source_type_lookup_tests {
+    use super::*;
+
+    fn legacy(dex: &DexFile, index: u32) -> Result<String, Error> {
+        fn render(t: &JavaType, dex: &DexFile) -> Result<String, Error> {
+            Ok(match t {
+                JavaType::Class(n) => {
+                    let index = dex
+                        .type_ids
+                        .iter()
+                        .enumerate()
+                        .find_map(|(i, _)| {
+                            class_name(dex, i as u32)
+                                .ok()
+                                .filter(|s| s == n)
+                                .map(|_| i as u32)
+                        })
+                        .ok_or(Error::InvalidMetadata)?;
+                    format!("alias_{index}")
+                }
+                JavaType::Array(t) => format!("{}[]", render(t, dex)?),
+                _ => type_source(t),
+            })
+        }
+        render(&ty(dex, index)?, dex)
+    }
+
+    #[test]
+    fn raw_identity_lookup_preserves_aliases_arrays_and_duplicate_first_match()
+    -> Result<(), Box<dyn std::error::Error>> {
+        let mut dex = DexFile::from_bytes(include_bytes!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../tests/corpus/dex/clean/classes.dex"
+        )))?;
+        dex.type_ids.reverse();
+        if let Some(first) = dex.type_ids.first().cloned() {
+            dex.type_ids.push(first);
+        }
+        for index in 0..dex.type_ids.len() as u32 {
+            assert_eq!(
+                source_type(&dex, index, &|i| Ok(format!("alias_{i}"))),
+                legacy(&dex, index)
+            );
+        }
+        assert_eq!(
+            source_type(&dex, u32::MAX, &|i| Ok(format!("alias_{i}"))),
+            legacy(&dex, u32::MAX)
+        );
+        Ok(())
     }
 }
