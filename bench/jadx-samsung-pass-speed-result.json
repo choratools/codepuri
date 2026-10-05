@@ -1,0 +1,26 @@
+{
+  "tool": "jadx",
+  "version": "1.5.1",
+  "apk": "tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+  "apk_sha256": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+  "threads": 30,
+  "resources": false,
+  "fresh_cache_directory": true,
+  "fresh_output_directory": true,
+  "java_home": "/home/jtjisgod/tools/jdk-17.0.13+11",
+  "wall_seconds": 26.26,
+  "peak_rss_kib": 16138092,
+  "exit_code": 1,
+  "jadx_reported_errors": 37,
+  "java_files": 17546,
+  "java_bytes": 85877036,
+  "decomphify_last_wall_seconds": 54.7,
+  "time_ratio_decomphify_over_jadx": 2.083015993907083,
+  "limitations": "Single runs. OS page cache not cleared. Tools differ in source organization, transformations and proof requirements. Error counters are not comparable. No full-source javac or runtime equivalence validation on jadx output.",
+  "artifact_root": "bench/local-artifacts/jadx-samsung-pass-speed-20261005-1",
+  "logs": {
+    "bench/local-artifacts/jadx-samsung-pass-speed-20261005-1/export.time": "4fcc3b9ccff708819e37e66bb75eddcdcc07c0a0ebe33cc819f9f3f1552c5eae",
+    "bench/local-artifacts/jadx-samsung-pass-speed-20261005-1/export.log": "e0fe8cb8ae289ea0b698ff6bd1a978c94e2a5bb1efdb4d1e02f3e1ca4734c58a",
+    "bench/local-artifacts/jadx-samsung-pass-speed-20261005-1/environment.json": "6d3088134ce61e1bdd00ecac62a2629c248dd7fc6bc848e4f25ce5353273e1e0"
+  }
+}
