@@ -1,0 +1,42 @@
+{
+  "source_commit": "fecaee9",
+  "artifact_root": "bench/local-artifacts/samsung-pass-deferred-speed-20261005",
+  "baseline_artifact": "bench/local-artifacts/samsung-pass-init-speed-20261005",
+  "baseline_wall_seconds": 63.44,
+  "wall_seconds": 56.77,
+  "wall_reduction_percent": 10.514,
+  "engine_export_seconds": 52.133718,
+  "peak_rss_kib": 6563728,
+  "sources": 32556,
+  "strict_code_bearing_percent": 96.3980935322154,
+  "gained": 0,
+  "lost": 0,
+  "source_parity": {
+    "added": 0,
+    "removed": 0,
+    "changed_files": 12,
+    "noncomment_changes": 0,
+    "difference": "Only diagnostic line comments differ"
+  },
+  "syntax_exit": 0,
+  "javac_exit": 1,
+  "javac_diagnostics": 44769,
+  "whole_app_compiles": false,
+  "tests": {
+    "alias": 9,
+    "annotation_regressions": 9,
+    "real_annotation_workers_and_receipts": 1,
+    "failed": 0
+  },
+  "clippy": "passed",
+  "measurements": "Single full export per revision, fresh process, same APK/classpath/workers30; OS page cache not cleared. No persisted decompile results reused.",
+  "stages": {
+    "alias_build_seconds": 2.715937,
+    "deferred_annotation_seconds": 3.134557
+  },
+  "root_log_hashes": {
+    "bench/local-artifacts/samsung-pass-deferred-speed-20261005/export.time": "19d28244516c9c6c55ba3bc41f91c763a598e0904691363c830c2e29520217fb",
+    "bench/local-artifacts/samsung-pass-deferred-speed-20261005/coverage.json": "173ddeb0aa819339b0301cf7aed365b6496f60e566b23bb8a128493fbb74532e",
+    "bench/local-artifacts/samsung-pass-deferred-speed-20261005/validation25/validation.json": "061dfb16fb3c65bdf30687e5d1d468c7bf279f676ba3b9ffd6cdb6b3dcd1fd21"
+  }
+}

@@ -36,6 +36,12 @@
     "ignored": 1,
     "java17_name_shadow_fixture": "passed",
     "clippy": "passed",
-    "full_apk": "pending"
+    "full_apk": {
+      "receipt": "bench/samsung-pass-deferred-speed-full-result.json",
+      "gained": 0,
+      "lost": 0,
+      "syntax_exit": 0,
+      "javac_exit": 1
+    }
   }
 }
