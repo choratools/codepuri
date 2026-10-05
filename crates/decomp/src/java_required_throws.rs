@@ -466,9 +466,9 @@ fn covered(name: &str, coverage: &Coverage, context: &impl ThrowsHierarchy) -> b
 /// Preserve precise rethrow domains instead of claiming every catch-all object
 /// imposes Throwable on the caller. The finite union also handles nested
 /// handler copies without recursion depending on a traversal's active path.
-fn event_types(
+fn event_types<K: Ord + std::borrow::Borrow<MethodKey>>(
     method: &MethodRequirements,
-    required: &BTreeMap<MethodKey, BTreeSet<String>>,
+    required: &BTreeMap<K, BTreeSet<String>>,
     failures: &BTreeMap<MethodKey, ThrowsError>,
     context: &impl ThrowsHierarchy,
 ) -> Result<Vec<BTreeSet<String>>, ThrowsError> {
@@ -663,12 +663,7 @@ pub fn derive_program(
     }
     let mut required = catalog
         .iter()
-        .map(|(key, m)| {
-            (
-                (*key).clone(),
-                m.original.iter().cloned().collect::<BTreeSet<_>>(),
-            )
-        })
+        .map(|(key, m)| (*key, m.original.iter().cloned().collect::<BTreeSet<_>>()))
         .collect::<BTreeMap<_, _>>();
     let mut reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
     for (key, method) in &catalog {
@@ -811,7 +806,7 @@ pub fn derive_program(
         }
         let changed = collected != required[key];
         if changed {
-            required.insert(key.clone(), collected);
+            required.insert(key, collected);
         }
         if changed || failures.contains_key(key) {
             for caller in reverse.get(&key).into_iter().flatten() {
