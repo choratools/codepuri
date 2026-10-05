@@ -1,0 +1,29 @@
+{
+  "artifact_root": "bench/local-artifacts/samsung-pass-hierarchy-speed-20261005",
+  "goal_complete": false,
+  "export_wall_seconds": 102.069148,
+  "process_wall_seconds": 106.89,
+  "peak_rss_kib": 6513460,
+  "body_or_enum_candidates": 187288,
+  "remaining_executable": 6998,
+  "gained_identities": 119,
+  "lost_identities": 0,
+  "syntax_exit": 0,
+  "full_compile_exit": 1,
+  "diagnostic_total": 44769,
+  "next_measured_hotspot": {
+    "initialization_family_task_elapsed_seconds": 1118.667802,
+    "task_elapsed_percent": 84.704,
+    "not_wall_time_percent": true
+  },
+  "next_unmeasured_reuse_candidates": [
+    "source_throws rebuilds field InputIndex and SuperIndex",
+    "per-DEX metadata rebuilt across source_throws and export"
+  ],
+  "scope_note": "Full run includes constructor/enum/access fixes; isolated hierarchy-only parity and speed evidence is in backend-hierarchy-speed-evidence.json. OS page cache was not cleared.",
+  "receipts_sha256": {
+    "coverage.json": "bdf5c32452d17ea22cbc09a0e29ccff04aac4abb8f9d071150204075187a39a1",
+    "terminal.json": "0a120188d21d364643b0f84d04c8724e5b6a4072035e05bbb2f7582c6a670e7b",
+    "validation25/validation.json": "4bb1c4535cc9dd74af206974dcbbdd40e9b8d5b6f875d960d5a625e52fe84dff"
+  }
+}
