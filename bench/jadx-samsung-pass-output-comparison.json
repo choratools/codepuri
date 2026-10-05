@@ -1,0 +1,43 @@
+{
+  "apk": "Samsung Pass identical benchmark input",
+  "jadx_version": "1.5.1",
+  "jadx": {
+    "source_files": 17546,
+    "source_bytes": 85877036,
+    "method_not_decompiled_marker_occurrences": 1041,
+    "incorrect_decompilation_banner_occurrences": 1020,
+    "marker_categories_may_overlap": true,
+    "syntax_errors": 2210,
+    "syntax_exit": 1,
+    "javac_exit": 1,
+    "full_original_method_coverage": "not established; requires original identity mapping through merging/inlining"
+  },
+  "decomphify": {
+    "source_files": 32556,
+    "source_bytes": 345456764,
+    "full_line_comment_bytes": 88665785,
+    "original_executable_methods": 194286,
+    "strict_body_or_enum_equivalent": 187288,
+    "remaining_executable_methods": 6998,
+    "syntax_errors": 0,
+    "javac_diagnostics": 44769,
+    "javac_exit": 1
+  },
+  "readability_witness": {
+    "original_method": "androidx.constraintlayout.widget.Guideline.setGuidelineBegin(int)",
+    "jadx_lines": 8,
+    "decomphify_lines": 91
+  },
+  "comparison_limits": [
+    "File counts differ because class organization and merging differ",
+    "Markers are occurrences, not validated original method counts; categories overlap",
+    "jadx javac stops on syntax failures, so diagnostic counts are not comparable to decomphify type/dependency diagnostics",
+    "Neither whole app compilation nor runtime equivalence established"
+  ],
+  "validation_artifacts": "bench/local-artifacts/jadx-samsung-pass-output-validation-20261005",
+  "logs": {
+    "bench/local-artifacts/jadx-samsung-pass-output-validation-20261005/syntax.log": "d6c8545ac0887461d32d15022e6a41f423165ac9fcf83690d3f2a4df81191bd5",
+    "bench/local-artifacts/jadx-samsung-pass-output-validation-20261005/compile.log": "aed05c6433cd90840824bf6ba0f760ce325ed1f772784251980c8ae3bef4f092",
+    "bench/local-artifacts/jadx-samsung-pass-output-validation-20261005/validation.json": "015cb7ab858b12129f833b749d9a26977396fe5fcbd57199977989f9ee465e10"
+  }
+}
