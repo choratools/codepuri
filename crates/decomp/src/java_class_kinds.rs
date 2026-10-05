@@ -33,6 +33,15 @@ pub enum ClassKind {
 pub enum DeclarationUnsupported {
     /// Enum constructor reconstruction is not available.
     EnumConstructorsUnavailable,
+    /// Java enum syntax cannot preserve the original constructor access flags.
+    EnumConstructorAccessUnrepresentable {
+        /// Exact original declaring DEX descriptor before source aliases.
+        owner: String,
+        /// Exact DEX-local constructor definition identity.
+        method: u32,
+        /// Original access flags; they have not been privatized for emission.
+        access_flags: u32,
+    },
     /// Access flags are contradictory or unsupported for this declaration.
     InvalidFlags,
     /// Referenced metadata is missing or cannot form a Java declaration.

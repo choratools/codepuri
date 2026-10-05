@@ -329,7 +329,9 @@ fn samsung_original_enum_payload_method_evidence() {
                 clinit_ssa.ir(),
                 &resolver
             ),
-            Err(Error::EnumConstructorsUnavailable)
+            Err(Error::EnumConstructorAccessUnrepresentable { owner, method, access_flags })
+                if owner == wanted && constructors.iter().any(|c|
+                    c.method_idx == method && c.access_flags == access_flags)
         ));
         // Inventory every original method, including generated methods and all
         // user bodies; residual declarations must not count as emitted bodies.
@@ -710,6 +712,23 @@ fn private_enum_payload_family_overloads_unused_null_bits_runtime() {
             bindings: &short_bindings,
         },
     ];
+    for access_flags in [0x10001, 0x10004, 0x10000] {
+        let mut changed = class.clone();
+        let constructor = changed
+            .class_data
+            .as_mut()
+            .unwrap()
+            .direct_methods
+            .iter_mut()
+            .find(|method| method.method_idx == full.index())
+            .unwrap();
+        constructor.access_flags = access_flags;
+        assert!(matches!(
+            plan_enum_initialization_family(&dex, &changed, &inputs, clinit, &init, &resolver),
+            Err(Error::EnumConstructorAccessUnrepresentable { owner, method, access_flags: flags })
+                if owner == "LFixture;" && method == full.index() && flags == access_flags
+        ));
+    }
     let plan =
         plan_enum_initialization_family(&dex, &class, &inputs, clinit, &init, &resolver).unwrap();
     let methods = emission::plan_enum_methods(&dex, &class, &plan).unwrap();

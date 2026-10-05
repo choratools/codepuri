@@ -294,7 +294,8 @@ fn object_string_and_null_payload_production_roundtrip() {
             report
                 .reasons
                 .keys()
-                .any(|reason| reason.contains("EnumConstructorsUnavailable")),
+                .any(|reason| reason.contains("EnumConstructorsUnavailable")
+                    || reason.contains("EnumConstructorAccessUnrepresentable")),
             "{report:?}"
         );
     };

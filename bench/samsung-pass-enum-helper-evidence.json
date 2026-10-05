@@ -1,0 +1,61 @@
+{
+  "goal_complete": false,
+  "actual_whole_class_gain": 0,
+  "owners": 390,
+  "owners_with_nonprivate_constructors": 356,
+  "methods_in_nonprivate_owner_group": 2005,
+  "allprivate_owners": 34,
+  "methods_in_allprivate_owner_group": 257,
+  "helper_method_proofs": 6,
+  "patch_sha256": "18b2e713917aa944093d1a38ac6af8fa68741643aba9f021c2e6a0bc537bc405",
+  "artifacts": [
+    {
+      "file": "enum-helper-evidence.log",
+      "bytes": 3255,
+      "sha256": "90c35eca170014744f489812141f7980c0b37fd6150346a8e514e3f1c0c134d4"
+    },
+    {
+      "file": "enum-helper-runtime.log",
+      "bytes": 471,
+      "sha256": "b0d4e596ae5c43be8df545daa8ed40169c3d6a718809c4f96d97cb0523311c4e"
+    },
+    {
+      "file": "enum-tests-final.log",
+      "bytes": 657,
+      "sha256": "54863b83629b113590ddfe81780c17779d387e5584195227b81f64f5e297759f"
+    },
+    {
+      "file": "enum-clippy-final.log",
+      "bytes": 144,
+      "sha256": "d06a4528baf655cd368c82e6c79e8202034322b391b856c42a1a4c90158ee18d"
+    },
+    {
+      "file": "enum-remaining-analysis.json",
+      "bytes": 131648,
+      "sha256": "29b4caa34eef7f8b934f1264732715738a2b141e6a872e322e3f94339831e48c"
+    },
+    {
+      "file": "enum-osmosis.java",
+      "bytes": 2049,
+      "sha256": "896ac4a82ca034ea825b3349693e7492e0c598ec1c4f82693f277b5db98cd44c"
+    },
+    {
+      "file": "enum-operation.java",
+      "bytes": 1877,
+      "sha256": "dc2ea2d0b8984433542658526b6ebe198eb6f474931404d83885d0c792fafd15"
+    },
+    {
+      "file": "enum-javatype.java",
+      "bytes": 3515,
+      "sha256": "3615afd79c034b3d47e62b150a34d09ceb63e0b6862e8b79f6490428003dea9c"
+    }
+  ],
+  "preserved_root": "bench/local-artifacts/enum-remaining",
+  "root_validation": {
+    "workspace_passed": 1238,
+    "workspace_failed": 0,
+    "workspace_ignored": 171,
+    "completed_suites": 199,
+    "strict_workspace_all_target_clippy": 0
+  }
+}

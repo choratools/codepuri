@@ -149,7 +149,11 @@ pub(crate) fn prove_values_helper(
         return false;
     };
     let array = format!("[{owner}");
-    if m.access_flags != 0x100a
+    // A private static helper has no virtual dispatch. R8 may additionally
+    // mark it final; retain the original identity in the separately proven
+    // enum-equivalent ledger rather than treating that bit as a missing body.
+    // Public/package/protected helpers still cannot be silently absorbed.
+    if m.access_flags & !0x10 != 0x100a
         || c.ins_size != 0
         || !c.tries.is_empty()
         || !c.handlers.is_empty()
@@ -837,3 +841,7 @@ mod tests {
 #[cfg(test)]
 #[path = "java_enum_handler_tests.rs"]
 mod handler_tests;
+
+#[cfg(test)]
+#[path = "java_enum_helper_access_tests.rs"]
+mod helper_access_tests;

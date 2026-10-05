@@ -1177,10 +1177,23 @@ fn plan_enum_initialization_family_inner<R: ConstructorResolver>(
             || sig.method.owner != owner
             || !sig.method.parameters.starts_with(&hidden)
             || !sig.method.throws.is_empty()
-            || encoded.access_flags & !(2 | 0x1000 | 0x10000) != 0
-            || encoded.access_flags & 2 == 0
         {
             return unsupported();
+        }
+        // Optimizers may widen enum constructors to public/package access.
+        // Java enum syntax cannot retain that original reflective access. Do
+        // not silently privatize it or conflate it with a missing body proof.
+        if encoded.access_flags & !(2 | 0x1000 | 0x10000) != 0 || encoded.access_flags & 2 == 0 {
+            return Err(Error::EnumConstructorAccessUnrepresentable {
+                owner: descriptor(dex, class.class_idx)?.to_owned(),
+                method: input.reference.index(),
+                access_flags: encoded.access_flags,
+            });
+        }
+        if encoded.access_flags & !(2 | 0x1000 | 0x10000) != 0 {
+            // Unsupported modifiers (e.g. varargs) are a separate source
+            // declaration issue, not evidence of nonprivate constructor access.
+            return Err(Error::InvalidFlags);
         }
         let proto = dex
             .proto_id(u32::from(raw.proto_idx))
