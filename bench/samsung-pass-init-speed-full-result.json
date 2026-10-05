@@ -1,0 +1,40 @@
+{
+  "source_commit": "03b774f",
+  "artifact_root": "bench/local-artifacts/samsung-pass-init-speed-20261005",
+  "baseline_wall_seconds": 106.89,
+  "wall_seconds": 63.44,
+  "wall_reduction_percent": 40.64926560014969,
+  "engine_export_seconds": 58.623351,
+  "peak_rss_kib": 6528088,
+  "source_units": 32556,
+  "strict_code_bearing_percent": 96.3980935322154,
+  "gained": 0,
+  "lost": 0,
+  "source_comparison": {
+    "added": 0,
+    "removed": 0,
+    "changed_files": 9,
+    "changes_only_in_diagnostic_line_comments": true,
+    "noncomment_source_changes": 0
+  },
+  "syntax_gate": {
+    "command": [
+      "/tmp/opencode/decomphify-jdk25/jdk-25.0.4.1+1/bin/java",
+      "-Xmx4g",
+      "-cp",
+      "/storage_0/decomphify/bench/local-artifacts/samsung-pass-init-speed-20261005/validation25",
+      "SamsungPassParseGate",
+      "/storage_0/decomphify/bench/local-artifacts/samsung-pass-init-speed-20261005/java25/sources",
+      "25"
+    ],
+    "exit_code": 0,
+    "seconds": 18.913931307848543,
+    "max_rss_kib": 2256032,
+    "log": "/storage_0/decomphify/bench/local-artifacts/samsung-pass-init-speed-20261005/validation25/syntax-gate.log"
+  },
+  "javac_exit": 1,
+  "javac_diagnostics": 44769,
+  "compiled_apk": false,
+  "cache_note": "Fresh exporter process; no persisted decompile results reused. OS page cache was not cleared.",
+  "focused_validation": "25 tests passed; strict decomp all-target clippy and formatting passed."
+}
