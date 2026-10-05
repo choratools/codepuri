@@ -7,8 +7,17 @@ use std::time::{Duration, Instant};
 pub struct JavaProfile {
     /// Entire export call, excluding APK parsing and diagnostic serialization.
     pub wall: Duration,
-    /// Non-overlapping caller-thread inventory, preparation and sink stages.
+    /// Export phase walls. Some phases include worker activity and ordered
+    /// delivery; these are not measurements of serial CPU time.
     pub serial: BTreeMap<&'static str, Duration>,
+    /// Nested source-throws phase walls; do not add to the enclosing phase.
+    pub throws_phases: BTreeMap<&'static str, Duration>,
+    /// Source-throws task duration sums; overlapping workers are not wall time.
+    pub throws_tasks: BTreeMap<&'static str, Duration>,
+    /// Task and operation counts corresponding to source-throws timing sums.
+    pub throws_counts: BTreeMap<&'static str, usize>,
+    /// Worker accounting for the eager source-throws inspection batch.
+    pub throws_scheduler: Option<crate::java_integration::scheduler::SchedulerProfile>,
     /// Class task records in original input order, including filtered tasks.
     pub classes: Vec<ClassProfile>,
     /// Legacy fixed-batch records; persistent scheduling leaves this empty.

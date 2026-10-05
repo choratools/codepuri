@@ -2536,6 +2536,8 @@ fn method_source(
             );
         }
     }
+    drop(_timer);
+    let precheck_timer = stage(profile, "structure_precheck");
     if exception_scopes.is_some() || disjoint_scopes.is_some() || dispatch_scopes.is_some() {
         // The exact scope grammar is validated by the metadata bridge and the
         // exception planner; the branch-only structurer rejects these edges.
@@ -2566,6 +2568,8 @@ fn method_source(
                 .map_err(|e| format!("structure: {e}"))?;
         }
     }
+    drop(precheck_timer);
+    let _timer = stage(profile, "structure_backend");
     let bindings = declaration_bindings(&ssa, &m, code)?;
     if checked_bridge.is_none()
         && kind == ClassKind::Class
@@ -3260,12 +3264,15 @@ fn emit_inner(
     let catalog = &global.declaration_metadata;
     let field_throw_catalog =
         crate::java_checked_bound_targets::FieldThrowCatalog::new(files, catalog);
+    let mut throws_profile = profile
+        .as_ref()
+        .map(|_| source_throws::SourceThrowsProfile::default());
     let source_throws_timer = Timer::new(
         profile
             .as_deref_mut()
             .map(|p| p.serial.entry("source_throws").or_default()),
     );
-    let source_throws = source_throws::collect_cached(
+    let source_throws = source_throws::collect_cached_profiled(
         files,
         &aliases,
         catalog,
@@ -3273,8 +3280,22 @@ fn emit_inner(
         &hierarchy,
         options.workers,
         cache,
+        throws_profile.as_mut(),
     );
     drop(source_throws_timer);
+    if let (Some(profile), Some(throws)) = (profile.as_deref_mut(), throws_profile) {
+        profile.throws_phases = throws.walls;
+        profile.throws_tasks.insert("ssa", throws.ssa_time);
+        profile.throws_counts.insert("ssa", throws.ssa_count);
+        profile
+            .throws_counts
+            .insert("inspect_method", throws.inspect_method_count);
+        profile.throws_counts.insert("tasks", throws.task_count);
+        profile
+            .throws_tasks
+            .insert("inspect_method", throws.inspect_method_time);
+        profile.throws_scheduler = throws.scheduler;
+    }
     let mut class_catalog = BTreeMap::new();
     let mut field_names: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     if let Some(external) = external {

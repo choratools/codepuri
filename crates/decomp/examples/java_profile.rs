@@ -226,6 +226,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             100.0 * seconds(*v) / seconds(export_wall)
         ));
     }
+    for (k, v) in &profile.throws_phases {
+        text.push_str(&format!("throws_phase\t{k}\t{:.6}\n", seconds(*v)));
+    }
+    for (k, v) in &profile.throws_tasks {
+        text.push_str(&format!("throws_task_sum\t{k}\t{:.6}\n", seconds(*v)));
+    }
+    for (k, v) in &profile.throws_counts {
+        text.push_str(&format!("throws_count\t{k}\t{v}\n"));
+    }
+    if let Some(s) = &profile.throws_scheduler {
+        text.push_str(&format!(
+            "throws_scheduler tasks={} workers={} wall_s={:.6} active_s={:.6} queue_wait_s={:.6} dispatch_idle_s={:.6} max_pending={}\n",
+            s.tasks, s.capacity, seconds(s.wall), seconds(s.task_time),
+            seconds(s.queue_wait), seconds(s.dispatch_idle), s.max_pending,
+        ));
+    }
     for (k, v) in &stages {
         text.push_str(&format!(
             "task_stage\t{k}\t{:.6}\ttask_sum_pct={:.3}\n",

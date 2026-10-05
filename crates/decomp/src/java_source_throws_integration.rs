@@ -12,6 +12,26 @@ use required::{
     OverrideDeclaration, RequiredThrowsContext, ThrowsHierarchy,
 };
 
+/// Opt-in stage wall times and summed body work (parallel sums are not wall time).
+#[derive(Debug, Default)]
+pub(super) struct SourceThrowsProfile {
+    pub walls: BTreeMap<&'static str, std::time::Duration>,
+    pub ssa_time: std::time::Duration,
+    pub inspect_method_time: std::time::Duration,
+    pub ssa_count: usize,
+    pub inspect_method_count: usize,
+    pub task_count: usize,
+    pub scheduler: Option<scheduler::SchedulerProfile>,
+}
+
+#[derive(Default)]
+struct ThrowsTaskProfile {
+    ssa_time: std::time::Duration,
+    inspect_method_time: std::time::Duration,
+    ssa_count: usize,
+    inspect_method_count: usize,
+}
+
 #[derive(Clone)]
 struct RawClass {
     parent: Option<String>,
@@ -956,6 +976,7 @@ pub(super) fn collect_with_workers(
     )
 }
 /// Retain seeded frontend results for later consumers in the same export.
+#[cfg(test)]
 pub(super) fn collect_cached(
     files: &[DexFile],
     aliases: &JavaAliases,
@@ -965,7 +986,22 @@ pub(super) fn collect_cached(
     workers: usize,
     cache: &ssa_cache::SsaCache,
 ) -> SourceThrowsPlan {
-    collect_roots_with_workers(
+    collect_cached_profiled(
+        files, aliases, catalog, external, hierarchy, workers, cache, None,
+    )
+}
+#[allow(clippy::too_many_arguments)]
+pub(super) fn collect_cached_profiled(
+    files: &[DexFile],
+    aliases: &JavaAliases,
+    catalog: &BTreeMap<MethodKey, Option<MethodMetadata>>,
+    external: Option<&dyn ExternalMetadata>,
+    hierarchy: &crate::type_compatibility::Hierarchy,
+    workers: usize,
+    cache: &ssa_cache::SsaCache,
+    profile: Option<&mut SourceThrowsProfile>,
+) -> SourceThrowsPlan {
+    collect_roots_profiled(
         files,
         aliases,
         catalog,
@@ -974,8 +1010,10 @@ pub(super) fn collect_cached(
         None,
         workers,
         Some(cache),
+        profile,
     )
 }
+
 #[cfg(test)]
 pub(super) fn collect_roots(
     files: &[DexFile],
@@ -987,6 +1025,7 @@ pub(super) fn collect_roots(
 ) -> SourceThrowsPlan {
     collect_roots_with_workers(files, aliases, catalog, external, hierarchy, roots, 1, None)
 }
+#[cfg(test)]
 #[allow(clippy::too_many_arguments)]
 fn collect_roots_with_workers(
     files: &[DexFile],
@@ -998,6 +1037,24 @@ fn collect_roots_with_workers(
     workers: usize,
     cache: Option<&ssa_cache::SsaCache>,
 ) -> SourceThrowsPlan {
+    collect_roots_profiled(
+        files, aliases, catalog, external, hierarchy, roots, workers, cache, None,
+    )
+}
+#[allow(clippy::too_many_arguments)]
+fn collect_roots_profiled(
+    files: &[DexFile],
+    aliases: &JavaAliases,
+    catalog: &BTreeMap<MethodKey, Option<MethodMetadata>>,
+    external: Option<&dyn ExternalMetadata>,
+    hierarchy: &crate::type_compatibility::Hierarchy,
+    roots: Option<&BTreeSet<MethodKey>>,
+    workers: usize,
+    cache: Option<&ssa_cache::SsaCache>,
+    mut profile: Option<&mut SourceThrowsProfile>,
+) -> SourceThrowsPlan {
+    let enabled = profile.is_some();
+    let preparation_start = enabled.then(std::time::Instant::now);
     let facts = Facts::new(files, aliases, catalog, external);
     let field_index = crate::java_members::external_metadata::fields::InputIndex::new(files);
     let super_inputs: Vec<_> = files.iter().collect();
@@ -1029,100 +1086,123 @@ fn collect_roots_with_workers(
     let mut queue: VecDeque<_> = roots
         .map(|roots| roots.iter().cloned().collect())
         .unwrap_or_else(|| facts.definitions.keys().cloned().collect());
+    if let (Some(profile), Some(start)) = (profile.as_deref_mut(), preparation_start) {
+        profile.walls.insert("preparation", start.elapsed());
+    }
     let inspect = |key: &MethodKey| {
-        let (pool, method) = facts
-            .definitions
-            .get(key)
-            .ok_or_else(|| required::ThrowsError::Unknown("source body unavailable".into()))?;
-        let resolver = &resolvers[*pool];
-        let context = Context {
-            resolver,
-            facts: &facts,
-        };
-        let contract = context
-            .invocation_contract(MethodRef::new(method.method_idx))
-            .ok_or_else(|| required::ThrowsError::Unknown("original declaration".into()))?;
-        let abstract_declaration = facts.abstracts.contains(key);
-        let concrete_domain = facts.concrete_sources.contains(key);
-        let implementations = if abstract_declaration || concrete_domain {
-            let mut implementations = Vec::new();
-            for candidate in facts.implementations.get(key) {
-                if candidate == key {
-                    continue;
-                }
-                let (candidate_pool, candidate_method) = facts.definitions[candidate];
-                let candidate_context = Context {
-                    resolver: &resolvers[candidate_pool],
+        let mut timing = ThrowsTaskProfile::default();
+        let result =
+            (|| {
+                let (pool, method) = facts.definitions.get(key).ok_or_else(|| {
+                    required::ThrowsError::Unknown("source body unavailable".into())
+                })?;
+                let resolver = &resolvers[*pool];
+                let context = Context {
+                    resolver,
                     facts: &facts,
                 };
-                if candidate_context.nonimplementation(candidate, key) {
-                    continue;
-                }
-                let identity = OriginalMethodIdentity {
-                    dex: candidate_pool,
-                    index: candidate_method.method_idx,
-                    key: candidate.clone(),
+                let contract = context
+                    .invocation_contract(MethodRef::new(method.method_idx))
+                    .ok_or_else(|| required::ThrowsError::Unknown("original declaration".into()))?;
+                let abstract_declaration = facts.abstracts.contains(key);
+                let concrete_domain = facts.concrete_sources.contains(key);
+                let implementations = if abstract_declaration || concrete_domain {
+                    let mut implementations = Vec::new();
+                    for candidate in facts.implementations.get(key) {
+                        if candidate == key {
+                            continue;
+                        }
+                        let (candidate_pool, candidate_method) = facts.definitions[candidate];
+                        let candidate_context = Context {
+                            resolver: &resolvers[candidate_pool],
+                            facts: &facts,
+                        };
+                        if candidate_context.nonimplementation(candidate, key) {
+                            continue;
+                        }
+                        let identity = OriginalMethodIdentity {
+                            dex: candidate_pool,
+                            index: candidate_method.method_idx,
+                            key: candidate.clone(),
+                        };
+                        match candidate_context.override_contract(&identity) {
+                            OverrideContract::Declarations(declarations)
+                                if declarations.iter().any(|d| d.key == *key) =>
+                            {
+                                implementations.push(candidate.clone());
+                            }
+                            _ => {
+                                return Err(required::ThrowsError::Unknown(
+                                    "implementation inherited contract".into(),
+                                ));
+                            }
+                        }
+                    }
+                    implementations
+                } else {
+                    vec![]
                 };
-                match candidate_context.override_contract(&identity) {
-                    OverrideContract::Declarations(declarations)
-                        if declarations.iter().any(|d| d.key == *key) =>
-                    {
-                        implementations.push(candidate.clone());
-                    }
-                    _ => {
-                        return Err(required::ThrowsError::Unknown(
-                            "implementation inherited contract".into(),
-                        ));
-                    }
+                if abstract_declaration {
+                    return required::inspect_abstract_declaration(
+                        OriginalMethodIdentity {
+                            dex: *pool,
+                            index: method.method_idx,
+                            key: key.clone(),
+                        },
+                        method.access_flags,
+                        contract.declared,
+                        implementations,
+                        &context,
+                    );
                 }
-            }
-            implementations
-        } else {
-            vec![]
-        };
-        if abstract_declaration {
-            return required::inspect_abstract_declaration(
-                OriginalMethodIdentity {
-                    dex: *pool,
-                    index: method.method_idx,
-                    key: key.clone(),
-                },
-                method.access_flags,
-                contract.declared,
-                implementations,
-                &context,
-            );
-        }
-        let code = method
-            .code
-            .as_ref()
-            .ok_or_else(|| required::ThrowsError::Unknown("source code unavailable".into()))?;
-        let (ctx, seeds) =
-            initial_context_with_seeds(resolver, method).map_err(required::ThrowsError::Unknown)?;
-        let ssa = cached_frontend(resolver, method, code, &ctx, seeds, None)
-            .map_err(|e| required::ThrowsError::Unknown(format!("source throws frontend: {e}")))?;
-        let inspected = required::inspect_method(
-            OriginalMethodIdentity {
-                dex: *pool,
-                index: method.method_idx,
-                key: key.clone(),
-            },
-            &ssa,
-            code,
-            method.access_flags,
-            contract.declared,
-            &context,
-        )?;
-        if concrete_domain && !implementations.is_empty() {
-            facts
-                .concrete_proofs
-                .lock()
-                .map_err(|_| required::ThrowsError::Unknown("concrete domain proof lock".into()))?
-                .insert(key.clone(), implementations.iter().cloned().collect());
-            required::attest_concrete_override_domain(inspected, implementations, &context)
-        } else {
-            Ok(inspected)
-        }
+                let code = method.code.as_ref().ok_or_else(|| {
+                    required::ThrowsError::Unknown("source code unavailable".into())
+                })?;
+                let ssa_start = enabled.then(std::time::Instant::now);
+                let ssa = (|| {
+                    let (ctx, seeds) = initial_context_with_seeds(resolver, method)
+                        .map_err(required::ThrowsError::Unknown)?;
+                    cached_frontend(resolver, method, code, &ctx, seeds, None).map_err(|e| {
+                        required::ThrowsError::Unknown(format!("source throws frontend: {e}"))
+                    })
+                })();
+                if let Some(start) = ssa_start {
+                    timing.ssa_time = start.elapsed();
+                    timing.ssa_count = 1;
+                }
+                let ssa = ssa?;
+                let inspect_start = enabled.then(std::time::Instant::now);
+                let inspected = required::inspect_method(
+                    OriginalMethodIdentity {
+                        dex: *pool,
+                        index: method.method_idx,
+                        key: key.clone(),
+                    },
+                    &ssa,
+                    code,
+                    method.access_flags,
+                    contract.declared,
+                    &context,
+                );
+                if let Some(start) = inspect_start {
+                    timing.inspect_method_time = start.elapsed();
+                    timing.inspect_method_count = 1;
+                }
+                let inspected = inspected?;
+                if concrete_domain && !implementations.is_empty() {
+                    facts
+                        .concrete_proofs
+                        .lock()
+                        .map_err(|_| {
+                            required::ThrowsError::Unknown("concrete domain proof lock".into())
+                        })?
+                        .insert(key.clone(), implementations.iter().cloned().collect());
+                    required::attest_concrete_override_domain(inspected, implementations, &context)
+                } else {
+                    Ok(inspected)
+                }
+            })();
+        (result, timing)
     };
     // The initial queue is unique and indexable (BTreeSet/BTreeMap order).
     // Production scans seed every available body, so dependent bodies are
@@ -1130,7 +1210,8 @@ fn collect_roots_with_workers(
     // those retain the original breadth-first traversal below.
     let mut initial_results = VecDeque::new();
     if workers > 1 && queue.len() > 1 {
-        let (result, _) = scheduler::run(
+        let scheduler_start = enabled.then(std::time::Instant::now);
+        let (result, scheduler_profile) = scheduler::run(
             queue.len(),
             workers,
             |index| inspect(&queue[index]),
@@ -1140,10 +1221,15 @@ fn collect_roots_with_workers(
             },
             || (),
         );
+        if let (Some(profile), Some(start)) = (profile.as_deref_mut(), scheduler_start) {
+            profile.walls.insert("parallel_scheduler", start.elapsed());
+            profile.scheduler = Some(scheduler_profile);
+        }
         if result.is_err() {
             panic!("source throws collection worker panicked");
         }
     }
+    let aggregation_start = enabled.then(std::time::Instant::now);
     let mut visited = BTreeSet::new();
     let mut requirements = Vec::new();
     let mut missing = BTreeMap::new();
@@ -1151,7 +1237,14 @@ fn collect_roots_with_workers(
         if !visited.insert(key.clone()) {
             continue;
         }
-        let result = initial_results.pop_front().unwrap_or_else(|| inspect(&key));
+        let (result, timing) = initial_results.pop_front().unwrap_or_else(|| inspect(&key));
+        if let Some(profile) = profile.as_deref_mut() {
+            profile.task_count += 1;
+            profile.ssa_time += timing.ssa_time;
+            profile.inspect_method_time += timing.inspect_method_time;
+            profile.ssa_count += timing.ssa_count;
+            profile.inspect_method_count += timing.inspect_method_count;
+        }
         match result {
             Ok(value) => {
                 queue.extend(value.source_targets().cloned());
@@ -1162,6 +1255,9 @@ fn collect_roots_with_workers(
             }
         }
     }
+    if let (Some(profile), Some(start)) = (profile.as_deref_mut(), aggregation_start) {
+        profile.walls.insert("aggregation", start.elapsed());
+    }
     let Some(resolver) = resolvers.first() else {
         return SourceThrowsPlan::default();
     };
@@ -1169,7 +1265,11 @@ fn collect_roots_with_workers(
         resolver,
         facts: &facts,
     };
+    let derive_start = enabled.then(std::time::Instant::now);
     let mut plan = required::derive_program(&requirements, &context).unwrap_or_default();
+    if let (Some(profile), Some(start)) = (profile, derive_start) {
+        profile.walls.insert("derive_program", start.elapsed());
+    }
     plan.unavailable.extend(missing);
     plan
 }
@@ -1654,6 +1754,29 @@ mod tests {
         assert_same_plan(&repeated, &serial);
         assert_eq!(cache.stats().misses, misses);
         assert!(cache.stats().hits > 0);
+        for workers in [1, 4] {
+            let mut profile = SourceThrowsProfile::default();
+            let profiled = collect_cached_profiled(
+                &files,
+                &aliases,
+                &catalog,
+                None,
+                &hierarchy,
+                workers,
+                &cache,
+                Some(&mut profile),
+            );
+            assert_same_plan(&profiled, &serial);
+            assert!(profile.task_count > 0);
+            assert!(profile.ssa_count > 0);
+            assert!(profile.inspect_method_count > 0);
+            assert!(profile.inspect_method_count <= profile.ssa_count);
+            for stage in ["preparation", "aggregation", "derive_program"] {
+                assert!(profile.walls.contains_key(stage));
+            }
+            assert_eq!(profile.scheduler.is_some(), workers > 1);
+        }
+
         let missing = MethodKey {
             name: "unavailable".into(),
             ..caller.clone()

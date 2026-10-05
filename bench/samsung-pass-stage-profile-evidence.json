@@ -1,0 +1,31 @@
+{
+  "artifact_root": "bench/local-artifacts/samsung-pass-stage-profile-20261005",
+  "instrumentation_only": true,
+  "process_wall_seconds": 54.81,
+  "throws_phase_walls_seconds": {
+    "aggregation": 0.820914,
+    "derive_program": 5.666639,
+    "parallel_scheduler": 2.606684,
+    "preparation": 1.690194
+  },
+  "throws_task_elapsed_sums_seconds": {
+    "inspect_method": 17.330162,
+    "ssa": 54.204451
+  },
+  "class_stage_elapsed_sums_seconds": {
+    "closure_pruning": 0.0792,
+    "frontend": 0.776161,
+    "initialization_family": 58.220038,
+    "source_collection": 0.273903,
+    "source_serialization": 8.550543,
+    "structure_backend": 113.169248,
+    "structure_precheck": 15.106273
+  },
+  "strict_executable_accepted": 187288,
+  "executable_definitions": 194286,
+  "accepted_identity_changes": 0,
+  "limitations": [
+    "One run; page cache retained. Task sums overlap workers. Nested throws phases are included in source_throws wall. Remaining throws wall includes unmeasured teardown and other work. Full Java compilation remains unsuccessful."
+  ],
+  "validation_artifact": "bench/local-artifacts/samsung-pass-stage-profile-20261005/validation25/validation.json"
+}
