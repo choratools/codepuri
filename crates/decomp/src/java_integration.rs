@@ -3170,22 +3170,40 @@ fn emit_inner(
             options.source_release
         )));
     }
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("write_inventory").or_default()),
+    );
     let writes = match external {
         Some(metadata) => {
             initializers::write_inventory::WriteInventory::scan_with_metadata(files, metadata)
         }
         None => initializers::write_inventory::WriteInventory::scan(files),
     };
+    drop(phase_timer);
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("super_index").or_default()),
+    );
     let super_inputs: Vec<_> = files.iter().collect();
     let super_index = crate::java_super_resolution::SuperIndex::collect(
         &super_inputs,
         external.unwrap_or(&MissingMetadata),
     )
     .ok();
+    drop(phase_timer);
     let (mut aliases, mut field_publication) =
         export_inventory(files, profile, &writes, super_index.as_ref())?;
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("global_indices").or_default()),
+    );
     let global = GlobalDeclarations::new(files).map_err(OutputError::InvalidDescriptor)?;
     let field_index = crate::java_members::external_metadata::fields::InputIndex::new(files);
+    drop(phase_timer);
     let publications = Mutex::new(BTreeMap::new());
     let field_uses = Mutex::new(BTreeMap::new());
     let published_owners = Mutex::new(BTreeMap::new());
@@ -3216,8 +3234,20 @@ fn emit_inner(
         .unwrap_or_default(),
     );
     if let Some(external) = external {
+        let phase_timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("alias_override_align").or_default()),
+        );
         aliases.align_override_obligations(files, external, &original_hierarchy);
+        drop(phase_timer);
+        let phase_timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("alias_final_bridge_align").or_default()),
+        );
         aliases.align_final_bridge_targets(files, external, &original_hierarchy);
+        drop(phase_timer);
     }
     let hierarchy = original_hierarchy
         .map_names(|name| {
@@ -3473,6 +3503,11 @@ fn emit_inner(
             p.field_use_cache_failures += stage.failures;
         }
     }
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("deferred_annotation_prepare").or_default()),
+    );
     // Only unlimited exports enable this bounded extension. Quarantined source
     // plans are private and do not enter public closure or successful counts.
     if options.limit.is_none() {
@@ -3519,6 +3554,7 @@ fn emit_inner(
             }
         }
     }
+    drop(phase_timer);
     // Actual external sink acknowledgements are serial, deterministic, and
     // distinct from worker collection. Enum requirements cannot use preparation.
     let mut prepared_enums = Vec::new();
@@ -3609,12 +3645,18 @@ fn emit_inner(
     // analysis is not evidence that their declarations reached the source sink.
     published.retain(|key, _| emitted_owners.contains(&key.owner));
     let provider = external.unwrap_or(&MissingMetadata);
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("method_closure").or_default()),
+    );
     let mut closure = global.close(published.keys().cloned(), provider, |key, _location| {
         published
             .get(key)
             .cloned()
             .ok_or_else(|| "original semantic body unavailable in exported source".into())
     });
+    drop(phase_timer);
     // A genuine native/abstract definition still needs actual source publication.
     let bodyless: BTreeSet<_> = closure
         .bodyless
@@ -3680,6 +3722,11 @@ fn emit_inner(
             *status = crate::java_members::external_metadata::fields::publication::FieldStatus::InitializedDeclaration;
         }
     }
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("final_field_require").or_default()),
+    );
     for (caller, uses) in field_uses
         .into_inner()
         .map_err(|_| OutputError::InvalidDescriptor("field publication lock".into()))?
@@ -3702,7 +3749,14 @@ fn emit_inner(
             );
         }
     }
+    drop(phase_timer);
+    let phase_timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("field_audit").or_default()),
+    );
     field_publication.audit();
+    drop(phase_timer);
     let mut evidence = BTreeMap::<String, Vec<String>>::new();
     for (owner, limitations) in &field_publication.limitations {
         evidence.entry(owner.clone()).or_default().push(format!(

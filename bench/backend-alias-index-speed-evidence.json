@@ -1,0 +1,41 @@
+{
+  "base_revision": "ba5dca4",
+  "worktree": "/tmp/decomphify-source-throws",
+  "target_dir": "/tmp/decomphify-source-throws-target",
+  "scope": "AliasInventory::build only, full Samsung Pass type/method/field inventory",
+  "samples": [
+    {
+      "baseline_seconds": 4.983308387,
+      "indexed_seconds": 1.556008685
+    },
+    {
+      "baseline_seconds": 4.931877754,
+      "indexed_seconds": 1.323891785
+    },
+    {
+      "baseline_seconds": 4.809610871,
+      "indexed_seconds": 1.338318931
+    }
+  ],
+  "inventory": {
+    "classes": 36149,
+    "methods": 213963,
+    "fields": 182463
+  },
+  "evidence": "/tmp/alias-build-attribution.log",
+  "comparison": "all frozen classes/packages/paths/methods/fields/final_bridge_targets maps equal on every sample",
+  "limitations": [
+    "Before path retains legacy scan predicate under cfg(test) but also constructs the new lookup index; baseline includes its small allocation cost.",
+    "Full export performance and generated-source parity require parent benchmark.",
+    "Isolated focused suite: 7 passed, javac test missing javac in PATH, old synthetic Q0 fixture assertion corrected in delivered patch; latest fixture verification deferred to parent."
+  ],
+  "patch": "/tmp/decomphify-alias-index.patch",
+  "root_validation": {
+    "focused_alias_tests_passed": 9,
+    "failed": 0,
+    "ignored": 1,
+    "java17_name_shadow_fixture": "passed",
+    "clippy": "passed",
+    "full_apk": "pending"
+  }
+}

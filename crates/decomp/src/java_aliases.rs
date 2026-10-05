@@ -130,6 +130,10 @@ impl AliasInventory {
 
     /// Allocate deterministic, collision-free aliases for the collected unit.
     pub fn build(&self, mode: AliasMode) -> JavaAliases {
+        self.build_with_shadow_lookup(mode, false)
+    }
+
+    fn build_with_shadow_lookup(&self, mode: AliasMode, _legacy_scan: bool) -> JavaAliases {
         let mut result = JavaAliases::default();
         // Packages and classes share a case-insensitive sibling namespace.
         // This also prevents a directory from shadowing a same-named class.
@@ -165,6 +169,27 @@ impl AliasInventory {
                     .map(|(p, _)| components[&(String::new(), p.to_string())].clone())
             })
             .collect();
+        // Allocation gives each sibling a unique alias. Index its original
+        // component so shadow checks can also exclude the class itself.
+        let mut sibling_aliases: BTreeMap<&str, BTreeMap<&str, &str>> = BTreeMap::new();
+        for ((parent, original), alias) in &components {
+            sibling_aliases
+                .entry(parent.as_str())
+                .or_default()
+                .insert(alias.as_str(), original.as_str());
+        }
+        let sibling_collision = |key: &(String, String), alias: &str| {
+            #[cfg(test)]
+            if _legacy_scan {
+                return components
+                    .iter()
+                    .any(|(k, v)| k != key && k.0 == key.0 && v == alias);
+            }
+            sibling_aliases
+                .get(key.0.as_str())
+                .and_then(|siblings| siblings.get(alias))
+                .is_some_and(|original| *original != key.1)
+        };
         let mut class_leaves = BTreeMap::new();
         for descriptor in &self.classes {
             let body = &descriptor[1..descriptor.len() - 1];
@@ -174,11 +199,7 @@ impl AliasInventory {
                 let base = format!("{}$type", components[&key]);
                 let mut alias = base.clone();
                 let mut suffix = 0;
-                while root_packages.contains(&alias)
-                    || components
-                        .iter()
-                        .any(|(k, v)| k != &key && k.0 == parent && v == &alias)
-                {
+                while root_packages.contains(&alias) || sibling_collision(&key, &alias) {
                     suffix += 1;
                     alias = format!("{base}${suffix}");
                 }
@@ -531,6 +552,110 @@ mod tests {
     #![allow(clippy::unwrap_used)]
 
     use super::*;
+
+    fn assert_same_aliases(actual: &JavaAliases, expected: &JavaAliases) {
+        assert_eq!(actual.classes, expected.classes);
+        assert_eq!(actual.packages, expected.packages);
+        assert_eq!(actual.paths, expected.paths);
+        assert_eq!(actual.methods, expected.methods);
+        assert_eq!(actual.fields, expected.fields);
+        assert_eq!(
+            format!("{:?}", actual.final_bridge_targets),
+            format!("{:?}", expected.final_bridge_targets)
+        );
+    }
+
+    #[test]
+    fn indexed_shadow_lookup_preserves_sibling_suffixes_and_parent_scope() {
+        let mut inventory = AliasInventory::default();
+        for descriptor in [
+            "Lm0/q0;",
+            "Lq0/o;",
+            "Lm0/q0$type;",
+            "Lm0/q0$type$1;",
+            "Lm1/q0;",
+            "Lm2/q0$type$2;",
+            "Lq0$type$2/x;",
+            "Lq0$type$3/x;",
+            "Lm0/é;",
+            "Lé/z;",
+            "Lm0/é$type;",
+        ] {
+            inventory.add_type(descriptor).unwrap();
+        }
+        for mode in [AliasMode::Ascii, AliasMode::Unicode] {
+            assert_same_aliases(
+                &inventory.build(mode),
+                &inventory.build_with_shadow_lookup(mode, true),
+            );
+        }
+        assert_eq!(
+            inventory.build(AliasMode::Unicode).class_name("Lm0/q0;"),
+            Some("m0.q0$type$4")
+        );
+    }
+
+    #[test]
+    #[ignore = "local Samsung Pass APK; full alias map parity and build attribution"]
+    fn samsung_alias_build_attribution_and_full_map_parity() {
+        let files = dex_format::apk::parse_apk_path(
+            "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+        )
+        .unwrap();
+        let mut inventory = AliasInventory::default();
+        for dex in &files {
+            for ty in &dex.type_ids {
+                inventory
+                    .add_type(dex.string(ty.descriptor_idx).unwrap())
+                    .unwrap();
+            }
+            let descriptor = |index: u32| {
+                dex.string(dex.type_ids[index as usize].descriptor_idx)
+                    .unwrap()
+                    .to_owned()
+            };
+            for method in &dex.method_ids {
+                let proto = &dex.proto_ids[method.proto_idx as usize];
+                inventory
+                    .add_method(MethodKey {
+                        owner: descriptor(u32::from(method.class_idx)),
+                        name: dex.string(method.name_idx).unwrap().into(),
+                        parameters: proto
+                            .parameters
+                            .iter()
+                            .flat_map(|p| &p.types)
+                            .map(|t| descriptor(u32::from(*t)))
+                            .collect(),
+                        return_type: descriptor(proto.return_type_idx),
+                    })
+                    .unwrap();
+            }
+            for field in &dex.field_ids {
+                inventory
+                    .add_field(FieldKey {
+                        owner: descriptor(u32::from(field.class_idx)),
+                        name: dex.string(field.name_idx).unwrap().into(),
+                        descriptor: descriptor(u32::from(field.type_idx)),
+                    })
+                    .unwrap();
+            }
+        }
+        for run in 0..3 {
+            let started = std::time::Instant::now();
+            let expected = inventory.build_with_shadow_lookup(AliasMode::Ascii, true);
+            let baseline = started.elapsed();
+            let started = std::time::Instant::now();
+            let actual = inventory.build(AliasMode::Ascii);
+            let indexed = started.elapsed();
+            assert_same_aliases(&actual, &expected);
+            eprintln!(
+                "alias_build run={run} baseline={baseline:?} indexed={indexed:?} classes={} methods={} fields={} parity=all_maps",
+                actual.classes.len(),
+                actual.methods.len(),
+                actual.fields.len()
+            );
+        }
+    }
 
     #[test]
     fn class_simple_names_cannot_shadow_root_packages_java17() {
