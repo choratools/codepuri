@@ -560,3 +560,74 @@ fn shared_routes_keep_structural_coverage_and_final_store_rejections() {
         );
     }
 }
+
+#[test]
+fn enum_access_evidence_matches_original_scan_and_rescans_other_storage() {
+    // Includes the whole body of a class that an exporter could later drop.
+    // A return before an access exercises unreachable original bytecode.
+    let cases: &[(&str, &[u16], u32, bool)] = &[
+        ("clean_with_native", &[0x000e], 0x109, true),
+        ("abstract", &[0x000e], 0x409, true),
+        ("missing_body", &[0x000e], 9, false),
+        ("read", &[0x0060, 0, 0x000e], 0x109, false),
+        (
+            "unreachable_read",
+            &[0x000e, 0x0060, 0, 0x000e],
+            0x109,
+            false,
+        ),
+        ("store", &[0x0067, 0, 0x000e], 0x109, false),
+        ("unresolved_read", &[0x0060, 0xffff, 0x000e], 0x109, false),
+        ("malformed", &[0x0060], 0x109, false),
+    ];
+    for &(name, units, flags, expected) in cases {
+        let (mut dex, _, _, field) = fixture();
+        let mut units = units.to_vec();
+        for index in 0..units.len().saturating_sub(1) {
+            if (units[index] == 0x0060 || units[index] == 0x0067) && units[index + 1] != 0xffff {
+                units[index + 1] = field as u16;
+            }
+        }
+        let members = dex.classes[0].class_data.as_mut().unwrap();
+        members.direct_methods[1].code = Some(code(&units, 0));
+        members.direct_methods[2].access_flags = flags;
+        let fields = BTreeSet::from([field_key(&dex, field).unwrap()]);
+        let inputs = vec![dex];
+        let inventory = WriteInventory::scan(&inputs);
+        assert_eq!(
+            enum_fields_unaccessed_original(&inputs, &fields),
+            expected,
+            "{name}"
+        );
+        assert_eq!(
+            inventory.enum_fields_unaccessed(&inputs, &fields),
+            expected,
+            "{name}"
+        );
+        assert_eq!(
+            inventory.enum_fields_unaccessed(&inputs, &fields),
+            expected,
+            "repeat {name}"
+        );
+        let other = inputs.clone();
+        assert_eq!(
+            inventory.enum_fields_unaccessed(&other, &fields),
+            expected,
+            "other storage {name}"
+        );
+    }
+    let (mut dex, _, _, field) = fixture();
+    dex.classes[0].class_data.as_mut().unwrap().direct_methods[1].code = Some(code(&[0x000e], 0));
+    let fields = BTreeSet::from([field_key(&dex, field).unwrap()]);
+    let inputs = vec![dex];
+    let inventory = WriteInventory::scan(&inputs);
+    assert!(inventory.enum_fields_unaccessed(&inputs, &fields));
+    let mut changed = inputs.clone();
+    changed[0].classes[0]
+        .class_data
+        .as_mut()
+        .unwrap()
+        .direct_methods[1]
+        .code = Some(code(&[0x0060, field as u16, 0x000e], 0));
+    assert!(!inventory.enum_fields_unaccessed(&changed, &fields));
+}

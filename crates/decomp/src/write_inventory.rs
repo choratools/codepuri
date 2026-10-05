@@ -175,6 +175,10 @@ pub struct WriteInventory {
     structural_unknown: bool,
     field_unknown: BTreeMap<FieldKey, Vec<String>>,
     methods: usize,
+    // Source-only evidence, independent of runtime write/capability contracts.
+    enum_accesses: BTreeSet<FieldKey>,
+    enum_access_unknown: bool,
+    enum_scan_input: Option<(usize, usize)>,
 }
 
 /// Resolve a local pool identity without conflating indices across DEX files.
@@ -252,6 +256,22 @@ impl WriteInventory {
         Ok(self.writes.get(field).cloned().unwrap_or_default())
     }
 
+    /// Source field-access absence for enum declaration preparation only.
+    /// The complete original inputs must remain unchanged, as with all inventory
+    /// proofs. Slice identity selects scan reuse; it does not attest contents.
+    /// Different input storage is rescanned, never authorized by cached absence.
+    pub(crate) fn enum_fields_unaccessed(
+        &self,
+        inputs: &[DexFile],
+        fields: &BTreeSet<FieldKey>,
+    ) -> bool {
+        if self.enum_scan_input == Some((inputs.as_ptr() as usize, inputs.len())) {
+            !self.enum_access_unknown && fields.is_disjoint(&self.enum_accesses)
+        } else {
+            enum_fields_unaccessed_original(inputs, fields)
+        }
+    }
+
     /// Supply every input DEX, including classes that will subsequently be dropped.
     /// Strict decoding scans unreachable instructions too. Unsupported/opaque code,
     /// missing bodies and native capabilities poison absence proofs globally.
@@ -276,7 +296,10 @@ impl WriteInventory {
         inputs: &[DexFile],
         external: Option<&dyn crate::java_external_metadata::ExternalMetadata>,
     ) -> Self {
-        let mut result = Self::default();
+        let mut result = Self {
+            enum_scan_input: Some((inputs.as_ptr() as usize, inputs.len())),
+            ..Self::default()
+        };
         let input_index =
             external.map(|_| crate::java_external_metadata::fields::InputIndex::new(inputs));
         let mut resolutions = BTreeMap::new();
@@ -396,6 +419,7 @@ impl WriteInventory {
                         );
                     }
                     let Some(code) = &method.code else {
+                        result.enum_access_unknown |= method.access_flags & (0x100 | 0x400) == 0;
                         if method.access_flags & 0x100 != 0
                             && method.access_flags & 0x400 == 0
                             && method.code_off == 0
@@ -430,13 +454,34 @@ impl WriteInventory {
                         );
                     }
                     match dex_decompiler::decode_method(code) {
-                        Err(error) => result
-                            .record_unknown(UnknownKind::Structural, format!("{label}: {error}")),
+                        Err(error) => {
+                            result.enum_access_unknown = true;
+                            result.record_unknown(
+                                UnknownKind::Structural,
+                                format!("{label}: {error}"),
+                            );
+                        }
                         Ok(insns) => {
                             for insn in insns {
                                 let dex_decompiler::Opcode::Supported(info) = insn.opcode else {
                                     continue;
                                 };
+                                let access_key = (0x52..=0x6d)
+                                    .contains(&info.opcode)
+                                    .then(|| {
+                                        insn.pool_index.and_then(|index| field_key(dex, index))
+                                    })
+                                    .flatten();
+                                if (0x52..=0x6d).contains(&info.opcode) {
+                                    match &access_key {
+                                        Some(key) => {
+                                            if !result.enum_accesses.contains(key) {
+                                                result.enum_accesses.insert(key.clone());
+                                            }
+                                        }
+                                        None => result.enum_access_unknown = true,
+                                    }
+                                }
                                 if info.class == dex_decompiler::SemanticClass::Invoke {
                                     let resolved = insn
                                         .pool_index
@@ -483,17 +528,18 @@ impl WriteInventory {
                                         }
                                     }
                                 }
-                                if ((0x52..=0x58).contains(&info.opcode)
-                                    || (0x60..=0x66).contains(&info.opcode))
-                                    && let Some(key) =
-                                        insn.pool_index.and_then(|i| field_key(dex, i))
+                                if (0x52..=0x58).contains(&info.opcode)
+                                    || (0x60..=0x66).contains(&info.opcode)
                                 {
-                                    result.reads.entry(key).or_default().insert(WriteSite {
-                                        dex: dex_index,
-                                        method: method.method_idx,
-                                        offset: insn.offset,
-                                        is_static: info.opcode >= 0x60,
-                                    });
+                                    if let Some(key) = access_key {
+                                        result.reads.entry(key).or_default().insert(WriteSite {
+                                            dex: dex_index,
+                                            method: method.method_idx,
+                                            offset: insn.offset,
+                                            is_static: info.opcode >= 0x60,
+                                        });
+                                    }
+                                    continue;
                                 }
                                 if !(0x59..=0x5f).contains(&info.opcode)
                                     && !(0x67..=0x6d).contains(&info.opcode)
@@ -501,7 +547,7 @@ impl WriteInventory {
                                     continue;
                                 }
                                 let is_static = info.opcode >= 0x67;
-                                match insn.pool_index.and_then(|i| field_key(dex, i)) {
+                                match access_key {
                                     Some(key) if declarations.get(&key) == Some(&is_static) => {
                                         result.writes.entry(key).or_default().insert(WriteSite {
                                             dex: dex_index,
@@ -735,4 +781,44 @@ impl WriteInventory {
             && self.declared_fields.contains(field))
         .then(|| self.writes.get(field).cloned().unwrap_or_default())
     }
+}
+
+/// Preserve the original enum proof for inputs outside the inventory scan scope.
+fn enum_fields_unaccessed_original(inputs: &[DexFile], fields: &BTreeSet<FieldKey>) -> bool {
+    for dex in inputs {
+        for class in &dex.classes {
+            let Some(data) = &class.class_data else {
+                continue;
+            };
+            for method in data.direct_methods.iter().chain(&data.virtual_methods) {
+                let Some(code) = &method.code else {
+                    if method.access_flags & (0x100 | 0x400) == 0 {
+                        return false;
+                    }
+                    continue;
+                };
+                let Ok(decoded) = dex_decompiler::decode_method(code) else {
+                    return false;
+                };
+                for instruction in decoded {
+                    let dex_decompiler::Opcode::Supported(info) = instruction.opcode else {
+                        continue;
+                    };
+                    if !(0x52..=0x6d).contains(&info.opcode) {
+                        continue;
+                    }
+                    let Some(key) = instruction
+                        .pool_index
+                        .and_then(|index| field_key(dex, index))
+                    else {
+                        return false;
+                    };
+                    if fields.contains(&key) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    true
 }

@@ -978,47 +978,15 @@ fn enum_encoded_preparation<R: ConstructorResolver>(
     // Scan all bodies including unreachable/dropped code. Code-free genuine
     // native/abstract declarations are runtime capabilities, not Java GETSTATIC
     // instructions; all malformed or undecodable bodies fail closed.
-    for input in inputs {
-        for owner in &input.classes {
-            let Some(members) = &owner.class_data else {
-                continue;
-            };
-            for method in members
-                .direct_methods
-                .iter()
-                .chain(&members.virtual_methods)
-            {
-                let Some(code) = &method.code else {
-                    if method.access_flags & (0x100 | 0x400) == 0 {
-                        return unsupported();
-                    }
-                    continue;
-                };
-                let decoded = dex_decompiler::decode_method(code)
-                    .map_err(|_| Error::EnumConstructorsUnavailable)?;
-                for instruction in decoded {
-                    let dex_decompiler::Opcode::Supported(info) = instruction.opcode else {
-                        continue;
-                    };
-                    if !(0x52..=0x6d).contains(&info.opcode) {
-                        continue;
-                    }
-                    let key = instruction
-                        .pool_index
-                        .and_then(|index| {
-                            super::initializers::write_inventory::field_key(input, index)
-                        })
-                        .ok_or(Error::EnumConstructorsUnavailable)?;
-                    for field in prepared.keys() {
-                        if super::initializers::write_inventory::field_key(dex, *field)
-                            .is_some_and(|target| target == key)
-                        {
-                            return unsupported();
-                        }
-                    }
-                }
-            }
-        }
+    let prepared_keys = prepared
+        .keys()
+        .map(|field| {
+            super::initializers::write_inventory::field_key(dex, *field)
+                .ok_or(Error::EnumConstructorsUnavailable)
+        })
+        .collect::<Result<std::collections::BTreeSet<_>, _>>()?;
+    if !inventory.enum_fields_unaccessed(inputs, &prepared_keys) {
+        return unsupported();
     }
     Ok(prepared)
 }

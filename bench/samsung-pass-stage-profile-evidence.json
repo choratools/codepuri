@@ -27,5 +27,10 @@
   "limitations": [
     "One run; page cache retained. Task sums overlap workers. Nested throws phases are included in source_throws wall. Remaining throws wall includes unmeasured teardown and other work. Full Java compilation remains unsuccessful."
   ],
-  "validation_artifact": "bench/local-artifacts/samsung-pass-stage-profile-20261005/validation25/validation.json"
+  "validation_artifact": "bench/local-artifacts/samsung-pass-stage-profile-20261005/validation25/validation.json",
+  "syntax_gate_exit_code": 0,
+  "full_javac_diagnostic_count": 44769,
+  "tests_passed": 226,
+  "tests_ignored": 69,
+  "clippy": "decomp all-targets -D warnings passed"
 }

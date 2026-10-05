@@ -651,6 +651,302 @@ pub fn derive_program(
     methods: &[MethodRequirements],
     context: &impl ThrowsHierarchy,
 ) -> Result<SourceThrowsPlan, ThrowsError> {
+    // Borrow immutable identities and event targets for graph scheduling. BTree
+    // ordering still compares full MethodKey values, including missing targets.
+    let mut catalog = BTreeMap::new();
+    for method in methods {
+        if catalog.insert(&method.identity.key, method).is_some() {
+            return Err(ThrowsError::Unknown(
+                "duplicate original method identity".into(),
+            ));
+        }
+    }
+    let mut required = catalog
+        .iter()
+        .map(|(key, m)| {
+            (
+                (*key).clone(),
+                m.original.iter().cloned().collect::<BTreeSet<_>>(),
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+    let mut reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
+    for (key, method) in &catalog {
+        if let OverrideContract::Declarations(declarations) = &method.overrides {
+            for target in declarations.iter().filter_map(|d| d.source_target.as_ref()) {
+                reverse.entry(target).or_default().insert(*key);
+            }
+        }
+        for (index, event) in method.events.iter().enumerate() {
+            if !method.needs_source_domain(index) {
+                continue;
+            }
+            if let Some(target) = match event {
+                Event::Invoke(
+                    InvocationContract {
+                        source_target: Some(target),
+                        ..
+                    },
+                    _,
+                )
+                | Event::Implementation(target, _) => Some(target),
+                _ => None,
+            } {
+                reverse.entry(target).or_default().insert(*key);
+            }
+        }
+    }
+    let mut dirty = catalog.keys().copied().collect::<VecDeque<_>>();
+    let mut queued = catalog.keys().copied().collect::<BTreeSet<_>>();
+    let mut failures = BTreeMap::new();
+    let mut inherited_degree = catalog
+        .keys()
+        .map(|key| (*key, 0usize))
+        .collect::<BTreeMap<_, _>>();
+    let mut inherited_reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
+    for (key, method) in &catalog {
+        if let OverrideContract::Declarations(declarations) = &method.overrides {
+            let targets = declarations
+                .iter()
+                .filter_map(|d| d.source_target.as_ref())
+                .collect::<BTreeSet<_>>();
+            for target in targets {
+                if !catalog.contains_key(target)
+                    || !declarations
+                        .iter()
+                        .any(|d| d.source_target.as_ref() == Some(target) && &d.key == target)
+                {
+                    failures.insert(
+                        (*key).clone(),
+                        ThrowsError::MissingSourceTarget(target.clone()),
+                    );
+                } else {
+                    if let Some(degree) = inherited_degree.get_mut(key) {
+                        *degree += 1;
+                    }
+                    inherited_reverse.entry(target).or_default().insert(*key);
+                }
+            }
+        }
+    }
+    let mut roots = inherited_degree
+        .iter()
+        .filter(|(_, degree)| **degree == 0)
+        .map(|(key, _)| *key)
+        .collect::<VecDeque<_>>();
+    let mut ordered = BTreeSet::new();
+    while let Some(key) = roots.pop_front() {
+        ordered.insert(key);
+        for child in inherited_reverse.get(&key).into_iter().flatten() {
+            if let Some(degree) = inherited_degree.get_mut(child) {
+                *degree -= 1;
+                if *degree == 0 {
+                    roots.push_back(*child);
+                }
+            }
+        }
+    }
+    for key in catalog.keys().filter(|key| !ordered.contains(*key)) {
+        failures.insert(
+            (*key).clone(),
+            ThrowsError::Unknown("cyclic inherited source contracts".into()),
+        );
+    }
+    while let Some(key) = dirty.pop_front() {
+        queued.remove(&key);
+        if failures.contains_key(key) {
+            continue;
+        }
+        let method = catalog[&key];
+        let mut collected = required[key].clone();
+        if collected
+            .iter()
+            .any(|name| context.exception_kind(name).is_none())
+        {
+            failures.insert(
+                key.clone(),
+                ThrowsError::Unknown("original throws hierarchy".into()),
+            );
+        }
+        let types = match event_types(method, &required, &failures, context) {
+            Ok(types) => types,
+            Err(error) => {
+                failures.insert(key.clone(), error);
+                vec![]
+            }
+        };
+        for (event, names) in method.events.iter().zip(types) {
+            if failures.contains_key(key) {
+                break;
+            }
+            let coverage = match event {
+                Event::Throw(_, coverage)
+                | Event::NominalThrow(_, coverage)
+                | Event::Invoke(_, coverage)
+                | Event::Rethrow(_, coverage)
+                | Event::Implementation(_, coverage) => coverage,
+            };
+            // Full original coverage is already sufficient, including an
+            // unavailable callee domain. Handler throws/rethrows are inspected
+            // as their own original events; no body or catch is manufactured.
+            if coverage.all {
+                continue;
+            }
+            for name in names {
+                match context.exception_kind(&name) {
+                    Some(ExceptionKind::Unchecked) => {}
+                    Some(ExceptionKind::Checked) if covered(&name, coverage, context) => {}
+                    Some(ExceptionKind::Checked) => {
+                        collected.insert(name);
+                    }
+                    None => {
+                        failures.insert(
+                            key.clone(),
+                            ThrowsError::Unknown(format!("exception hierarchy {name}")),
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+        let changed = collected != required[key];
+        if changed {
+            required.insert(key.clone(), collected);
+        }
+        if changed || failures.contains_key(key) {
+            for caller in reverse.get(&key).into_iter().flatten() {
+                if queued.insert(*caller) {
+                    dirty.push_back(*caller);
+                }
+            }
+        }
+    }
+    let mut plan = SourceThrowsPlan {
+        methods: BTreeMap::new(),
+        unavailable: failures,
+        runtime: BTreeMap::new(),
+    };
+    for (key, method) in catalog {
+        if plan.unavailable.contains_key(key) {
+            continue;
+        }
+        let source = required[key].iter().cloned().collect::<Vec<_>>();
+        plan.runtime.insert(
+            (*key).clone(),
+            RuntimeThrows {
+                identity: method.identity.clone(),
+                original: method.original.clone(),
+                escaping: source.clone(),
+            },
+        );
+        let derived = source
+            .iter()
+            .filter(|s| !method.original.contains(s))
+            .cloned()
+            .collect::<Vec<_>>();
+        let checked = source
+            .iter()
+            .filter(|name| context.exception_kind(name) == Some(ExceptionKind::Checked))
+            .collect::<Vec<_>>();
+        let error = if !checked.is_empty() && method.identity.key.name == "<clinit>" {
+            Some(ThrowsError::IllegalDeclaration)
+        } else if !checked.is_empty()
+            && method.flags & 2 == 0
+            && method.identity.key.name != "<init>"
+        {
+            match &method.overrides {
+                OverrideContract::Unknown => {
+                    Some(ThrowsError::Unknown("inherited throws contract".into()))
+                }
+                OverrideContract::NoInheritedDeclaration => None,
+                OverrideContract::Declarations(declarations) if declarations.is_empty() => Some(
+                    ThrowsError::Unknown("empty inherited contract evidence".into()),
+                ),
+                OverrideContract::Declarations(declarations)
+                    if declarations.iter().any(|d| {
+                        d.key.owner.is_empty()
+                            || d.key.name != method.identity.key.name
+                            || d.key.parameters != method.identity.key.parameters
+                    }) =>
+                {
+                    Some(ThrowsError::Unknown(
+                        "inherited declaration identity".into(),
+                    ))
+                }
+                OverrideContract::Declarations(declarations)
+                    if declarations.iter().any(|d| {
+                        d.source_target.as_ref().is_some_and(|target| {
+                            target != &d.key || !required.contains_key(target)
+                        })
+                    }) =>
+                {
+                    Some(ThrowsError::Unknown(
+                        "unavailable input inherited source contract".into(),
+                    ))
+                }
+                OverrideContract::Declarations(declarations) => checked
+                    .into_iter()
+                    .find(|name| {
+                        !declarations.iter().all(|d| {
+                            let approved = d
+                                .source_target
+                                .as_ref()
+                                .and_then(|target| required.get(target));
+                            let allowed = approved
+                                .map(|set| set.iter().collect::<Vec<_>>())
+                                .unwrap_or_else(|| d.throws.iter().collect());
+                            allowed.into_iter().any(|base| {
+                                *name == base
+                                    || context.assignable(
+                                        &JavaType::Class((*name).clone()),
+                                        &JavaType::Class(base.clone()),
+                                    )
+                            })
+                        })
+                    })
+                    .map(|name| ThrowsError::OverrideConflict(name.clone())),
+            }
+        } else {
+            None
+        };
+        if let Some(error) = error {
+            plan.unavailable.insert(key.clone(), error);
+            continue;
+        }
+        plan.methods.insert(
+            key.clone(),
+            DerivedThrows {
+                identity: method.identity.clone(),
+                original: method.original.clone(),
+                derived,
+                source,
+            },
+        );
+    }
+    // Post-fixed-point contract failures invalidate reverse source dependencies,
+    // including recursive components, without rescanning the whole program.
+    let mut blocked = plan.unavailable.keys().cloned().collect::<VecDeque<_>>();
+    while let Some(target) = blocked.pop_front() {
+        for caller in reverse.get(&target).into_iter().flatten() {
+            if plan.methods.remove(*caller).is_some() {
+                plan.unavailable.insert(
+                    (*caller).clone(),
+                    ThrowsError::MissingSourceTarget(target.clone()),
+                );
+                blocked.push_back((*caller).clone());
+            }
+        }
+    }
+    Ok(plan)
+}
+
+// Frozen owned-key implementation for differential validation of scheduling
+// and error selection. Production uses only the borrowed-key graph above.
+#[cfg(test)]
+fn derive_program_owned_reference(
+    methods: &[MethodRequirements],
+    context: &impl ThrowsHierarchy,
+) -> Result<SourceThrowsPlan, ThrowsError> {
     let mut catalog = BTreeMap::new();
     for method in methods {
         if catalog
@@ -1024,6 +1320,65 @@ mod tests {
                 all: false,
             },
         )
+    }
+    #[test]
+    fn borrowed_graph_matches_owned_reference() {
+        fn parity(methods: &[MethodRequirements]) {
+            // Debug includes all owned identities, original/derived/source domains,
+            // runtime domains, and the exact selected errors in BTree order.
+            assert_eq!(
+                format!("{:?}", derive_program(methods, &Hierarchy)),
+                format!("{:?}", derive_program_owned_reference(methods, &Hierarchy)),
+            );
+        }
+        parity(&[]);
+        parity(&[body(0), body(0)]);
+        for seed in 0..64 {
+            let mut methods = (0..12).map(body).collect::<Vec<_>>();
+            for (index, method) in methods.iter_mut().enumerate() {
+                method.events.push(call(key((index * 7 + seed) % 14)));
+                if (index + seed) % 3 == 0 {
+                    method.events.push(throwing());
+                }
+                if (index + seed) % 5 == 0 {
+                    method.original.push("java.lang.Exception".into());
+                }
+                if (index + seed) % 7 == 0 {
+                    method.flags = 1;
+                    let target = key((index + seed) % 14);
+                    method.overrides = OverrideContract::Declarations(vec![OverrideDeclaration {
+                        source_target: Some(target.clone()),
+                        key: target,
+                        throws: vec![],
+                    }]);
+                }
+            }
+            parity(&methods);
+            methods.reverse();
+            parity(&methods);
+        }
+        let mut a = body(0);
+        let mut b = body(1);
+        a.events = vec![throwing(), call(key(1))];
+        b.events = vec![call(key(0))];
+        parity(&[a.clone(), b.clone()]);
+        a.overrides = OverrideContract::Declarations(vec![OverrideDeclaration {
+            source_target: Some(key(1)),
+            key: key(1),
+            throws: vec![],
+        }]);
+        b.overrides = OverrideContract::Declarations(vec![OverrideDeclaration {
+            source_target: Some(key(0)),
+            key: key(0),
+            throws: vec![],
+        }]);
+        parity(&[a.clone(), b.clone()]);
+        a.overrides = OverrideContract::Declarations(vec![OverrideDeclaration {
+            source_target: Some(key(1)),
+            key: key(8),
+            throws: vec![],
+        }]);
+        parity(&[a, b]);
     }
     #[test]
     fn long_chain_and_recursive_component_reach_fixed_point() {
