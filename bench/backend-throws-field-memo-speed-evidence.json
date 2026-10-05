@@ -1,0 +1,21 @@
+{
+  "changes": [
+    "Export-local completed exception classification and exact original-method override contract memoization",
+    "Final field publication reuses immutable field resolution while recording current publication/initialization state",
+    "Field-cache profile counters now include final audit lookups"
+  ],
+  "root_tests": {
+    "field_cache": 8,
+    "throws_regressions": 64,
+    "failed": 0,
+    "throws_ignored": 22
+  },
+  "strict_decomp_all_targets_clippy": "passed",
+  "cache_lifetime": "One immutable export; no persisted files or mutable publication proof caching",
+  "full_apk_measurement": "pending",
+  "logs": {
+    "bench/local-artifacts/final-field-cache-tests.log": "3c9b02291a6f363708f620d151c5078a993edffecffe48fe84406535f099829a",
+    "bench/local-artifacts/throws-memo-root-regressions.log": "ee3cad56c77ec0cbf5f7b4b380999727d8d0dfe797aa9d33bbaf8d51a372f261",
+    "bench/local-artifacts/throws-memo-root-clippy.log": "6c6320068792bb53c0e3a82e394864c12fdc5993e4dab7ea84140284ad7470d0"
+  }
+}

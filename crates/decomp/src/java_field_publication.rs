@@ -655,6 +655,29 @@ impl FieldPublication {
         context: &FieldAccessContext<'_>,
         index: Option<&super::InputIndex<'_>>,
     ) -> Result<ResolvedField, PublicationBlocker> {
+        self.record_field_requirement(caller, context, || {
+            super::resolve_field_indexed(inputs, key, external, context, index)
+        })
+    }
+
+    /// Reuse only immutable resolution evidence; publication status is always
+    /// recorded against this current catalog and re-audited after owner output.
+    pub(crate) fn require_field_cached(
+        &mut self,
+        caller: &MethodKey,
+        key: &FieldKey,
+        context: &FieldAccessContext<'_>,
+        cache: &cache::FieldUseCache<'_>,
+    ) -> Result<ResolvedField, PublicationBlocker> {
+        self.record_field_requirement(caller, context, || cache.resolve(key, context))
+    }
+
+    fn record_field_requirement(
+        &mut self,
+        caller: &MethodKey,
+        context: &FieldAccessContext<'_>,
+        resolve: impl FnOnce() -> Result<ResolvedField, FieldRequirement>,
+    ) -> Result<ResolvedField, PublicationBlocker> {
         if caller.owner != context.caller {
             let blocker =
                 PublicationBlocker::Resolution(FieldRequirement::Invalid(caller.owner.clone()));
@@ -664,7 +687,7 @@ impl FieldPublication {
             }
             return Err(blocker);
         }
-        let resolved = match super::resolve_field_indexed(inputs, key, external, context, index) {
+        let resolved = match resolve() {
             Ok(field) => field,
             Err(error) => {
                 let blocker = PublicationBlocker::Resolution(error);

@@ -240,6 +240,9 @@ struct Facts<'a> {
     definitions: BTreeMap<MethodKey, (usize, &'a EncodedMethod)>,
     originals: BTreeMap<String, String>,
     classes: Mutex<BTreeMap<String, Option<Arc<RawClass>>>>,
+    // Export-local immutable evidence; never cache mutable concrete proof state.
+    kinds: Mutex<BTreeMap<String, Option<ExceptionKind>>>,
+    override_contracts: Mutex<BTreeMap<(usize, u32, MethodKey), OverrideContract>>,
 }
 impl<'a> Facts<'a> {
     fn new(
@@ -336,6 +339,8 @@ impl<'a> Facts<'a> {
             definitions,
             originals,
             classes: Mutex::new(BTreeMap::new()),
+            kinds: Mutex::new(BTreeMap::new()),
+            override_contracts: Mutex::new(BTreeMap::new()),
         }
     }
     fn emitted_method_name(&self, key: &MethodKey) -> Option<String> {
@@ -454,6 +459,18 @@ impl<'a> Facts<'a> {
         result
     }
     fn kind(&self, name: &str) -> Option<ExceptionKind> {
+        if let Ok(cache) = self.kinds.lock()
+            && let Some(result) = cache.get(name)
+        {
+            return *result;
+        }
+        let result = self.kind_uncached(name);
+        if let Ok(mut cache) = self.kinds.lock() {
+            cache.insert(name.to_owned(), result);
+        }
+        result
+    }
+    fn kind_uncached(&self, name: &str) -> Option<ExceptionKind> {
         let mut owner = self
             .originals
             .get(name)
@@ -788,6 +805,22 @@ impl RequiredThrowsContext for Context<'_, '_> {
         })
     }
     fn override_contract(&self, identity: &OriginalMethodIdentity) -> OverrideContract {
+        let key = (identity.dex, identity.index, identity.key.clone());
+        if let Ok(cache) = self.facts.override_contracts.lock()
+            && let Some(result) = cache.get(&key)
+        {
+            return result.clone();
+        }
+        // Do not hold the cache lock while walking classes or resolving aliases.
+        let result = self.override_contract_uncached(identity);
+        if let Ok(mut cache) = self.facts.override_contracts.lock() {
+            cache.insert(key, result.clone());
+        }
+        result
+    }
+}
+impl Context<'_, '_> {
+    fn override_contract_uncached(&self, identity: &OriginalMethodIdentity) -> OverrideContract {
         // Constructors and private declarations do not override inherited
         // members. This fact comes from the exact original declaration flags,
         // not from source aliases or the calling instruction.
@@ -1264,6 +1297,182 @@ mod tests {
             span,
         });
         dex
+    }
+
+    #[test]
+    #[ignore = "bounded original Samsung contract memo comparison; no export"]
+    fn samsung_contract_memo_receipt() {
+        let files = dex_format::apk::parse_apk_path(
+            "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk",
+        )
+        .unwrap();
+        let external = crate::java_external_metadata::Classpath::from_paths(&[
+            std::path::PathBuf::from("/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod"),
+            std::path::PathBuf::from("/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar"),
+        ])
+        .unwrap();
+        let mut inventory = AliasInventory::default();
+        for dex in &files {
+            for ty in &dex.type_ids {
+                inventory
+                    .add_type(dex.string(ty.descriptor_idx).unwrap())
+                    .unwrap();
+            }
+            for index in 0..dex.method_ids.len() {
+                inventory
+                    .add_method(method_key(dex, index as u32).unwrap())
+                    .unwrap();
+            }
+        }
+        let aliases = inventory.build(AliasMode::Ascii);
+        let catalog = method_catalog(&files);
+        let facts = Facts::new(&files, &aliases, &catalog, Some(&external));
+        let mut calls = 0;
+        let mut misses = 0;
+        let mut uncached = std::time::Duration::ZERO;
+        let mut cached = std::time::Duration::ZERO;
+        for (pool, dex) in files.iter().enumerate() {
+            let metadata = dex_decompiler::infer::DexMetadata::new(dex);
+            let mut resolver = Resolver::with_catalog(dex, &aliases, &metadata, Some(&catalog));
+            resolver.external = Some(&external);
+            resolver.dex_index = pool;
+            let context = Context {
+                resolver: &resolver,
+                facts: &facts,
+            };
+            for index in (0..dex.method_ids.len()).step_by(97).take(256) {
+                let identity = OriginalMethodIdentity {
+                    dex: pool,
+                    index: index as u32,
+                    key: method_key(dex, index as u32).unwrap(),
+                };
+                for _ in 0..8 {
+                    calls += 1;
+                    misses +=
+                        usize::from(!facts.override_contracts.lock().unwrap().contains_key(&(
+                            pool,
+                            index as u32,
+                            identity.key.clone(),
+                        )));
+                    let start = std::time::Instant::now();
+                    let expected = context.override_contract_uncached(&identity);
+                    uncached += start.elapsed();
+                    let start = std::time::Instant::now();
+                    let actual = context.override_contract(&identity);
+                    cached += start.elapsed();
+                    assert_eq!(format!("{:?}", actual), format!("{:?}", expected));
+                }
+            }
+        }
+        eprintln!("override calls={calls} misses={misses} uncached={uncached:?} cached={cached:?}");
+        let mut calls = 0;
+        let mut misses = 0;
+        let mut uncached = std::time::Duration::ZERO;
+        let mut cached = std::time::Duration::ZERO;
+        for name in facts.originals.keys().step_by(53).take(512) {
+            for _ in 0..8 {
+                calls += 1;
+                misses += usize::from(!facts.kinds.lock().unwrap().contains_key(name));
+                let start = std::time::Instant::now();
+                let expected = facts.kind_uncached(name);
+                uncached += start.elapsed();
+                let start = std::time::Instant::now();
+                let actual = facts.kind(name);
+                cached += start.elapsed();
+                assert_eq!(actual, expected);
+            }
+        }
+        eprintln!("kind calls={calls} misses={misses} uncached={uncached:?} cached={cached:?}");
+    }
+
+    #[test]
+    fn immutable_evidence_memo_preserves_positive_cycle_and_unknown_results() {
+        let files = vec![throws_fixture()];
+        let aliases = JavaAliases::default();
+        let catalog = method_catalog(&files);
+        let facts = Facts::new(&files, &aliases, &catalog, None);
+        for name in ["java.lang.Exception", "java.lang.Throwable", "missing.Type"] {
+            assert_eq!(facts.kind(name), facts.kind_uncached(name));
+            assert_eq!(facts.kind(name), facts.kind_uncached(name));
+        }
+        assert_eq!(
+            facts.kind("java.lang.Exception"),
+            Some(ExceptionKind::Checked)
+        );
+        assert!(facts.kinds.lock().unwrap().contains_key("missing.Type"));
+        facts.classes.lock().unwrap().insert(
+            "Lcycle/A;".into(),
+            Some(Arc::new(RawClass {
+                parent: Some("Lcycle/A;".into()),
+                interfaces: vec![],
+                methods: vec![],
+            })),
+        );
+        assert_eq!(facts.kind("cycle.A"), None);
+        assert_eq!(facts.kind("cycle.A"), facts.kind_uncached("cycle.A"));
+        let metadata = dex_decompiler::infer::DexMetadata::new(&files[0]);
+        let resolver = Resolver::with_catalog(&files[0], &aliases, &metadata, Some(&catalog));
+        let context = Context {
+            resolver: &resolver,
+            facts: &facts,
+        };
+        let key = method_key(&files[0], 0).unwrap();
+        let identities = [
+            OriginalMethodIdentity {
+                dex: 0,
+                index: 0,
+                key: key.clone(),
+            },
+            OriginalMethodIdentity {
+                dex: 1,
+                index: 0,
+                key: key.clone(),
+            },
+            OriginalMethodIdentity {
+                dex: 0,
+                index: 999,
+                key: key.clone(),
+            },
+            OriginalMethodIdentity {
+                dex: 0,
+                index: 999,
+                key: MethodKey {
+                    owner: "Lcycle/A;".into(),
+                    ..key.clone()
+                },
+            },
+            OriginalMethodIdentity {
+                dex: 0,
+                index: 999,
+                key: MethodKey {
+                    owner: "Lmissing/A;".into(),
+                    ..key
+                },
+            },
+        ];
+        for identity in &identities {
+            let expected = format!("{:?}", context.override_contract_uncached(identity));
+            assert_eq!(
+                format!("{:?}", context.override_contract(identity)),
+                expected
+            );
+            assert_eq!(
+                format!("{:?}", context.override_contract(identity)),
+                expected
+            );
+        }
+        assert_eq!(
+            facts.override_contracts.lock().unwrap().len(),
+            identities.len()
+        );
+        assert!(matches!(
+            context.override_contract(&identities[3]),
+            OverrideContract::Unknown
+        ));
+        assert!(matches!(
+            context.override_contract(&identities[4]),
+            OverrideContract::Unknown
+        ));
     }
 
     #[test]

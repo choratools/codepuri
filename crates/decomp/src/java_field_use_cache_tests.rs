@@ -527,3 +527,66 @@ fn genuine_classpath_proof_is_lazy_and_matches_disabled_results() {
         Err(PublicationBlocker::AliasUnavailable(_))
     ));
 }
+
+#[test]
+fn cached_publication_records_current_owner_status_and_failures() {
+    use super::super::FieldPublication;
+    use crate::java_aliases::MethodKey;
+    let mut base = fixture("Lp/Base;", None);
+    let public = field(&mut base, "value", "I", 1);
+    let private = field(&mut base, "hidden", "I", 2);
+    let static_field = field(&mut base, "STATIC", "I", 9);
+    let child = fixture("Lq/Child;", Some("Lp/Base;"));
+    let inputs = [base, child];
+    let names = aliases(&inputs);
+    let index = InputIndex::new(&inputs);
+    let cache = FieldUseCache::new(true, &inputs, &EmptyMetadata, &names, Some(&index));
+    let collect = || FieldPublication::collect(&inputs, &mut AliasInventory::default()).unwrap();
+    let mut cached = collect();
+    let mut plain = collect();
+    let caller = MethodKey {
+        owner: "Lq/Child;".into(),
+        name: "use".into(),
+        parameters: vec![],
+        return_type: "V".into(),
+    };
+    let cases = [
+        (&public, context("Lq/Child;", Some("Lq/Child;"), false)),
+        (&private, context("Lq/Child;", Some("Lq/Child;"), false)),
+        (&static_field, context("Lq/Child;", None, true)),
+        (&static_field, context("Lq/Child;", None, false)),
+        (&public, context("Lp/Base;", Some("Lp/Base;"), false)),
+    ];
+    for initialized in [None, Some(false), Some(true)] {
+        if let Some(initialized) = initialized {
+            cached
+                .record_owner_publication("Lp/Base;", initialized)
+                .unwrap();
+            plain
+                .record_owner_publication("Lp/Base;", initialized)
+                .unwrap();
+        }
+        for (key, access) in &cases {
+            assert_eq!(
+                cached.require_field_cached(&caller, key, access, &cache),
+                plain.require_field_indexed(
+                    &inputs,
+                    &caller,
+                    key,
+                    &EmptyMetadata,
+                    access,
+                    Some(&index)
+                )
+            );
+        }
+        cached.audit();
+        plain.audit();
+        assert_eq!(format!("{cached:?}"), format!("{plain:?}"));
+        assert_eq!(cached.declaration_closed(), plain.declaration_closed());
+        assert_eq!(
+            cached.initialization_closed(),
+            plain.initialization_closed()
+        );
+    }
+    assert!(cache.stats().resolution.hits > 0);
+}

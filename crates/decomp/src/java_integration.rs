@@ -3494,15 +3494,6 @@ fn emit_inner(
         }
         result?;
     }
-    if let (Some(p), Some(cache)) = (profile.as_deref_mut(), &field_use_cache) {
-        let stats = cache.stats();
-        p.field_use_cache_entries = stats.entries;
-        for stage in [stats.resolution, stats.source_use, stats.retain] {
-            p.field_use_cache_hits += stage.hits;
-            p.field_use_cache_misses += stage.misses;
-            p.field_use_cache_failures += stage.failures;
-        }
-    }
     let phase_timer = Timer::new(
         profile
             .as_deref_mut()
@@ -3751,21 +3742,35 @@ fn emit_inner(
             continue;
         }
         for (key, receiver, is_static) in uses {
-            let _ = field_publication.require_field_indexed(
-                files,
-                &caller,
-                &key,
-                provider,
-                &crate::java_members::external_metadata::FieldAccessContext {
-                    caller: &caller.owner,
-                    receiver: receiver.as_deref(),
-                    is_static,
-                },
-                Some(&field_index),
-            );
+            let context = crate::java_members::external_metadata::FieldAccessContext {
+                caller: &caller.owner,
+                receiver: receiver.as_deref(),
+                is_static,
+            };
+            if let Some(cache) = &field_use_cache {
+                let _ = field_publication.require_field_cached(&caller, &key, &context, cache);
+            } else {
+                let _ = field_publication.require_field_indexed(
+                    files,
+                    &caller,
+                    &key,
+                    provider,
+                    &context,
+                    Some(&field_index),
+                );
+            }
         }
     }
     drop(phase_timer);
+    if let (Some(p), Some(cache)) = (profile.as_deref_mut(), &field_use_cache) {
+        let stats = cache.stats();
+        p.field_use_cache_entries = stats.entries;
+        for stage in [stats.resolution, stats.source_use, stats.retain] {
+            p.field_use_cache_hits += stage.hits;
+            p.field_use_cache_misses += stage.misses;
+            p.field_use_cache_failures += stage.failures;
+        }
+    }
     let phase_timer = Timer::new(
         profile
             .as_deref_mut()
