@@ -1,7 +1,7 @@
 //! Directed, evidence-based Java assignment checks and contextual local typing.
 use crate::JavaType;
 use std::collections::{BTreeMap, BTreeSet};
-use std::sync::RwLock;
+use std::sync::{Arc, RwLock};
 
 /// Lossless widening of a narrow Dalvik category-one scalar to its register
 /// integer interpretation. Boolean, wide and floating-point domains are excluded.
@@ -26,7 +26,8 @@ pub struct Declaration {
 #[derive(Debug, Default)]
 /// Directed graph of attested declarations.
 pub struct Hierarchy {
-    declarations: BTreeMap<String, Declaration>,
+    // Clones retain one immutable declaration snapshot; insertion detaches it.
+    declarations: Arc<BTreeMap<String, Declaration>>,
     // Cache only completed top-level queries: recursive cycle observations
     // depend on the active path and cannot safely become independent entries.
     assignments: RwLock<BTreeMap<String, BTreeMap<String, Compatibility>>>,
@@ -94,8 +95,7 @@ impl Hierarchy {
             .get_mut()
             .unwrap_or_else(|e| e.into_inner())
             .clear();
-        self.declarations
-            .insert(declaration.name.clone(), declaration);
+        Arc::make_mut(&mut self.declarations).insert(declaration.name.clone(), declaration);
         Ok(())
     }
 
@@ -285,4 +285,72 @@ pub fn check_local_plan(
         }
     }
     Ok(coercions)
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod snapshot_tests {
+    use super::*;
+    fn declaration(name: &str, superclass: Option<&str>) -> Declaration {
+        Declaration {
+            name: name.into(),
+            superclass: superclass.map(str::to_owned),
+            interfaces: Vec::new(),
+            is_interface: false,
+        }
+    }
+    #[test]
+    fn clones_share_snapshot_until_mutation_and_keep_independent_caches() {
+        let mut original = Hierarchy::default();
+        original
+            .insert(declaration("Parent", Some("java.lang.Object")))
+            .unwrap();
+        original
+            .insert(declaration("Child", Some("Parent")))
+            .unwrap();
+        let child = JavaType::Class("Child".into());
+        let parent = JavaType::Class("Parent".into());
+        assert_eq!(
+            original.assignable(&child, &parent),
+            Compatibility::Assignable
+        );
+        let mut cloned = original.clone();
+        assert!(Arc::ptr_eq(&original.declarations, &cloned.declarations));
+        assert!(cloned.assignments.read().unwrap().is_empty());
+        assert_eq!(
+            cloned.assignable(&child, &parent),
+            Compatibility::Assignable
+        );
+        cloned
+            .insert(declaration("Grandchild", Some("Child")))
+            .unwrap();
+        assert!(!Arc::ptr_eq(&original.declarations, &cloned.declarations));
+        assert!(cloned.assignments.read().unwrap().is_empty());
+        let grandchild = JavaType::Class("Grandchild".into());
+        assert_eq!(
+            cloned.assignable(&grandchild, &parent),
+            Compatibility::Assignable
+        );
+        assert!(matches!(
+            original.assignable(&grandchild, &parent),
+            Compatibility::Indeterminate(UnsupportedType::MissingHierarchy(_))
+        ));
+        assert!(!original.assignments.read().unwrap().is_empty());
+    }
+    #[test]
+    fn duplicate_conflict_and_renamed_snapshots_do_not_change_other_owners() {
+        let mut original = Hierarchy::default();
+        original.insert(declaration("Parent", None)).unwrap();
+        let mut cloned = original.clone();
+        cloned.insert(declaration("Parent", None)).unwrap();
+        assert!(Arc::ptr_eq(&original.declarations, &cloned.declarations));
+        assert!(matches!(
+            cloned.insert(declaration("Parent", Some("Other"))),
+            Err(UnsupportedType::ConflictingDeclaration(_))
+        ));
+        assert!(Arc::ptr_eq(&original.declarations, &cloned.declarations));
+        let renamed = cloned.map_names(|name| format!("renamed.{name}")).unwrap();
+        assert!(renamed.declarations.contains_key("renamed.Parent"));
+        assert!(!original.declarations.contains_key("renamed.Parent"));
+    }
 }

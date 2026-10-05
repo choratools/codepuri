@@ -1,0 +1,86 @@
+{
+  "base_commit": "d2d3c21",
+  "scope": "DBHandler original class, 100 methods, workers1, noio, source_release25, exactCP4/runtimeframework",
+  "optimization": "Arc immutable hierarchy declarations; Arc::make_mut on insert; independent per-clone completed-query caches preserved",
+  "complete_goal": false,
+  "full_apk_measured": false,
+  "binary_sha256": "5ce444c3fa98bba00f05a403d4fe4aeee5e5e80f3c81e36ee4f95f7f962f1a04",
+  "runs": [
+    {
+      "name": "probe1",
+      "log": "/tmp/opencode/backend-speed-probe1.log",
+      "export_wall_s": 140.305056,
+      "checksum": "32c314c25a8fc460",
+      "bytes": 1138481,
+      "report_sha256": "d565529a967306cf4ec69f486407ea51c082aded3492be1fe7b23f9cc6e0ebf1",
+      "class_receipt": "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/database/DBHandler;\telapsed_s=59.933159\tmethods=100\tstages={\"closure_pruning\": 42.201\u00b5s, \"frontend\": 837.281\u00b5s, \"initialization_family\": 130.994253ms, \"source_collection\": 129.131\u00b5s, \"source_serialization\": 10.413126ms, \"structure_backend\": 59.093695253s}\tssa={\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 565.454\u00b5s, \"verification\": 0ns}",
+      "preserved_log": "bench/local-artifacts/hierarchy-speed/backend-speed-probe1.log",
+      "log_sha256": "e2f2200ed531efc161188af88a9165425c3e7abcd8d3ee1053b7fb3a48b1d144"
+    },
+    {
+      "name": "probe2",
+      "log": "/tmp/opencode/backend-speed-probe2.log",
+      "export_wall_s": 141.032425,
+      "checksum": "32c314c25a8fc460",
+      "bytes": 1138481,
+      "report_sha256": "d565529a967306cf4ec69f486407ea51c082aded3492be1fe7b23f9cc6e0ebf1",
+      "class_receipt": "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/database/DBHandler;\telapsed_s=60.437938\tmethods=100\tstages={\"closure_pruning\": 75.918\u00b5s, \"frontend\": 848.522\u00b5s, \"initialization_family\": 137.466502ms, \"source_collection\": 129.025\u00b5s, \"source_serialization\": 10.889531ms, \"structure_backend\": 59.578833614s}\tssa={\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 575.831\u00b5s, \"verification\": 0ns}",
+      "preserved_log": "bench/local-artifacts/hierarchy-speed/backend-speed-probe2.log",
+      "log_sha256": "b18d6b4cc0ccbca80499493c62720658ce49e75786a9409be2496d88f009bab6"
+    },
+    {
+      "name": "after1",
+      "log": "/tmp/opencode/backend-speed-after1.log",
+      "export_wall_s": 82.020443,
+      "checksum": "32c314c25a8fc460",
+      "bytes": 1138481,
+      "report_sha256": "d565529a967306cf4ec69f486407ea51c082aded3492be1fe7b23f9cc6e0ebf1",
+      "class_receipt": "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/database/DBHandler;\telapsed_s=0.303810\tmethods=100\tstages={\"closure_pruning\": 36.914\u00b5s, \"frontend\": 359.509\u00b5s, \"initialization_family\": 128.187658ms, \"source_collection\": 624.649\u00b5s, \"source_serialization\": 10.503638ms, \"structure_backend\": 162.196849ms}\tssa={\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 215.828\u00b5s, \"verification\": 0ns}",
+      "preserved_log": "bench/local-artifacts/hierarchy-speed/backend-speed-after1.log",
+      "log_sha256": "71e578318c69a2edabe22d7ba3cd6d2118a5536a394a75eff5948578883c0d4a"
+    },
+    {
+      "name": "after2",
+      "export_wall_s": 78.671782,
+      "checksum": "32c314c25a8fc460",
+      "bytes": 1138481,
+      "report_sha256": "d565529a967306cf4ec69f486407ea51c082aded3492be1fe7b23f9cc6e0ebf1",
+      "class_receipt": "top_class\tdex=2\tLcom/samsung/android/sdk/smp/common/database/DBHandler;\telapsed_s=0.310223\tmethods=100\tstages={\"closure_pruning\": 34.442\u00b5s, \"frontend\": 369.021\u00b5s, \"initialization_family\": 133.347289ms, \"source_collection\": 645.459\u00b5s, \"source_serialization\": 10.798061ms, \"structure_backend\": 163.153333ms}\tssa={\"analysis\": 0ns, \"decode\": 0ns, \"inference\": 0ns, \"lift\": 0ns, \"liveness\": 0ns, \"materialize\": 0ns, \"merge\": 0ns, \"phi_cleanup\": 0ns, \"phi_placement\": 0ns, \"placement\": 0ns, \"rename\": 0ns, \"type_context_prepare\": 226.833\u00b5s, \"verification\": 0ns}",
+      "preserved_log": "bench/local-artifacts/hierarchy-speed/backend-speed-after2.log",
+      "log_sha256": "a520b7dd8a8d0b9fcb63661fed812b5ec5d4335ed52e95aa5ca4a740eabbb78a"
+    }
+  ],
+  "report_all_equal": true,
+  "checksum_all_equal": true,
+  "cache_scope": "fresh process per run; OS page cache not cleared; not persistent warm-cache benchmark",
+  "inputs": {
+    "/storage_0/decomphify/tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk": "d49a8bbf7aac35ec4d2e842535fd85ac105c49291d9efe23e041ae8afee12c41",
+    "/tmp/opencode/samsung-framework-metadata/framework.jar": "1d329cf676fc029766bf37780fad61d835881e18ce2da570a3e165ed9f186a0b",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.base.jmod": "b034e9a5c2b0dc4ccceff165fe21a2bd4b92dbc4fbe0b68b7e8606397a497570",
+    "/home/jtjisgod/Android/Sdk/platforms/android-35/android.jar": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/jdk.unsupported.jmod": "d1fbc955a57ee9dbfae1353efafee0367929413070161df6e507f2e044144995",
+    "/home/jtjisgod/tools/jdk-17.0.13+11/jmods/java.naming.jmod": "4ad2fe876db264c1b08bd1accde0fc472654be76bfe1cc79cfb4019fff6a351d"
+  },
+  "validation": {
+    "snapshot_tests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "backend_library": {
+      "passed": 352,
+      "failed": 0,
+      "ignored": 14
+    },
+    "strict_backend_all_targets_clippy": 0,
+    "rustfmt_file": 0,
+    "diff_check": 0
+  },
+  "identity_limitation": "noio profiler produced ordered source diagnostic FNV and identical whole JavaReport; not a whole-APK all-method identity ledger comparison",
+  "root_snapshot_tests": {
+    "passed": 2,
+    "failed": 0
+  },
+  "root_validation_pending": "full APK benchmark and identity ledger comparison",
+  "root_strict_workspace_all_targets_clippy": 0,
+  "root_fmt_exit": 0
+}
