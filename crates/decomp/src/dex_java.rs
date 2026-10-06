@@ -241,6 +241,11 @@ pub struct JavaOptions {
     /// Share immutable whole-input initialization capability evidence instead
     /// of cloning it for each class. Defaults to enabled.
     pub cache_inventory: bool,
+    /// Opt-in measurement mode: skip redundant feasibility re-derivations
+    /// (for example the discarded trial structuring before body emission) even
+    /// where skipping can change unpublished-reason identity or publication
+    /// outcomes. Defaults to false; default-mode output is unaffected.
+    pub fast_proofs: bool,
     /// Explicit local JVM declaration inputs; no ambient platform defaults.
     pub classpath: Vec<std::path::PathBuf>,
 }
@@ -254,6 +259,7 @@ impl Default for JavaOptions {
             cache_ssa: true,
             cache_resolutions: true,
             cache_inventory: true,
+            fast_proofs: false,
             classpath: Vec::new(),
         }
     }

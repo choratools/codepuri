@@ -33,6 +33,7 @@ fn export(
             cache_ssa: true,
             cache_resolutions: true,
             cache_inventory: true,
+            fast_proofs: false,
             classpath: vec![],
         },
         &mut |s: &GeneratedSource| -> Result<(), OutputError> {

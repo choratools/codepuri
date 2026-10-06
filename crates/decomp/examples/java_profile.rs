@@ -16,7 +16,7 @@ fn seconds(d: Duration) -> f64 {
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
-    let apk = PathBuf::from(args.next().ok_or("usage: java_profile APK OUTPUT [--workers N] [--class DESCRIPTOR] [--classpath PATH] [--metadata-dex PATH] [--source-release N] [--no-io] [--unprofiled] [--no-ssa-cache] [--no-resolution-cache] [--no-inventory-cache]")?);
+    let apk = PathBuf::from(args.next().ok_or("usage: java_profile APK OUTPUT [--workers N] [--class DESCRIPTOR] [--classpath PATH] [--metadata-dex PATH] [--source-release N] [--no-io] [--unprofiled] [--no-ssa-cache] [--no-resolution-cache] [--no-inventory-cache] [--fast-proofs]")?);
     let root = PathBuf::from(
         args.next()
             .ok_or("missing output directory (must not exist)")?,
@@ -47,6 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "--no-ssa-cache" => options.cache_ssa = false,
             "--no-resolution-cache" => options.cache_resolutions = false,
             "--no-inventory-cache" => options.cache_inventory = false,
+            "--fast-proofs" => options.fast_proofs = true,
             _ => return Err(format!("unknown option {arg}").into()),
         }
     }

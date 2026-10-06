@@ -391,6 +391,7 @@ struct Resolver<'a> {
         &'a Mutex<BTreeMap<String, Vec<initializers::annotation_publication::DeferredDefault>>>,
     >,
     defer_annotation_defaults: bool,
+    fast_proofs: bool,
     original_names: BTreeMap<String, String>,
     class_catalog: BTreeMap<String, Option<backend_java::constructors::ConstructorClass>>,
     constructor_sets: BTreeMap<String, Vec<MethodRef>>,
@@ -461,6 +462,7 @@ impl<'a> Resolver<'a> {
             annotation_defaults: None,
             annotation_guards: None,
             defer_annotation_defaults: false,
+            fast_proofs: false,
             dex,
             metadata,
             aliases,
@@ -2684,7 +2686,11 @@ fn method_source(
     }
     drop(_timer);
     let precheck_timer = stage(profile, "structure_precheck");
-    if exception_scopes.is_some() || disjoint_scopes.is_some() || dispatch_scopes.is_some() {
+    if r.fast_proofs {
+        // Measurement mode: the trial structuring below is re-derived by the
+        // body backend during emission; skipping the discarded feasibility
+        // derivation trades unpublished-reason identity for its CPU.
+    } else if exception_scopes.is_some() || disjoint_scopes.is_some() || dispatch_scopes.is_some() {
         // The exact scope grammar is validated by the metadata bridge and the
         // exception planner; the branch-only structurer rejects these edges.
     } else if ir.cfg().edge_ids().any(|id| {
@@ -3703,6 +3709,7 @@ fn emit_inner(
             let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
             r.source_release = options.source_release;
             r.cache_super_bindings = options.cache_resolutions;
+            r.fast_proofs = options.fast_proofs;
             r.ssa_cache = Some(cache);
             r.cache_inventory = options.cache_inventory;
             r.member_index = Some(member_index);
@@ -4714,7 +4721,7 @@ fn constructor_subset_source(
 fn static_initializer_subset_source(
     class: &ClassDef,
     r: &Resolver<'_>,
-    precomputed: Option<(initializers::StaticInitializerBodySubset, usize)>,
+    precomputed: Option<Result<(initializers::StaticInitializerBodySubset, usize), String>>,
 ) -> Result<(u32, Candidate, String), String> {
     let method = class
         .class_data
@@ -4733,11 +4740,12 @@ fn static_initializer_subset_source(
         .ok_or("static subset: signature unavailable")?;
     // Only the plain attested proof (no exception-scope derivation) is shared
     // with the family plan's internal static proof, and only for clinit
-    // without handler tables.
+    // without handler tables. A recorded outcome, success or identical failure,
+    // replays here instead of re-proving the same evidence.
     let precomputed = precomputed.filter(|_| code.tries.is_empty());
     let (plan, runtime_capability_count) =
-        if let Some((plan, count)) = precomputed {
-            (plan, count)
+        if let Some(precomputed) = precomputed {
+            precomputed?
         } else if r.cache_inventory {
             let proof = if code.tries.is_empty() {
             initializers::plan_static_initializer_shared_explicit_stores_attested(
@@ -4852,10 +4860,11 @@ fn render_initialization_prefix(
         format!("static {{\n{block}}}\n")
     })
 }
+
 fn initialization_source(
     class: &ClassDef,
     r: &Resolver<'_>,
-    reuse_static: &mut Option<(initializers::StaticInitializerBodySubset, usize)>,
+    reuse_static: &mut Option<Result<(initializers::StaticInitializerBodySubset, usize), String>>,
 ) -> Result<InitializationSource, String> {
     let data = class
         .class_data
@@ -5044,7 +5053,10 @@ fn initialization_source(
             })
             .map(|proof| (proof.plan, proof.runtime_capabilities.len()))
         };
-        *reuse_static = precomputed_static.and_then(Result::ok);
+        // Retain the recorded static proof outcome, success or failure, so the
+        // subset retry replays identical evidence instead of re-proving it.
+        *reuse_static = precomputed_static
+            .map(|proof| proof.map_err(|error| format!("static subset proof: {error:?}")));
         family?
     } else {
         let plan = initializers::plan_class_initialization_with_inventory(
