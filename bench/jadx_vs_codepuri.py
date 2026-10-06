@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Paired cold-export benchmark: jadx vs codepuri java_profile.
+"""Paired cold-export benchmark: jadx vs codepuri's ordinary export path.
 
 Protocol (docs/codepuri-plan.md): same APK, same worker count, fresh output
 directories, /usr/bin/time -v, median across runs. jadx baseline on Samsung
 Pass at 30 workers: 26.26 s wall / 16.1 GiB RSS (jadx 1.5.1, 2026-10-05).
 
-Prerequisite: cargo build -p decomp --release --example java_profile
+Prerequisite: cargo build -p decomp --release --example java_export_bench
 
 Example:
   bench/jadx_vs_codepuri.py tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk \
@@ -22,6 +22,7 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+JAVA_EXPORT = REPO_ROOT / "target/release/examples/java_export_bench"
 JAVA_PROFILE = REPO_ROOT / "target/release/examples/java_profile"
 DEFAULT_JADX = "/home/jtjisgod/tools/jadx/bin/jadx"
 
@@ -101,9 +102,20 @@ def run_jadx(jadx_bin: Path, apk: Path, out: Path, workers: int, time_out: Path,
     return run
 
 
-def run_codepuri(apk: Path, out: Path, workers: int, time_out: Path, log_out: Path) -> dict:
-    run = timed_run([str(JAVA_PROFILE), str(apk), str(out), "--workers", str(workers)],
-                    time_out, log_out)
+def run_codepuri(
+    apk: Path,
+    out: Path,
+    workers: int,
+    time_out: Path,
+    log_out: Path,
+    profiled: bool,
+    fast_proofs: bool,
+) -> dict:
+    binary = JAVA_PROFILE if profiled else JAVA_EXPORT
+    argv = [str(binary), str(apk), str(out), "--workers", str(workers)]
+    if fast_proofs:
+        argv.append("--fast-proofs")
+    run = timed_run(argv, time_out, log_out)
     run.update(dir_stats(out))
     return run
 
@@ -115,6 +127,10 @@ def main() -> int:
     parser.add_argument("--runs", type=int, default=1)
     parser.add_argument("--workers", type=int, default=30)
     parser.add_argument("--jadx-bin", type=Path, default=Path(DEFAULT_JADX))
+    parser.add_argument("--profiled-codepuri", action="store_true",
+                        help="use diagnostic java_profile instead of the minimal unprofiled exporter")
+    parser.add_argument("--fast-proofs-codepuri", action="store_true",
+                        help="enable opt-in fast_proofs mode (may alter unpublished reasons on other APKs)")
     parser.add_argument("--skip-jadx", action="store_true")
     parser.add_argument("--skip-codepuri", action="store_true")
     parser.add_argument("--markers", action="store_true", help="count jadx failure markers (slow)")
@@ -126,8 +142,9 @@ def main() -> int:
         parser.error(f"APK not found: {apk}")
     if out_root.exists():
         parser.error(f"output directory must not exist: {out_root}")
-    if not args.skip_codepuri and not JAVA_PROFILE.is_file():
-        parser.error(f"missing {JAVA_PROFILE}; run: cargo build -p decomp --release --example java_profile")
+    codepuri_binary = JAVA_PROFILE if args.profiled_codepuri else JAVA_EXPORT
+    if not args.skip_codepuri and not codepuri_binary.is_file():
+        parser.error(f"missing {codepuri_binary}; build the selected codepuri export example first")
     if not args.skip_jadx and not args.jadx_bin.is_file():
         parser.error(f"jadx binary not found: {args.jadx_bin}")
 
@@ -136,6 +153,8 @@ def main() -> int:
         "apk": str(apk),
         "workers": args.workers,
         "runs": args.runs,
+        "codepuri_profiled": args.profiled_codepuri,
+        "codepuri_fast_proofs": args.fast_proofs_codepuri,
         "jadx_version": None,
         "samples": [],
     }
@@ -144,6 +163,8 @@ def main() -> int:
         report["jadx_version"] = (version.stdout + version.stderr).strip().splitlines()[-1] if version.returncode == 0 else None
 
     for index in range(args.runs):
+        sample_dir = out_root / f"run{index}"
+        sample_dir.mkdir()
         sample: dict = {"run": index}
         if not args.skip_jadx:
             jadx_out = out_root / f"run{index}/jadx-output"
@@ -156,7 +177,9 @@ def main() -> int:
             cp_out = out_root / f"run{index}/codepuri-output"
             sample["codepuri"] = run_codepuri(apk, cp_out, args.workers,
                                               out_root / f"run{index}/codepuri.time",
-                                              out_root / f"run{index}/codepuri.log")
+                                              out_root / f"run{index}/codepuri.log",
+                                              args.profiled_codepuri,
+                                              args.fast_proofs_codepuri)
         report["samples"].append(sample)
         print(json.dumps({k: v for k, v in sample.items()}, indent=1), flush=True)
 

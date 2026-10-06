@@ -9,7 +9,8 @@ use managed_ir::{
     refs::{ClassRef, MethodRef},
     types::ManagedType,
 };
-use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
+use std::hash::{Hash, Hasher};
 #[path = "java_required_throws_handlers.rs"]
 mod handler_provenance;
 
@@ -466,7 +467,86 @@ fn covered(name: &str, coverage: &Coverage, context: &impl ThrowsHierarchy) -> b
 /// Preserve precise rethrow domains instead of claiming every catch-all object
 /// imposes Throwable on the caller. The finite union also handles nested
 /// handler copies without recursion depending on a traversal's active path.
-fn event_types<K: Ord + std::borrow::Borrow<MethodKey>>(
+fn event_types(
+    method: &MethodRequirements,
+    required: &[BTreeSet<String>],
+    indices: &HashMap<MethodKeyHashRef<'_>, usize>,
+    failures: &BTreeMap<MethodKey, ThrowsError>,
+    context: &impl ThrowsHierarchy,
+) -> Result<Vec<BTreeSet<String>>, ThrowsError> {
+    let mut types = Vec::with_capacity(method.events.len());
+    for (index, event) in method.events.iter().enumerate() {
+        types.push(match event {
+            Event::Throw(name, _) => BTreeSet::from([name.clone()]),
+            Event::NominalThrow(names, _) => names.clone(),
+            Event::Invoke(call, _) => {
+                let mut names = call.declared.iter().cloned().collect::<BTreeSet<_>>();
+                if let Some(target) = &call.source_target
+                    && method.needs_source_domain(index)
+                {
+                    if failures.contains_key(target) {
+                        return Err(ThrowsError::MissingSourceTarget(target.clone()));
+                    }
+                    let target_index = indices
+                        .get(&MethodKeyHashRef(target))
+                        .copied()
+                        .ok_or_else(|| ThrowsError::MissingSourceTarget(target.clone()))?;
+                    names.extend(required[target_index].iter().cloned());
+                }
+                names
+            }
+            Event::Rethrow(_, _) => BTreeSet::new(),
+            Event::Implementation(target, _) => {
+                if failures.contains_key(target) {
+                    return Err(ThrowsError::MissingSourceTarget(target.clone()));
+                }
+                let target_index = indices
+                    .get(&MethodKeyHashRef(target))
+                    .copied()
+                    .ok_or_else(|| ThrowsError::MissingSourceTarget(target.clone()))?;
+                required[target_index].clone()
+            }
+        });
+    }
+    let matches = |name: &str, base: &str| {
+        name == base
+            || context.assignable(&JavaType::Class(name.into()), &JavaType::Class(base.into()))
+    };
+    loop {
+        let mut changed = false;
+        for (index, event) in method.events.iter().enumerate() {
+            let Event::Rethrow(origins, _) = event else {
+                continue;
+            };
+            let mut found = BTreeSet::new();
+            for origin in origins {
+                let source = types
+                    .get(origin.source)
+                    .ok_or_else(|| ThrowsError::Unknown("handler throwing predecessor".into()))?;
+                for name in source {
+                    let bound = match &origin.caught {
+                        Some(base) if matches(name, base) => name,
+                        Some(base) if matches(base, name) => base,
+                        Some(_) => continue,
+                        None => name,
+                    };
+                    if !origin.excluded.iter().any(|base| matches(bound, base)) {
+                        found.insert(bound.clone());
+                    }
+                }
+            }
+            let old = types[index].len();
+            types[index].extend(found);
+            changed |= old != types[index].len();
+        }
+        if !changed {
+            return Ok(types);
+        }
+    }
+}
+
+#[cfg(test)]
+fn event_types_owned<K: Ord + std::borrow::Borrow<MethodKey>>(
     method: &MethodRequirements,
     required: &BTreeMap<K, BTreeSet<String>>,
     failures: &BTreeMap<MethodKey, ThrowsError>,
@@ -651,25 +731,36 @@ pub fn derive_program(
     methods: &[MethodRequirements],
     context: &(impl ThrowsHierarchy + Sync),
 ) -> Result<SourceThrowsPlan, ThrowsError> {
-    // Borrow immutable identities and event targets for graph scheduling. BTree
-    // ordering still compares full MethodKey values, including missing targets.
-    let mut catalog = BTreeMap::new();
-    for method in methods {
-        if catalog.insert(&method.identity.key, method).is_some() {
-            return Err(ThrowsError::Unknown(
-                "duplicate original method identity".into(),
-            ));
-        }
-    }
-    let mut required = catalog
+    // Catalog slots use the same full MethodKey order as the original BTreeMap.
+    // Sorting once lets the fixed-point state and worklists stay in ordered
+    // vectors without changing initialization or visitation order.
+    let mut ordered = methods
         .iter()
-        .map(|(key, m)| (*key, m.original.iter().cloned().collect::<BTreeSet<_>>()))
-        .collect::<BTreeMap<_, _>>();
-    let mut reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
-    for (key, method) in &catalog {
+        .map(|method| (&method.identity.key, method))
+        .collect::<Vec<_>>();
+    ordered.sort_unstable_by_key(|(key, _)| *key);
+    if ordered.windows(2).any(|pair| pair[0].0 == pair[1].0) {
+        return Err(ThrowsError::Unknown(
+            "duplicate original method identity".into(),
+        ));
+    }
+    let method_count = ordered.len();
+    let indices = ordered
+        .iter()
+        .enumerate()
+        .map(|(index, (key, _))| (MethodKeyHashRef(key), index))
+        .collect::<HashMap<_, _>>();
+    let mut required = ordered
+        .iter()
+        .map(|(_, method)| method.original.iter().cloned().collect::<BTreeSet<_>>())
+        .collect::<Vec<_>>();
+    let mut reverse = vec![Vec::<usize>::new(); method_count];
+    for (caller, (_, method)) in ordered.iter().enumerate() {
         if let OverrideContract::Declarations(declarations) = &method.overrides {
             for target in declarations.iter().filter_map(|d| d.source_target.as_ref()) {
-                reverse.entry(target).or_default().insert(*key);
+                if let Some(&target_index) = indices.get(&MethodKeyHashRef(target)) {
+                    reverse[target_index].push(caller);
+                }
             }
         }
         for (index, event) in method.events.iter().enumerate() {
@@ -686,26 +777,31 @@ pub fn derive_program(
                 )
                 | Event::Implementation(target, _) => Some(target),
                 _ => None,
-            } {
-                reverse.entry(target).or_default().insert(*key);
+            } && let Some(&target_index) = indices.get(&MethodKeyHashRef(target))
+            {
+                reverse[target_index].push(caller);
             }
         }
     }
-    let mut dirty = catalog.keys().copied().collect::<VecDeque<_>>();
-    let mut queued = catalog.keys().copied().collect::<BTreeSet<_>>();
+    for callers in &mut reverse {
+        callers.sort_unstable();
+        callers.dedup();
+    }
+    let mut dirty = (0..method_count).collect::<VecDeque<_>>();
+    let mut queued = vec![true; method_count];
     let mut failures = BTreeMap::new();
     // Only methods with inherited dependencies need degree bookkeeping. Most
     // original methods have none; avoid allocating two whole-catalog trees.
     let mut inherited_degree = BTreeMap::<&MethodKey, usize>::new();
     let mut inherited_reverse = BTreeMap::<&MethodKey, BTreeSet<&MethodKey>>::new();
-    for (key, method) in &catalog {
+    for (key, method) in &ordered {
         if let OverrideContract::Declarations(declarations) = &method.overrides {
             let targets = declarations
                 .iter()
                 .filter_map(|d| d.source_target.as_ref())
                 .collect::<BTreeSet<_>>();
             for target in targets {
-                if !catalog.contains_key(target)
+                if !indices.contains_key(&MethodKeyHashRef(target))
                     || !declarations
                         .iter()
                         .any(|d| d.source_target.as_ref() == Some(target) && &d.key == target)
@@ -745,13 +841,13 @@ pub fn derive_program(
             ThrowsError::Unknown("cyclic inherited source contracts".into()),
         );
     }
-    while let Some(key) = dirty.pop_front() {
-        queued.remove(&key);
+    while let Some(method_index) = dirty.pop_front() {
+        queued[method_index] = false;
+        let (key, method) = ordered[method_index];
         if failures.contains_key(key) {
             continue;
         }
-        let method = catalog[&key];
-        let mut collected = required[key].clone();
+        let mut collected = required[method_index].clone();
         if collected
             .iter()
             .any(|name| context.exception_kind(name).is_none())
@@ -761,7 +857,7 @@ pub fn derive_program(
                 ThrowsError::Unknown("original throws hierarchy".into()),
             );
         }
-        let types = match event_types(method, &required, &failures, context) {
+        let types = match event_types(method, &required, &indices, &failures, context) {
             Ok(types) => types,
             Err(error) => {
                 failures.insert(key.clone(), error);
@@ -802,22 +898,21 @@ pub fn derive_program(
                 }
             }
         }
-        let changed = collected != required[key];
+        let changed = collected != required[method_index];
         if changed {
-            required.insert(key, collected);
+            required[method_index] = collected;
         }
         if changed || failures.contains_key(key) {
-            for caller in reverse.get(&key).into_iter().flatten() {
-                if queued.insert(*caller) {
-                    dirty.push_back(*caller);
+            for &caller in &reverse[method_index] {
+                if !queued[caller] {
+                    queued[caller] = true;
+                    dirty.push_back(caller);
                 }
             }
         }
     }
     // Per-method plan outcomes are independent once the fixed point is reached;
     // build them concurrently in catalog order and merge in deterministic order.
-    let ordered: Vec<(&MethodKey, &MethodRequirements)> =
-        catalog.iter().map(|(key, m)| (*key, *m)).collect();
     let threads = std::thread::available_parallelism()
         .map_or(1, |count| count.get())
         .clamp(1, 8)
@@ -825,6 +920,7 @@ pub fn derive_program(
     let chunk_size = ordered.len().div_ceil(threads).max(1);
     let failures_ref = &failures;
     let required_ref = &required;
+    let indices_ref = &indices;
     type PlanChunk = (
         BTreeMap<MethodKey, DerivedThrows>,
         BTreeMap<MethodKey, ThrowsError>,
@@ -833,16 +929,21 @@ pub fn derive_program(
     let chunks: Vec<PlanChunk> = std::thread::scope(|scope| {
         let handles: Vec<_> = ordered
             .chunks(chunk_size)
-            .map(|chunk| {
+            .enumerate()
+            .map(|(chunk_index, chunk)| {
                 scope.spawn(move || {
                     let mut methods = BTreeMap::new();
                     let mut unavailable = BTreeMap::new();
                     let mut runtime = BTreeMap::new();
-                    for &(key, method) in chunk {
+                    for (offset, &(key, method)) in chunk.iter().enumerate() {
+                        let method_index = chunk_index * chunk_size + offset;
                         if failures_ref.contains_key(key) {
                             continue;
                         }
-                        let source = required_ref[key].iter().cloned().collect::<Vec<_>>();
+                        let source = required_ref[method_index]
+                            .iter()
+                            .cloned()
+                            .collect::<Vec<_>>();
                         runtime.insert(
                             key.clone(),
                             RuntimeThrows {
@@ -895,7 +996,9 @@ pub fn derive_program(
                                 OverrideContract::Declarations(declarations)
                                     if declarations.iter().any(|d| {
                                         d.source_target.as_ref().is_some_and(|target| {
-                                            target != &d.key || !required_ref.contains_key(target)
+                                            target != &d.key
+                                                || !indices_ref
+                                                    .contains_key(&MethodKeyHashRef(target))
                                         })
                                     }) =>
                                 {
@@ -910,7 +1013,10 @@ pub fn derive_program(
                                             let approved = d
                                                 .source_target
                                                 .as_ref()
-                                                .and_then(|target| required_ref.get(target));
+                                                .and_then(|target| {
+                                                    indices_ref.get(&MethodKeyHashRef(target))
+                                                })
+                                                .map(|index| &required_ref[*index]);
                                             let allowed = approved
                                                 .map(|set| set.iter().collect::<Vec<_>>())
                                                 .unwrap_or_else(|| d.throws.iter().collect());
@@ -967,19 +1073,39 @@ pub fn derive_program(
     }
     // Post-fixed-point contract failures invalidate reverse source dependencies,
     // including recursive components, without rescanning the whole program.
-    let mut blocked = plan.unavailable.keys().cloned().collect::<VecDeque<_>>();
-    while let Some(target) = blocked.pop_front() {
-        for caller in reverse.get(&target).into_iter().flatten() {
-            if plan.methods.remove(*caller).is_some() {
+    let mut blocked = plan
+        .unavailable
+        .keys()
+        .filter_map(|target| indices.get(&MethodKeyHashRef(target)).copied())
+        .collect::<VecDeque<_>>();
+    while let Some(target_index) = blocked.pop_front() {
+        let target = ordered[target_index].0;
+        for &caller_index in &reverse[target_index] {
+            let caller = ordered[caller_index].0;
+            if plan.methods.remove(caller).is_some() {
                 plan.unavailable.insert(
-                    (*caller).clone(),
+                    caller.clone(),
                     ThrowsError::MissingSourceTarget(target.clone()),
                 );
-                blocked.push_back((*caller).clone());
+                blocked.push_back(caller_index);
             }
         }
     }
     Ok(plan)
+}
+
+// MethodKey intentionally has no crate-wide Hash implementation. This borrowed
+// wrapper hashes the fields compared by MethodKey::eq for the catalog index.
+#[derive(Clone, Copy, Eq, PartialEq)]
+struct MethodKeyHashRef<'a>(&'a MethodKey);
+
+impl Hash for MethodKeyHashRef<'_> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.0.owner.hash(state);
+        self.0.name.hash(state);
+        self.0.parameters.hash(state);
+        self.0.return_type.hash(state);
+    }
 }
 
 // Frozen owned-key implementation for differential validation of scheduling
@@ -1116,7 +1242,7 @@ fn derive_program_owned_reference(
                 ThrowsError::Unknown("original throws hierarchy".into()),
             );
         }
-        let types = match event_types(method, &required, &failures, context) {
+        let types = match event_types_owned(method, &required, &failures, context) {
             Ok(types) => types,
             Err(error) => {
                 failures.insert(key.clone(), error);
