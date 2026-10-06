@@ -277,10 +277,27 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 - 판단: default는 jadx보다 0.32s 뒤, fast mode는 0.11s 앞 (둘 다 측정 노이즈 근접).
   CPU는 여전히 jadx의 약 절반. Samsung Pass 출력은 28,575 sources / 200MB 대 jadx 17,546 / 86MB.
 
+### R13 결과: static-final proof state 비트셋 실험 — revert
+
+- Proof 4,783회 중 4,777회는 finals ≤64, 중앙값 1개, 최대 288개. CFG 방문 상태는 총
+  110,105개(최대 11,815), cap 도달 0회.
+- 비용은 BTreeSet 경로 상태가 아니라 `DexPasses::run_with` 재-lift 합계 26.119s
+  (병렬 worker elapsed 합); path traversal 0.365s, raw/SSA site 비교 0.041s뿐.
+- 비트셋 fast path는 ≥0.3s 개선을 못 내서 revert. R13 default 23.70s, fast 23.32s
+  (R12 대비 각각 0.07/0.11s — 노이즈 수준). Gates 모두 통과.
+
+### R14 후보: pre-SSA raw CFG/lift 재사용
+
+현재 최상위 개선 후보는 매 proof마다 반복하는 full `DexPasses::run_with` 제거/재사용.
+가능한 방향: 초기에 생성한 raw control-flow/FieldPut site 정보를 `SsaCache`와 함께 저장하거나,
+proof가 필요한 FieldPut·offset·normal/exception edge만 decode하는 경량 scanner를 검토.
+Raw-vs-SSA store equality, exception path assignment, error precedence는 그대로 증명해야 함.
+
 ### 현재 대결 기준: ordinary API unprofiled, 동일 세션 paired median.
 
-R12 default paired 23.77s vs jadx 23.45s; fast mode 23.43s vs 23.54s. CPU 효율은
-codepuri가 절반이며, 다음 속도 작업은 측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
+최근 paired median은 R12 기준 default 23.77s vs jadx 23.45s, fast 23.43s vs 23.54s.
+R13 변화는 노이즈 수준이라 revert됨. CPU 효율은 codepuri가 절반; 다음 속도 작업은
+측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
