@@ -266,11 +266,21 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
   diagnostic reason text는 APK에 따라 달라질 수 있음.
 - R10 source/benchmark checkpoint: `ec4a080`; R9/R10 default gain은 0.57s.
 
+### R12 결과: source-throws와 독립 export 준비 중첩
+
+- Alias/catalog 확정 후 `source_throws` 계산과 immutable class catalog, field names,
+  `FieldUseCache`, DEX metadata/member index 준비를 scoped worker에서 겹침. Throws plan은
+  join한 뒤 Resolver에 붙이고 class scheduling을 시작; source-throws 오류/패닉 우선순위 유지.
+- 동일 세션 3회 paired: default **codepuri 23.77s / jadx 23.45s**;
+  opt-in fast_proofs **codepuri 23.43s / jadx 23.54s**. 이전 R10 대비 각각 −0.39s/−0.55s.
+- fmt/clippy/workspace tests/strict quality/바이트 동일성 통과. 커밋 `318b830`.
+- 판단: default는 jadx보다 0.32s 뒤, fast mode는 0.11s 앞 (둘 다 측정 노이즈 근접).
+  CPU는 여전히 jadx의 약 절반. Samsung Pass 출력은 28,575 sources / 200MB 대 jadx 17,546 / 86MB.
+
 ### 현재 대결 기준: ordinary API unprofiled, 동일 세션 paired median.
 
-R10 fast mode는 paired 23.98s vs jadx 23.64s, default는 R10 단독 중앙값
-24.16s. CPU 효율은 codepuri가 절반이며, 다음 속도 작업은 측정된 ≥0.3s 이득을
-내는 경우에만 유지한다.
+R12 default paired 23.77s vs jadx 23.45s; fast mode 23.43s vs 23.54s. CPU 효율은
+codepuri가 절반이며, 다음 속도 작업은 측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
