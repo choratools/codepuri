@@ -226,6 +226,26 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 - 20s 목표는 strict 검증 중복 제거(fast-mode) 필요 — 별도 라운드
 - 다음: Phase 2 가독성 (91줄 → ~10줄, 출력량 345MB → jadx급) 진입 권장
 
+### R7 결과 (2026-10-06, glm-5.3-flash max) ✅
+
+중복 연산 지도: init_family 49.4s(38%) > structure_backend 31.9s > 미귀속 24.2s > precheck 16.0s.
+**핵심 발견: finals 클래스 17,678개 중 13,907개(79%)의 init family 계획이 실패** —
+계약 성립 0건, 전부 subset fallback으로 출판.
+
+| 항목 | 내용 | 결과 |
+|---|---|---|
+| 18 | attested static proof → subset retry 재사용(에러 텍스트 재생) | KEEP, wall 25.52s / CPU −5.6s |
+| 19 | constructor-evidence memo — live path 미사용(0 hits) | REVERT (근거) |
+| 20 | 잔여 per-site 중복 각 <1s | 보류 |
+| flag | **`--fast-proofs`** (precheck 14.95s→0.014s, CPU 101.3s) | **~23.8s**, 이 코퍼스 바이트 동일 |
+
+**default 25.52s / fast 23.8s. 1250/1250 테스트, 전 게이트 exact. 커밋 완료.**
+
+### R8 대상
+
+- init family 79% 실패 구조 자체: 저비용 사전 필터 또는 subset-first 전환
+  (45s CPU 중 다수 절감 잠재, 에러 재생 패턴은 R4/R7에서 검증됨)
+
 ### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
