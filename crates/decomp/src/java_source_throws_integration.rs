@@ -25,7 +25,7 @@ pub(super) struct SourceThrowsProfile {
 }
 
 #[derive(Default)]
-struct ThrowsTaskProfile {
+pub(super) struct ThrowsTaskProfile {
     ssa_time: std::time::Duration,
     inspect_method_time: std::time::Duration,
     ssa_count: usize,
@@ -33,12 +33,12 @@ struct ThrowsTaskProfile {
 }
 
 /// Delivery-ordered aggregation state for the parallel collection scheduler.
-/// Each ordered result is consumed the moment it completes, replicating the
-/// post-run breadth-first pairing (duplicate traversal entries never consume
-/// a result; results are only consumed in delivery order).
-struct StreamedAggregation<E> {
-    traversal: VecDeque<MethodKey>,
-    pending: VecDeque<(Result<required::MethodRequirements, E>, ThrowsTaskProfile)>,
+/// Each ordered result is consumed the moment it completes, keyed directly by
+/// its ordinal in the initial batch (delivery is strictly in ordinal order and
+/// initial entries are unique). Duplicate traversal entries never consume a
+/// result; discovered bodies outside the batch are inspected after the run.
+pub(super) struct StreamedAggregation<E> {
+    discovered: VecDeque<MethodKey>,
     visited: BTreeSet<MethodKey>,
     requirements: Vec<required::MethodRequirements>,
     missing: BTreeMap<MethodKey, E>,
@@ -47,35 +47,38 @@ struct StreamedAggregation<E> {
 }
 
 impl<E> StreamedAggregation<E> {
-    fn deliver(&mut self, value: (Result<required::MethodRequirements, E>, ThrowsTaskProfile)) {
-        self.pending.push_back(value);
-        while let Some(key) = self.traversal.front() {
-            if self.visited.contains(key) {
-                self.traversal.pop_front();
-                continue;
+    fn deliver(
+        &mut self,
+        key: &MethodKey,
+        value: (Result<required::MethodRequirements, E>, ThrowsTaskProfile),
+    ) {
+        // An initial-batch key already consumed as a discovered target keeps
+        // its delivered result unconsumed, exactly like the visited front pops.
+        if !self.visited.insert(key.clone()) {
+            return;
+        }
+        self.task_count += 1;
+        let timing = value.1;
+        self.timing.ssa_time += timing.ssa_time;
+        self.timing.inspect_method_time += timing.inspect_method_time;
+        self.timing.ssa_count += timing.ssa_count;
+        self.timing.inspect_method_count += timing.inspect_method_count;
+        match value.0 {
+            Ok(requirements) => {
+                self.discovered
+                    .extend(requirements.source_targets().cloned());
+                self.requirements.push(requirements);
             }
-            let Some(entry) = self.pending.pop_front() else {
-                break;
-            };
-            let Some(key) = self.traversal.pop_front() else {
-                break;
-            };
-            self.visited.insert(key.clone());
-            self.task_count += 1;
-            let timing = entry.1;
-            self.timing.ssa_time += timing.ssa_time;
-            self.timing.inspect_method_time += timing.inspect_method_time;
-            self.timing.ssa_count += timing.ssa_count;
-            self.timing.inspect_method_count += timing.inspect_method_count;
-            match entry.0 {
-                Ok(value) => {
-                    self.traversal.extend(value.source_targets().cloned());
-                    self.requirements.push(value);
-                }
-                Err(error) => {
-                    self.missing.insert(key, error);
-                }
+            Err(error) => {
+                self.missing.insert(key.clone(), error);
             }
+        }
+        while self
+            .discovered
+            .front()
+            .is_some_and(|key| self.visited.contains(key))
+        {
+            self.discovered.pop_front();
         }
     }
 }
@@ -294,7 +297,7 @@ fn input_parents(
     );
     parents
 }
-struct Facts<'a> {
+pub(super) struct Facts<'a> {
     files: &'a [DexFile],
     aliases: &'a JavaAliases,
     catalog: &'a BTreeMap<MethodKey, Option<MethodMetadata>>,
@@ -1111,18 +1114,33 @@ pub(super) fn collect_cached(
     collect_cached_profiled(
         files, aliases, catalog, external, hierarchy, workers, cache, None,
     )
+    .0
 }
+/// Collection result plus per-run scratch state. The scratch carries no
+/// observable output; it is separated so its deallocation can overlap later
+/// export phases instead of stalling the calling thread.
+pub(super) type SourceThrowsScraps<'a> = (
+    Facts<'a>,
+    VecDeque<MethodKey>,
+    BTreeSet<MethodKey>,
+    Vec<required::MethodRequirements>,
+    Option<StreamedAggregation<required::ThrowsError>>,
+    VecDeque<(
+        Result<required::MethodRequirements, required::ThrowsError>,
+        ThrowsTaskProfile,
+    )>,
+);
 #[allow(clippy::too_many_arguments)]
-pub(super) fn collect_cached_profiled(
-    files: &[DexFile],
-    aliases: &JavaAliases,
-    catalog: &BTreeMap<MethodKey, Option<MethodMetadata>>,
-    external: Option<&dyn ExternalMetadata>,
-    hierarchy: &crate::type_compatibility::Hierarchy,
+pub(super) fn collect_cached_profiled<'a>(
+    files: &'a [DexFile],
+    aliases: &'a JavaAliases,
+    catalog: &'a BTreeMap<MethodKey, Option<MethodMetadata>>,
+    external: Option<&'a dyn ExternalMetadata>,
+    hierarchy: &'a crate::type_compatibility::Hierarchy,
     workers: usize,
-    cache: &ssa_cache::SsaCache,
+    cache: &'a ssa_cache::SsaCache,
     profile: Option<&mut SourceThrowsProfile>,
-) -> SourceThrowsPlan {
+) -> (SourceThrowsPlan, SourceThrowsScraps<'a>) {
     collect_roots_profiled(
         files,
         aliases,
@@ -1162,19 +1180,20 @@ fn collect_roots_with_workers(
     collect_roots_profiled(
         files, aliases, catalog, external, hierarchy, roots, workers, cache, None,
     )
+    .0
 }
 #[allow(clippy::too_many_arguments)]
-fn collect_roots_profiled(
-    files: &[DexFile],
-    aliases: &JavaAliases,
-    catalog: &BTreeMap<MethodKey, Option<MethodMetadata>>,
-    external: Option<&dyn ExternalMetadata>,
-    hierarchy: &crate::type_compatibility::Hierarchy,
+fn collect_roots_profiled<'a>(
+    files: &'a [DexFile],
+    aliases: &'a JavaAliases,
+    catalog: &'a BTreeMap<MethodKey, Option<MethodMetadata>>,
+    external: Option<&'a dyn ExternalMetadata>,
+    hierarchy: &'a crate::type_compatibility::Hierarchy,
     roots: Option<&BTreeSet<MethodKey>>,
     workers: usize,
-    cache: Option<&ssa_cache::SsaCache>,
+    cache: Option<&'a ssa_cache::SsaCache>,
     mut profile: Option<&mut SourceThrowsProfile>,
-) -> SourceThrowsPlan {
+) -> (SourceThrowsPlan, SourceThrowsScraps<'a>) {
     let enabled = profile.is_some();
     let preparation_start = enabled.then(std::time::Instant::now);
     // Facts, the field index, the super index and per-input metadata are
@@ -1387,8 +1406,7 @@ fn collect_roots_profiled(
         // the post-run loop below while hiding its cost under worker compute.
         let scheduler_start = enabled.then(std::time::Instant::now);
         let mut state = StreamedAggregation {
-            traversal: queue.clone(),
-            pending: VecDeque::new(),
+            discovered: VecDeque::new(),
             visited: BTreeSet::new(),
             requirements: Vec::new(),
             missing: BTreeMap::new(),
@@ -1399,8 +1417,8 @@ fn collect_roots_profiled(
             queue.len(),
             workers,
             |index| inspect(&queue[index]),
-            |_, value| {
-                state.deliver(value);
+            |index, value| {
+                state.deliver(&queue[index], value);
                 Ok(())
             },
             || (),
@@ -1430,14 +1448,12 @@ fn collect_roots_profiled(
                 profile.ssa_count += state.timing.ssa_count;
                 profile.inspect_method_count += state.timing.inspect_method_count;
             }
-            let StreamedAggregation {
-                traversal, pending, ..
-            } = &mut *state;
-            while let Some(key) = traversal.pop_front() {
+            let StreamedAggregation { discovered, .. } = &mut *state;
+            while let Some(key) = discovered.pop_front() {
                 if !visited.insert(key.clone()) {
                     continue;
                 }
-                let (result, task_timing) = pending.pop_front().unwrap_or_else(|| inspect(&key));
+                let (result, task_timing) = inspect(&key);
                 if let Some(profile) = profile.as_deref_mut() {
                     profile.task_count += 1;
                     profile.ssa_time += task_timing.ssa_time;
@@ -1447,7 +1463,7 @@ fn collect_roots_profiled(
                 }
                 match result {
                     Ok(value) => {
-                        traversal.extend(value.source_targets().cloned());
+                        discovered.extend(value.source_targets().cloned());
                         requirements.push(value);
                     }
                     Err(error) => {
@@ -1485,7 +1501,17 @@ fn collect_roots_profiled(
         profile.walls.insert("aggregation", start.elapsed());
     }
     let Some(resolver) = resolvers.first() else {
-        return SourceThrowsPlan::default();
+        return (
+            SourceThrowsPlan::default(),
+            (
+                facts,
+                queue,
+                visited,
+                requirements,
+                streamed,
+                initial_results,
+            ),
+        );
     };
     let context = Context {
         resolver,
@@ -1497,7 +1523,17 @@ fn collect_roots_profiled(
         profile.walls.insert("derive_program", start.elapsed());
     }
     plan.unavailable.extend(missing);
-    plan
+    (
+        plan,
+        (
+            facts,
+            queue,
+            visited,
+            requirements,
+            streamed,
+            initial_results,
+        ),
+    )
 }
 
 pub(super) fn source(plan: &SourceThrowsPlan, key: &MethodKey) -> Option<Vec<String>> {
@@ -1991,7 +2027,8 @@ mod tests {
                 workers,
                 &cache,
                 Some(&mut profile),
-            );
+            )
+            .0;
             assert_same_plan(&profiled, &serial);
             assert!(profile.task_count > 0);
             assert!(profile.ssa_count > 0);

@@ -388,6 +388,93 @@ pub(crate) fn inventory_ancestors(
     }
     Ok(())
 }
+
+/// Chunked walk over contiguous class ranges. Inventory insertion is
+/// order-independent set insertion and validation is a pure function of the
+/// identity, so per-chunk `visited` sets only affect how often an identical
+/// insertion repeats; chunk results merge in sequence order and the lowest
+/// sequence position wins when a chunk reports a failure.
+#[allow(dead_code)]
+pub(crate) fn inventory_ancestors_parallel(
+    files: &[DexFile],
+    provider: &(impl SuperMetadata + Sync),
+) -> Result<Vec<AliasInventory>, (usize, String)> {
+    let classes: Vec<(&DexFile, _)> = files
+        .iter()
+        .flat_map(|dex| dex.classes.iter().map(move |class| (dex, class)))
+        .collect();
+    let threads = std::thread::available_parallelism()
+        .map_or(1, |count| count.get())
+        .clamp(1, 16)
+        .min(classes.len());
+    let chunk_size = classes.len().div_ceil(threads).max(1);
+    let parts: Vec<Result<AliasInventory, (usize, String)>> = std::thread::scope(|scope| {
+        let handles: Vec<_> = classes
+            .chunks(chunk_size)
+            .enumerate()
+            .map(|(index, chunk)| {
+                let first_seq = index * chunk_size;
+                scope.spawn(move || {
+                    let mut inventory = AliasInventory::default();
+                    let mut visited = BTreeSet::new();
+                    for (dex, class) in chunk.iter() {
+                        let Some(mut owner) = descriptor(dex, class.class_idx) else {
+                            return Err((
+                                first_seq,
+                                "invalid original super inventory owner".into(),
+                            ));
+                        };
+                        loop {
+                            if !visited.insert(owner.clone()) {
+                                break;
+                            }
+                            let Some(class) = provider.class(&owner) else {
+                                break;
+                            };
+                            if class.access_flags & 0x200 != 0 {
+                                break;
+                            }
+                            inventory.add_type(&owner).map_err(|e| (first_seq, e))?;
+                            for method in class.methods {
+                                inventory
+                                    .add_method(method.key)
+                                    .map_err(|e| (first_seq, e))?;
+                            }
+                            let Some(parent) = class.superclass else {
+                                break;
+                            };
+                            owner = parent;
+                        }
+                    }
+                    Ok(inventory)
+                })
+            })
+            .collect();
+        handles
+            .into_iter()
+            .map(|handle| match handle.join() {
+                Ok(result) => result,
+                Err(_) => Err((usize::MAX, "super inventory worker".into())),
+            })
+            .collect()
+    });
+    let mut merged: Vec<AliasInventory> = Vec::with_capacity(parts.len());
+    let mut first_error: Option<(usize, String)> = None;
+    for part in parts {
+        match part {
+            Ok(part) => merged.push(part),
+            Err((seq, error)) => {
+                if first_error.as_ref().is_none_or(|(best, _)| seq < *best) {
+                    first_error = Some((seq, error));
+                }
+            }
+        }
+    }
+    match first_error {
+        Some((seq, error)) => Err((seq, error)),
+        None => Ok(merged),
+    }
+}
 fn descriptor(d: &DexFile, i: u32) -> Option<String> {
     Some(d.string(d.type_id(i).ok()?.descriptor_idx).ok()?.into())
 }

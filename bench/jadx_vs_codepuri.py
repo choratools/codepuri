@@ -31,19 +31,29 @@ MARKERS = (
 )
 
 
+KEYS = (
+    "Elapsed (wall clock) time (h:mm:ss or m:ss)",
+    "User time (seconds)",
+    "System time (seconds)",
+    "Maximum resident set size (kbytes)",
+)
+
+
 def parse_time_v(path: Path) -> dict:
     fields = {}
     for line in path.read_text(errors="replace").splitlines():
-        if ":" not in line:
-            continue
-        key, _, value = line.partition(":")
-        key = key.strip()
-        if key in ("Elapsed (wall clock) time (h:mm:ss or m:ss)", "User time (seconds)",
-                   "System time (seconds)", "Maximum resident set size (kbytes)"):
-            fields[key] = value.strip()
-    h, m, s = (fields.get("Elapsed (wall clock) time (h:mm:ss or m:ss)", "0:0:0").split(":") + ["0", "0"])[:3]
+        stripped = line.strip()
+        for key in KEYS:
+            if stripped.startswith(key + ":"):
+                fields[key] = stripped[len(key) + 1:].strip()
+                break
+    elapsed = fields.get("Elapsed (wall clock) time (h:mm:ss or m:ss)", "0:0")
+    parts = elapsed.split(":")
+    h = int(parts[0]) if len(parts) == 3 else 0
+    m = int(parts[-2])
+    s = float(parts[-1])
     return {
-        "wall_s": int(h) * 3600 + int(m) * 60 + float(s),
+        "wall_s": h * 3600 + m * 60 + s,
         "user_s": float(fields.get("User time (seconds)", "0")),
         "sys_s": float(fields.get("System time (seconds)", "0")),
         "max_rss_kib": int(fields.get("Maximum resident set size (kbytes)", "0")),

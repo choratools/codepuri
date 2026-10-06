@@ -234,8 +234,8 @@ fn build_alias_inventory(files: &[DexFile]) -> Result<AliasInventory, OutputErro
         }
         return Ok(inventory);
     }
-    const WORKERS: usize = 8;
-    let per_worker = tasks.len().div_ceil(WORKERS);
+    let workers = std::thread::available_parallelism().map_or(8, |count| count.get().clamp(8, 16));
+    let per_worker = tasks.len().div_ceil(workers);
     let parts: Vec<Result<AliasInventory, OutputError>> = std::thread::scope(|scope| {
         tasks
             .chunks(per_worker)
@@ -271,8 +271,18 @@ fn extend_alias_inventory(
 ) -> Result<(), OutputError> {
     let invalid = |s: String| OutputError::InvalidDescriptor(s);
     if let Some(index) = super_index {
-        crate::java_super_resolution::inventory_ancestors(files, index, inventory)
-            .map_err(invalid)?;
+        // Small units stay serial: thread fan-out only pays off on real inputs.
+        let total: usize = files.iter().map(|dex| dex.classes.len()).sum();
+        if total < 1 << 13 {
+            crate::java_super_resolution::inventory_ancestors(files, index, inventory)
+                .map_err(invalid)?;
+        } else {
+            for part in crate::java_super_resolution::inventory_ancestors_parallel(files, index)
+                .map_err(|(_, message)| invalid(message))?
+            {
+                inventory.append(part);
+            }
+        }
     }
     Ok(())
 }
@@ -3566,7 +3576,7 @@ fn emit_inner(
             .as_deref_mut()
             .map(|p| p.serial.entry("source_throws").or_default()),
     );
-    let source_throws = source_throws::collect_cached_profiled(
+    let (source_throws, throws_scraps) = source_throws::collect_cached_profiled(
         files,
         &aliases,
         catalog,
@@ -3590,747 +3600,756 @@ fn emit_inner(
             .insert("inspect_method", throws.inspect_method_time);
         profile.throws_scheduler = throws.scheduler;
     }
-    let mut class_catalog = BTreeMap::new();
-    let mut field_names: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
-    if let Some(external) = external {
-        for declaration in external.hierarchy() {
-            let original = format!("L{};", declaration.name.replace('.', "/"));
-            if let Some(access_flags) = external.class_access(&original) {
-                let name = aliases
-                    .class_name(&original)
-                    .unwrap_or(&declaration.name)
-                    .to_owned();
-                let superclass = declaration.superclass.map(|s| {
-                    aliases
-                        .class_name(&format!("L{};", s.replace('.', "/")))
-                        .unwrap_or(&s)
-                        .to_owned()
-                });
-                class_catalog.insert(
-                    name.clone(),
-                    Some(backend_java::constructors::ConstructorClass {
-                        name,
-                        superclass,
-                        access_flags,
-                    }),
-                );
+    std::thread::scope(|scope| {
+        scope.spawn(move || drop(throws_scraps));
+        let mut class_catalog = BTreeMap::new();
+        let mut field_names: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+        if let Some(external) = external {
+            for declaration in external.hierarchy() {
+                let original = format!("L{};", declaration.name.replace('.', "/"));
+                if let Some(access_flags) = external.class_access(&original) {
+                    let name = aliases
+                        .class_name(&original)
+                        .unwrap_or(&declaration.name)
+                        .to_owned();
+                    let superclass = declaration.superclass.map(|s| {
+                        aliases
+                            .class_name(&format!("L{};", s.replace('.', "/")))
+                            .unwrap_or(&s)
+                            .to_owned()
+                    });
+                    class_catalog.insert(
+                        name.clone(),
+                        Some(backend_java::constructors::ConstructorClass {
+                            name,
+                            superclass,
+                            access_flags,
+                        }),
+                    );
+                }
             }
         }
-    }
-    let mut input_class_names = BTreeSet::new();
-    for dex in files {
-        for class in &dex.classes {
-            if let Some(name) = descriptor(dex, class.class_idx).and_then(|d| aliases.class_name(d))
-            {
-                let declaration = backend_java::constructors::ConstructorClass {
-                    name: name.into(),
-                    superclass: descriptor(dex, class.superclass_idx)
-                        .and_then(|d| aliases.class_name(d))
-                        .map(str::to_owned),
-                    access_flags: class.access_flags,
-                };
-                let value = input_class_names
-                    .insert(name.to_owned())
-                    .then_some(declaration);
-                class_catalog.insert(name.into(), value);
-                let names = field_names.entry(name.into()).or_default();
-                if let Some(data) = &class.class_data {
-                    for field in data.static_fields.iter().chain(&data.instance_fields) {
-                        if let Some(key) = field_key(dex, field.field_idx)
-                            && let Some(name) = aliases.field_name(&key)
-                        {
-                            names.insert(name.into());
+        let mut input_class_names = BTreeSet::new();
+        for dex in files {
+            for class in &dex.classes {
+                if let Some(name) =
+                    descriptor(dex, class.class_idx).and_then(|d| aliases.class_name(d))
+                {
+                    let declaration = backend_java::constructors::ConstructorClass {
+                        name: name.into(),
+                        superclass: descriptor(dex, class.superclass_idx)
+                            .and_then(|d| aliases.class_name(d))
+                            .map(str::to_owned),
+                        access_flags: class.access_flags,
+                    };
+                    let value = input_class_names
+                        .insert(name.to_owned())
+                        .then_some(declaration);
+                    class_catalog.insert(name.into(), value);
+                    let names = field_names.entry(name.into()).or_default();
+                    if let Some(data) = &class.class_data {
+                        for field in data.static_fields.iter().chain(&data.instance_fields) {
+                            if let Some(key) = field_key(dex, field.field_idx)
+                                && let Some(name) = aliases.field_name(&key)
+                            {
+                                names.insert(name.into());
+                            }
                         }
                     }
                 }
             }
         }
-    }
-    let input_owners: BTreeSet<String> = files
-        .iter()
-        .flat_map(|dex| {
-            dex.classes
-                .iter()
-                .filter_map(|class| descriptor(dex, class.class_idx).map(str::to_owned))
-        })
-        .collect();
-    let mut report = JavaReport::default();
-    let field_use_cache = options.cache_resolutions.then(|| {
-        crate::java_members::external_metadata::fields::publication::cache::FieldUseCache::new(
-            true,
-            files,
-            external.unwrap_or(&MissingMetadata),
-            &aliases,
-            Some(&field_index),
-        )
-    });
-    let timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("resolver_prepare").or_default()),
-    );
-    let dex_metadata: Vec<_> = files
-        .iter()
-        .map(dex_decompiler::infer::DexMetadata::new)
-        .collect();
-    let member_indices: Vec<_> = files
-        .iter()
-        .map(crate::java_members::MemberIndex::new)
-        .collect();
-    drop(timer);
-    let mut resolvers = Vec::with_capacity(files.len());
-    for (dex_index, dex) in files.iter().enumerate() {
+        let input_owners: BTreeSet<String> = files
+            .iter()
+            .flat_map(|dex| {
+                dex.classes
+                    .iter()
+                    .filter_map(|class| descriptor(dex, class.class_idx).map(str::to_owned))
+            })
+            .collect();
+        let mut report = JavaReport::default();
+        let field_use_cache = options.cache_resolutions.then(|| {
+            crate::java_members::external_metadata::fields::publication::cache::FieldUseCache::new(
+                true,
+                files,
+                external.unwrap_or(&MissingMetadata),
+                &aliases,
+                Some(&field_index),
+            )
+        });
         let timer = Timer::new(
             profile
                 .as_deref_mut()
                 .map(|p| p.serial.entry("resolver_prepare").or_default()),
         );
-        let metadata = &dex_metadata[dex_index];
-        let member_index = &member_indices[dex_index];
-        let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
-        r.source_release = options.source_release;
-        r.cache_super_bindings = options.cache_resolutions;
-        r.ssa_cache = Some(cache);
-        r.cache_inventory = options.cache_inventory;
-        r.member_index = Some(member_index);
-        r.source_throws = Some(&source_throws);
-        r.field_throw_catalog = Some(&field_throw_catalog);
-        r.publications = Some(&publications);
-        r.field_catalog = Some(&field_publication);
-        r.field_index = Some(&field_index);
-        r.field_uses = Some(&field_uses);
-        r.published_owners = Some(&published_owners);
-        r.enum_fields = Some(&enum_fields);
-        r.annotation_defaults = options.limit.is_none().then_some(&annotation_defaults);
-        r.defer_annotation_defaults = options.limit.is_none();
-        r.inputs = files;
-        r.super_index = super_index.as_ref();
-        r.class_catalog = class_catalog.clone();
-        r.dex_index = dex_index;
-        r.writes = Some(&writes);
-        r.hierarchy = hierarchy.clone();
-        r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
-        r.field_names = field_names.clone();
-        r.external = external;
-        r.input_owners = input_owners.clone();
-        // Enable only after the immutable metadata, source-throws plan and
-        // aliases are final. Test resolvers retain uncached mutable setup.
-        r.method_cache = Some(resolution_cache::LookupCache::new(
-            options.cache_resolutions,
-            dex.method_ids.len(),
-        ));
-        r.field_cache = Some(resolution_cache::LookupCache::new(
-            options.cache_resolutions,
-            dex.field_ids.len(),
-        ));
-        r.field_use_cache = field_use_cache.as_ref();
-        drop(timer);
-        resolvers.push(r);
-    }
-    // DEX-major/class-major admission and delivery retain the original order.
-    // Each DEX keeps one frozen resolver and its shared resolution caches.
-    let class_tasks: Vec<_> = files
-        .iter()
-        .enumerate()
-        .flat_map(|(dex_index, dex)| {
-            (0..dex.classes.len()).map(move |class_index| (dex_index, class_index))
-        })
-        .collect();
-    // Duplicate owners share publication keys. Keep their original DEX-order
-    // overwrite semantics rather than allowing cross-DEX last-writer races.
-    let spans = if class_catalog.values().any(Option::is_none) {
-        let mut offset = 0;
-        files
+        let dex_metadata: Vec<_> = files
             .iter()
-            .map(|dex| {
-                let start = offset;
-                offset += dex.classes.len();
-                start..offset
-            })
-            .collect::<Vec<_>>()
-    } else {
-        std::iter::once(0..class_tasks.len()).collect()
-    };
-    // Unlimited exports deliver per-ordinal results without ordered admission:
-    // each class writes into its own slot and the logical order is reassembled
-    // from ordinals afterwards. Heavy classes dispatch first so their long
-    // planning tails never strand the remaining workers; a static code-size
-    // proxy orders them without running any task early.
-    let dispatch_order: Option<Vec<usize>> = options.limit.is_none().then(|| {
-        // Static cost proxy: whole-class code volume dominates task time
-        // (initialization-family planning scales with method code), so the
-        // heaviest ordinals dispatch first and the tail stays lightweight.
-        let weight = |ordinal: usize| -> u64 {
-            let (dex_index, class_index) = class_tasks[ordinal];
-            let Some(data) = files[dex_index].classes[class_index].class_data.as_ref() else {
-                return 0;
-            };
-            let methods = data.direct_methods.len() + data.virtual_methods.len();
-            let code_units: u64 = data
-                .direct_methods
-                .iter()
-                .chain(&data.virtual_methods)
-                .filter_map(|method| method.code.as_ref())
-                .map(|code| code.insns_size as u64)
-                .sum();
-            (code_units << 8) | methods as u64
-        };
-        let mut order: Vec<usize> = (0..class_tasks.len()).collect();
-        order.sort_by_key(|&ordinal| std::cmp::Reverse(weight(ordinal)));
-        order
-    });
-    let mut scheduling_result = Ok(());
-    for (span_index, span) in spans.into_iter().enumerate() {
-        let scheduler_start = profile.as_ref().map(|_| std::time::Instant::now());
-        let mut span_sources: Vec<Option<Vec<GeneratedSource>>> =
-            (0..span.len()).map(|_| None).collect();
-        let mut span_profiles: Vec<(usize, ClassProfile)> = Vec::new();
-        let mut report_part = |ordinal: usize,
-                               part: JavaReport,
-                               sources: Vec<GeneratedSource>,
-                               task_profile: Option<ClassProfile>| {
-            if let Some(task) = task_profile {
-                span_profiles.push((ordinal, task));
-            }
-            if options.limit.is_some_and(|l| report.classes_emitted >= l) {
-                report.classes_seen += 1;
-                report.skipped_classes += 1;
-                return Ok(());
-            }
-            span_sources[ordinal] = Some(sources);
-            report.classes_seen += part.classes_seen;
-            report.classes_emitted += part.classes_emitted;
-            report.skipped_classes += part.skipped_classes;
-            report.complete_methods += part.complete_methods;
-            report.complete_constructors += part.complete_constructors;
-            report.complete_static_initializers += part.complete_static_initializers;
-            report.semantic_bodies_with_unresolved_dependencies +=
-                part.semantic_bodies_with_unresolved_dependencies;
-            report.semantic_bodies_outside_strict_dependency_closure +=
-                part.semantic_bodies_outside_strict_dependency_closure;
-            report.declaration_only_methods += part.declaration_only_methods;
-            report.fields_emitted += part.fields_emitted;
-            report.unsupported_methods += part.unsupported_methods;
-            report.unavailable_constructors += part.unavailable_constructors;
-            report.unavailable_initialization_units += part.unavailable_initialization_units;
-            report
-                .unpublished_method_reasons
-                .extend(part.unpublished_method_reasons);
-            for (reason, count) in part.category_reasons {
-                *report.category_reasons.entry(reason).or_default() += count;
-            }
-            for (reason, count) in part.reasons {
-                *report.reasons.entry(reason).or_default() += count;
-            }
-            Ok(())
-        };
-        let task_class = |index: usize| {
-            let (dex_index, class_index) = class_tasks[span.start + index];
-            let dex = &files[dex_index];
-            let r = &resolvers[dex_index];
-            let class = &dex.classes[class_index];
-            let task_start = scheduler_start.map(|_| std::time::Instant::now());
-            let mut task_profile =
-                task_start
-                    .zip(scheduler_start)
-                    .map(|(start, scheduler_start)| ClassProfile {
-                        dex: dex_index,
-                        class: class.class_idx,
-                        descriptor: descriptor(dex, class.class_idx).unwrap_or("?").into(),
-                        start: start.duration_since(scheduler_start),
-                        ..ClassProfile::default()
-                    });
-            let mut sources = Vec::new();
-            let mut collect = |s: &GeneratedSource| {
-                sources.push(s.clone());
-                Ok(())
-            };
-            let result = emit_classes(
-                dex,
-                r,
-                std::slice::from_ref(class),
-                &JavaOptions {
-                    limit: None,
-                    ..options.clone()
-                },
-                &mut collect,
-                &mut task_profile,
+            .map(dex_decompiler::infer::DexMetadata::new)
+            .collect();
+        let member_indices: Vec<_> = files
+            .iter()
+            .map(crate::java_members::MemberIndex::new)
+            .collect();
+        drop(timer);
+        let mut resolvers = Vec::with_capacity(files.len());
+        for (dex_index, dex) in files.iter().enumerate() {
+            let timer = Timer::new(
+                profile
+                    .as_deref_mut()
+                    .map(|p| p.serial.entry("resolver_prepare").or_default()),
             );
-            if let (Some(p), Some(start)) = (task_profile.as_mut(), task_start) {
-                p.elapsed = start.elapsed();
-            }
-            (result, sources, task_profile)
+            let metadata = &dex_metadata[dex_index];
+            let member_index = &member_indices[dex_index];
+            let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
+            r.source_release = options.source_release;
+            r.cache_super_bindings = options.cache_resolutions;
+            r.ssa_cache = Some(cache);
+            r.cache_inventory = options.cache_inventory;
+            r.member_index = Some(member_index);
+            r.source_throws = Some(&source_throws);
+            r.field_throw_catalog = Some(&field_throw_catalog);
+            r.publications = Some(&publications);
+            r.field_catalog = Some(&field_publication);
+            r.field_index = Some(&field_index);
+            r.field_uses = Some(&field_uses);
+            r.published_owners = Some(&published_owners);
+            r.enum_fields = Some(&enum_fields);
+            r.annotation_defaults = options.limit.is_none().then_some(&annotation_defaults);
+            r.defer_annotation_defaults = options.limit.is_none();
+            r.inputs = files;
+            r.super_index = super_index.as_ref();
+            r.class_catalog = class_catalog.clone();
+            r.dex_index = dex_index;
+            r.writes = Some(&writes);
+            r.hierarchy = hierarchy.clone();
+            r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
+            r.field_names = field_names.clone();
+            r.external = external;
+            r.input_owners = input_owners.clone();
+            // Enable only after the immutable metadata, source-throws plan and
+            // aliases are final. Test resolvers retain uncached mutable setup.
+            r.method_cache = Some(resolution_cache::LookupCache::new(
+                options.cache_resolutions,
+                dex.method_ids.len(),
+            ));
+            r.field_cache = Some(resolution_cache::LookupCache::new(
+                options.cache_resolutions,
+                dex.field_ids.len(),
+            ));
+            r.field_use_cache = field_use_cache.as_ref();
+            drop(timer);
+            resolvers.push(r);
+        }
+        // DEX-major/class-major admission and delivery retain the original order.
+        // Each DEX keeps one frozen resolver and its shared resolution caches.
+        let class_tasks: Vec<_> = files
+            .iter()
+            .enumerate()
+            .flat_map(|(dex_index, dex)| {
+                (0..dex.classes.len()).map(move |class_index| (dex_index, class_index))
+            })
+            .collect();
+        // Duplicate owners share publication keys. Keep their original DEX-order
+        // overwrite semantics rather than allowing cross-DEX last-writer races.
+        let spans = if class_catalog.values().any(Option::is_none) {
+            let mut offset = 0;
+            files
+                .iter()
+                .map(|dex| {
+                    let start = offset;
+                    offset += dex.classes.len();
+                    start..offset
+                })
+                .collect::<Vec<_>>()
+        } else {
+            std::iter::once(0..class_tasks.len()).collect()
         };
-        let (result, mut scheduling) = match dispatch_order.as_ref() {
-            Some(order) => {
-                let span_order: Vec<usize> = order[span.start..span.end]
+        // Unlimited exports deliver per-ordinal results without ordered admission:
+        // each class writes into its own slot and the logical order is reassembled
+        // from ordinals afterwards. Heavy classes dispatch first so their long
+        // planning tails never strand the remaining workers; a static code-size
+        // proxy orders them without running any task early.
+        let dispatch_order: Option<Vec<usize>> = options.limit.is_none().then(|| {
+            // Static cost proxy: whole-class code volume dominates task time
+            // (initialization-family planning scales with method code), so the
+            // heaviest ordinals dispatch first and the tail stays lightweight.
+            let weight = |ordinal: usize| -> u64 {
+                let (dex_index, class_index) = class_tasks[ordinal];
+                let Some(data) = files[dex_index].classes[class_index].class_data.as_ref() else {
+                    return 0;
+                };
+                let methods = data.direct_methods.len() + data.virtual_methods.len();
+                let code_units: u64 = data
+                    .direct_methods
                     .iter()
-                    .map(|ordinal| ordinal - span.start)
-                    .collect();
-                scheduler::run_unordered(
-                    &span_order,
+                    .chain(&data.virtual_methods)
+                    .filter_map(|method| method.code.as_ref())
+                    .map(|code| code.insns_size as u64)
+                    .sum();
+                (code_units << 8) | methods as u64
+            };
+            let mut order: Vec<usize> = (0..class_tasks.len()).collect();
+            order.sort_by_key(|&ordinal| std::cmp::Reverse(weight(ordinal)));
+            order
+        });
+        let mut scheduling_result = Ok(());
+        for (span_index, span) in spans.into_iter().enumerate() {
+            let scheduler_start = profile.as_ref().map(|_| std::time::Instant::now());
+            let mut span_sources: Vec<Option<Vec<GeneratedSource>>> =
+                (0..span.len()).map(|_| None).collect();
+            let mut span_profiles: Vec<(usize, ClassProfile)> = Vec::new();
+            let mut report_part =
+                |ordinal: usize,
+                 part: JavaReport,
+                 sources: Vec<GeneratedSource>,
+                 task_profile: Option<ClassProfile>| {
+                    if let Some(task) = task_profile {
+                        span_profiles.push((ordinal, task));
+                    }
+                    if options.limit.is_some_and(|l| report.classes_emitted >= l) {
+                        report.classes_seen += 1;
+                        report.skipped_classes += 1;
+                        return Ok(());
+                    }
+                    span_sources[ordinal] = Some(sources);
+                    report.classes_seen += part.classes_seen;
+                    report.classes_emitted += part.classes_emitted;
+                    report.skipped_classes += part.skipped_classes;
+                    report.complete_methods += part.complete_methods;
+                    report.complete_constructors += part.complete_constructors;
+                    report.complete_static_initializers += part.complete_static_initializers;
+                    report.semantic_bodies_with_unresolved_dependencies +=
+                        part.semantic_bodies_with_unresolved_dependencies;
+                    report.semantic_bodies_outside_strict_dependency_closure +=
+                        part.semantic_bodies_outside_strict_dependency_closure;
+                    report.declaration_only_methods += part.declaration_only_methods;
+                    report.fields_emitted += part.fields_emitted;
+                    report.unsupported_methods += part.unsupported_methods;
+                    report.unavailable_constructors += part.unavailable_constructors;
+                    report.unavailable_initialization_units +=
+                        part.unavailable_initialization_units;
+                    report
+                        .unpublished_method_reasons
+                        .extend(part.unpublished_method_reasons);
+                    for (reason, count) in part.category_reasons {
+                        *report.category_reasons.entry(reason).or_default() += count;
+                    }
+                    for (reason, count) in part.reasons {
+                        *report.reasons.entry(reason).or_default() += count;
+                    }
+                    Ok(())
+                };
+            let task_class = |index: usize| {
+                let (dex_index, class_index) = class_tasks[span.start + index];
+                let dex = &files[dex_index];
+                let r = &resolvers[dex_index];
+                let class = &dex.classes[class_index];
+                let task_start = scheduler_start.map(|_| std::time::Instant::now());
+                let mut task_profile =
+                    task_start
+                        .zip(scheduler_start)
+                        .map(|(start, scheduler_start)| ClassProfile {
+                            dex: dex_index,
+                            class: class.class_idx,
+                            descriptor: descriptor(dex, class.class_idx).unwrap_or("?").into(),
+                            start: start.duration_since(scheduler_start),
+                            ..ClassProfile::default()
+                        });
+                let mut sources = Vec::new();
+                let mut collect = |s: &GeneratedSource| {
+                    sources.push(s.clone());
+                    Ok(())
+                };
+                let result = emit_classes(
+                    dex,
+                    r,
+                    std::slice::from_ref(class),
+                    &JavaOptions {
+                        limit: None,
+                        ..options.clone()
+                    },
+                    &mut collect,
+                    &mut task_profile,
+                );
+                if let (Some(p), Some(start)) = (task_profile.as_mut(), task_start) {
+                    p.elapsed = start.elapsed();
+                }
+                (result, sources, task_profile)
+            };
+            let (result, mut scheduling) = match dispatch_order.as_ref() {
+                Some(order) => {
+                    let span_order: Vec<usize> = order[span.start..span.end]
+                        .iter()
+                        .map(|ordinal| ordinal - span.start)
+                        .collect();
+                    scheduler::run_unordered(
+                        &span_order,
+                        options.workers,
+                        task_class,
+                        |ordinal, (result, sources, task_profile)| {
+                            report_part(ordinal, result?, sources, task_profile)
+                        },
+                        || OutputError::Io(std::io::Error::other("Java class worker panicked")),
+                    )
+                }
+                None => scheduler::run(
+                    span.len(),
                     options.workers,
                     task_class,
                     |ordinal, (result, sources, task_profile)| {
                         report_part(ordinal, result?, sources, task_profile)
                     },
                     || OutputError::Io(std::io::Error::other("Java class worker panicked")),
-                )
+                ),
+            };
+            for slot in span_sources.into_iter().flatten() {
+                pending_sources.extend(slot);
             }
-            None => scheduler::run(
-                span.len(),
-                options.workers,
-                task_class,
-                |ordinal, (result, sources, task_profile)| {
-                    report_part(ordinal, result?, sources, task_profile)
-                },
-                || OutputError::Io(std::io::Error::other("Java class worker panicked")),
-            ),
-        };
-        for slot in span_sources.into_iter().flatten() {
-            pending_sources.extend(slot);
-        }
-        if let Some(p) = profile.as_deref_mut() {
-            span_profiles.sort_by_key(|(ordinal, _)| *ordinal);
-            p.classes
-                .extend(span_profiles.into_iter().map(|(_, task)| task));
-        }
-        scheduling.dex = span_index;
-        if let Some(p) = profile.as_deref_mut() {
-            p.schedulers.push(scheduling);
-        }
-        if result.is_err() {
-            scheduling_result = result;
-            break;
-        }
-    }
-    if let Some(p) = profile.as_deref_mut() {
-        p.resolution_cache_enabled = options.cache_resolutions;
-        p.field_use_cache_enabled = options.cache_resolutions;
-        for r in &resolvers {
-            if let (Some(methods), Some(fields)) = (&r.method_cache, &r.field_cache) {
-                for stats in [methods.stats(), fields.stats()] {
-                    p.resolution_cache_hits += stats.hits;
-                    p.resolution_cache_misses += stats.misses;
-                    p.resolution_cache_failures += stats.failures;
-                }
+            if let Some(p) = profile.as_deref_mut() {
+                span_profiles.sort_by_key(|(ordinal, _)| *ordinal);
+                p.classes
+                    .extend(span_profiles.into_iter().map(|(_, task)| task));
+            }
+            scheduling.dex = span_index;
+            if let Some(p) = profile.as_deref_mut() {
+                p.schedulers.push(scheduling);
+            }
+            if result.is_err() {
+                scheduling_result = result;
+                break;
             }
         }
-    }
-    scheduling_result?;
-    drop(resolvers);
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("deferred_annotation_prepare").or_default()),
-    );
-    // Only unlimited exports enable this bounded extension. Quarantined source
-    // plans are private and do not enter public closure or successful counts.
-    let mut deferred_sub_walls: Option<(
-        std::time::Duration,
-        std::time::Duration,
-        std::time::Duration,
-    )> = None;
-    if options.limit.is_none() {
-        // Deferred annotation units from every input share one scheduler; ordered
-        // delivery retains the original DEX-order, class-order acknowledgement
-        // sequence, and frozen resolvers are only built for contributing inputs.
-        // Sub-phase walls are recorded after the phase timer releases the
-        // profile borrow; they sum to the enclosing phase.
-        let deferred_scan_start = std::time::Instant::now();
-        let mut deferred_tasks: Vec<(usize, usize)> = Vec::new();
-        let mut deferred_pools = vec![false; files.len()];
-        let mut duplicated_deferred_owners = BTreeSet::new();
-        let mut deferred_owner_duplicated = false;
-        for (dex_index, dex) in files.iter().enumerate() {
-            for (class_index, class) in dex.classes.iter().enumerate() {
-                if class_kind(class.access_flags) == Ok(ClassKind::Annotation)
-                    && initializers::annotation_publication::requires_deferred_defaults(dex, class)
-                {
-                    deferred_pools[dex_index] = true;
-                    if let Some(owner) = descriptor(dex, class.class_idx)
-                        && !duplicated_deferred_owners.insert(owner)
-                    {
-                        deferred_owner_duplicated = true;
+        if let Some(p) = profile.as_deref_mut() {
+            p.resolution_cache_enabled = options.cache_resolutions;
+            p.field_use_cache_enabled = options.cache_resolutions;
+            for r in &resolvers {
+                if let (Some(methods), Some(fields)) = (&r.method_cache, &r.field_cache) {
+                    for stats in [methods.stats(), fields.stats()] {
+                        p.resolution_cache_hits += stats.hits;
+                        p.resolution_cache_misses += stats.misses;
+                        p.resolution_cache_failures += stats.failures;
                     }
-                    deferred_tasks.push((dex_index, class_index));
                 }
             }
         }
-        let deferred_scan = deferred_scan_start.elapsed();
-        let deferred_resolve_start = std::time::Instant::now();
-        let deferred_metadata: Vec<_> = files
-            .iter()
-            .enumerate()
-            .map(|(dex_index, dex)| {
-                deferred_pools[dex_index].then(|| dex_decompiler::infer::DexMetadata::new(dex))
-            })
-            .collect();
-        // Only contributing inputs get a frozen resolver; duplicate owners keep
-        // the original per-DEX scheduling below so publication-key overwrite
-        // semantics cannot become a cross-DEX race.
-        let mut deferred_resolvers: Vec<Option<Resolver>> =
-            (0..files.len()).map(|_| None).collect();
-        for (dex_index, dex) in files.iter().enumerate() {
-            if deferred_pools[dex_index]
-                && let Some(metadata) = deferred_metadata[dex_index].as_ref()
-            {
-                let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
-                r.inputs = files;
-                r.dex_index = dex_index;
-                r.external = external;
-                r.input_owners = input_owners.clone();
-                r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
-                r.hierarchy = hierarchy.clone();
-                r.source_release = options.source_release;
-                r.field_catalog = Some(&field_publication);
-                r.field_index = Some(&field_index);
-                r.source_throws = Some(&source_throws);
-                r.field_throw_catalog = Some(&field_throw_catalog);
-                r.writes = Some(&writes);
-                r.class_catalog = class_catalog.clone();
-                r.field_names = field_names.clone();
-                r.annotation_defaults = Some(&annotation_defaults);
-                r.annotation_guards = Some(&annotation_guards);
-                r.publications = Some(&deferred_publications);
-                deferred_resolvers[dex_index] = Some(r);
-            }
-        }
-        let deferred_resolve = deferred_resolve_start.elapsed();
-        let deferred_emit_start = std::time::Instant::now();
-        let deferred_options = JavaOptions {
-            limit: None,
-            ..options.clone()
-        };
-        // No global owner/field/publication token is promoted during preview.
-        // The frozen resolvers are shared; dependency receipts remain quarantined
-        // until the existing serial acknowledgement pass below. Duplicate owners
-        // keep the original per-DEX scheduling so publication-key overwrite
-        // semantics cannot become a cross-DEX race.
-        let mut run_deferred_span = |tasks: &[(usize, usize)]| -> Result<(), OutputError> {
-            let (result, _) = scheduler::run(
-                tasks.len(),
-                options.workers,
-                |index| {
-                    let (dex_index, class_index) = tasks[index];
-                    let dex = &files[dex_index];
-                    let mut sources = Vec::new();
-                    let mut collect = |s: &GeneratedSource| {
-                        sources.push(s.clone());
-                        Ok(())
-                    };
-                    let part = match &deferred_resolvers[dex_index] {
-                        Some(r) => emit_classes(
-                            dex,
-                            r,
-                            std::slice::from_ref(&dex.classes[class_index]),
-                            &deferred_options,
-                            &mut collect,
-                            &mut None,
-                        ),
-                        None => Err(OutputError::Io(std::io::Error::other(
-                            "Java annotation resolver unavailable",
-                        ))),
-                    };
-                    (part, sources)
-                },
-                |_, (part, sources)| {
-                    deferred_sources.push((part?, sources));
-                    Ok(())
-                },
-                || OutputError::Io(std::io::Error::other("Java annotation worker panicked")),
-            );
-            result
-        };
-        if deferred_owner_duplicated {
-            let mut span_start = 0;
-            while span_start < deferred_tasks.len() {
-                let dex_index = deferred_tasks[span_start].0;
-                let span_end = deferred_tasks[span_start..]
-                    .iter()
-                    .position(|(pool, _)| *pool != dex_index)
-                    .map_or(deferred_tasks.len(), |offset| span_start + offset);
-                run_deferred_span(&deferred_tasks[span_start..span_end])?;
-                span_start = span_end;
-            }
-        } else {
-            run_deferred_span(&deferred_tasks)?;
-        }
-        deferred_sub_walls = Some((
-            deferred_scan,
-            deferred_resolve,
-            deferred_emit_start.elapsed(),
-        ));
-    }
-    drop(phase_timer);
-    if let (Some(p), Some((scan, resolve, emit))) = (profile.as_deref_mut(), deferred_sub_walls) {
-        *p.serial.entry("deferred_scan").or_default() += scan;
-        *p.serial.entry("deferred_resolvers").or_default() += resolve;
-        *p.serial.entry("deferred_emit").or_default() += emit;
-    }
-    // Actual external sink acknowledgements are serial, deterministic, and
-    // distinct from worker collection. Enum requirements cannot use preparation.
-    let mut prepared_enums = Vec::new();
-    let mut ordinary_sources = Vec::new();
-    for source in pending_sources {
-        if annotation_defaults
-            .lock()
-            .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
-            .prepared_owner(&source.provenance.descriptor)
-        {
-            prepared_enums.push(source);
-        } else {
-            ordinary_sources.push(source);
-        }
-    }
-    let mut published = publications
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("method publication lock".into()))?;
-    let mut acknowledged_dependency_owners = BTreeSet::new();
-    for mut source in prepared_enums {
-        acknowledged_dependency_owners.insert(source.provenance.descriptor.clone());
-        if options.source_release == 25 {
-            source
-                .text
-                .insert_str(0, "// Required Java source release: 25\n");
-        }
-        source.text.push_str("// This dependency unit was acknowledged before the global closure audit; no complete-class closure claim is made.\n");
-        let _timer = Timer::new(
+        scheduling_result?;
+        drop(resolvers);
+        let phase_timer = Timer::new(
             profile
                 .as_deref_mut()
-                .map(|p| p.serial.entry("sink_io").or_default()),
+                .map(|p| p.serial.entry("deferred_annotation_prepare").or_default()),
         );
-        if annotation_defaults
-            .lock()
-            .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
-            .prepared_owner(&source.provenance.descriptor)
+        // Only unlimited exports enable this bounded extension. Quarantined source
+        // plans are private and do not enter public closure or successful counts.
+        let mut deferred_sub_walls: Option<(
+            std::time::Duration,
+            std::time::Duration,
+            std::time::Duration,
+        )> = None;
+        if options.limit.is_none() {
+            // Deferred annotation units from every input share one scheduler; ordered
+            // delivery retains the original DEX-order, class-order acknowledgement
+            // sequence, and frozen resolvers are only built for contributing inputs.
+            // Sub-phase walls are recorded after the phase timer releases the
+            // profile borrow; they sum to the enclosing phase.
+            let deferred_scan_start = std::time::Instant::now();
+            let mut deferred_tasks: Vec<(usize, usize)> = Vec::new();
+            let mut deferred_pools = vec![false; files.len()];
+            let mut duplicated_deferred_owners = BTreeSet::new();
+            let mut deferred_owner_duplicated = false;
+            for (dex_index, dex) in files.iter().enumerate() {
+                for (class_index, class) in dex.classes.iter().enumerate() {
+                    if class_kind(class.access_flags) == Ok(ClassKind::Annotation)
+                        && initializers::annotation_publication::requires_deferred_defaults(
+                            dex, class,
+                        )
+                    {
+                        deferred_pools[dex_index] = true;
+                        if let Some(owner) = descriptor(dex, class.class_idx)
+                            && !duplicated_deferred_owners.insert(owner)
+                        {
+                            deferred_owner_duplicated = true;
+                        }
+                        deferred_tasks.push((dex_index, class_index));
+                    }
+                }
+            }
+            let deferred_scan = deferred_scan_start.elapsed();
+            let deferred_resolve_start = std::time::Instant::now();
+            let deferred_metadata: Vec<_> = files
+                .iter()
+                .enumerate()
+                .map(|(dex_index, dex)| {
+                    deferred_pools[dex_index].then(|| dex_decompiler::infer::DexMetadata::new(dex))
+                })
+                .collect();
+            // Only contributing inputs get a frozen resolver; duplicate owners keep
+            // the original per-DEX scheduling below so publication-key overwrite
+            // semantics cannot become a cross-DEX race.
+            let mut deferred_resolvers: Vec<Option<Resolver>> =
+                (0..files.len()).map(|_| None).collect();
+            for (dex_index, dex) in files.iter().enumerate() {
+                if deferred_pools[dex_index]
+                    && let Some(metadata) = deferred_metadata[dex_index].as_ref()
+                {
+                    let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
+                    r.inputs = files;
+                    r.dex_index = dex_index;
+                    r.external = external;
+                    r.input_owners = input_owners.clone();
+                    r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
+                    r.hierarchy = hierarchy.clone();
+                    r.source_release = options.source_release;
+                    r.field_catalog = Some(&field_publication);
+                    r.field_index = Some(&field_index);
+                    r.source_throws = Some(&source_throws);
+                    r.field_throw_catalog = Some(&field_throw_catalog);
+                    r.writes = Some(&writes);
+                    r.class_catalog = class_catalog.clone();
+                    r.field_names = field_names.clone();
+                    r.annotation_defaults = Some(&annotation_defaults);
+                    r.annotation_guards = Some(&annotation_guards);
+                    r.publications = Some(&deferred_publications);
+                    deferred_resolvers[dex_index] = Some(r);
+                }
+            }
+            let deferred_resolve = deferred_resolve_start.elapsed();
+            let deferred_emit_start = std::time::Instant::now();
+            let deferred_options = JavaOptions {
+                limit: None,
+                ..options.clone()
+            };
+            // No global owner/field/publication token is promoted during preview.
+            // The frozen resolvers are shared; dependency receipts remain quarantined
+            // until the existing serial acknowledgement pass below. Duplicate owners
+            // keep the original per-DEX scheduling so publication-key overwrite
+            // semantics cannot become a cross-DEX race.
+            let mut run_deferred_span = |tasks: &[(usize, usize)]| -> Result<(), OutputError> {
+                let (result, _) = scheduler::run(
+                    tasks.len(),
+                    options.workers,
+                    |index| {
+                        let (dex_index, class_index) = tasks[index];
+                        let dex = &files[dex_index];
+                        let mut sources = Vec::new();
+                        let mut collect = |s: &GeneratedSource| {
+                            sources.push(s.clone());
+                            Ok(())
+                        };
+                        let part = match &deferred_resolvers[dex_index] {
+                            Some(r) => emit_classes(
+                                dex,
+                                r,
+                                std::slice::from_ref(&dex.classes[class_index]),
+                                &deferred_options,
+                                &mut collect,
+                                &mut None,
+                            ),
+                            None => Err(OutputError::Io(std::io::Error::other(
+                                "Java annotation resolver unavailable",
+                            ))),
+                        };
+                        (part, sources)
+                    },
+                    |_, (part, sources)| {
+                        deferred_sources.push((part?, sources));
+                        Ok(())
+                    },
+                    || OutputError::Io(std::io::Error::other("Java annotation worker panicked")),
+                );
+                result
+            };
+            if deferred_owner_duplicated {
+                let mut span_start = 0;
+                while span_start < deferred_tasks.len() {
+                    let dex_index = deferred_tasks[span_start].0;
+                    let span_end = deferred_tasks[span_start..]
+                        .iter()
+                        .position(|(pool, _)| *pool != dex_index)
+                        .map_or(deferred_tasks.len(), |offset| span_start + offset);
+                    run_deferred_span(&deferred_tasks[span_start..span_end])?;
+                    span_start = span_end;
+                }
+            } else {
+                run_deferred_span(&deferred_tasks)?;
+            }
+            deferred_sub_walls = Some((
+                deferred_scan,
+                deferred_resolve,
+                deferred_emit_start.elapsed(),
+            ));
+        }
+        drop(phase_timer);
+        if let (Some(p), Some((scan, resolve, emit))) = (profile.as_deref_mut(), deferred_sub_walls)
         {
-            annotation_defaults
+            *p.serial.entry("deferred_scan").or_default() += scan;
+            *p.serial.entry("deferred_resolvers").or_default() += resolve;
+            *p.serial.entry("deferred_emit").or_default() += emit;
+        }
+        // Actual external sink acknowledgements are serial, deterministic, and
+        // distinct from worker collection. Enum requirements cannot use preparation.
+        let mut prepared_enums = Vec::new();
+        let mut ordinary_sources = Vec::new();
+        for source in pending_sources {
+            if annotation_defaults
                 .lock()
                 .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
-                .emit_enum(&source, sink)?;
-        } else {
-            sink.emit(&source)?;
+                .prepared_owner(&source.provenance.descriptor)
+            {
+                prepared_enums.push(source);
+            } else {
+                ordinary_sources.push(source);
+            }
         }
-    }
-    let guards = annotation_guards
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("annotation guard lock".into()))?;
-    let mut acknowledged_annotations = BTreeSet::new();
-    for (part, sources) in deferred_sources {
-        for mut source in sources {
+        let mut published = publications
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("method publication lock".into()))?;
+        let mut acknowledged_dependency_owners = BTreeSet::new();
+        for mut source in prepared_enums {
+            acknowledged_dependency_owners.insert(source.provenance.descriptor.clone());
             if options.source_release == 25 {
                 source
                     .text
                     .insert_str(0, "// Required Java source release: 25\n");
             }
             source.text.push_str("// This dependency unit was acknowledged before the global closure audit; no complete-class closure claim is made.\n");
-            let requirements = guards
-                .get(&source.provenance.descriptor)
-                .map(Vec::as_slice)
-                .unwrap_or(&[]);
-            annotation_defaults
+            let _timer = Timer::new(
+                profile
+                    .as_deref_mut()
+                    .map(|p| p.serial.entry("sink_io").or_default()),
+            );
+            if annotation_defaults
                 .lock()
                 .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
-                .emit_annotation(&source, requirements, sink)?;
-            acknowledged_dependency_owners.insert(source.provenance.descriptor.clone());
-            acknowledged_annotations.insert(source.provenance.descriptor);
-        }
-        merge_deferred_annotation_report(&mut report, part);
-    }
-    // Only actual acknowledged source units now make their private declarations
-    // eligible for source closure; no prepared plan can enter earlier audits.
-    for (key, body) in deferred_publications
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("annotation publication lock".into()))?
-    {
-        if acknowledged_annotations.contains(&key.owner) {
-            published.insert(key, body);
-        }
-    }
-    pending_sources = ordinary_sources;
-    let emitted_owners: BTreeSet<_> = pending_sources
-        .iter()
-        .map(|s| s.provenance.descriptor.clone())
-        .chain(acknowledged_dependency_owners)
-        .collect();
-    // Workers may finish units beyond the user's publication limit. Completed
-    // analysis is not evidence that their declarations reached the source sink.
-    published.retain(|key, _| emitted_owners.contains(&key.owner));
-    let provider = external.unwrap_or(&MissingMetadata);
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("method_closure").or_default()),
-    );
-    let mut closure =
-        global.close_published(published.keys().cloned(), provider, |key, _location| {
-            published
-                .get(key)
-                .cloned()
-                .ok_or_else(|| "original semantic body unavailable in exported source".into())
-        });
-    drop(phase_timer);
-    // A genuine native/abstract definition still needs actual source publication.
-    let bodyless: BTreeSet<_> = closure
-        .bodyless
-        .keys()
-        .cloned()
-        .chain(
-            published
-                .keys()
-                .filter(|key| {
-                    global
-                        .declaration_metadata
-                        .get(*key)
-                        .and_then(Option::as_ref)
-                        .is_some_and(|metadata| {
-                            matches!(metadata.access_flags & 0x500, 0x100 | 0x400)
-                        })
-                })
-                .cloned(),
-        )
-        .collect();
-    for key in bodyless {
-        if let Some(body) = published.get(&key) {
-            // Raw-name helper rejection is not an availability failure when the
-            // production declaration validated original flags and frozen aliases.
-            closure.unresolved.remove(&key);
-            closure.bodyless.insert(key, body.source.clone());
-        } else {
-            closure.bodyless.remove(&key);
-            closure
-                .unresolved
-                .insert(key, "original bodyless declaration not published".into());
-        }
-    }
-    for (owner, initialized) in published_owners
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("owner publication lock".into()))?
-    {
-        if !emitted_owners.contains(&owner) {
-            continue;
-        }
-        let initialized = initialized
-            && field_publication
-                .encoded
-                .get(&owner)
-                .is_some_and(Result::is_ok)
-            && !field_publication.limitations.contains_key(&owner);
-        let _ = field_publication.record_owner_publication(&owner, initialized);
-    }
-    // Ordinary-class initialization cannot attest enum fields. Only the enum
-    // renderer's exact emitted declarations and proved constant initialization
-    // enter this separate publication token; compiler backing arrays do not.
-    for key in enum_fields
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("enum field attestation lock".into()))?
-    {
-        if emitted_owners.contains(&key.owner)
-            && field_publication
-                .declarations
-                .get(&key)
-                .is_some_and(|declaration| declaration.kind == ClassKind::Enum)
-            && let Some(status) = field_publication.statuses.get_mut(&key)
-        {
-            *status = crate::java_members::external_metadata::fields::publication::FieldStatus::InitializedDeclaration;
-        }
-    }
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("final_field_require").or_default()),
-    );
-    for (caller, uses) in field_uses
-        .into_inner()
-        .map_err(|_| OutputError::InvalidDescriptor("field publication lock".into()))?
-    {
-        if !emitted_owners.contains(&caller.owner) {
-            continue;
-        }
-        for (key, receiver, is_static) in uses {
-            let context = crate::java_members::external_metadata::FieldAccessContext {
-                caller: &caller.owner,
-                receiver: receiver.as_deref(),
-                is_static,
-            };
-            if let Some(cache) = &field_use_cache {
-                let _ = field_publication.require_field_cached(&caller, &key, &context, cache);
+                .prepared_owner(&source.provenance.descriptor)
+            {
+                annotation_defaults
+                    .lock()
+                    .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
+                    .emit_enum(&source, sink)?;
             } else {
-                let _ = field_publication.require_field_indexed(
-                    files,
-                    &caller,
-                    &key,
-                    provider,
-                    &context,
-                    Some(&field_index),
-                );
+                sink.emit(&source)?;
             }
         }
-    }
-    drop(phase_timer);
-    if let (Some(p), Some(cache)) = (profile.as_deref_mut(), &field_use_cache) {
-        let stats = cache.stats();
-        p.field_use_cache_entries = stats.entries;
-        for stage in [stats.resolution, stats.source_use, stats.retain] {
-            p.field_use_cache_hits += stage.hits;
-            p.field_use_cache_misses += stage.misses;
-            p.field_use_cache_failures += stage.failures;
+        let guards = annotation_guards
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("annotation guard lock".into()))?;
+        let mut acknowledged_annotations = BTreeSet::new();
+        for (part, sources) in deferred_sources {
+            for mut source in sources {
+                if options.source_release == 25 {
+                    source
+                        .text
+                        .insert_str(0, "// Required Java source release: 25\n");
+                }
+                source.text.push_str("// This dependency unit was acknowledged before the global closure audit; no complete-class closure claim is made.\n");
+                let requirements = guards
+                    .get(&source.provenance.descriptor)
+                    .map(Vec::as_slice)
+                    .unwrap_or(&[]);
+                annotation_defaults
+                    .lock()
+                    .map_err(|_| OutputError::InvalidDescriptor("enum receipt lock".into()))?
+                    .emit_annotation(&source, requirements, sink)?;
+                acknowledged_dependency_owners.insert(source.provenance.descriptor.clone());
+                acknowledged_annotations.insert(source.provenance.descriptor);
+            }
+            merge_deferred_annotation_report(&mut report, part);
         }
-    }
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("field_audit").or_default()),
-    );
-    field_publication.audit();
-    drop(phase_timer);
-    let mut evidence = BTreeMap::<String, Vec<String>>::new();
-    for (owner, limitations) in &field_publication.limitations {
-        evidence.entry(owner.clone()).or_default().push(format!(
-            "// Global field inventory limitations: {limitations:?}"
-        ));
-    }
-    for (caller, missing) in closure.direct_missing() {
-        evidence
-            .entry(caller.owner.clone())
-            .or_default()
-            .push(format!(
-                "// Global method source closure: caller={caller:?}; missing={missing:?}"
+        // Only actual acknowledged source units now make their private declarations
+        // eligible for source closure; no prepared plan can enter earlier audits.
+        for (key, body) in deferred_publications
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("annotation publication lock".into()))?
+        {
+            if acknowledged_annotations.contains(&key.owner) {
+                published.insert(key, body);
+            }
+        }
+        pending_sources = ordinary_sources;
+        let emitted_owners: BTreeSet<_> = pending_sources
+            .iter()
+            .map(|s| s.provenance.descriptor.clone())
+            .chain(acknowledged_dependency_owners)
+            .collect();
+        // Workers may finish units beyond the user's publication limit. Completed
+        // analysis is not evidence that their declarations reached the source sink.
+        published.retain(|key, _| emitted_owners.contains(&key.owner));
+        let provider = external.unwrap_or(&MissingMetadata);
+        let phase_timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("method_closure").or_default()),
+        );
+        let mut closure =
+            global.close_published(published.keys().cloned(), provider, |key, _location| {
+                published
+                    .get(key)
+                    .cloned()
+                    .ok_or_else(|| "original semantic body unavailable in exported source".into())
+            });
+        drop(phase_timer);
+        // A genuine native/abstract definition still needs actual source publication.
+        let bodyless: BTreeSet<_> = closure
+            .bodyless
+            .keys()
+            .cloned()
+            .chain(
+                published
+                    .keys()
+                    .filter(|key| {
+                        global
+                            .declaration_metadata
+                            .get(*key)
+                            .and_then(Option::as_ref)
+                            .is_some_and(|metadata| {
+                                matches!(metadata.access_flags & 0x500, 0x100 | 0x400)
+                            })
+                    })
+                    .cloned(),
+            )
+            .collect();
+        for key in bodyless {
+            if let Some(body) = published.get(&key) {
+                // Raw-name helper rejection is not an availability failure when the
+                // production declaration validated original flags and frozen aliases.
+                closure.unresolved.remove(&key);
+                closure.bodyless.insert(key, body.source.clone());
+            } else {
+                closure.bodyless.remove(&key);
+                closure
+                    .unresolved
+                    .insert(key, "original bodyless declaration not published".into());
+            }
+        }
+        for (owner, initialized) in published_owners
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("owner publication lock".into()))?
+        {
+            if !emitted_owners.contains(&owner) {
+                continue;
+            }
+            let initialized = initialized
+                && field_publication
+                    .encoded
+                    .get(&owner)
+                    .is_some_and(Result::is_ok)
+                && !field_publication.limitations.contains_key(&owner);
+            let _ = field_publication.record_owner_publication(&owner, initialized);
+        }
+        // Ordinary-class initialization cannot attest enum fields. Only the enum
+        // renderer's exact emitted declarations and proved constant initialization
+        // enter this separate publication token; compiler backing arrays do not.
+        for key in enum_fields
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("enum field attestation lock".into()))?
+        {
+            if emitted_owners.contains(&key.owner)
+                && field_publication
+                    .declarations
+                    .get(&key)
+                    .is_some_and(|declaration| declaration.kind == ClassKind::Enum)
+                && let Some(status) = field_publication.statuses.get_mut(&key)
+            {
+                *status = crate::java_members::external_metadata::fields::publication::FieldStatus::InitializedDeclaration;
+            }
+        }
+        let phase_timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("final_field_require").or_default()),
+        );
+        for (caller, uses) in field_uses
+            .into_inner()
+            .map_err(|_| OutputError::InvalidDescriptor("field publication lock".into()))?
+        {
+            if !emitted_owners.contains(&caller.owner) {
+                continue;
+            }
+            for (key, receiver, is_static) in uses {
+                let context = crate::java_members::external_metadata::FieldAccessContext {
+                    caller: &caller.owner,
+                    receiver: receiver.as_deref(),
+                    is_static,
+                };
+                if let Some(cache) = &field_use_cache {
+                    let _ = field_publication.require_field_cached(&caller, &key, &context, cache);
+                } else {
+                    let _ = field_publication.require_field_indexed(
+                        files,
+                        &caller,
+                        &key,
+                        provider,
+                        &context,
+                        Some(&field_index),
+                    );
+                }
+            }
+        }
+        drop(phase_timer);
+        if let (Some(p), Some(cache)) = (profile.as_deref_mut(), &field_use_cache) {
+            let stats = cache.stats();
+            p.field_use_cache_entries = stats.entries;
+            for stage in [stats.resolution, stats.source_use, stats.retain] {
+                p.field_use_cache_hits += stage.hits;
+                p.field_use_cache_misses += stage.misses;
+                p.field_use_cache_failures += stage.failures;
+            }
+        }
+        let phase_timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("field_audit").or_default()),
+        );
+        field_publication.audit();
+        drop(phase_timer);
+        let mut evidence = BTreeMap::<String, Vec<String>>::new();
+        for (owner, limitations) in &field_publication.limitations {
+            evidence.entry(owner.clone()).or_default().push(format!(
+                "// Global field inventory limitations: {limitations:?}"
             ));
-    }
-    for (caller, blockers) in &field_publication.unresolved {
-        if !blockers.is_empty() {
+        }
+        for (caller, missing) in closure.direct_missing() {
             evidence
                 .entry(caller.owner.clone())
                 .or_default()
                 .push(format!(
-                    "// Global field source closure: caller={caller:?}; blockers={blockers:?}"
+                    "// Global method source closure: caller={caller:?}; missing={missing:?}"
                 ));
         }
-    }
-    for mut source in pending_sources {
-        if options.source_release == 25 {
-            source
-                .text
-                .insert_str(0, "// Required Java source release: 25\n");
-        }
-        if let Some(lines) = evidence.get(&source.provenance.descriptor) {
-            for line in lines {
-                source.text.push_str(&line.replace("\\u", "\\ u"));
-                source.text.push('\n');
+        for (caller, blockers) in &field_publication.unresolved {
+            if !blockers.is_empty() {
+                evidence
+                    .entry(caller.owner.clone())
+                    .or_default()
+                    .push(format!(
+                        "// Global field source closure: caller={caller:?}; blockers={blockers:?}"
+                    ));
             }
         }
-        let _timer = Timer::new(
-            profile
-                .as_deref_mut()
-                .map(|p| p.serial.entry("sink_io").or_default()),
-        );
-        // In pipelined exports sink_io measures bounded delivery admission;
-        // actual sink writes overlap producer teardown on the calling thread.
-        sink.emit_owned(source)?;
-    }
-    Ok(report)
+        for mut source in pending_sources {
+            if options.source_release == 25 {
+                source
+                    .text
+                    .insert_str(0, "// Required Java source release: 25\n");
+            }
+            if let Some(lines) = evidence.get(&source.provenance.descriptor) {
+                for line in lines {
+                    source.text.push_str(&line.replace("\\u", "\\ u"));
+                    source.text.push('\n');
+                }
+            }
+            let _timer = Timer::new(
+                profile
+                    .as_deref_mut()
+                    .map(|p| p.serial.entry("sink_io").or_default()),
+            );
+            // In pipelined exports sink_io measures bounded delivery admission;
+            // actual sink writes overlap producer teardown on the calling thread.
+            sink.emit_owned(source)?;
+        }
+        Ok(report)
+    })
 }
 
 fn merge_deferred_annotation_report(report: &mut JavaReport, part: JavaReport) {

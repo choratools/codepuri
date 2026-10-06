@@ -209,6 +209,20 @@ pub struct FieldPublication {
     pub encoded: BTreeMap<String, Result<EncodedInitializationPlan, PublicationBlocker>>,
 }
 
+/// Partition-local state for the analyst walk, merged in partition order.
+#[derive(Default)]
+struct AnalystPartition {
+    declarations: BTreeMap<FieldKey, FieldDeclaration>,
+    statuses: BTreeMap<FieldKey, FieldStatus>,
+    limitations: BTreeMap<String, Vec<FieldRequirement>>,
+    encoded: BTreeMap<String, Result<EncodedInitializationPlan, PublicationBlocker>>,
+    inventory: AliasInventory,
+    duplicate_owners: Vec<String>,
+}
+
+/// Partition walk failure: the global class sequence position and the error.
+type AnalystStepError = (usize, FieldRequirement);
+
 fn descriptor(dex: &DexFile, index: u32) -> Result<String, FieldRequirement> {
     dex.type_id(index)
         .and_then(|t| dex.string(t.descriptor_idx))
@@ -378,6 +392,14 @@ impl FieldPublication {
         strict: bool,
         explicit_stores: bool,
     ) -> Result<Self, FieldRequirement> {
+        if !strict {
+            return Self::collect_inventory_analyst_parallel(
+                inputs,
+                aliases,
+                writes,
+                explicit_stores,
+            );
+        }
         let mut result = Self::default();
         let mut inventory = aliases.clone();
         let mut owners = BTreeSet::new();
@@ -517,6 +539,386 @@ impl FieldPublication {
         }
         *aliases = inventory;
         Ok(result)
+    }
+
+    /// Partitioned analyst walk over contiguous class chunks. Duplicate-owner
+    /// classes are identified from a whole-input first-occurrence index, so
+    /// every partition makes the same decisions as the serial walk; ordered
+    /// per-owner limitation concatenation and post-merge owner retains
+    /// reproduce the serial remediation exactly.
+    fn collect_inventory_analyst_parallel(
+        inputs: &[DexFile],
+        aliases: &mut AliasInventory,
+        writes: &initializers::write_inventory::WriteInventory,
+        explicit_stores: bool,
+    ) -> Result<Self, FieldRequirement> {
+        let mut first_seen: BTreeMap<String, usize> = BTreeMap::new();
+        let mut total = 0;
+        for dex in inputs {
+            for class in &dex.classes {
+                if let Ok(owner) = descriptor(dex, class.class_idx) {
+                    first_seen.entry(owner).or_insert(total);
+                }
+                total += 1;
+            }
+        }
+        // Small units stay serial: thread fan-out only pays off on real inputs.
+        if total < 1 << 13 {
+            return Self::collect_inventory_serial_analyst(
+                inputs,
+                aliases,
+                writes,
+                explicit_stores,
+            );
+        }
+        let threads = std::thread::available_parallelism()
+            .map_or(1, |count| count.get())
+            .clamp(1, 16)
+            .min(total);
+        let chunk_size = total.div_ceil(threads).max(1);
+        let classes: Vec<(usize, &DexFile, &dex_format::class::ClassDef)> = inputs
+            .iter()
+            .enumerate()
+            .flat_map(|(dex_index, dex)| {
+                dex.classes.iter().map(move |class| (dex_index, dex, class))
+            })
+            .collect();
+        let first_seen_ref = &first_seen;
+        let writes_ref = &writes;
+        let parts: Vec<Result<AnalystPartition, AnalystStepError>> = std::thread::scope(|scope| {
+            let handles: Vec<_> = classes
+                .chunks(chunk_size)
+                .enumerate()
+                .map(|(index, chunk)| {
+                    let first_seq = index * chunk_size;
+                    scope.spawn(move || {
+                        Self::analyst_walk_partition(
+                            chunk,
+                            first_seq,
+                            first_seen_ref,
+                            writes_ref,
+                            explicit_stores,
+                        )
+                    })
+                })
+                .collect();
+            handles
+                .into_iter()
+                .map(|handle| {
+                    handle.join().unwrap_or_else(|_| {
+                        Err((
+                            usize::MAX,
+                            FieldRequirement::Invalid("field inventory worker".into()),
+                        ))
+                    })
+                })
+                .collect()
+        });
+        let mut result = Self::default();
+        let mut partitions = Vec::with_capacity(parts.len());
+        let mut first_error: Option<AnalystStepError> = None;
+        for part in parts {
+            match part {
+                Ok(partition) => partitions.push(partition),
+                Err((seq, error)) => {
+                    if first_error.as_ref().is_none_or(|(best, _)| seq < *best) {
+                        first_error = Some((seq, error));
+                    }
+                }
+            }
+        }
+        if let Some((_, error)) = first_error {
+            return Err(error);
+        }
+        for partition in partitions {
+            for (owner, errors) in partition.limitations {
+                result.limitations.entry(owner).or_default().extend(errors);
+            }
+            for (key, declaration) in partition.declarations {
+                result.declarations.entry(key).or_insert(declaration);
+            }
+            for (key, status) in partition.statuses {
+                result.statuses.entry(key).or_insert(status);
+            }
+            for (owner, plan) in partition.encoded {
+                result.encoded.insert(owner, plan);
+            }
+            for owner in partition.duplicate_owners {
+                result.declarations.retain(|key, _| key.owner != owner);
+                result.statuses.retain(|key, _| key.owner != owner);
+            }
+            aliases.append(partition.inventory);
+        }
+        Ok(result)
+    }
+
+    /// Unpartitioned fallback for small units; the serial walk with analyst
+    /// remediation and no clone-on-success writeback.
+    fn collect_inventory_serial_analyst(
+        inputs: &[DexFile],
+        aliases: &mut AliasInventory,
+        writes: &initializers::write_inventory::WriteInventory,
+        explicit_stores: bool,
+    ) -> Result<Self, FieldRequirement> {
+        let mut result = Self::default();
+        let mut inventory = aliases.clone();
+        let mut owners = BTreeSet::new();
+        let mut ambiguous_fields = BTreeSet::new();
+        for (dex_index, dex) in inputs.iter().enumerate() {
+            for class in &dex.classes {
+                let owner = descriptor(dex, class.class_idx)?;
+                if !owners.insert(owner.clone()) {
+                    result
+                        .limitations
+                        .entry(owner.clone())
+                        .or_default()
+                        .push(FieldRequirement::Ambiguous(owner.clone()));
+                    result.declarations.retain(|key, _| key.owner != owner);
+                    result.statuses.retain(|key, _| key.owner != owner);
+                    continue;
+                }
+                inventory
+                    .add_type(&owner)
+                    .map_err(FieldRequirement::Invalid)?;
+                let kind = match class_kind(class.access_flags) {
+                    Ok(kind) => kind,
+                    Err(_) => {
+                        let error = FieldRequirement::Invalid(owner.clone());
+                        result.limitations.entry(owner).or_default().push(error);
+                        continue;
+                    }
+                };
+                if class.class_data_off != 0 && class.class_data.is_none() {
+                    let error = FieldRequirement::Invalid(owner.clone());
+                    result.limitations.entry(owner).or_default().push(error);
+                    continue;
+                }
+                if let Some(data) = &class.class_data {
+                    for (fields, is_static) in
+                        [(&data.static_fields, true), (&data.instance_fields, false)]
+                    {
+                        for f in fields {
+                            let key = operand_key(dex, f.field_idx)?;
+                            if ambiguous_fields.contains(&key) {
+                                continue;
+                            }
+                            let flags = f.access_flags;
+                            if key.owner != owner
+                                || (flags & 8 != 0) != is_static
+                                || flags & !(1 | 2 | 4 | 8 | 0x10 | 0x40 | 0x80 | 0x1000 | 0x4000)
+                                    != 0
+                                || (flags & 7).count_ones() > 1
+                                || flags & 0x50 == 0x50
+                                || crate::java_descriptors::parse_type_descriptor(&key.descriptor)
+                                    .is_err()
+                                || key.descriptor == "V"
+                                || (flags & 0x4000 != 0
+                                    && (kind != ClassKind::Enum
+                                        || flags & 0x18 != 0x18
+                                        || key.descriptor != owner))
+                                || (matches!(kind, ClassKind::Interface | ClassKind::Annotation)
+                                    && flags != 0x19
+                                    && flags != 0x1019)
+                            {
+                                let error = FieldRequirement::Invalid(format!(
+                                    "{owner}: {key:?}; flags={flags:#x}; static={is_static}"
+                                ));
+                                result
+                                    .limitations
+                                    .entry(owner.clone())
+                                    .or_default()
+                                    .push(error);
+                                continue;
+                            }
+                            inventory
+                                .add_field(key.clone())
+                                .map_err(FieldRequirement::Invalid)?;
+                            if result
+                                .declarations
+                                .insert(
+                                    key.clone(),
+                                    FieldDeclaration {
+                                        key: key.clone(),
+                                        dex: dex_index,
+                                        field: f.field_idx,
+                                        access_flags: flags,
+                                        kind,
+                                    },
+                                )
+                                .is_some()
+                            {
+                                let error = FieldRequirement::Ambiguous(owner.clone());
+                                result
+                                    .limitations
+                                    .entry(owner.clone())
+                                    .or_default()
+                                    .push(error);
+                                ambiguous_fields.insert(key.clone());
+                                result.declarations.remove(&key);
+                                result.statuses.remove(&key);
+                                continue;
+                            }
+                            result.statuses.insert(key, FieldStatus::SourceSubsetAbsent);
+                        }
+                    }
+                }
+                result.encoded.insert(
+                    owner.clone(),
+                    encoded_plan(
+                        dex,
+                        class,
+                        writes,
+                        explicit_stores
+                            && kind == ClassKind::Class
+                            && class.class_data.as_ref().is_some_and(|d| {
+                                d.static_fields
+                                    .iter()
+                                    .chain(&d.instance_fields)
+                                    .any(|f| f.access_flags & 0x10 != 0)
+                            }),
+                    )
+                    .map_err(|_| PublicationBlocker::InitializationUnavailable(owner)),
+                );
+            }
+        }
+        *aliases = inventory;
+        Ok(result)
+    }
+
+    /// One contiguous chunk of the analyst walk. `first_seq` is the chunk's
+    /// global class sequence offset; `first_seen` supplies duplicate-owner
+    /// decisions for owners first declared in an earlier chunk.
+    fn analyst_walk_partition(
+        chunk: &[(usize, &DexFile, &dex_format::class::ClassDef)],
+        first_seq: usize,
+        first_seen: &BTreeMap<String, usize>,
+        writes: &initializers::write_inventory::WriteInventory,
+        explicit_stores: bool,
+    ) -> Result<AnalystPartition, AnalystStepError> {
+        let mut partition = AnalystPartition::default();
+        let mut owners = BTreeSet::new();
+        let mut ambiguous_fields = BTreeSet::new();
+        for (offset, (dex_index, dex, class)) in chunk.iter().enumerate() {
+            let seq = first_seq + offset;
+            let owner = descriptor(dex, class.class_idx).map_err(|e| (seq, e))?;
+            if !owners.insert(owner.clone())
+                || first_seen.get(&owner).is_some_and(|seen| *seen < first_seq)
+            {
+                partition
+                    .limitations
+                    .entry(owner.clone())
+                    .or_default()
+                    .push(FieldRequirement::Ambiguous(owner.clone()));
+                partition.duplicate_owners.push(owner);
+                continue;
+            }
+            partition
+                .inventory
+                .add_type(&owner)
+                .map_err(|e| (seq, FieldRequirement::Invalid(e)))?;
+            let kind = match class_kind(class.access_flags) {
+                Ok(kind) => kind,
+                Err(_) => {
+                    let error = FieldRequirement::Invalid(owner.clone());
+                    partition.limitations.entry(owner).or_default().push(error);
+                    continue;
+                }
+            };
+            if class.class_data_off != 0 && class.class_data.is_none() {
+                let error = FieldRequirement::Invalid(owner.clone());
+                partition.limitations.entry(owner).or_default().push(error);
+                continue;
+            }
+            if let Some(data) = &class.class_data {
+                for (fields, is_static) in
+                    [(&data.static_fields, true), (&data.instance_fields, false)]
+                {
+                    for f in fields {
+                        let key = operand_key(dex, f.field_idx).map_err(|e| (seq, e))?;
+                        if ambiguous_fields.contains(&key) {
+                            continue;
+                        }
+                        let flags = f.access_flags;
+                        if key.owner != owner
+                            || (flags & 8 != 0) != is_static
+                            || flags & !(1 | 2 | 4 | 8 | 0x10 | 0x40 | 0x80 | 0x1000 | 0x4000) != 0
+                            || (flags & 7).count_ones() > 1
+                            || flags & 0x50 == 0x50
+                            || crate::java_descriptors::parse_type_descriptor(&key.descriptor)
+                                .is_err()
+                            || key.descriptor == "V"
+                            || (flags & 0x4000 != 0
+                                && (kind != ClassKind::Enum
+                                    || flags & 0x18 != 0x18
+                                    || key.descriptor != owner))
+                            || (matches!(kind, ClassKind::Interface | ClassKind::Annotation)
+                                && flags != 0x19
+                                && flags != 0x1019)
+                        {
+                            let error = FieldRequirement::Invalid(format!(
+                                "{owner}: {key:?}; flags={flags:#x}; static={is_static}"
+                            ));
+                            partition
+                                .limitations
+                                .entry(owner.clone())
+                                .or_default()
+                                .push(error);
+                            continue;
+                        }
+                        partition
+                            .inventory
+                            .add_field(key.clone())
+                            .map_err(|e| (seq, FieldRequirement::Invalid(e)))?;
+                        if partition
+                            .declarations
+                            .insert(
+                                key.clone(),
+                                FieldDeclaration {
+                                    key: key.clone(),
+                                    dex: *dex_index,
+                                    field: f.field_idx,
+                                    access_flags: flags,
+                                    kind,
+                                },
+                            )
+                            .is_some()
+                        {
+                            let error = FieldRequirement::Ambiguous(owner.clone());
+                            partition
+                                .limitations
+                                .entry(owner.clone())
+                                .or_default()
+                                .push(error);
+                            ambiguous_fields.insert(key.clone());
+                            partition.declarations.remove(&key);
+                            partition.statuses.remove(&key);
+                            continue;
+                        }
+                        partition
+                            .statuses
+                            .insert(key, FieldStatus::SourceSubsetAbsent);
+                    }
+                }
+            }
+            partition.encoded.insert(
+                owner.clone(),
+                encoded_plan(
+                    dex,
+                    class,
+                    writes,
+                    explicit_stores
+                        && kind == ClassKind::Class
+                        && class.class_data.as_ref().is_some_and(|d| {
+                            d.static_fields
+                                .iter()
+                                .chain(&d.instance_fields)
+                                .any(|f| f.access_flags & 0x10 != 0)
+                        }),
+                )
+                .map_err(|_| PublicationBlocker::InitializationUnavailable(owner)),
+            );
+        }
+        Ok(partition)
     }
 
     /// Render declarations with frozen whole-input names. Ordinary blank finals

@@ -138,7 +138,274 @@ impl AliasInventory {
 
     /// Allocate deterministic, collision-free aliases for the collected unit.
     pub fn build(&self, mode: AliasMode) -> JavaAliases {
-        self.build_with_shadow_lookup(mode, false)
+        // Large units fan the per-parent and per-owner allocation out over
+        // scoped workers; small units stay serial. Both paths compute the
+        // same frozen maps from the same sorted sets.
+        let units = self.classes.len() + self.methods.len() + self.fields.len();
+        if units < 1 << 14 {
+            self.build_with_shadow_lookup(mode, false)
+        } else {
+            self.build_parallel(mode)
+        }
+    }
+
+    fn build_parallel(&self, mode: AliasMode) -> JavaAliases {
+        let mut result = JavaAliases::default();
+        // Packages and classes share a case-insensitive sibling namespace.
+        // This also prevents a directory from shadowing a same-named class.
+        let mut children: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+        for descriptor in &self.classes {
+            let mut parent = String::new();
+            for component in descriptor[1..descriptor.len() - 1].split('/') {
+                children
+                    .entry(parent.clone())
+                    .or_default()
+                    .insert(component.into());
+                if !parent.is_empty() {
+                    parent.push('/');
+                }
+                parent.push_str(component);
+            }
+        }
+        // Per-parent allocation is independent; chunks merge in parent order.
+        let parents: Vec<String> = children.keys().cloned().collect();
+        let children_ref = &children;
+        let families: Vec<((String, String), String)> = std::thread::scope(|scope| {
+            let threads = std::thread::available_parallelism()
+                .map_or(1, |count| count.get())
+                .clamp(1, 16)
+                .min(parents.len().max(1));
+            let chunk_size = parents.len().div_ceil(threads).max(1);
+            let handles: Vec<_> = parents
+                .chunks(chunk_size)
+                .map(|chunk| {
+                    scope.spawn(move || {
+                        let mut out = Vec::new();
+                        for parent in chunk {
+                            for (original, alias) in allocate(
+                                children_ref[parent.as_str()].iter().map(String::as_str),
+                                mode,
+                                true,
+                            ) {
+                                out.push(((parent.clone(), original), alias));
+                            }
+                        }
+                        out
+                    })
+                })
+                .collect();
+            handles
+                .into_iter()
+                .flat_map(|handle| match handle.join() {
+                    Ok(out) => out,
+                    Err(payload) => std::panic::resume_unwind(payload),
+                })
+                .collect()
+        });
+        let mut components = BTreeMap::new();
+        for (key, alias) in families {
+            components.insert(key, alias);
+        }
+        // A top-level class's simple name shadows a root package even in a
+        // fully qualified reference (m0.q0 implements q0.o). Reserve root
+        // package names for leaf classes, across the frozen inventory.
+        let root_packages: BTreeSet<_> = self
+            .classes
+            .iter()
+            .filter_map(|d| {
+                d[1..d.len() - 1]
+                    .split_once('/')
+                    .map(|(p, _)| components[&(String::new(), p.to_string())].clone())
+            })
+            .collect();
+        // Allocation gives each sibling a unique alias. Index its original
+        // component so shadow checks can also exclude the class itself.
+        let mut sibling_aliases: BTreeMap<&str, BTreeMap<&str, &str>> = BTreeMap::new();
+        for ((parent, original), alias) in &components {
+            sibling_aliases
+                .entry(parent.as_str())
+                .or_default()
+                .insert(alias.as_str(), original.as_str());
+        }
+        let sibling_collision = |key: &(String, String), alias: &str| {
+            sibling_aliases
+                .get(key.0.as_str())
+                .and_then(|siblings| siblings.get(alias))
+                .is_some_and(|original| *original != key.1)
+        };
+        let mut class_leaves = BTreeMap::new();
+        for descriptor in &self.classes {
+            let body = &descriptor[1..descriptor.len() - 1];
+            let (parent, leaf) = body.rsplit_once('/').unwrap_or(("", body));
+            let key = (parent.to_string(), leaf.to_string());
+            if root_packages.contains(&components[&key]) {
+                let base = format!("{}$type", components[&key]);
+                let mut alias = base.clone();
+                let mut suffix = 0;
+                while root_packages.contains(&alias) || sibling_collision(&key, &alias) {
+                    suffix += 1;
+                    alias = format!("{base}${suffix}");
+                }
+                class_leaves.insert(descriptor.clone(), alias);
+            }
+        }
+        // Per-class package/path/class spelling is independent per descriptor.
+        let descriptors: Vec<&String> = self.classes.iter().collect();
+        let components_ref = &components;
+        let class_leaves_ref = &class_leaves;
+        let spelled: Vec<JavaClassSpelling> = std::thread::scope(|scope| {
+            let threads = std::thread::available_parallelism()
+                .map_or(1, |count| count.get())
+                .clamp(1, 16)
+                .min(descriptors.len().max(1));
+            let chunk_size = descriptors.len().div_ceil(threads).max(1);
+            let handles: Vec<_> = descriptors
+                .chunks(chunk_size)
+                .map(|chunk| {
+                    scope.spawn(move || spell_class_chunk(chunk, components_ref, class_leaves_ref))
+                })
+                .collect();
+            handles
+                .into_iter()
+                .map(|handle| match handle.join() {
+                    Ok(out) => out,
+                    Err(payload) => std::panic::resume_unwind(payload),
+                })
+                .collect()
+        });
+        for spelling in spelled {
+            for (package, joined) in spelling.packages {
+                result.packages.insert(package, joined);
+            }
+            for (descriptor, path) in spelling.paths {
+                result.paths.insert(descriptor, path);
+            }
+            for (descriptor, class) in spelling.classes {
+                result.classes.insert(descriptor, class);
+            }
+        }
+
+        let mut method_keys: BTreeMap<&str, Vec<&MethodKey>> = BTreeMap::new();
+        let mut field_keys: BTreeMap<&str, Vec<&FieldKey>> = BTreeMap::new();
+        for key in &self.methods {
+            method_keys.entry(&key.owner).or_default().push(key);
+        }
+        for key in &self.fields {
+            field_keys.entry(&key.owner).or_default().push(key);
+        }
+        let method_owners: Vec<&str> = method_keys.keys().copied().collect();
+        let method_keys_ref = &method_keys;
+        let method_aliases: Vec<(MethodKey, MethodAlias)> = std::thread::scope(|scope| {
+            let threads = std::thread::available_parallelism()
+                .map_or(1, |count| count.get())
+                .clamp(1, 16)
+                .min(method_owners.len().max(1));
+            let chunk_size = method_owners.len().div_ceil(threads).max(1);
+            let handles: Vec<_> = method_owners
+                .chunks(chunk_size)
+                .map(|chunk| {
+                    scope.spawn(move || {
+                        let mut out = Vec::new();
+                        for owner in chunk {
+                            let names: BTreeSet<&str> = method_keys_ref[*owner]
+                                .iter()
+                                .filter(|key| !matches!(key.name.as_str(), "<init>" | "<clinit>"))
+                                .map(|key| key.name.as_str())
+                                .collect();
+                            let families = allocate(names, mode, false);
+                            // Reserve every family name before assigning
+                            // return-only overloads.
+                            let mut used: BTreeSet<_> = families.values().cloned().collect();
+                            let mut suffixes = BTreeMap::new();
+                            let mut signatures = BTreeSet::new();
+                            for key in method_keys_ref[*owner].iter().copied() {
+                                if let Some(base) = families.get(key.name.as_str()) {
+                                    let signature = (base.as_str(), &key.parameters);
+                                    let alias = if signatures.insert(signature) {
+                                        base.clone()
+                                    } else {
+                                        unique(base, &mut used, &mut suffixes, false)
+                                    };
+                                    out.push((key.clone(), MethodAlias::Ordinary(alias)));
+                                }
+                            }
+                        }
+                        out
+                    })
+                })
+                .collect();
+            handles
+                .into_iter()
+                .flat_map(|handle| match handle.join() {
+                    Ok(out) => out,
+                    Err(payload) => std::panic::resume_unwind(payload),
+                })
+                .collect()
+        });
+        for (key, alias) in method_aliases {
+            result.methods.insert(key, alias);
+        }
+        for key in &self.methods {
+            match key.name.as_str() {
+                "<init>" => {
+                    result.methods.insert(key.clone(), MethodAlias::Constructor);
+                }
+                "<clinit>" => {
+                    result
+                        .methods
+                        .insert(key.clone(), MethodAlias::ClassInitializer);
+                }
+                _ => {}
+            }
+        }
+        let field_owners: Vec<&str> = field_keys.keys().copied().collect();
+        let field_keys_ref = &field_keys;
+        let field_aliases: Vec<(FieldKey, String)> = std::thread::scope(|scope| {
+            let threads = std::thread::available_parallelism()
+                .map_or(1, |count| count.get())
+                .clamp(1, 16)
+                .min(field_owners.len().max(1));
+            let chunk_size = field_owners.len().div_ceil(threads).max(1);
+            let handles: Vec<_> = field_owners
+                .chunks(chunk_size)
+                .map(|chunk| {
+                    scope.spawn(move || {
+                        let mut out = Vec::new();
+                        for owner in chunk {
+                            let names: BTreeSet<&str> = field_keys_ref[*owner]
+                                .iter()
+                                .map(|key| key.name.as_str())
+                                .collect();
+                            let families = allocate(names, mode, false);
+                            let mut used: BTreeSet<_> = families.values().cloned().collect();
+                            let mut suffixes = BTreeMap::new();
+                            let mut seen = BTreeSet::new();
+                            for key in field_keys_ref[*owner].iter().copied() {
+                                let base = &families[key.name.as_str()];
+                                let alias = if seen.insert(key.name.as_str()) {
+                                    base.clone()
+                                } else {
+                                    unique(base, &mut used, &mut suffixes, false)
+                                };
+                                out.push((key.clone(), alias));
+                            }
+                        }
+                        out
+                    })
+                })
+                .collect();
+            handles
+                .into_iter()
+                .flat_map(|handle| match handle.join() {
+                    Ok(out) => out,
+                    Err(payload) => std::panic::resume_unwind(payload),
+                })
+                .collect()
+        });
+        for (key, alias) in field_aliases {
+            result.fields.insert(key, alias);
+        }
+        result
     }
 
     fn build_with_shadow_lookup(&self, mode: AliasMode, _legacy_scan: bool) -> JavaAliases {
@@ -160,8 +427,8 @@ impl AliasInventory {
             }
         }
         let mut components = BTreeMap::new();
-        for (parent, names) in children {
-            for (original, alias) in allocate(names, mode, true) {
+        for (parent, names) in &children {
+            for (original, alias) in allocate(names.iter().map(String::as_str), mode, true) {
                 components.insert((parent.clone(), original), alias);
             }
         }
@@ -263,8 +530,8 @@ impl AliasInventory {
                 .or_default()
                 .insert(key.name.clone());
         }
-        for (owner, names) in methods_by_owner {
-            let families = allocate(names, mode, false);
+        for (owner, names) in &methods_by_owner {
+            let families = allocate(names.iter().map(String::as_str), mode, false);
             // Reserve every family name before assigning return-only overloads.
             let mut used: BTreeSet<_> = families.values().cloned().collect();
             let mut suffixes = BTreeMap::new();
@@ -296,8 +563,8 @@ impl AliasInventory {
                 _ => {}
             }
         }
-        for (owner, names) in fields_by_owner {
-            let families = allocate(names, mode, false);
+        for (owner, names) in &fields_by_owner {
+            let families = allocate(names.iter().map(String::as_str), mode, false);
             let mut used: BTreeSet<_> = families.values().cloned().collect();
             let mut suffixes = BTreeMap::new();
             let mut seen = BTreeSet::new();
@@ -395,12 +662,16 @@ impl JavaAliases {
     }
 }
 
-fn allocate(names: BTreeSet<String>, mode: AliasMode, path: bool) -> BTreeMap<String, String> {
+fn allocate<'a>(
+    names: impl IntoIterator<Item = &'a str>,
+    mode: AliasMode,
+    path: bool,
+) -> BTreeMap<String, String> {
     let mut ordered: Vec<_> = names
         .into_iter()
         .map(|name| {
-            let base = sanitize(&name, mode, path);
-            (base != name, name, base)
+            let base = sanitize(name, mode, path);
+            (base != name, name.to_owned(), base)
         })
         .collect();
     // Keep existing valid names ahead of synthesized names that may resemble them.
@@ -437,6 +708,51 @@ fn unique(
         }
     }
     unreachable!("finite inventory exhausted u64 aliases")
+}
+
+/// Per-class spelling output merged into the frozen maps in chunk order.
+#[derive(Default)]
+struct JavaClassSpelling {
+    packages: Vec<(String, String)>,
+    paths: Vec<(String, String)>,
+    classes: Vec<(String, String)>,
+}
+
+fn spell_class_chunk(
+    chunk: &[&String],
+    components: &BTreeMap<(String, String), String>,
+    class_leaves: &BTreeMap<String, String>,
+) -> JavaClassSpelling {
+    let mut out = JavaClassSpelling::default();
+    for descriptor in chunk {
+        let descriptor = &**descriptor;
+        let mut parent = String::new();
+        let mut aliases = Vec::new();
+        let parts: Vec<_> = descriptor[1..descriptor.len() - 1].split('/').collect();
+        for (index, component) in parts.iter().enumerate() {
+            let alias = if index + 1 == parts.len() {
+                class_leaves.get(descriptor)
+            } else {
+                None
+            };
+            aliases.push(
+                alias
+                    .unwrap_or(&components[&(parent.clone(), (*component).into())])
+                    .clone(),
+            );
+            if !parent.is_empty() {
+                parent.push('/');
+            }
+            parent.push_str(component);
+            if index + 1 < parts.len() {
+                out.packages.push((parent.clone(), aliases.join(".")));
+            }
+        }
+        out.paths
+            .push((descriptor.to_owned(), format!("{}.java", aliases.join("/"))));
+        out.classes.push((descriptor.to_owned(), aliases.join(".")));
+    }
+    out
 }
 
 fn letter(c: char, mode: AliasMode) -> bool {
