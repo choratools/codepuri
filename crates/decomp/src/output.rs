@@ -175,6 +175,13 @@ impl From<io::Error> for OutputError {
 pub trait SourceSink {
     /// Accept one source or return a failure to the producer.
     fn emit(&mut self, source: &GeneratedSource) -> Result<(), OutputError>;
+
+    /// Transfer a final source whose publication needs no intermediate receipt.
+    /// Export delivery adapters may queue it; export success still requires all
+    /// queued sources to be acknowledged by the underlying sink.
+    fn emit_owned(&mut self, source: GeneratedSource) -> Result<(), OutputError> {
+        self.emit(&source)
+    }
 }
 
 impl<F> SourceSink for F

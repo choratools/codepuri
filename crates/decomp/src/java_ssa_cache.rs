@@ -2,7 +2,9 @@
 //!
 //! Code addresses are identities only: callers must keep the defining DEX
 //! inputs and their type metadata unchanged and alive for the entire session.
-//! A cache must never outlive or be reused for another export's inputs.
+//! Lookups must never outlive or be reused for another export's inputs.
+//! After the last lookup, owned results may be destroyed on the release thread;
+//! cached payloads must not borrow or dereference addresses into those inputs.
 
 use std::collections::{HashMap, hash_map::Entry};
 use std::sync::{
@@ -71,6 +73,39 @@ impl SsaCache {
             hits: AtomicUsize::new(0),
             misses: AtomicUsize::new(0),
             failures: AtomicUsize::new(0),
+        }
+    }
+
+    /// Release owned SSA results outside the export's critical path. Keys store
+    /// addresses only as integers; no cached result borrows the DEX inputs.
+    /// One active cache and one queued cache bound background retention across
+    /// repeated exports. Saturation or thread failure falls back to local drop.
+    pub(super) fn release(self) {
+        use std::sync::mpsc::{self, SyncSender};
+        static REAPER: OnceLock<Option<SyncSender<SsaCache>>> = OnceLock::new();
+        if !self.enabled || self.stats().entries == 0 {
+            return;
+        }
+        let reaper = REAPER.get_or_init(|| {
+            let (tx, rx) = mpsc::sync_channel::<SsaCache>(1);
+            std::thread::Builder::new()
+                .name("java-ssa-release".into())
+                .spawn(move || {
+                    for cache in rx {
+                        drop(cache);
+                    }
+                })
+                .ok()
+                .map(|_| tx)
+        });
+        if let Some(reaper) = reaper
+            && let Err(error) = reaper.try_send(self)
+        {
+            match error {
+                mpsc::TrySendError::Full(cache) | mpsc::TrySendError::Disconnected(cache) => {
+                    drop(cache)
+                }
+            }
         }
     }
 

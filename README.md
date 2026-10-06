@@ -1,4 +1,9 @@
-# decomphify
+# codepuri
+
+Fork of decomphify (upstream: /storage_0/decomphify). Goal: jadx-class DEX→Java
+decompiler core in Rust — faster than jadx (26.3s wall @30 threads on Samsung
+Pass is the bar to beat), then multi-target (JVM/.NET/native) via the shared
+IR core.
 
 Latest production recovery status, validation and final APK measurement:
 [`bench/JAVA_PRODUCTION_INTEGRATION.md`](bench/JAVA_PRODUCTION_INTEGRATION.md).
@@ -63,8 +68,14 @@ Rust 기반 멀티 타겟 디컴파일 코어 (UI 없음, 라이브러리 우선
 ```bash
 cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
+JAVA_HOME=/home/jtjisgod/tools/jdk-17.0.13+11 \
+PATH=/home/jtjisgod/tools/jdk-17.0.13+11/bin:$PATH \
 cargo test --workspace
 ```
+
+- `backend-java` 실행 테스트는 JDK 17 요구 (일부 Java25 픽스처는
+  `/tmp/opencode/decomphify-jdk25` 사용). javac가 PATH에 없으면
+  NotFound로 49개 실패.
 
 - `unsafe` 전면 금지 (workspace lint).
 - 라이브러리 경로에서 `unwrap`/`expect` 금지 — `thiserror` 타입 에러 사용.

@@ -122,17 +122,7 @@ fn field_key(dex: &DexFile, index: u32) -> Option<FieldKey> {
         descriptor: descriptor(dex, u32::from(f.type_idx))?.into(),
     })
 }
-fn export_inventory(
-    files: &[DexFile],
-    profile: &mut Option<&mut JavaProfile>,
-    writes: &initializers::write_inventory::WriteInventory,
-    super_index: Option<&crate::java_super_resolution::SuperIndex<'_>>,
-) -> Result<(JavaAliases, FieldPublication), OutputError> {
-    let timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("alias_inventory").or_default()),
-    );
+fn build_alias_inventory(files: &[DexFile]) -> Result<AliasInventory, OutputError> {
     let mut inventory = AliasInventory::default();
     let invalid = |s: String| OutputError::InvalidDescriptor(s);
     for dex in files {
@@ -159,21 +149,54 @@ fn export_inventory(
                 .map_err(invalid)?;
         }
     }
+    Ok(inventory)
+}
+fn extend_alias_inventory(
+    files: &[DexFile],
+    inventory: &mut AliasInventory,
+    super_index: Option<&crate::java_super_resolution::SuperIndex<'_>>,
+) -> Result<(), OutputError> {
+    let invalid = |s: String| OutputError::InvalidDescriptor(s);
     if let Some(index) = super_index {
-        crate::java_super_resolution::inventory_ancestors(files, index, &mut inventory)
+        crate::java_super_resolution::inventory_ancestors(files, index, inventory)
             .map_err(invalid)?;
     }
+    Ok(())
+}
+fn collect_field_publication(
+    files: &[DexFile],
+    mut inventory: AliasInventory,
+    writes: &initializers::write_inventory::WriteInventory,
+) -> Result<(JavaAliases, FieldPublication), OutputError> {
     // The backend's conservative identifier validator currently accepts ASCII.
+    let publication =
+        FieldPublication::collect_analyst_with_explicit_stores(files, &mut inventory, writes)
+            .map_err(|e| {
+                OutputError::InvalidDescriptor(format!("global field inventory: {e:?}"))
+            })?;
+    Ok((inventory.build(AliasMode::Ascii), publication))
+}
+#[cfg(test)]
+fn export_inventory(
+    files: &[DexFile],
+    profile: &mut Option<&mut JavaProfile>,
+    writes: &initializers::write_inventory::WriteInventory,
+    super_index: Option<&crate::java_super_resolution::SuperIndex<'_>>,
+) -> Result<(JavaAliases, FieldPublication), OutputError> {
+    let timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("alias_inventory").or_default()),
+    );
+    let mut inventory = build_alias_inventory(files)?;
+    extend_alias_inventory(files, &mut inventory, super_index)?;
     drop(timer);
     let _timer = Timer::new(
         profile
             .as_deref_mut()
             .map(|p| p.serial.entry("alias_build").or_default()),
     );
-    let publication =
-        FieldPublication::collect_analyst_with_explicit_stores(files, &mut inventory, writes)
-            .map_err(|e| invalid(format!("global field inventory: {e:?}")))?;
-    Ok((inventory.build(AliasMode::Ascii), publication))
+    collect_field_publication(files, inventory, writes)
 }
 #[cfg(test)]
 fn inventory(
@@ -2847,7 +2870,7 @@ pub(crate) fn emit(
     ]);
     let external = (!options.classpath.is_empty()).then_some(&metadata as &dyn ExternalMetadata);
     let cache = ssa_cache::SsaCache::new(options.cache_ssa);
-    let result = emit_inner(files, options, sink, &mut profile, external, &cache);
+    let result = emit_pipelined(files, options, sink, &mut profile, external, &cache);
     if let Some(p) = profile.as_deref_mut() {
         record_cache_profile(p, &cache, options.cache_ssa);
     }
@@ -2856,7 +2879,7 @@ pub(crate) fn emit(
             .as_deref_mut()
             .map(|p| p.serial.entry("cache_release").or_default()),
     );
-    drop(cache);
+    cache.release();
     drop(timer);
     if let (Some(p), Some(start)) = (profile, start) {
         p.wall = start.elapsed();
@@ -2883,7 +2906,7 @@ pub(crate) fn emit_with_optional_metadata(
 ) -> Result<JavaReport, OutputError> {
     let start = profile.as_ref().map(|_| std::time::Instant::now());
     let cache = ssa_cache::SsaCache::new(options.cache_ssa);
-    let result = emit_inner(files, options, sink, &mut profile, external, &cache);
+    let result = emit_pipelined(files, options, sink, &mut profile, external, &cache);
     if let Some(p) = profile.as_deref_mut() {
         record_cache_profile(p, &cache, options.cache_ssa);
     }
@@ -2892,7 +2915,7 @@ pub(crate) fn emit_with_optional_metadata(
             .as_deref_mut()
             .map(|p| p.serial.entry("cache_release").or_default()),
     );
-    drop(cache);
+    cache.release();
     drop(timer);
     if let (Some(p), Some(start)) = (profile, start) {
         p.wall = start.elapsed();
@@ -3160,6 +3183,71 @@ mod external_metadata_tests {
     }
 }
 
+// Keep arbitrary (including non-Send) user sinks on their calling thread.
+// Dependency receipts wait for real acknowledgement; only final ordinary units
+// may run ahead. The channel bounds retained source units, not their byte size.
+fn emit_pipelined(
+    files: &[DexFile],
+    options: &JavaOptions,
+    sink: &mut impl SourceSink,
+    profile: &mut Option<&mut JavaProfile>,
+    external: Option<&dyn ExternalMetadata>,
+    cache: &ssa_cache::SsaCache,
+) -> Result<JavaReport, OutputError> {
+    use std::sync::mpsc::{self, SyncSender};
+    type Delivery = (GeneratedSource, Option<SyncSender<()>>);
+    struct QueuedSink(SyncSender<Delivery>);
+    fn disconnected() -> OutputError {
+        OutputError::Io(std::io::Error::other("Java source delivery stopped"))
+    }
+    impl SourceSink for QueuedSink {
+        fn emit(&mut self, source: &GeneratedSource) -> Result<(), OutputError> {
+            let (tx, rx) = mpsc::sync_channel(0);
+            self.0
+                .send((source.clone(), Some(tx)))
+                .map_err(|_| disconnected())?;
+            rx.recv().map_err(|_| disconnected())
+        }
+        fn emit_owned(&mut self, source: GeneratedSource) -> Result<(), OutputError> {
+            self.0.send((source, None)).map_err(|_| disconnected())
+        }
+    }
+    std::thread::scope(|scope| {
+        let (tx, rx) = mpsc::sync_channel(64);
+        let producer = scope.spawn(move || {
+            emit_inner(
+                files,
+                options,
+                &mut QueuedSink(tx),
+                profile,
+                external,
+                cache,
+            )
+        });
+        let mut failure = None;
+        for (source, receipt) in &rx {
+            if let Err(error) = sink.emit(&source) {
+                failure = Some(error);
+                break;
+            }
+            if let Some(receipt) = receipt {
+                let _ = receipt.send(());
+            }
+        }
+        // Disconnect before joining: a failed writer must unblock the producer.
+        drop(rx);
+        let result = producer.join().unwrap_or_else(|_| {
+            Err(OutputError::Io(std::io::Error::other(
+                "Java export producer panicked",
+            )))
+        });
+        match failure {
+            Some(error) => Err(error),
+            None => result,
+        }
+    })
+}
+
 fn emit_inner(
     files: &[DexFile],
     options: &JavaOptions,
@@ -3174,40 +3262,126 @@ fn emit_inner(
             options.source_release
         )));
     }
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("write_inventory").or_default()),
-    );
-    let writes = match external {
-        Some(metadata) => {
-            initializers::write_inventory::WriteInventory::scan_with_metadata(files, metadata)
-        }
-        None => initializers::write_inventory::WriteInventory::scan(files),
-    };
-    drop(phase_timer);
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("super_index").or_default()),
-    );
-    let super_inputs: Vec<_> = files.iter().collect();
-    let super_index = crate::java_super_resolution::SuperIndex::collect(
-        &super_inputs,
-        external.unwrap_or(&MissingMetadata),
-    )
-    .ok();
-    drop(phase_timer);
-    let (mut aliases, mut field_publication) =
-        export_inventory(files, profile, &writes, super_index.as_ref())?;
-    let phase_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("global_indices").or_default()),
-    );
-    let global = GlobalDeclarations::new(files).map_err(OutputError::InvalidDescriptor)?;
-    let field_index = crate::java_members::external_metadata::fields::InputIndex::new(files);
-    drop(phase_timer);
+    // Prep phases only read `files`/`external`; the three scans run on workers
+    // while the alias inventory fills on this thread.
+    let (writes, super_index, (mut aliases, mut field_publication), global, field_index) =
+        std::thread::scope(|scope| -> Result<_, OutputError> {
+            let writes_worker = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("write_inventory").or_default()),
+                );
+                scope.spawn(|| match external {
+                    Some(metadata) => {
+                        initializers::write_inventory::WriteInventory::scan_with_metadata(
+                            files, metadata,
+                        )
+                    }
+                    None => initializers::write_inventory::WriteInventory::scan(files),
+                })
+            };
+            let super_worker = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("super_index").or_default()),
+                );
+                let super_inputs: Vec<_> = files.iter().collect();
+                scope.spawn(move || {
+                    crate::java_super_resolution::SuperIndex::collect(
+                        &super_inputs,
+                        external.unwrap_or(&MissingMetadata),
+                    )
+                    .ok()
+                })
+            };
+            let global_worker = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("global_indices").or_default()),
+                );
+                scope.spawn(|| {
+                    (
+                        GlobalDeclarations::new(files).map_err(OutputError::InvalidDescriptor),
+                        crate::java_members::external_metadata::fields::InputIndex::new(files),
+                    )
+                })
+            };
+            let fill = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("alias_inventory").or_default()),
+                );
+                build_alias_inventory(files)
+            };
+            let writes = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("write_inventory").or_default()),
+                );
+                match writes_worker.join() {
+                    Ok(writes) => writes,
+                    Err(_) => {
+                        return Err(OutputError::Io(std::io::Error::other(
+                            "Java export write-inventory worker panicked",
+                        )));
+                    }
+                }
+            };
+            let super_index = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("super_index").or_default()),
+                );
+                match super_worker.join() {
+                    Ok(super_index) => super_index,
+                    Err(_) => {
+                        return Err(OutputError::Io(std::io::Error::other(
+                            "Java export super-index worker panicked",
+                        )));
+                    }
+                }
+            };
+            let mut inventory = fill?;
+            {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("alias_inventory").or_default()),
+                );
+                extend_alias_inventory(files, &mut inventory, super_index.as_ref())?;
+            }
+            // Export errors keep precedence over the deferred declaration scan.
+            let export = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("alias_build").or_default()),
+                );
+                collect_field_publication(files, inventory, &writes)?
+            };
+            let (global, field_index) = {
+                let _timer = Timer::new(
+                    profile
+                        .as_deref_mut()
+                        .map(|p| p.serial.entry("global_indices").or_default()),
+                );
+                match global_worker.join() {
+                    Ok(prep) => prep,
+                    Err(_) => {
+                        return Err(OutputError::Io(std::io::Error::other(
+                            "Java export global-declarations worker panicked",
+                        )));
+                    }
+                }
+            };
+            Ok((writes, super_index, export, global?, field_index))
+        })?;
     let publications = Mutex::new(BTreeMap::new());
     let field_uses = Mutex::new(BTreeMap::new());
     let published_owners = Mutex::new(BTreeMap::new());
@@ -3370,20 +3544,35 @@ fn emit_inner(
             Some(&field_index),
         )
     });
+    let timer = Timer::new(
+        profile
+            .as_deref_mut()
+            .map(|p| p.serial.entry("resolver_prepare").or_default()),
+    );
+    let dex_metadata: Vec<_> = files
+        .iter()
+        .map(dex_decompiler::infer::DexMetadata::new)
+        .collect();
+    let member_indices: Vec<_> = files
+        .iter()
+        .map(crate::java_members::MemberIndex::new)
+        .collect();
+    drop(timer);
+    let mut resolvers = Vec::with_capacity(files.len());
     for (dex_index, dex) in files.iter().enumerate() {
         let timer = Timer::new(
             profile
                 .as_deref_mut()
                 .map(|p| p.serial.entry("resolver_prepare").or_default()),
         );
-        let metadata = dex_decompiler::infer::DexMetadata::new(dex);
-        let member_index = crate::java_members::MemberIndex::new(dex);
-        let mut r = Resolver::with_catalog(dex, &aliases, &metadata, Some(catalog));
+        let metadata = &dex_metadata[dex_index];
+        let member_index = &member_indices[dex_index];
+        let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
         r.source_release = options.source_release;
         r.cache_super_bindings = options.cache_resolutions;
         r.ssa_cache = Some(cache);
         r.cache_inventory = options.cache_inventory;
-        r.member_index = Some(&member_index);
+        r.member_index = Some(member_index);
         r.source_throws = Some(&source_throws);
         r.field_throw_catalog = Some(&field_throw_catalog);
         r.publications = Some(&publications);
@@ -3416,12 +3605,43 @@ fn emit_inner(
         ));
         r.field_use_cache = field_use_cache.as_ref();
         drop(timer);
+        resolvers.push(r);
+    }
+    // DEX-major/class-major admission and delivery retain the original order.
+    // Each DEX keeps one frozen resolver and its shared resolution caches.
+    let class_tasks: Vec<_> = files
+        .iter()
+        .enumerate()
+        .flat_map(|(dex_index, dex)| {
+            (0..dex.classes.len()).map(move |class_index| (dex_index, class_index))
+        })
+        .collect();
+    // Duplicate owners share publication keys. Keep their original DEX-order
+    // overwrite semantics rather than allowing cross-DEX last-writer races.
+    let spans = if class_catalog.values().any(Option::is_none) {
+        let mut offset = 0;
+        files
+            .iter()
+            .map(|dex| {
+                let start = offset;
+                offset += dex.classes.len();
+                start..offset
+            })
+            .collect::<Vec<_>>()
+    } else {
+        std::iter::once(0..class_tasks.len()).collect()
+    };
+    let mut scheduling_result = Ok(());
+    for (span_index, span) in spans.into_iter().enumerate() {
         let scheduler_start = profile.as_ref().map(|_| std::time::Instant::now());
         let (result, mut scheduling) = scheduler::run(
-            dex.classes.len(),
+            span.len(),
             options.workers,
             |index| {
-                let class = &dex.classes[index];
+                let (dex_index, class_index) = class_tasks[span.start + index];
+                let dex = &files[dex_index];
+                let r = &resolvers[dex_index];
+                let class = &dex.classes[class_index];
                 let task_start = scheduler_start.map(|_| std::time::Instant::now());
                 let mut task_profile =
                     task_start
@@ -3440,7 +3660,7 @@ fn emit_inner(
                 };
                 let result = emit_classes(
                     dex,
-                    &r,
+                    r,
                     std::slice::from_ref(class),
                     &JavaOptions {
                         limit: None,
@@ -3500,11 +3720,19 @@ fn emit_inner(
             },
             || OutputError::Io(std::io::Error::other("Java class worker panicked")),
         );
-        scheduling.dex = dex_index;
+        scheduling.dex = span_index;
         if let Some(p) = profile.as_deref_mut() {
             p.schedulers.push(scheduling);
-            p.resolution_cache_enabled = options.cache_resolutions;
-            p.field_use_cache_enabled = options.cache_resolutions;
+        }
+        if result.is_err() {
+            scheduling_result = result;
+            break;
+        }
+    }
+    if let Some(p) = profile.as_deref_mut() {
+        p.resolution_cache_enabled = options.cache_resolutions;
+        p.field_use_cache_enabled = options.cache_resolutions;
+        for r in &resolvers {
             if let (Some(methods), Some(fields)) = (&r.method_cache, &r.field_cache) {
                 for stats in [methods.stats(), fields.stats()] {
                     p.resolution_cache_hits += stats.hits;
@@ -3513,8 +3741,9 @@ fn emit_inner(
                 }
             }
         }
-        result?;
     }
+    scheduling_result?;
+    drop(resolvers);
     let phase_timer = Timer::new(
         profile
             .as_deref_mut()
@@ -3523,54 +3752,99 @@ fn emit_inner(
     // Only unlimited exports enable this bounded extension. Quarantined source
     // plans are private and do not enter public closure or successful counts.
     if options.limit.is_none() {
+        // Deferred annotation units from every input share one scheduler; ordered
+        // delivery retains the original DEX-order, class-order acknowledgement
+        // sequence, and frozen resolvers are only built for contributing inputs.
+        let mut deferred_tasks: Vec<(usize, usize)> = Vec::new();
+        let mut deferred_pools = vec![false; files.len()];
+        let mut duplicated_deferred_owners = BTreeSet::new();
+        let mut deferred_owner_duplicated = false;
         for (dex_index, dex) in files.iter().enumerate() {
-            let classes: Vec<_> = dex
-                .classes
-                .iter()
-                .filter(|c| {
-                    class_kind(c.access_flags) == Ok(ClassKind::Annotation)
-                        && initializers::annotation_publication::requires_deferred_defaults(dex, c)
-                })
-                .collect();
-            let metadata = dex_decompiler::infer::DexMetadata::new(dex);
-            let mut r = Resolver::with_catalog(dex, &aliases, &metadata, Some(catalog));
-            r.inputs = files;
-            r.dex_index = dex_index;
-            r.external = external;
-            r.input_owners = input_owners.clone();
-            r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
-            r.hierarchy = hierarchy.clone();
-            r.source_release = options.source_release;
-            r.field_catalog = Some(&field_publication);
-            r.field_index = Some(&field_index);
-            r.source_throws = Some(&source_throws);
-            r.field_throw_catalog = Some(&field_throw_catalog);
-            r.writes = Some(&writes);
-            r.class_catalog = class_catalog.clone();
-            r.field_names = field_names.clone();
-            r.annotation_defaults = Some(&annotation_defaults);
-            r.annotation_guards = Some(&annotation_guards);
-            r.publications = Some(&deferred_publications);
-            // No global owner/field/publication token is promoted during preview.
-            // The frozen resolver is shared; dependency receipts remain quarantined
-            // until the existing serial acknowledgement pass below.
+            for (class_index, class) in dex.classes.iter().enumerate() {
+                if class_kind(class.access_flags) == Ok(ClassKind::Annotation)
+                    && initializers::annotation_publication::requires_deferred_defaults(dex, class)
+                {
+                    deferred_pools[dex_index] = true;
+                    if let Some(owner) = descriptor(dex, class.class_idx)
+                        && !duplicated_deferred_owners.insert(owner)
+                    {
+                        deferred_owner_duplicated = true;
+                    }
+                    deferred_tasks.push((dex_index, class_index));
+                }
+            }
+        }
+        let deferred_metadata: Vec<_> = files
+            .iter()
+            .enumerate()
+            .map(|(dex_index, dex)| {
+                deferred_pools[dex_index].then(|| dex_decompiler::infer::DexMetadata::new(dex))
+            })
+            .collect();
+        // Only contributing inputs get a frozen resolver; duplicate owners keep
+        // the original per-DEX scheduling below so publication-key overwrite
+        // semantics cannot become a cross-DEX race.
+        let mut deferred_resolvers: Vec<Option<Resolver>> =
+            (0..files.len()).map(|_| None).collect();
+        for (dex_index, dex) in files.iter().enumerate() {
+            if deferred_pools[dex_index]
+                && let Some(metadata) = deferred_metadata[dex_index].as_ref()
+            {
+                let mut r = Resolver::with_catalog(dex, &aliases, metadata, Some(catalog));
+                r.inputs = files;
+                r.dex_index = dex_index;
+                r.external = external;
+                r.input_owners = input_owners.clone();
+                r.original_hierarchy = Some(Arc::clone(&original_hierarchy));
+                r.hierarchy = hierarchy.clone();
+                r.source_release = options.source_release;
+                r.field_catalog = Some(&field_publication);
+                r.field_index = Some(&field_index);
+                r.source_throws = Some(&source_throws);
+                r.field_throw_catalog = Some(&field_throw_catalog);
+                r.writes = Some(&writes);
+                r.class_catalog = class_catalog.clone();
+                r.field_names = field_names.clone();
+                r.annotation_defaults = Some(&annotation_defaults);
+                r.annotation_guards = Some(&annotation_guards);
+                r.publications = Some(&deferred_publications);
+                deferred_resolvers[dex_index] = Some(r);
+            }
+        }
+        let deferred_options = JavaOptions {
+            limit: None,
+            ..options.clone()
+        };
+        // No global owner/field/publication token is promoted during preview.
+        // The frozen resolvers are shared; dependency receipts remain quarantined
+        // until the existing serial acknowledgement pass below. Duplicate owners
+        // keep the original per-DEX scheduling so publication-key overwrite
+        // semantics cannot become a cross-DEX race.
+        let mut run_deferred_span = |tasks: &[(usize, usize)]| -> Result<(), OutputError> {
             let (result, _) = scheduler::run(
-                classes.len(),
+                tasks.len(),
                 options.workers,
                 |index| {
+                    let (dex_index, class_index) = tasks[index];
+                    let dex = &files[dex_index];
                     let mut sources = Vec::new();
                     let mut collect = |s: &GeneratedSource| {
                         sources.push(s.clone());
                         Ok(())
                     };
-                    let part = emit_classes(
-                        dex,
-                        &r,
-                        std::slice::from_ref(classes[index]),
-                        options,
-                        &mut collect,
-                        &mut None,
-                    );
+                    let part = match &deferred_resolvers[dex_index] {
+                        Some(r) => emit_classes(
+                            dex,
+                            r,
+                            std::slice::from_ref(&dex.classes[class_index]),
+                            &deferred_options,
+                            &mut collect,
+                            &mut None,
+                        ),
+                        None => Err(OutputError::Io(std::io::Error::other(
+                            "Java annotation resolver unavailable",
+                        ))),
+                    };
                     (part, sources)
                 },
                 |_, (part, sources)| {
@@ -3579,7 +3853,21 @@ fn emit_inner(
                 },
                 || OutputError::Io(std::io::Error::other("Java annotation worker panicked")),
             );
-            result?;
+            result
+        };
+        if deferred_owner_duplicated {
+            let mut span_start = 0;
+            while span_start < deferred_tasks.len() {
+                let dex_index = deferred_tasks[span_start].0;
+                let span_end = deferred_tasks[span_start..]
+                    .iter()
+                    .position(|(pool, _)| *pool != dex_index)
+                    .map_or(deferred_tasks.len(), |offset| span_start + offset);
+                run_deferred_span(&deferred_tasks[span_start..span_end])?;
+                span_start = span_end;
+            }
+        } else {
+            run_deferred_span(&deferred_tasks)?;
         }
     }
     drop(phase_timer);
@@ -3840,7 +4128,9 @@ fn emit_inner(
                 .as_deref_mut()
                 .map(|p| p.serial.entry("sink_io").or_default()),
         );
-        sink.emit(&source)?;
+        // In pipelined exports sink_io measures bounded delivery admission;
+        // actual sink writes overlap producer teardown on the calling thread.
+        sink.emit_owned(source)?;
     }
     Ok(report)
 }
