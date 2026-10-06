@@ -169,11 +169,22 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 이중 계획(실패 family plan 1.44s + clinit subset 1.46s)이 본체 —
 메서드 샤딩으로는 못 쪼갬.
 
-### R4 대상
+### R4 결과 (2026-10-06, glm-5.3-flash max) ✅
 
-- init family 이중 계획 제거/재사용 (클래스당 ~2.9s straggler의 주범)
-- source_throws 잔여 직렬 구간, alias_build
-- 리스크 high — 바이트 게이트 유지 안 되면 즉시 revert
+| 항목 | 내용 | wall (중앙값) |
+|---|---|---|
+| R3 종료 | - | 29.805s |
+| 8 | init family attested proof 1회 계산 후 재사용 (clinit 재계획 제거) | 28.35s |
+| 9 | throws aggregation BFS → 스케줄러 owner 스레드 스트리밍 (0.555s→1µs) | **27.78s** |
+| 10 | build_hierarchy hoist — 노이즈 수준, 규칙대로 revert | - |
+
+**R4 −2.03s. 누적 −45.5% (50.99 → 27.78s).** 8회 측정 전부 바이트 동일.
+커밋 `9c2c585`. jadx까지 1.52s.
+
+### R5 대상 (잔여 버킷)
+
+- deferred_annotation_prepare 2.78s / alias_inventory 1.19s / method_closure 1.20s / sink_io 0.87s
+- DSTU7624Engine 클래스 페이즈 tail 2.72s (init family 다음 straggler)
 
 ### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
 
