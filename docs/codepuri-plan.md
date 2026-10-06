@@ -129,11 +129,31 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 변경 파일: `crates/decomp/src/{java_integration,java_ssa_cache,output}.rs`.
 잔여 리스크: 병렬 prep 신규 경로(경험적 검증만), step3 마진 ~1.3s(노이즈 2x).
 
-### R2 대상 (잔여 랭킹)
+### R2 결과 (2026-10-06, glm-5.3-flash max) ✅
 
-- #5 deferred_annotation_prepare 3.07s 단일 스레드 → 2.5-3s
-- #6 source_throws 직렬 서브페이즈 3.7s → 2-3s
-- 합산 잠재 ~5-6s → **~26s ≈ jadx 26.26s 대등선**
+| 항목 | 내용 | wall (중앙값) |
+|---|---|---|
+| R1 종료 | - | 31.77s |
+| #5 | deferred-annotation 스케줄러 병합 | 31.555s |
+| #6 | source_throws 준비 병렬화 (Facts∥InputIndex∥SuperIndex∥metadata) | **31.36s** |
+
+**R2 누적 −0.41s (예상 5-6s 미달).** 게이트 전부 exact 통과
+(448/448, checksum 동일, strict/syntax/javac 보존). 커밋 `57b61b4`.
+
+핵심 발견: 남은 시간은 총 CPU가 아니라 **straggler 경계**임.
+- 메인 패스 스케줄러 wall 7.37s — 상위 개별 태스크 2.3-3.8s가 지배
+- throws 스케줄러 wall 2.16s / CPU tail 62.5s
+- sink_io 3.56s, RSS 4.46→4.90 GiB
+선형 병렬화로는 ~26s 도달 불가. 다음 레버는 #7 straggler 분할
+(긴 클래스 태스크 쪼개기 — high risk, backend-java/초기화 증명 영역)뿐.
+
+### 현황 요약
+
+| 지표 | jadx 1.5.1 | codepuri (R2 후) |
+|---|---|---|
+| wall @30 workers | 26.26s | **31.36s** (−38.5% from 50.99) |
+| syntax error | 2,210 | 0 |
+| 출력 | 85.9MB | 바이트 동일성 게이트로 검증 중 |
 
 ### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
 
