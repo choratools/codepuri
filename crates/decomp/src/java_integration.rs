@@ -3577,126 +3577,168 @@ fn emit_inner(
     let mut throws_profile = profile
         .as_ref()
         .map(|_| source_throws::SourceThrowsProfile::default());
-    let source_throws_timer = Timer::new(
-        profile
-            .as_deref_mut()
-            .map(|p| p.serial.entry("source_throws").or_default()),
-    );
-    let (source_throws, throws_scraps) = source_throws::collect_cached_profiled(
-        files,
-        &aliases,
-        catalog,
-        external,
-        &hierarchy,
-        options.workers,
-        cache,
-        throws_profile.as_mut(),
-    );
-    drop(source_throws_timer);
-    if let (Some(profile), Some(throws)) = (profile.as_deref_mut(), throws_profile) {
-        profile.throws_phases = throws.walls;
-        profile.throws_tasks.insert("ssa", throws.ssa_time);
-        profile.throws_counts.insert("ssa", throws.ssa_count);
-        profile
-            .throws_counts
-            .insert("inspect_method", throws.inspect_method_count);
-        profile.throws_counts.insert("tasks", throws.task_count);
-        profile
-            .throws_tasks
-            .insert("inspect_method", throws.inspect_method_time);
-        profile.throws_scheduler = throws.scheduler;
-    }
     std::thread::scope(|scope| {
-        scope.spawn(move || drop(throws_scraps));
-        let mut class_catalog = BTreeMap::new();
-        let mut field_names: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
-        if let Some(external) = external {
-            for declaration in external.hierarchy() {
-                let original = format!("L{};", declaration.name.replace('.', "/"));
-                if let Some(access_flags) = external.class_access(&original) {
-                    let name = aliases
-                        .class_name(&original)
-                        .unwrap_or(&declaration.name)
-                        .to_owned();
-                    let superclass = declaration.superclass.map(|s| {
-                        aliases
-                            .class_name(&format!("L{};", s.replace('.', "/")))
-                            .unwrap_or(&s)
-                            .to_owned()
-                    });
-                    class_catalog.insert(
-                        name.clone(),
-                        Some(backend_java::constructors::ConstructorClass {
-                            name,
-                            superclass,
-                            access_flags,
-                        }),
-                    );
+        let profile_enabled = profile.is_some();
+        let prep_files = files;
+        let prep_aliases = &aliases;
+        let prep_external = external;
+        let prep_field_index = &field_index;
+        let prep_options = options;
+        let preparation_worker = scope.spawn(move || {
+            // Preserve the earlier source-throws phase's panic precedence while
+            // letting independent immutable metadata preparation run alongside it.
+            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                let class_prepare_start = profile_enabled.then(std::time::Instant::now);
+                let mut class_catalog = BTreeMap::new();
+                let mut field_names: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+                if let Some(external) = prep_external {
+                    for declaration in external.hierarchy() {
+                        let original = format!("L{};", declaration.name.replace('.', "/"));
+                        if let Some(access_flags) = external.class_access(&original) {
+                            let name = prep_aliases
+                                .class_name(&original)
+                                .unwrap_or(&declaration.name)
+                                .to_owned();
+                            let superclass = declaration.superclass.map(|s| {
+                                prep_aliases
+                                    .class_name(&format!("L{};", s.replace('.', "/")))
+                                    .unwrap_or(&s)
+                                    .to_owned()
+                            });
+                            class_catalog.insert(
+                                name.clone(),
+                                Some(backend_java::constructors::ConstructorClass {
+                                    name,
+                                    superclass,
+                                    access_flags,
+                                }),
+                            );
+                        }
+                    }
                 }
-            }
-        }
-        let mut input_class_names = BTreeSet::new();
-        for dex in files {
-            for class in &dex.classes {
-                if let Some(name) =
-                    descriptor(dex, class.class_idx).and_then(|d| aliases.class_name(d))
-                {
-                    let declaration = backend_java::constructors::ConstructorClass {
-                        name: name.into(),
-                        superclass: descriptor(dex, class.superclass_idx)
-                            .and_then(|d| aliases.class_name(d))
-                            .map(str::to_owned),
-                        access_flags: class.access_flags,
-                    };
-                    let value = input_class_names
-                        .insert(name.to_owned())
-                        .then_some(declaration);
-                    class_catalog.insert(name.into(), value);
-                    let names = field_names.entry(name.into()).or_default();
-                    if let Some(data) = &class.class_data {
-                        for field in data.static_fields.iter().chain(&data.instance_fields) {
-                            if let Some(key) = field_key(dex, field.field_idx)
-                                && let Some(name) = aliases.field_name(&key)
-                            {
-                                names.insert(name.into());
+                let mut input_class_names = BTreeSet::new();
+                for dex in prep_files {
+                    for class in &dex.classes {
+                        if let Some(name) = descriptor(dex, class.class_idx)
+                            .and_then(|d| prep_aliases.class_name(d))
+                        {
+                            let declaration = backend_java::constructors::ConstructorClass {
+                                name: name.into(),
+                                superclass: descriptor(dex, class.superclass_idx)
+                                    .and_then(|d| prep_aliases.class_name(d))
+                                    .map(str::to_owned),
+                                access_flags: class.access_flags,
+                            };
+                            let value = input_class_names
+                                .insert(name.to_owned())
+                                .then_some(declaration);
+                            class_catalog.insert(name.into(), value);
+                            let names = field_names.entry(name.into()).or_default();
+                            if let Some(data) = &class.class_data {
+                                for field in
+                                    data.static_fields.iter().chain(&data.instance_fields)
+                                {
+                                    if let Some(key) = field_key(dex, field.field_idx)
+                                        && let Some(name) = prep_aliases.field_name(&key)
+                                    {
+                                        names.insert(name.into());
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
-        }
-        let input_owners: BTreeSet<String> = files
-            .iter()
-            .flat_map(|dex| {
-                dex.classes
+                let input_owners: BTreeSet<String> = prep_files
                     .iter()
-                    .filter_map(|class| descriptor(dex, class.class_idx).map(str::to_owned))
-            })
-            .collect();
-        let mut report = JavaReport::default();
-        let field_use_cache = options.cache_resolutions.then(|| {
-            crate::java_members::external_metadata::fields::publication::cache::FieldUseCache::new(
-                true,
-                files,
-                external.unwrap_or(&MissingMetadata),
-                &aliases,
-                Some(&field_index),
-            )
+                    .flat_map(|dex| {
+                        dex.classes.iter().filter_map(|class| {
+                            descriptor(dex, class.class_idx).map(str::to_owned)
+                        })
+                    })
+                    .collect();
+                let field_use_cache = prep_options.cache_resolutions.then(|| {
+                    crate::java_members::external_metadata::fields::publication::cache::FieldUseCache::new(
+                        true,
+                        prep_files,
+                        prep_external.unwrap_or(&MissingMetadata),
+                        prep_aliases,
+                        Some(prep_field_index),
+                    )
+                });
+                let class_prepare_elapsed = class_prepare_start.map(|start| start.elapsed());
+                let resolver_prepare_start = profile_enabled.then(std::time::Instant::now);
+                let dex_metadata: Vec<_> = prep_files
+                    .iter()
+                    .map(dex_decompiler::infer::DexMetadata::new)
+                    .collect();
+                let member_indices: Vec<_> = prep_files
+                    .iter()
+                    .map(crate::java_members::MemberIndex::new)
+                    .collect();
+                let resolver_prepare_elapsed = resolver_prepare_start.map(|start| start.elapsed());
+                (
+                    class_catalog,
+                    field_names,
+                    input_owners,
+                    field_use_cache,
+                    dex_metadata,
+                    member_indices,
+                    class_prepare_elapsed,
+                    resolver_prepare_elapsed,
+                )
+            }))
         });
-        let timer = Timer::new(
+
+        let source_throws_timer = Timer::new(
             profile
                 .as_deref_mut()
-                .map(|p| p.serial.entry("resolver_prepare").or_default()),
+                .map(|p| p.serial.entry("source_throws").or_default()),
         );
-        let dex_metadata: Vec<_> = files
-            .iter()
-            .map(dex_decompiler::infer::DexMetadata::new)
-            .collect();
-        let member_indices: Vec<_> = files
-            .iter()
-            .map(crate::java_members::MemberIndex::new)
-            .collect();
-        drop(timer);
+        let (source_throws, throws_scraps) = source_throws::collect_cached_profiled(
+            files,
+            &aliases,
+            catalog,
+            external,
+            &hierarchy,
+            options.workers,
+            cache,
+            throws_profile.as_mut(),
+        );
+        drop(source_throws_timer);
+        let (
+            class_catalog,
+            field_names,
+            input_owners,
+            field_use_cache,
+            dex_metadata,
+            member_indices,
+            class_prepare_elapsed,
+            resolver_prepare_elapsed,
+        ) = match preparation_worker.join() {
+            Ok(Ok(prepared)) => prepared,
+            Ok(Err(payload)) | Err(payload) => std::panic::resume_unwind(payload),
+        };
+        if let (Some(profile), Some(throws)) = (profile.as_deref_mut(), throws_profile) {
+            profile.throws_phases = throws.walls;
+            profile.throws_tasks.insert("ssa", throws.ssa_time);
+            profile.throws_counts.insert("ssa", throws.ssa_count);
+            profile
+                .throws_counts
+                .insert("inspect_method", throws.inspect_method_count);
+            profile.throws_counts.insert("tasks", throws.task_count);
+            profile
+                .throws_tasks
+                .insert("inspect_method", throws.inspect_method_time);
+            profile.throws_scheduler = throws.scheduler;
+            if let Some(elapsed) = class_prepare_elapsed {
+                *profile.serial.entry("class_metadata_prepare").or_default() += elapsed;
+            }
+            if let Some(elapsed) = resolver_prepare_elapsed {
+                *profile.serial.entry("resolver_prepare").or_default() += elapsed;
+            }
+        }
+        scope.spawn(move || drop(throws_scraps));
+        let mut report = JavaReport::default();
         let mut resolvers = Vec::with_capacity(files.len());
         for (dex_index, dex) in files.iter().enumerate() {
             let timer = Timer::new(
