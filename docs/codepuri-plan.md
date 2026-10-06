@@ -286,18 +286,28 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 - 비트셋 fast path는 ≥0.3s 개선을 못 내서 revert. R13 default 23.70s, fast 23.32s
   (R12 대비 각각 0.07/0.11s — 노이즈 수준). Gates 모두 통과.
 
-### R14 후보: pre-SSA raw CFG/lift 재사용
+### R14 결과: raw static-final proof relift 재사용 ✅
 
-현재 최상위 개선 후보는 매 proof마다 반복하는 full `DexPasses::run_with` 제거/재사용.
-가능한 방향: 초기에 생성한 raw control-flow/FieldPut site 정보를 `SsaCache`와 함께 저장하거나,
-proof가 필요한 FieldPut·offset·normal/exception edge만 decode하는 경량 scanner를 검토.
-Raw-vs-SSA store equality, exception path assignment, error precedence는 그대로 증명해야 함.
+- `run_ssa_with`에서 validated raw `<clinit>` lift를 하는 시점에 proof 전용 compact summary를
+  capture해 `SsaMethod`/기존 SsaCache lifetime에 묶음. Exact DEX pointer, method index,
+  CodeItem pointer가 일치하는 unseeded `<clinit>`만 재사용, 나머지는 원래 `run_with` fallback.
+- Preserve: raw FieldPut/Get offset·receiver class, normal/exception edge insertion order·handler roots,
+  raw-vs-SSA site equality, path-state traversal/order, 65,536 cap. Full raw IR은 보관하지 않음.
+- R13 프로파일: proof 4,783회 중 4,777건 finals≤64; 전체 비용의 26.119s가 `DexPasses::run_with`
+  재-lift, path traversal 0.365s / site checks 0.041s. 따라서 BTreeSet→bitset은 revert,
+  raw proof summary reuse를 구현.
+- Ordinary 3-run paired: **codepuri 23.02s / jadx 23.49s**. Fast-proofs paired:
+  **codepuri 22.27s / jadx 24.15s**. CPU 각각 약 절반 이하; RSS 증가 약 6–9MiB.
+- Gates: workspace tests, fmt/clippy, syntax0/javac 44,769/strict187,288-of-194,286,
+  checksum + all sources/report exact. Commit `8230095`.
+- Fast mode unpublished reason identity는 계속 opt-in caveat; generated code/strict results
+  Samsung Pass에서는 identical.
 
 ### 현재 대결 기준: ordinary API unprofiled, 동일 세션 paired median.
 
-최근 paired median은 R12 기준 default 23.77s vs jadx 23.45s, fast 23.43s vs 23.54s.
-R13 변화는 노이즈 수준이라 revert됨. CPU 효율은 codepuri가 절반; 다음 속도 작업은
-측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
+R14 최신 median은 default 23.02s vs jadx 23.49s, fast 22.27s vs 24.15s. Codepuri
+Samsung Pass 기준 process wall에서 두 mode 모두 paired jadx보다 빠름. CPU 효율은 절반 이하;
+다음 속도 작업은 측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
