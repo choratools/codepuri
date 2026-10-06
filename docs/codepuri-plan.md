@@ -181,10 +181,26 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 **R4 −2.03s. 누적 −45.5% (50.99 → 27.78s).** 8회 측정 전부 바이트 동일.
 커밋 `9c2c585`. jadx까지 1.52s.
 
-### R5 대상 (잔여 버킷)
+### R5 결과 (2026-10-06, glm-5.3-flash max) ✅
 
-- deferred_annotation_prepare 2.78s / alias_inventory 1.19s / method_closure 1.20s / sink_io 0.87s
-- DSTU7624Engine 클래스 페이즈 tail 2.72s (init family 다음 straggler)
+| 항목 | 내용 | 결과 |
+|---|---|---|
+| 11 | alias inventory 섹션 병렬 fill (1.236→0.915s) | KEEP |
+| 12 | deferred_annotation — 직렬 잔여 0.29s뿐 | SKIP (근거) |
+| 13 | close_published 미사용 inventory skip (1.278→0.905s) | KEEP |
+| 14 | sink_io — 이미 백그라운드, 잔여는 예제 checksum | SKIP (근거) |
+| tail | DSTU7624 2.72s — backend-java semantic (read-only), throughput-bound | SKIP |
+
+**export 구간 중앙값 26.27 → 26.17s** (jadx 26.26s와 대등). 게이트 전부 exact
+(448/448, checksum, strict/syntax/javac). 프로세스 wall은 28.06s — 크로스데이
+드리프트 ±0.3s. **같은 잣대 프로세스 wall 최종 대결이 R6 과제.**
+커밋 완료. 남은 직렬: alias_build 3.07s, source_throws 6.15s wall.
+
+### R6 과제
+
+- alias_build (공유 상태 semantic walk 3.07s) 분해/병렬화
+- source_throws 잔여 6.15s wall
+- **최종 정식 대결**: `bench/jadx_vs_codepuri.py`로 동일 세션 페어 측정 (프로세스 wall 기준)
 
 ### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
 
