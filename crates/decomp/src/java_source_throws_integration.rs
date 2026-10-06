@@ -264,6 +264,91 @@ struct Facts<'a> {
     kinds: Mutex<BTreeMap<String, Option<ExceptionKind>>>,
     override_contracts: Mutex<BTreeMap<(usize, u32, MethodKey), OverrideContract>>,
 }
+/// Per-input evidence scan results; merged in pool order by [`Facts::new`].
+struct PartialFacts<'a> {
+    owners: BTreeMap<String, Option<(usize, usize)>>,
+    bodies: BTreeSet<MethodKey>,
+    abstracts: BTreeSet<MethodKey>,
+    concrete_sources: BTreeSet<MethodKey>,
+    implementations: BTreeMap<(String, Vec<String>), Vec<MethodKey>>,
+    definitions: BTreeMap<MethodKey, (usize, &'a EncodedMethod)>,
+    originals: BTreeMap<String, String>,
+}
+fn scan_pool_facts<'a>(
+    pool: usize,
+    dex: &'a DexFile,
+    aliases: &JavaAliases,
+    catalog: &BTreeMap<MethodKey, Option<MethodMetadata>>,
+) -> PartialFacts<'a> {
+    let mut owners = BTreeMap::new();
+    let mut bodies = BTreeSet::new();
+    let mut abstracts = BTreeSet::new();
+    let mut concrete_sources = BTreeSet::new();
+    let mut implementations = BTreeMap::<(String, Vec<String>), Vec<MethodKey>>::new();
+    let mut definitions = BTreeMap::new();
+    let mut originals = BTreeMap::new();
+    for (index, class) in dex.classes.iter().enumerate() {
+        if let Some(owner) = descriptor(dex, class.class_idx) {
+            owners
+                .entry(owner.into())
+                .and_modify(|v| *v = None)
+                .or_insert(Some((pool, index)));
+        }
+        if let Some(data) = &class.class_data {
+            for method in data.direct_methods.iter().chain(&data.virtual_methods) {
+                let abstract_declaration = method.code.is_none()
+                    && method.access_flags & 0x400 != 0
+                    && method.access_flags & (0x100 | 8 | 2) == 0;
+                if (method.code.is_some() || abstract_declaration)
+                    && let Some(key) = method_key(dex, method.method_idx)
+                {
+                    definitions.insert(key.clone(), (pool, method));
+                    if abstract_declaration {
+                        abstracts.insert(key);
+                    } else {
+                        if method.access_flags & (0x400 | 0x100 | 8 | 2) == 0
+                            && !key.name.starts_with('<')
+                        {
+                            implementations
+                                .entry((key.name.clone(), key.parameters.clone()))
+                                .or_default()
+                                .push(key.clone());
+                        }
+                        if concrete_source_reconstructible(dex, class, method)
+                            && catalog.get(&key).is_some_and(|metadata| {
+                                metadata.as_ref().is_some_and(|m| {
+                                    m.access_flags == method.access_flags
+                                        && m.exceptions.as_ref().is_some_and(Vec::is_empty)
+                                })
+                            })
+                        {
+                            concrete_sources.insert(key.clone());
+                        }
+                        bodies.insert(key);
+                    }
+                }
+            }
+        }
+    }
+    for ty in &dex.type_ids {
+        if let Ok(raw) = dex.string(ty.descriptor_idx) {
+            let raw = raw.to_string();
+            if let Some(name) = aliases.class_name(&raw) {
+                originals.insert(name.into(), raw);
+            }
+        }
+    }
+    PartialFacts {
+        owners,
+        bodies,
+        abstracts,
+        concrete_sources,
+        implementations,
+        definitions,
+        originals,
+    }
+}
+
 impl<'a> Facts<'a> {
     fn new(
         files: &'a [DexFile],
@@ -271,6 +356,25 @@ impl<'a> Facts<'a> {
         catalog: &'a BTreeMap<MethodKey, Option<MethodMetadata>>,
         external: Option<&'a dyn ExternalMetadata>,
     ) -> Self {
+        // Per-input scans are independent; run them concurrently and merge in
+        // pool order so duplicate-owner evidence keeps its original precedence.
+        let partials: Vec<PartialFacts<'a>> = std::thread::scope(|scope| {
+            let workers: Vec<_> = files
+                .iter()
+                .enumerate()
+                .map(|(pool, dex)| {
+                    scope.spawn(move || scan_pool_facts(pool, dex, aliases, catalog))
+                })
+                .collect();
+            let mut partials = Vec::with_capacity(workers.len());
+            for worker in workers {
+                match worker.join() {
+                    Ok(partial) => partials.push(partial),
+                    Err(payload) => std::panic::resume_unwind(payload),
+                }
+            }
+            partials
+        });
         let mut owners = BTreeMap::new();
         let mut bodies = BTreeSet::new();
         let mut abstracts = BTreeSet::new();
@@ -278,57 +382,27 @@ impl<'a> Facts<'a> {
         let mut implementations = BTreeMap::<(String, Vec<String>), Vec<MethodKey>>::new();
         let mut definitions = BTreeMap::new();
         let mut originals = BTreeMap::new();
-        for (pool, dex) in files.iter().enumerate() {
-            for (index, class) in dex.classes.iter().enumerate() {
-                if let Some(owner) = descriptor(dex, class.class_idx) {
-                    owners
-                        .entry(owner.into())
-                        .and_modify(|v| *v = None)
-                        .or_insert(Some((pool, index)));
-                }
-                if let Some(data) = &class.class_data {
-                    for method in data.direct_methods.iter().chain(&data.virtual_methods) {
-                        let abstract_declaration = method.code.is_none()
-                            && method.access_flags & 0x400 != 0
-                            && method.access_flags & (0x100 | 8 | 2) == 0;
-                        if (method.code.is_some() || abstract_declaration)
-                            && let Some(key) = method_key(dex, method.method_idx)
-                        {
-                            definitions.insert(key.clone(), (pool, method));
-                            if abstract_declaration {
-                                abstracts.insert(key);
-                            } else {
-                                if method.access_flags & (0x400 | 0x100 | 8 | 2) == 0
-                                    && !key.name.starts_with('<')
-                                {
-                                    implementations
-                                        .entry((key.name.clone(), key.parameters.clone()))
-                                        .or_default()
-                                        .push(key.clone());
-                                }
-                                if concrete_source_reconstructible(dex, class, method)
-                                    && catalog.get(&key).is_some_and(|metadata| {
-                                        metadata.as_ref().is_some_and(|m| {
-                                            m.access_flags == method.access_flags
-                                                && m.exceptions.as_ref().is_some_and(Vec::is_empty)
-                                        })
-                                    })
-                                {
-                                    concrete_sources.insert(key.clone());
-                                }
-                                bodies.insert(key);
-                            }
-                        }
+        for partial in partials {
+            for (owner, location) in partial.owners {
+                match owners.entry(owner) {
+                    std::collections::btree_map::Entry::Occupied(mut occupied) => {
+                        *occupied.get_mut() = None;
+                    }
+                    std::collections::btree_map::Entry::Vacant(vacant) => {
+                        vacant.insert(location);
                     }
                 }
             }
-            for ty in &dex.type_ids {
-                if let Ok(raw) = dex.string(ty.descriptor_idx) {
-                    let raw = raw.to_string();
-                    if let Some(name) = aliases.class_name(&raw) {
-                        originals.insert(name.into(), raw);
-                    }
-                }
+            definitions.extend(partial.definitions);
+            bodies.extend(partial.bodies);
+            abstracts.extend(partial.abstracts);
+            concrete_sources.extend(partial.concrete_sources);
+            originals.extend(partial.originals);
+            for (signature, mut keys) in partial.implementations {
+                implementations
+                    .entry(signature)
+                    .or_default()
+                    .append(&mut keys);
             }
         }
         if let Some(external) = external {
@@ -1055,34 +1129,79 @@ fn collect_roots_profiled(
 ) -> SourceThrowsPlan {
     let enabled = profile.is_some();
     let preparation_start = enabled.then(std::time::Instant::now);
-    let facts = Facts::new(files, aliases, catalog, external);
-    let field_index = crate::java_members::external_metadata::fields::InputIndex::new(files);
+    // Facts, the field index, the super index and per-input metadata are
+    // independent scans; run them concurrently on bounded workers.
     let super_inputs: Vec<_> = files.iter().collect();
-    let super_index = crate::java_super_resolution::SuperIndex::collect(
-        &super_inputs,
-        external.unwrap_or(&MissingMetadata),
-    )
-    .ok();
-    let metadata: Vec<_> = files
-        .iter()
-        .map(dex_decompiler::infer::DexMetadata::new)
-        .collect();
-    let resolvers: Vec<_> = files
-        .iter()
-        .enumerate()
-        .map(|(pool, dex)| {
-            let mut resolver = Resolver::with_catalog(dex, aliases, &metadata[pool], Some(catalog));
-            resolver.ssa_cache = cache;
-            resolver.field_index = Some(&field_index);
-            resolver.inputs = files;
-            resolver.dex_index = pool;
-            resolver.external = external;
-            resolver.input_owners = facts.owners.keys().cloned().collect();
-            resolver.hierarchy = hierarchy.clone();
-            resolver.super_index = super_index.as_ref();
-            resolver
-        })
-        .collect();
+    let (facts, field_index, super_index, metadata) = std::thread::scope(|scope| {
+        let facts_worker = scope.spawn(|| Facts::new(files, aliases, catalog, external));
+        let field_worker =
+            scope.spawn(|| crate::java_members::external_metadata::fields::InputIndex::new(files));
+        let super_worker = scope.spawn(|| {
+            crate::java_super_resolution::SuperIndex::collect(
+                &super_inputs,
+                external.unwrap_or(&MissingMetadata),
+            )
+            .ok()
+        });
+        let metadata_worker = scope.spawn(|| {
+            files
+                .iter()
+                .map(dex_decompiler::infer::DexMetadata::new)
+                .collect::<Vec<_>>()
+        });
+        let facts = match facts_worker.join() {
+            Ok(facts) => facts,
+            Err(payload) => std::panic::resume_unwind(payload),
+        };
+        let field_index = match field_worker.join() {
+            Ok(field_index) => field_index,
+            Err(payload) => std::panic::resume_unwind(payload),
+        };
+        let super_index = match super_worker.join() {
+            Ok(super_index) => super_index,
+            Err(payload) => std::panic::resume_unwind(payload),
+        };
+        let metadata = match metadata_worker.join() {
+            Ok(metadata) => metadata,
+            Err(payload) => std::panic::resume_unwind(payload),
+        };
+        (facts, field_index, super_index, metadata)
+    });
+    // Frozen per-input resolvers are built concurrently from the completed
+    // preparation state; pool order retains the original construction sequence.
+    let facts_ref = &facts;
+    let metadata_ref = &metadata;
+    let field_index_ref = &field_index;
+    let super_index_ref = &super_index;
+    let resolvers: Vec<_> = std::thread::scope(|scope| {
+        let workers: Vec<_> = files
+            .iter()
+            .enumerate()
+            .map(|(pool, dex)| {
+                scope.spawn(move || {
+                    let mut resolver =
+                        Resolver::with_catalog(dex, aliases, &metadata_ref[pool], Some(catalog));
+                    resolver.ssa_cache = cache;
+                    resolver.field_index = Some(field_index_ref);
+                    resolver.inputs = files;
+                    resolver.dex_index = pool;
+                    resolver.external = external;
+                    resolver.input_owners = facts_ref.owners.keys().cloned().collect();
+                    resolver.hierarchy = hierarchy.clone();
+                    resolver.super_index = super_index_ref.as_ref();
+                    resolver
+                })
+            })
+            .collect();
+        let mut resolvers = Vec::with_capacity(workers.len());
+        for worker in workers {
+            match worker.join() {
+                Ok(resolver) => resolvers.push(resolver),
+                Err(payload) => std::panic::resume_unwind(payload),
+            }
+        }
+        resolvers
+    });
     let mut queue: VecDeque<_> = roots
         .map(|roots| roots.iter().cloned().collect())
         .unwrap_or_else(|| facts.definitions.keys().cloned().collect());

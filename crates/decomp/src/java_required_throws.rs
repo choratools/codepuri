@@ -649,7 +649,7 @@ pub fn attest_concrete_override_domain(
 /// callers still propagate or catch the resulting source contract.
 pub fn derive_program(
     methods: &[MethodRequirements],
-    context: &impl ThrowsHierarchy,
+    context: &(impl ThrowsHierarchy + Sync),
 ) -> Result<SourceThrowsPlan, ThrowsError> {
     // Borrow immutable identities and event targets for graph scheduling. BTree
     // ordering still compares full MethodKey values, including missing targets.
@@ -814,107 +814,156 @@ pub fn derive_program(
             }
         }
     }
+    // Per-method plan outcomes are independent once the fixed point is reached;
+    // build them concurrently in catalog order and merge in deterministic order.
+    let ordered: Vec<(&MethodKey, &MethodRequirements)> =
+        catalog.iter().map(|(key, m)| (*key, *m)).collect();
+    let threads = std::thread::available_parallelism()
+        .map_or(1, |count| count.get())
+        .clamp(1, 8)
+        .min(ordered.len().max(1));
+    let chunk_size = ordered.len().div_ceil(threads).max(1);
+    let failures_ref = &failures;
+    let required_ref = &required;
+    type PlanChunk = (
+        BTreeMap<MethodKey, DerivedThrows>,
+        BTreeMap<MethodKey, ThrowsError>,
+        BTreeMap<MethodKey, RuntimeThrows>,
+    );
+    let chunks: Vec<PlanChunk> = std::thread::scope(|scope| {
+        let handles: Vec<_> = ordered
+            .chunks(chunk_size)
+            .map(|chunk| {
+                scope.spawn(move || {
+                    let mut methods = BTreeMap::new();
+                    let mut unavailable = BTreeMap::new();
+                    let mut runtime = BTreeMap::new();
+                    for &(key, method) in chunk {
+                        if failures_ref.contains_key(key) {
+                            continue;
+                        }
+                        let source = required_ref[key].iter().cloned().collect::<Vec<_>>();
+                        runtime.insert(
+                            key.clone(),
+                            RuntimeThrows {
+                                identity: method.identity.clone(),
+                                original: method.original.clone(),
+                                escaping: source.clone(),
+                            },
+                        );
+                        let derived = source
+                            .iter()
+                            .filter(|s| !method.original.contains(s))
+                            .cloned()
+                            .collect::<Vec<_>>();
+                        let checked = source
+                            .iter()
+                            .filter(|name| {
+                                context.exception_kind(name) == Some(ExceptionKind::Checked)
+                            })
+                            .collect::<Vec<_>>();
+                        let error = if !checked.is_empty() && method.identity.key.name == "<clinit>"
+                        {
+                            Some(ThrowsError::IllegalDeclaration)
+                        } else if !checked.is_empty()
+                            && method.flags & 2 == 0
+                            && method.identity.key.name != "<init>"
+                        {
+                            match &method.overrides {
+                                OverrideContract::Unknown => {
+                                    Some(ThrowsError::Unknown("inherited throws contract".into()))
+                                }
+                                OverrideContract::NoInheritedDeclaration => None,
+                                OverrideContract::Declarations(declarations)
+                                    if declarations.is_empty() =>
+                                {
+                                    Some(ThrowsError::Unknown(
+                                        "empty inherited contract evidence".into(),
+                                    ))
+                                }
+                                OverrideContract::Declarations(declarations)
+                                    if declarations.iter().any(|d| {
+                                        d.key.owner.is_empty()
+                                            || d.key.name != method.identity.key.name
+                                            || d.key.parameters != method.identity.key.parameters
+                                    }) =>
+                                {
+                                    Some(ThrowsError::Unknown(
+                                        "inherited declaration identity".into(),
+                                    ))
+                                }
+                                OverrideContract::Declarations(declarations)
+                                    if declarations.iter().any(|d| {
+                                        d.source_target.as_ref().is_some_and(|target| {
+                                            target != &d.key || !required_ref.contains_key(target)
+                                        })
+                                    }) =>
+                                {
+                                    Some(ThrowsError::Unknown(
+                                        "unavailable input inherited source contract".into(),
+                                    ))
+                                }
+                                OverrideContract::Declarations(declarations) => checked
+                                    .into_iter()
+                                    .find(|name| {
+                                        !declarations.iter().all(|d| {
+                                            let approved = d
+                                                .source_target
+                                                .as_ref()
+                                                .and_then(|target| required_ref.get(target));
+                                            let allowed = approved
+                                                .map(|set| set.iter().collect::<Vec<_>>())
+                                                .unwrap_or_else(|| d.throws.iter().collect());
+                                            allowed.into_iter().any(|base| {
+                                                *name == base
+                                                    || context.assignable(
+                                                        &JavaType::Class((*name).clone()),
+                                                        &JavaType::Class(base.clone()),
+                                                    )
+                                            })
+                                        })
+                                    })
+                                    .map(|name| ThrowsError::OverrideConflict(name.clone())),
+                            }
+                        } else {
+                            None
+                        };
+                        if let Some(error) = error {
+                            unavailable.insert(key.clone(), error);
+                            continue;
+                        }
+                        methods.insert(
+                            key.clone(),
+                            DerivedThrows {
+                                identity: method.identity.clone(),
+                                original: method.original.clone(),
+                                derived,
+                                source,
+                            },
+                        );
+                    }
+                    (methods, unavailable, runtime)
+                })
+            })
+            .collect();
+        let mut chunks = Vec::with_capacity(handles.len());
+        for handle in handles {
+            match handle.join() {
+                Ok(chunk) => chunks.push(chunk),
+                Err(payload) => std::panic::resume_unwind(payload),
+            }
+        }
+        chunks
+    });
     let mut plan = SourceThrowsPlan {
         methods: BTreeMap::new(),
         unavailable: failures,
         runtime: BTreeMap::new(),
     };
-    for (key, method) in catalog {
-        if plan.unavailable.contains_key(key) {
-            continue;
-        }
-        let source = required[key].iter().cloned().collect::<Vec<_>>();
-        plan.runtime.insert(
-            (*key).clone(),
-            RuntimeThrows {
-                identity: method.identity.clone(),
-                original: method.original.clone(),
-                escaping: source.clone(),
-            },
-        );
-        let derived = source
-            .iter()
-            .filter(|s| !method.original.contains(s))
-            .cloned()
-            .collect::<Vec<_>>();
-        let checked = source
-            .iter()
-            .filter(|name| context.exception_kind(name) == Some(ExceptionKind::Checked))
-            .collect::<Vec<_>>();
-        let error = if !checked.is_empty() && method.identity.key.name == "<clinit>" {
-            Some(ThrowsError::IllegalDeclaration)
-        } else if !checked.is_empty()
-            && method.flags & 2 == 0
-            && method.identity.key.name != "<init>"
-        {
-            match &method.overrides {
-                OverrideContract::Unknown => {
-                    Some(ThrowsError::Unknown("inherited throws contract".into()))
-                }
-                OverrideContract::NoInheritedDeclaration => None,
-                OverrideContract::Declarations(declarations) if declarations.is_empty() => Some(
-                    ThrowsError::Unknown("empty inherited contract evidence".into()),
-                ),
-                OverrideContract::Declarations(declarations)
-                    if declarations.iter().any(|d| {
-                        d.key.owner.is_empty()
-                            || d.key.name != method.identity.key.name
-                            || d.key.parameters != method.identity.key.parameters
-                    }) =>
-                {
-                    Some(ThrowsError::Unknown(
-                        "inherited declaration identity".into(),
-                    ))
-                }
-                OverrideContract::Declarations(declarations)
-                    if declarations.iter().any(|d| {
-                        d.source_target.as_ref().is_some_and(|target| {
-                            target != &d.key || !required.contains_key(target)
-                        })
-                    }) =>
-                {
-                    Some(ThrowsError::Unknown(
-                        "unavailable input inherited source contract".into(),
-                    ))
-                }
-                OverrideContract::Declarations(declarations) => checked
-                    .into_iter()
-                    .find(|name| {
-                        !declarations.iter().all(|d| {
-                            let approved = d
-                                .source_target
-                                .as_ref()
-                                .and_then(|target| required.get(target));
-                            let allowed = approved
-                                .map(|set| set.iter().collect::<Vec<_>>())
-                                .unwrap_or_else(|| d.throws.iter().collect());
-                            allowed.into_iter().any(|base| {
-                                *name == base
-                                    || context.assignable(
-                                        &JavaType::Class((*name).clone()),
-                                        &JavaType::Class(base.clone()),
-                                    )
-                            })
-                        })
-                    })
-                    .map(|name| ThrowsError::OverrideConflict(name.clone())),
-            }
-        } else {
-            None
-        };
-        if let Some(error) = error {
-            plan.unavailable.insert(key.clone(), error);
-            continue;
-        }
-        plan.methods.insert(
-            key.clone(),
-            DerivedThrows {
-                identity: method.identity.clone(),
-                original: method.original.clone(),
-                derived,
-                source,
-            },
-        );
+    for (methods, unavailable, runtime) in chunks {
+        plan.methods.extend(methods);
+        plan.unavailable.extend(unavailable);
+        plan.runtime.extend(runtime);
     }
     // Post-fixed-point contract failures invalidate reverse source dependencies,
     // including recursive components, without rescanning the whole program.
