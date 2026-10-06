@@ -267,6 +267,7 @@ fn whole_pool_aliases_are_shared_by_field_declaration_reference_and_output_path(
     std::fs::create_dir(&dir).unwrap();
     let mut sink = DirectorySink::new(&dir).unwrap();
     sink.emit(source).unwrap();
+    sink.flush_pending().unwrap();
     assert_eq!(
         std::fs::read_to_string(dir.join(&source.relative_path)).unwrap(),
         source.text

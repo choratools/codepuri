@@ -102,6 +102,9 @@ impl JavaSession {
         for source in &snapshot.sources {
             sink.emit(source)?;
         }
+        // Deferred sink work (backgrounded directory writes) must complete
+        // before the replay can claim full delivery.
+        sink.flush_pending()?;
         if warm {
             self.replays += 1;
         }

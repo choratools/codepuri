@@ -1,11 +1,12 @@
 //! Backend-independent generated sources and conservative filesystem output.
 
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 use std::ffi::OsString;
 use std::fmt;
-use std::fs::{self, OpenOptions};
+use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
+use std::sync::{Arc, Condvar, Mutex};
 
 /// Quality of generated output, supplied explicitly by the producer.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -176,6 +177,16 @@ pub trait SourceSink {
     /// Accept one source or return a failure to the producer.
     fn emit(&mut self, source: &GeneratedSource) -> Result<(), OutputError>;
 
+    /// Drain any deferred sink work and report its first failure. Sinks that
+    /// write synchronously are already complete when `emit` returns and use
+    /// this no-op default; `DirectorySink` overlaps writes on background
+    /// threads, so its `emit` success means the unit was validated, created
+    /// and queued, and only `flush_pending` returning success proves every
+    /// accepted unit reached the filesystem.
+    fn flush_pending(&mut self) -> Result<(), OutputError> {
+        Ok(())
+    }
+
     /// Transfer a final source whose publication needs no intermediate receipt.
     /// Export delivery adapters may queue it; export success still requires all
     /// queued sources to be acknowledged by the underlying sink.
@@ -294,6 +305,159 @@ fn valid_identifier(name: &str) -> bool {
     )
 }
 
+/// One deferred file write: an already-created, exclusively reserved file plus
+/// the exact bytes to store. Creation stays synchronous so duplicate-path
+/// collisions keep failing at `emit`; byte/flush failures surface from
+/// `flush_pending` like every other deferred failure.
+struct WriteJob {
+    file: File,
+    text: String,
+    status: SourceStatus,
+}
+
+#[derive(Default)]
+struct PoolState {
+    queue: VecDeque<WriteJob>,
+    /// Jobs popped by a writer but not finished yet.
+    inflight: usize,
+    shutdown: bool,
+}
+
+/// Shared between the sink and its background writers. All counters and the
+/// first write error are observable only after the queue drains.
+struct PoolShared {
+    state: Mutex<PoolState>,
+    signal: Condvar,
+    error: Mutex<Option<io::Error>>,
+    counts: Mutex<OutputCounts>,
+}
+
+struct PoolHandle {
+    shared: Arc<PoolShared>,
+    writers: Vec<std::thread::JoinHandle<()>>,
+}
+
+impl PoolHandle {
+    fn spawn() -> Result<Self, io::Error> {
+        let shared = Arc::new(PoolShared {
+            state: Mutex::new(PoolState::default()),
+            signal: Condvar::new(),
+            error: Mutex::new(None),
+            counts: Mutex::new(OutputCounts::default()),
+        });
+        let writers = std::thread::available_parallelism()
+            .map(|n| n.get())
+            .unwrap_or(2)
+            .clamp(1, 4);
+        let mut handles = Vec::new();
+        for _ in 0..writers {
+            let shared = Arc::clone(&shared);
+            handles.push(
+                std::thread::Builder::new()
+                    .name("decomp-sink-writer".into())
+                    .spawn(move || write_loop(&shared))?,
+            );
+        }
+        Ok(Self {
+            shared,
+            writers: handles,
+        })
+    }
+
+    fn enqueue(&self, file: File, text: String, status: SourceStatus) -> Result<(), OutputError> {
+        let mut state = self.shared.state.lock().unwrap_or_else(|e| e.into_inner());
+        if state.shutdown {
+            return Err(OutputError::Io(io::Error::other(
+                "background sink writers stopped",
+            )));
+        }
+        state.queue.push_back(WriteJob { file, text, status });
+        self.shared.signal.notify_one();
+        Ok(())
+    }
+
+    /// Wait until every queued and in-flight write finished; report the first
+    /// failure. The queue is left empty and the error slot cleared, so a later
+    /// flush observes only newer writes.
+    fn flush(&self) -> Result<(), OutputError> {
+        let mut state = self.shared.state.lock().unwrap_or_else(|e| e.into_inner());
+        while !state.queue.is_empty() || state.inflight > 0 {
+            state = self
+                .shared
+                .signal
+                .wait(state)
+                .unwrap_or_else(|e| e.into_inner());
+        }
+        let error = self
+            .shared
+            .error
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .take();
+        match error {
+            Some(error) => Err(OutputError::Io(error)),
+            None => Ok(()),
+        }
+    }
+}
+
+impl Drop for PoolHandle {
+    fn drop(&mut self) {
+        let mut state = self.shared.state.lock().unwrap_or_else(|e| e.into_inner());
+        state.shutdown = true;
+        self.shared.signal.notify_all();
+        drop(state);
+        for writer in self.writers.drain(..) {
+            let _ = writer.join();
+        }
+    }
+}
+
+/// Consumes reserved files until shutdown; never panics on the write path.
+fn write_loop(shared: &PoolShared) {
+    loop {
+        let mut job = {
+            let mut state = shared.state.lock().unwrap_or_else(|e| e.into_inner());
+            loop {
+                if let Some(job) = state.queue.pop_front() {
+                    state.inflight += 1;
+                    break job;
+                }
+                if state.shutdown {
+                    return;
+                }
+                state = shared.signal.wait(state).unwrap_or_else(|e| e.into_inner());
+            }
+        };
+        let outcome = write_all_and_flush(&mut job.file, &job.text);
+        {
+            let mut state = shared.state.lock().unwrap_or_else(|e| e.into_inner());
+            state.inflight = state.inflight.saturating_sub(1);
+            match outcome {
+                Ok(()) => {
+                    shared
+                        .counts
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .record(job.status);
+                }
+                Err(error) => {
+                    let mut error_slot = shared.error.lock().unwrap_or_else(|e| e.into_inner());
+                    if error_slot.is_none() {
+                        *error_slot = Some(error);
+                    }
+                }
+            }
+            shared.signal.notify_all();
+        }
+    }
+}
+
+fn write_all_and_flush(writer: &mut impl Write, text: &str) -> io::Result<()> {
+    writer.write_all(text.as_bytes())?;
+    writer.flush()
+}
+
 /// Writes new source files beneath an explicit root, never overwriting files.
 ///
 /// Root ancestors must already exist; the root itself may be created. Symlinks
@@ -306,11 +470,17 @@ fn valid_identifier(name: &str) -> bool {
 /// replace entries behind the sink after their directory has been cached. Root
 /// ancestors are validated at construction, and source directories on first use;
 /// this is not a defense against concurrent filesystem mutation (TOCTOU).
+///
+/// File writes run on a small background pool: `emit` success proves the source
+/// was validated, its file created exclusively, and its bytes queued; a
+/// successful `flush_pending` (or `Drop`, which waits) proves every accepted
+/// unit reached the filesystem with its exact bytes. Write failures surface
+/// from `flush_pending`, not `emit`.
 pub struct DirectorySink {
     root: PathBuf,
     paths: HashSet<String>,
     directories: HashMap<PathBuf, CachedDirectory>,
-    counts: OutputCounts,
+    pool: PoolHandle,
     #[cfg(test)]
     directory_operations: (usize, usize, usize),
 }
@@ -372,7 +542,7 @@ impl DirectorySink {
             root: fs::canonicalize(root)?,
             paths: HashSet::new(),
             directories: HashMap::new(),
-            counts: OutputCounts::default(),
+            pool: PoolHandle::spawn()?,
             #[cfg(test)]
             directory_operations: (0, 0, 0),
         })
@@ -383,18 +553,37 @@ impl DirectorySink {
         &self.root
     }
     /// Counts of sources successfully written and flushed by this instance.
+    /// Any still-queued writes drain first, so this observes a stable state.
     pub fn counts(&self) -> OutputCounts {
-        self.counts
+        let _ = self.pool.flush();
+        *self
+            .pool
+            .shared
+            .counts
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
     }
 
+    /// Drain all deferred writes and report the first failure. Only a success
+    /// from this method proves every accepted source reached the filesystem.
+    pub fn flush_pending(&mut self) -> Result<(), OutputError> {
+        self.pool.flush()
+    }
+
+    /// Synchronous escape hatch used by unit tests; production writes are queued.
+    #[cfg_attr(not(test), allow(dead_code))]
     pub(crate) fn write_source(
         &mut self,
         writer: &mut impl Write,
         source: &GeneratedSource,
     ) -> Result<(), OutputError> {
-        writer.write_all(source.text.as_bytes())?;
-        writer.flush()?;
-        self.counts.record(source.provenance.status);
+        write_all_and_flush(writer, &source.text)?;
+        self.pool
+            .shared
+            .counts
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .record(source.provenance.status);
         Ok(())
     }
 
@@ -500,7 +689,7 @@ impl SourceSink for DirectorySink {
             return Err(OutputError::DuplicatePath(expected));
         }
         let destination = self.root.join(&expected);
-        let mut file = OpenOptions::new()
+        let file = OpenOptions::new()
             .write(true)
             .create_new(true)
             .open(&destination)
@@ -517,6 +706,11 @@ impl SourceSink for DirectorySink {
         if let Some(cache) = self.directories.get_mut(parent) {
             cache.insert(name.to_owned());
         }
-        self.write_source(&mut file, source)
+        self.pool
+            .enqueue(file, source.text.clone(), source.provenance.status)
+    }
+
+    fn flush_pending(&mut self) -> Result<(), OutputError> {
+        self.pool.flush()
     }
 }

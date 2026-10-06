@@ -3236,6 +3236,13 @@ fn emit_pipelined(
         }
         // Disconnect before joining: a failed writer must unblock the producer.
         drop(rx);
+        // Deferred sink work must complete and report its first failure before
+        // export success can be claimed.
+        if failure.is_none()
+            && let Err(error) = sink.flush_pending()
+        {
+            failure = Some(error);
+        }
         let result = producer.join().unwrap_or_else(|_| {
             Err(OutputError::Io(std::io::Error::other(
                 "Java export producer panicked",
@@ -3631,95 +3638,150 @@ fn emit_inner(
     } else {
         std::iter::once(0..class_tasks.len()).collect()
     };
+    // Unlimited exports deliver per-ordinal results without ordered admission:
+    // each class writes into its own slot and the logical order is reassembled
+    // from ordinals afterwards. Heavy classes dispatch first so their long
+    // planning tails never strand the remaining workers; a static code-size
+    // proxy orders them without running any task early.
+    let dispatch_order: Option<Vec<usize>> = options.limit.is_none().then(|| {
+        // Static cost proxy: whole-class code volume dominates task time
+        // (initialization-family planning scales with method code), so the
+        // heaviest ordinals dispatch first and the tail stays lightweight.
+        let weight = |ordinal: usize| -> u64 {
+            let (dex_index, class_index) = class_tasks[ordinal];
+            let Some(data) = files[dex_index].classes[class_index].class_data.as_ref() else {
+                return 0;
+            };
+            let methods = data.direct_methods.len() + data.virtual_methods.len();
+            let code_units: u64 = data
+                .direct_methods
+                .iter()
+                .chain(&data.virtual_methods)
+                .filter_map(|method| method.code.as_ref())
+                .map(|code| code.insns_size as u64)
+                .sum();
+            (code_units << 8) | methods as u64
+        };
+        let mut order: Vec<usize> = (0..class_tasks.len()).collect();
+        order.sort_by_key(|&ordinal| std::cmp::Reverse(weight(ordinal)));
+        order
+    });
     let mut scheduling_result = Ok(());
     for (span_index, span) in spans.into_iter().enumerate() {
         let scheduler_start = profile.as_ref().map(|_| std::time::Instant::now());
-        let (result, mut scheduling) = scheduler::run(
-            span.len(),
-            options.workers,
-            |index| {
-                let (dex_index, class_index) = class_tasks[span.start + index];
-                let dex = &files[dex_index];
-                let r = &resolvers[dex_index];
-                let class = &dex.classes[class_index];
-                let task_start = scheduler_start.map(|_| std::time::Instant::now());
-                let mut task_profile =
-                    task_start
-                        .zip(scheduler_start)
-                        .map(|(start, scheduler_start)| ClassProfile {
-                            dex: dex_index,
-                            class: class.class_idx,
-                            descriptor: descriptor(dex, class.class_idx).unwrap_or("?").into(),
-                            start: start.duration_since(scheduler_start),
-                            ..ClassProfile::default()
-                        });
-                let mut sources = Vec::new();
-                let mut collect = |s: &GeneratedSource| {
-                    sources.push(s.clone());
-                    Ok(())
-                };
-                let result = emit_classes(
-                    dex,
-                    r,
-                    std::slice::from_ref(class),
-                    &JavaOptions {
-                        limit: None,
-                        ..options.clone()
-                    },
-                    &mut collect,
-                    &mut task_profile,
-                );
-                if let (Some(p), Some(start)) = (task_profile.as_mut(), task_start) {
-                    p.elapsed = start.elapsed();
-                }
-                (result, sources, task_profile)
-            },
-            |_, (result, sources, task_profile)| {
-                if let (Some(p), Some(task)) = (profile.as_deref_mut(), task_profile) {
-                    p.classes.push(task);
-                }
-                if options.limit.is_some_and(|l| report.classes_emitted >= l) {
-                    report.classes_seen += 1;
-                    report.skipped_classes += 1;
-                    return Ok(());
-                }
-                let part = result?;
-                for source in sources {
-                    let _timer = Timer::new(
-                        profile
-                            .as_deref_mut()
-                            .map(|p| p.serial.entry("sink_io").or_default()),
-                    );
-                    pending_sources.push(source);
-                }
-                report.classes_seen += part.classes_seen;
-                report.classes_emitted += part.classes_emitted;
-                report.skipped_classes += part.skipped_classes;
-                report.complete_methods += part.complete_methods;
-                report.complete_constructors += part.complete_constructors;
-                report.complete_static_initializers += part.complete_static_initializers;
-                report.semantic_bodies_with_unresolved_dependencies +=
-                    part.semantic_bodies_with_unresolved_dependencies;
-                report.semantic_bodies_outside_strict_dependency_closure +=
-                    part.semantic_bodies_outside_strict_dependency_closure;
-                report.declaration_only_methods += part.declaration_only_methods;
-                report.fields_emitted += part.fields_emitted;
-                report.unsupported_methods += part.unsupported_methods;
-                report.unavailable_constructors += part.unavailable_constructors;
-                report.unavailable_initialization_units += part.unavailable_initialization_units;
-                report
-                    .unpublished_method_reasons
-                    .extend(part.unpublished_method_reasons);
-                for (reason, count) in part.category_reasons {
-                    *report.category_reasons.entry(reason).or_default() += count;
-                }
-                for (reason, count) in part.reasons {
-                    *report.reasons.entry(reason).or_default() += count;
-                }
+        let mut span_sources: Vec<Option<Vec<GeneratedSource>>> =
+            (0..span.len()).map(|_| None).collect();
+        let mut span_profiles: Vec<(usize, ClassProfile)> = Vec::new();
+        let mut report_part = |ordinal: usize,
+                               part: JavaReport,
+                               sources: Vec<GeneratedSource>,
+                               task_profile: Option<ClassProfile>| {
+            if let Some(task) = task_profile {
+                span_profiles.push((ordinal, task));
+            }
+            if options.limit.is_some_and(|l| report.classes_emitted >= l) {
+                report.classes_seen += 1;
+                report.skipped_classes += 1;
+                return Ok(());
+            }
+            span_sources[ordinal] = Some(sources);
+            report.classes_seen += part.classes_seen;
+            report.classes_emitted += part.classes_emitted;
+            report.skipped_classes += part.skipped_classes;
+            report.complete_methods += part.complete_methods;
+            report.complete_constructors += part.complete_constructors;
+            report.complete_static_initializers += part.complete_static_initializers;
+            report.semantic_bodies_with_unresolved_dependencies +=
+                part.semantic_bodies_with_unresolved_dependencies;
+            report.semantic_bodies_outside_strict_dependency_closure +=
+                part.semantic_bodies_outside_strict_dependency_closure;
+            report.declaration_only_methods += part.declaration_only_methods;
+            report.fields_emitted += part.fields_emitted;
+            report.unsupported_methods += part.unsupported_methods;
+            report.unavailable_constructors += part.unavailable_constructors;
+            report.unavailable_initialization_units += part.unavailable_initialization_units;
+            report
+                .unpublished_method_reasons
+                .extend(part.unpublished_method_reasons);
+            for (reason, count) in part.category_reasons {
+                *report.category_reasons.entry(reason).or_default() += count;
+            }
+            for (reason, count) in part.reasons {
+                *report.reasons.entry(reason).or_default() += count;
+            }
+            Ok(())
+        };
+        let task_class = |index: usize| {
+            let (dex_index, class_index) = class_tasks[span.start + index];
+            let dex = &files[dex_index];
+            let r = &resolvers[dex_index];
+            let class = &dex.classes[class_index];
+            let task_start = scheduler_start.map(|_| std::time::Instant::now());
+            let mut task_profile =
+                task_start
+                    .zip(scheduler_start)
+                    .map(|(start, scheduler_start)| ClassProfile {
+                        dex: dex_index,
+                        class: class.class_idx,
+                        descriptor: descriptor(dex, class.class_idx).unwrap_or("?").into(),
+                        start: start.duration_since(scheduler_start),
+                        ..ClassProfile::default()
+                    });
+            let mut sources = Vec::new();
+            let mut collect = |s: &GeneratedSource| {
+                sources.push(s.clone());
                 Ok(())
-            },
-            || OutputError::Io(std::io::Error::other("Java class worker panicked")),
-        );
+            };
+            let result = emit_classes(
+                dex,
+                r,
+                std::slice::from_ref(class),
+                &JavaOptions {
+                    limit: None,
+                    ..options.clone()
+                },
+                &mut collect,
+                &mut task_profile,
+            );
+            if let (Some(p), Some(start)) = (task_profile.as_mut(), task_start) {
+                p.elapsed = start.elapsed();
+            }
+            (result, sources, task_profile)
+        };
+        let (result, mut scheduling) = match dispatch_order.as_ref() {
+            Some(order) => {
+                let span_order: Vec<usize> = order[span.start..span.end]
+                    .iter()
+                    .map(|ordinal| ordinal - span.start)
+                    .collect();
+                scheduler::run_unordered(
+                    &span_order,
+                    options.workers,
+                    task_class,
+                    |ordinal, (result, sources, task_profile)| {
+                        report_part(ordinal, result?, sources, task_profile)
+                    },
+                    || OutputError::Io(std::io::Error::other("Java class worker panicked")),
+                )
+            }
+            None => scheduler::run(
+                span.len(),
+                options.workers,
+                task_class,
+                |ordinal, (result, sources, task_profile)| {
+                    report_part(ordinal, result?, sources, task_profile)
+                },
+                || OutputError::Io(std::io::Error::other("Java class worker panicked")),
+            ),
+        };
+        for slot in span_sources.into_iter().flatten() {
+            pending_sources.extend(slot);
+        }
+        if let Some(p) = profile.as_deref_mut() {
+            span_profiles.sort_by_key(|(ordinal, _)| *ordinal);
+            p.classes
+                .extend(span_profiles.into_iter().map(|(_, task)| task));
+        }
         scheduling.dex = span_index;
         if let Some(p) = profile.as_deref_mut() {
             p.schedulers.push(scheduling);

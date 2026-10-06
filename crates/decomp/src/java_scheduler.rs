@@ -144,3 +144,96 @@ pub(super) fn run<T: Send, E: Send>(
     stats.wall = start.elapsed();
     (result, stats)
 }
+
+/// Dispatch `task` over `order` (a permutation of `0..order.len()`) without any
+/// ordered-delivery window: results are delivered the moment they finish, so a
+/// slow ordinal never holds completed predecessors. Callers keep per-ordinal
+/// state and reassemble logical order afterwards. An error or panic still stops
+/// the run; delivery order is the only relaxation.
+pub(super) fn run_unordered<T: Send, E: Send>(
+    order: &[usize],
+    workers: usize,
+    task: impl Fn(usize) -> T + Sync,
+    mut deliver: impl FnMut(usize, T) -> Result<(), E>,
+    panic_error: impl Fn() -> E + Sync,
+) -> (Result<(), E>, SchedulerProfile) {
+    let count = order.len();
+    let workers = workers.max(1).min(count.max(1));
+    let start = Instant::now();
+    let mut stats = SchedulerProfile {
+        capacity: workers,
+        ..Default::default()
+    };
+    let next = AtomicUsize::new(0);
+    let cancelled = AtomicBool::new(false);
+    let result = std::thread::scope(|scope| {
+        let (tx, rx) = mpsc::channel();
+        let mut handles = Vec::new();
+        for _ in 0..workers {
+            let tx = tx.clone();
+            let (order, task, next, cancelled, panic_error) =
+                (&order, &task, &next, &cancelled, &panic_error);
+            handles.push(scope.spawn(move || {
+                let life = Instant::now();
+                let mut active = Duration::ZERO;
+                let mut completed = 0;
+                loop {
+                    let slot = next.fetch_add(1, Ordering::Relaxed);
+                    if slot >= count {
+                        break;
+                    }
+                    if cancelled.load(Ordering::Acquire) {
+                        break;
+                    }
+                    let ordinal = order[slot];
+                    let begin = Instant::now();
+                    let value =
+                        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| task(ordinal)))
+                            .map_err(|_| panic_error());
+                    active += begin.elapsed();
+                    completed += 1;
+                    let failed = value.is_err();
+                    if tx.send((ordinal, value)).is_err() {
+                        break;
+                    }
+                    if failed {
+                        break;
+                    }
+                }
+                (life.elapsed(), active, completed)
+            }));
+        }
+        drop(tx);
+        let result = (|| {
+            for _ in 0..count {
+                let (ordinal, value) = rx.recv().map_err(|_| panic_error())?;
+                // A panic aborts immediately; delivery order is the only relaxation.
+                let value = value?;
+                std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| deliver(ordinal, value)))
+                    .map_err(|_| panic_error())??;
+            }
+            Ok(())
+        })();
+        cancelled.store(true, Ordering::Release);
+        drop(rx);
+        let mut result = result;
+        for handle in handles {
+            match handle.join() {
+                Ok((life, active, completed)) => {
+                    stats.tasks += completed;
+                    stats.worker_time += life;
+                    stats.task_time += active;
+                    stats.dispatch_idle += life.saturating_sub(active);
+                }
+                Err(_) => {
+                    if result.is_ok() {
+                        result = Err(panic_error());
+                    }
+                }
+            }
+        }
+        result
+    });
+    stats.wall = start.elapsed();
+    (result, stats)
+}

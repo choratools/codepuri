@@ -142,6 +142,7 @@ fn writes_packages_counts_success_and_never_overwrites() {
         sink.emit(&duplicate),
         Err(OutputError::DuplicatePath(_))
     ));
+    sink.flush_pending().unwrap();
     assert_eq!(
         fs::read_to_string(root.join("p/q/Example.java")).unwrap(),
         original.text
@@ -152,6 +153,7 @@ fn writes_packages_counts_success_and_never_overwrites() {
     ));
     sink.emit(&source("Lp/q/Other;", SourceStatus::Fallback))
         .unwrap();
+    sink.flush_pending().unwrap();
     assert_eq!(
         sink.counts(),
         OutputCounts {
@@ -244,6 +246,11 @@ fn shared_parents_are_validated_and_scanned_once() {
         let package = if index % 2 == 0 { "p/q" } else { "p/r" };
         let unit = source(&format!("L{package}/Class{index};"), SourceStatus::Complete);
         sink.emit(&unit).unwrap();
+    }
+    sink.flush_pending().unwrap();
+    for index in 0..1000 {
+        let package = if index % 2 == 0 { "p/q" } else { "p/r" };
+        let unit = source(&format!("L{package}/Class{index};"), SourceStatus::Complete);
         assert_eq!(
             fs::read_to_string(sink.root().join(&unit.relative_path)).unwrap(),
             unit.text
@@ -286,6 +293,7 @@ fn existing_directories_and_case_aliases_are_indexed() {
         sink.emit(&source("Lp/blocked/New;", SourceStatus::Complete)),
         Err(OutputError::UnsafePath(_))
     ));
+    sink.flush_pending().unwrap();
     assert_eq!(sink.counts().total(), 1);
     assert_eq!(
         fs::read_to_string(temp.0.join("p/q/Existing.java")).unwrap(),
@@ -343,6 +351,7 @@ fn unvalidated_symlink_is_rejected_below_cached_parent() {
         sink.emit(&source("Lp/link/Bad;", SourceStatus::Fallback)),
         Err(OutputError::UnsafePath(_))
     ));
+    sink.flush_pending().unwrap();
     assert_eq!(sink.counts().total(), 1);
     assert_eq!(fs::read_dir(temp.0.join("outside")).unwrap().count(), 0);
 }
