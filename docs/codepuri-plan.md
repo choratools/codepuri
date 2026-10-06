@@ -196,11 +196,35 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 드리프트 ±0.3s. **같은 잣대 프로세스 wall 최종 대결이 R6 과제.**
 커밋 완료. 남은 직렬: alias_build 3.07s, source_throws 6.15s wall.
 
-### R6 과제
+### R6 결과 — Phase 1 속도 트랙 종료 (2026-10-06) ✅
 
-- alias_build (공유 상태 semantic walk 3.07s) 분해/병렬화
-- source_throws 잔여 6.15s wall
-- **최종 정식 대결**: `bench/jadx_vs_codepuri.py`로 동일 세션 페어 측정 (프로세스 wall 기준)
+| 항목 | 내용 | 결과 |
+|---|---|---|
+| alias_build | analyst walk 분할(중복 owner 사전 패스) + 병렬 build/ancestors | 3.01→1.53s |
+| source_throws | 205k-key queue.clone 제거(인덱스 전달) + scratch drop 백그라운드화 | 6.02→5.43s |
+
+**프로세스 wall 28.06 → 26.18s (6회 측정 게이트 전부 exact). 커밋 완료.**
+
+### 최종 정식 대결 (동일 세션, 3회 페어, 30 workers)
+
+| | jadx 1.5.1 | codepuri |
+|---|---|---|
+| wall 중앙값 | **24.53s** (24.03/24.53/24.99) | 25.99s (25.66/25.99/26.07) |
+| CPU time | 410s | **216s (52%)** |
+| 출력 파일 | 17,546 | 28,579 |
+| syntax error | 2,210 + 미디컴파일 1,041 | **0** |
+
+**판정: raw wall은 jadx가 1.46s(6%) 앞섬 — 단, jadx 자체도 기준선 대비
+1.7s 빨라진 상태(26.26→24.53, 페이지캐시/환경 드리프트). codepuri는
+같은 기간 28.06→25.99로 동등 이속. CPU는 절반, 출력 품질은 압도.**
+성능 대 성능 한 점 승부는 의미가 옅어졌고, CPU 절반 + 정확성 우위가
+실질적 우위. 벤치 스크립트 Elapsed 파서 버그 수정 완료.
+
+### Phase 1 종료 판정
+
+- 목표 "jadx 대등 이하": **미달 (−6%)**, 단 CPU 효율 2배·정확성 우위
+- 20s 목표는 strict 검증 중복 제거(fast-mode) 필요 — 별도 라운드
+- 다음: Phase 2 가독성 (91줄 → ~10줄, 출력량 345MB → jadx급) 진입 권장
 
 ### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
 
