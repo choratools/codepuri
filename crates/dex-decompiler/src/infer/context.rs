@@ -32,6 +32,8 @@ pub struct DexMetadata {
     types: Vec<Option<ManagedType>>,
     fields: Vec<u32>,
     methods: Vec<u32>,
+    static_initializer_methods: Vec<u32>,
+    dex_identity: usize,
     protos: Vec<(u32, Vec<u32>)>,
     string_type: Option<ManagedType>,
     class_literal_type: Option<ManagedType>,
@@ -47,6 +49,18 @@ impl DexMetadata {
             }
         }
         let reverse = |descriptor: &str| by_descriptor.get(descriptor).copied();
+        let mut static_initializer_methods = Vec::new();
+        let methods = dex
+            .method_ids
+            .iter()
+            .enumerate()
+            .map(|(index, method)| {
+                if dex.string(method.name_idx).ok() == Some("<clinit>") {
+                    static_initializer_methods.push(index as u32);
+                }
+                u32::from(method.proto_idx)
+            })
+            .collect();
         Self {
             types: dex
                 .type_ids
@@ -62,11 +76,11 @@ impl DexMetadata {
                 .iter()
                 .map(|id| u32::from(id.type_idx))
                 .collect(),
-            methods: dex
-                .method_ids
-                .iter()
-                .map(|id| u32::from(id.proto_idx))
-                .collect(),
+            methods,
+            static_initializer_methods,
+            // Identity only. It is compared while the export owns the DEX and
+            // is never dereferenced by this metadata snapshot.
+            dex_identity: std::ptr::from_ref(dex) as usize,
             protos: dex
                 .proto_ids
                 .iter()
@@ -106,6 +120,7 @@ pub struct DexTypes<'a> {
     initial_types: HashMap<ValueId, ManagedType>,
     metadata: Cow<'a, DexMetadata>,
     enclosing_return: Option<ManagedType>,
+    enclosing_method: Option<u32>,
     string_type: Option<ManagedType>,
     unresolved_types: RefCell<HashSet<u32>>,
     unresolved: RefCell<HashMap<&'static str, u64>>,
@@ -144,6 +159,7 @@ impl<'a> DexTypes<'a> {
             initial_types: HashMap::new(),
             metadata,
             enclosing_return,
+            enclosing_method,
             string_type,
             unresolved_types: RefCell::new(HashSet::new()),
             unresolved: RefCell::new(HashMap::new()),
@@ -156,6 +172,18 @@ impl<'a> DexTypes<'a> {
 }
 
 impl TypeContext for DexTypes<'_> {
+    fn original_static_initializer_identity(&self) -> Option<(usize, u32)> {
+        if !self.initial_registers.is_empty() || !self.initial_types.is_empty() {
+            return None;
+        }
+        let method = self.enclosing_method?;
+        self.metadata
+            .static_initializer_methods
+            .binary_search(&method)
+            .ok()
+            .map(|_| (self.metadata.dex_identity, method))
+    }
+
     fn initial_register_type(&self, register: u16, wide: bool) -> Option<ManagedType> {
         self.initial_registers.get(&(register, wide)).cloned()
     }

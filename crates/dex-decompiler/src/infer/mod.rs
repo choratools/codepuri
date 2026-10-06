@@ -48,6 +48,13 @@ const MAX_ARITY_DIAGNOSTICS: usize = 4;
 
 /// Pool-resolution and enclosing-method context for inference.
 pub trait TypeContext {
+    /// Identity of a `<clinit>` context whose raw lift is equivalent to a fresh
+    /// `DexTypes::new` context for this DEX and method. Contexts with additional
+    /// register or value seeds must not opt in.
+    fn original_static_initializer_identity(&self) -> Option<(usize, u32)> {
+        None
+    }
+
     /// Declared incoming type at an attested physical low word and width.
     fn initial_register_type(&self, _register: u16, _wide: bool) -> Option<ManagedType> {
         None

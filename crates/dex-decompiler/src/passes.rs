@@ -84,8 +84,19 @@ impl DexPasses {
         let recovered =
             crate::decode_method_recovering(code_item, crate::decode::DEFAULT_ERROR_LIMIT);
         let lifted = crate::lift::lift_recovered_with(&recovered, code_item, ctx)?;
+        let original_static_final_proof =
+            ctx.original_static_initializer_identity()
+                .and_then(|(dex_identity, method_index)| {
+                    crate::static_final_proof::StaticFinalProofSummary::capture(
+                        &lifted,
+                        dex_identity,
+                        method_index,
+                        code_item,
+                    )
+                });
         let merged = crate::merge_method(lifted)?;
-        let ssa = to_ssa_with(merged, ctx)?;
+        let mut ssa = to_ssa_with(merged, ctx)?;
+        ssa.set_original_static_final_proof(original_static_final_proof);
         Ok(ssa)
     }
 
@@ -103,16 +114,30 @@ impl DexPasses {
         timings.decode = start.elapsed();
         let start = std::time::Instant::now();
         let lifted = crate::lift::lift_recovered_with(&recovered, code_item, ctx);
+        let lifted = match lifted {
+            Ok(lifted) => lifted,
+            Err(error) => {
+                timings.lift = start.elapsed();
+                return Err(error.into());
+            }
+        };
+        let original_static_final_proof =
+            ctx.original_static_initializer_identity()
+                .and_then(|(dex_identity, method_index)| {
+                    crate::static_final_proof::StaticFinalProofSummary::capture(
+                        &lifted,
+                        dex_identity,
+                        method_index,
+                        code_item,
+                    )
+                });
         timings.lift = start.elapsed();
-        let lifted = lifted?;
         let start = std::time::Instant::now();
         let merged = crate::merge_method(lifted);
         timings.merge = start.elapsed();
-        Ok(crate::ssa::to_ssa_with_timings(
-            merged?,
-            ctx,
-            &mut timings.ssa,
-        )?)
+        let mut ssa = crate::ssa::to_ssa_with_timings(merged?, ctx, &mut timings.ssa)?;
+        ssa.set_original_static_final_proof(original_static_final_proof);
+        Ok(ssa)
     }
 }
 

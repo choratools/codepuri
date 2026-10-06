@@ -27,6 +27,9 @@ pub mod infer;
 /// Explicit ordered runner for the DEX frontend stages.
 pub mod passes;
 
+/// Compact raw-lift evidence retained for original static-final proofs.
+pub mod static_final_proof;
+
 pub use decode::{
     DecodeDiagnostic, DecodeError, DecodeReason, DecodedInsn, Format, Opcode, OpcodeInfo,
     RecoveredMethod, SemanticClass, decode_method, decode_method_recovering, opcode,

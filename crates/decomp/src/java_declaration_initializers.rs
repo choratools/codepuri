@@ -1426,25 +1426,165 @@ fn prove_original_static_final_paths(
     ssa: &dex_decompiler::ssa::SsaMethod,
     exceptional: bool,
 ) -> Result<(), Error> {
-    use managed_ir::insn::ManagedInsn;
+    if let Some(summary) = ssa.original_static_final_proof().filter(|summary| {
+        original
+            .code
+            .as_ref()
+            .is_some_and(|code| summary.matches_original(dex, original.method_idx, code))
+    }) {
+        return prove_original_static_final_paths_from_graph(summary, finals, ssa, exceptional);
+    }
     let lifted = dex_decompiler::DexPasses::run_with(
         original.code.as_ref().ok_or(Error::InvalidMetadata)?,
         &dex_decompiler::DexTypes::new(dex, Some(original.method_idx)),
     )
     .map_err(|_| Error::FieldInitializationUnavailable)?;
-    let ir = lifted.ir();
+    prove_original_static_final_paths_from_graph(&lifted, finals, ssa, exceptional)
+}
+
+trait OriginalStaticFinalProofGraph {
+    type Block: Copy + Ord;
+
+    fn entry(&self) -> Self::Block;
+    fn field_puts(&self) -> impl Iterator<Item = (u32, bool, Option<u32>)> + '_;
+    fn instruction(
+        &self,
+        block: Self::Block,
+    ) -> Result<dex_decompiler::static_final_proof::ProofInstruction, Error>;
+    fn outgoing_len(&self, block: Self::Block) -> Result<usize, Error>;
+    fn edge(&self, block: Self::Block, index: usize) -> Result<(Self::Block, bool), Error>;
+}
+
+impl OriginalStaticFinalProofGraph for dex_decompiler::lift::LiftedMethod {
+    type Block = decomp_core::ids::BlockId;
+
+    fn entry(&self) -> Self::Block {
+        self.ir().cfg().entry()
+    }
+
+    fn field_puts(&self) -> impl Iterator<Item = (u32, bool, Option<u32>)> + '_ {
+        use managed_ir::insn::ManagedInsn;
+        self.ir()
+            .instructions()
+            .iter()
+            .filter_map(move |(id, instruction)| {
+                if let ManagedInsn::FieldPut { field, object, .. } = instruction {
+                    Some((field.index(), object.is_none(), self.offset(id)))
+                } else {
+                    None
+                }
+            })
+    }
+
+    fn instruction(
+        &self,
+        block: Self::Block,
+    ) -> Result<dex_decompiler::static_final_proof::ProofInstruction, Error> {
+        use managed_ir::insn::ManagedInsn;
+        let node = self
+            .ir()
+            .cfg()
+            .block(block)
+            .map_err(|_| Error::InvalidMetadata)?;
+        Ok(
+            match self
+                .ir()
+                .instruction(*node.payload())
+                .map_err(|_| Error::InvalidMetadata)?
+            {
+                ManagedInsn::FieldPut { field, object, .. } => {
+                    dex_decompiler::static_final_proof::ProofInstruction::FieldPut {
+                        field: field.index(),
+                        is_static: object.is_none(),
+                    }
+                }
+                ManagedInsn::FieldGet { field, object, .. } => {
+                    dex_decompiler::static_final_proof::ProofInstruction::FieldGet {
+                        field: field.index(),
+                        is_static: object.is_none(),
+                    }
+                }
+                ManagedInsn::Return { value: None } => {
+                    dex_decompiler::static_final_proof::ProofInstruction::ReturnVoid
+                }
+                ManagedInsn::Throw { .. } => {
+                    dex_decompiler::static_final_proof::ProofInstruction::Throw
+                }
+                _ => dex_decompiler::static_final_proof::ProofInstruction::Other,
+            },
+        )
+    }
+
+    fn outgoing_len(&self, block: Self::Block) -> Result<usize, Error> {
+        self.ir()
+            .cfg()
+            .block(block)
+            .map(|node| node.outgoing().len())
+            .map_err(|_| Error::InvalidMetadata)
+    }
+
+    fn edge(&self, block: Self::Block, index: usize) -> Result<(Self::Block, bool), Error> {
+        let cfg = self.ir().cfg();
+        let node = cfg.block(block).map_err(|_| Error::InvalidMetadata)?;
+        let edge_id = *node.outgoing().get(index).ok_or(Error::InvalidMetadata)?;
+        let edge = cfg.edge(edge_id).map_err(|_| Error::InvalidMetadata)?;
+        Ok((
+            edge.target(),
+            matches!(edge.kind(), decomp_core::cfg::EdgeKind::Exception(_)),
+        ))
+    }
+}
+
+impl OriginalStaticFinalProofGraph for dex_decompiler::static_final_proof::StaticFinalProofSummary {
+    type Block = usize;
+
+    fn entry(&self) -> Self::Block {
+        dex_decompiler::static_final_proof::StaticFinalProofSummary::entry(self)
+    }
+
+    fn field_puts(&self) -> impl Iterator<Item = (u32, bool, Option<u32>)> + '_ {
+        self.field_puts()
+            .iter()
+            .map(|site| (site.field(), site.is_static(), Some(site.offset())))
+    }
+
+    fn instruction(
+        &self,
+        block: Self::Block,
+    ) -> Result<dex_decompiler::static_final_proof::ProofInstruction, Error> {
+        self.block(block)
+            .map(|(instruction, _)| instruction)
+            .ok_or(Error::InvalidMetadata)
+    }
+
+    fn outgoing_len(&self, block: Self::Block) -> Result<usize, Error> {
+        self.block(block)
+            .map(|(_, edges)| edges.len())
+            .ok_or(Error::InvalidMetadata)
+    }
+
+    fn edge(&self, block: Self::Block, index: usize) -> Result<(Self::Block, bool), Error> {
+        let (_, edges) = self.block(block).ok_or(Error::InvalidMetadata)?;
+        let edge = edges.get(index).ok_or(Error::InvalidMetadata)?;
+        Ok((edge.target(), edge.is_exceptional()))
+    }
+}
+
+fn prove_original_static_final_paths_from_graph<G: OriginalStaticFinalProofGraph>(
+    graph: &G,
+    finals: &BTreeSet<u32>,
+    ssa: &dex_decompiler::ssa::SsaMethod,
+    exceptional: bool,
+) -> Result<(), Error> {
+    use dex_decompiler::static_final_proof::ProofInstruction;
+    use managed_ir::insn::ManagedInsn;
     let mut raw_sites = BTreeSet::new();
-    for (id, insn) in ir.instructions() {
-        if let ManagedInsn::FieldPut { field, object, .. } = insn
-            && finals.contains(&field.index())
-        {
-            if object.is_some() {
+    for (field, is_static, offset) in graph.field_puts() {
+        if finals.contains(&field) {
+            if !is_static {
                 return Err(Error::FieldInitializationUnavailable);
             }
-            raw_sites.insert((
-                field.index(),
-                lifted.offset(id).ok_or(Error::InvalidMetadata)?,
-            ));
+            raw_sites.insert((field, offset.ok_or(Error::InvalidMetadata)?));
         }
     }
     let mut ssa_sites = BTreeSet::new();
@@ -1461,7 +1601,7 @@ fn prove_original_static_final_paths(
     if raw_sites != ssa_sites {
         return Err(Error::FieldInitializationUnavailable);
     }
-    let mut pending = vec![(ir.cfg().entry(), BTreeSet::<u32>::new())];
+    let mut pending = vec![(graph.entry(), BTreeSet::<u32>::new())];
     let mut seen = BTreeSet::new();
     let mut normal = false;
     while let Some((block, mut assigned)) = pending.pop() {
@@ -1473,48 +1613,41 @@ fn prove_original_static_final_paths(
         if seen.len() > 65_536 {
             return Err(Error::FieldInitializationUnavailable);
         }
-        let node = ir.cfg().block(block).map_err(|_| Error::InvalidMetadata)?;
         let before = assigned.clone();
-        match ir
-            .instruction(*node.payload())
-            .map_err(|_| Error::InvalidMetadata)?
-        {
-            ManagedInsn::FieldPut { object, field, .. }
-                if finals.contains(&field.index())
-                    && (object.is_some() || !assigned.insert(field.index())) =>
+        match graph.instruction(block)? {
+            ProofInstruction::FieldPut { field, is_static }
+                if finals.contains(&field) && (!is_static || !assigned.insert(field)) =>
             {
                 return Err(Error::FieldInitializationUnavailable);
             }
-            ManagedInsn::FieldGet { field, .. }
-                if finals.contains(&field.index()) && !assigned.contains(&field.index()) =>
+            ProofInstruction::FieldGet { field, .. }
+                if finals.contains(&field) && !assigned.contains(&field) =>
             {
                 return Err(Error::FieldInitializationUnavailable);
             }
-            ManagedInsn::Return { value: None } => {
-                if !node.outgoing().is_empty() || &assigned != finals {
+            ProofInstruction::ReturnVoid => {
+                if graph.outgoing_len(block)? != 0 || &assigned != finals {
                     return Err(Error::FieldInitializationUnavailable);
                 }
                 normal = true;
                 continue;
             }
-            ManagedInsn::Throw { .. } if node.outgoing().is_empty() => continue,
+            ProofInstruction::Throw if graph.outgoing_len(block)? == 0 => continue,
             _ => {}
         }
-        if node.outgoing().is_empty() {
+        let outgoing_len = graph.outgoing_len(block)?;
+        if outgoing_len == 0 {
             return Err(Error::FieldInitializationUnavailable);
         }
-        for edge_id in node.outgoing() {
-            let edge = ir
-                .cfg()
-                .edge(*edge_id)
-                .map_err(|_| Error::InvalidMetadata)?;
-            if matches!(edge.kind(), decomp_core::cfg::EdgeKind::Exception(_)) {
+        for index in 0..outgoing_len {
+            let (target, exceptional_edge) = graph.edge(block, index)?;
+            if exceptional_edge {
                 if !exceptional {
                     return Err(Error::FieldInitializationUnavailable);
                 }
-                pending.push((edge.target(), before.clone()));
+                pending.push((target, before.clone()));
             } else {
-                pending.push((edge.target(), assigned.clone()));
+                pending.push((target, assigned.clone()));
             }
         }
     }

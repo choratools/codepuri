@@ -133,9 +133,24 @@ pub struct SsaMethod {
     offsets: HashMap<InsnId, u32>,
     diagnostics: Vec<Diagnostic>,
     stats: SsaStats,
+    original_static_final_proof: Option<crate::static_final_proof::StaticFinalProofSummary>,
 }
 
 impl SsaMethod {
+    /// Raw-lift CFG and field-site evidence for the exact original static initializer, if retained.
+    pub fn original_static_final_proof(
+        &self,
+    ) -> Option<&crate::static_final_proof::StaticFinalProofSummary> {
+        self.original_static_final_proof.as_ref()
+    }
+
+    pub(crate) fn set_original_static_final_proof(
+        &mut self,
+        proof: Option<crate::static_final_proof::StaticFinalProofSummary>,
+    ) {
+        self.original_static_final_proof = proof;
+    }
+
     /// Physical words attested for synthetic entry definitions in this IR only.
     pub fn initial_registers(&self) -> &HashMap<ValueId, Vec<u16>> {
         &self.initial_registers
@@ -444,5 +459,6 @@ fn build_ssa(
         offsets,
         diagnostics,
         stats,
+        original_static_final_proof: None,
     })
 }
