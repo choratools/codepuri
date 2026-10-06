@@ -180,7 +180,7 @@ fn full_family_publication_failure_retains_independent_original_clinit_without_g
         let class = &files[0].classes[0];
         // This is the regression's decisive oracle: semantic planning succeeds,
         // yet publication of its constructor depends on an unavailable helper.
-        let (family, fields, prefix) = initialization_source(class, &r).unwrap();
+        let (family, fields, prefix) = initialization_source(class, &r, &mut None).unwrap();
         assert_eq!(family.keys().copied().collect::<Vec<_>>(), [0, 1]);
         assert_eq!(family[&1].requirements.methods, BTreeSet::from([2]));
         let helper = &class.class_data.as_ref().unwrap().direct_methods[2];

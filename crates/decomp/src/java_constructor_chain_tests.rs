@@ -273,7 +273,7 @@ fn actual_nullable_mask_constructors_attest_through_production_facade() {
             Some(MethodRef::new(target)),
             "production resolver mask delegation for #{index}"
         );
-        let (candidates, failures, prefix) = initialization_source(class, &r).unwrap();
+        let (candidates, failures, prefix) = initialization_source(class, &r, &mut None).unwrap();
         assert!(
             failures
                 .get(&index)
