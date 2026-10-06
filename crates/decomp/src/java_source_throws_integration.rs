@@ -32,6 +32,54 @@ struct ThrowsTaskProfile {
     inspect_method_count: usize,
 }
 
+/// Delivery-ordered aggregation state for the parallel collection scheduler.
+/// Each ordered result is consumed the moment it completes, replicating the
+/// post-run breadth-first pairing (duplicate traversal entries never consume
+/// a result; results are only consumed in delivery order).
+struct StreamedAggregation<E> {
+    traversal: VecDeque<MethodKey>,
+    pending: VecDeque<(Result<required::MethodRequirements, E>, ThrowsTaskProfile)>,
+    visited: BTreeSet<MethodKey>,
+    requirements: Vec<required::MethodRequirements>,
+    missing: BTreeMap<MethodKey, E>,
+    task_count: usize,
+    timing: ThrowsTaskProfile,
+}
+
+impl<E> StreamedAggregation<E> {
+    fn deliver(&mut self, value: (Result<required::MethodRequirements, E>, ThrowsTaskProfile)) {
+        self.pending.push_back(value);
+        while let Some(key) = self.traversal.front() {
+            if self.visited.contains(key) {
+                self.traversal.pop_front();
+                continue;
+            }
+            let Some(entry) = self.pending.pop_front() else {
+                break;
+            };
+            let Some(key) = self.traversal.pop_front() else {
+                break;
+            };
+            self.visited.insert(key.clone());
+            self.task_count += 1;
+            let timing = entry.1;
+            self.timing.ssa_time += timing.ssa_time;
+            self.timing.inspect_method_time += timing.inspect_method_time;
+            self.timing.ssa_count += timing.ssa_count;
+            self.timing.inspect_method_count += timing.inspect_method_count;
+            match entry.0 {
+                Ok(value) => {
+                    self.traversal.extend(value.source_targets().cloned());
+                    self.requirements.push(value);
+                }
+                Err(error) => {
+                    self.missing.insert(key, error);
+                }
+            }
+        }
+    }
+}
+
 #[derive(Clone)]
 struct RawClass {
     parent: Option<String>,
@@ -1328,14 +1376,31 @@ fn collect_roots_profiled(
     // already in this batch. Selected-root scans may discover more bodies;
     // those retain the original breadth-first traversal below.
     let mut initial_results = VecDeque::new();
+    let mut streamed: Option<StreamedAggregation<_>> = None;
+    let mut visited = BTreeSet::new();
+    let mut requirements = Vec::new();
+    let mut missing = BTreeMap::new();
     if workers > 1 && queue.len() > 1 {
+        // Ordered delivery lets aggregation consume each result on the
+        // scheduler owner thread the moment its ordinal completes. The
+        // traversal therefore keeps the exact delivery-ordered sequence of
+        // the post-run loop below while hiding its cost under worker compute.
         let scheduler_start = enabled.then(std::time::Instant::now);
+        let mut state = StreamedAggregation {
+            traversal: queue.clone(),
+            pending: VecDeque::new(),
+            visited: BTreeSet::new(),
+            requirements: Vec::new(),
+            missing: BTreeMap::new(),
+            task_count: 0,
+            timing: ThrowsTaskProfile::default(),
+        };
         let (result, scheduler_profile) = scheduler::run(
             queue.len(),
             workers,
             |index| inspect(&queue[index]),
             |_, value| {
-                initial_results.push_back(value);
+                state.deliver(value);
                 Ok(())
             },
             || (),
@@ -1347,30 +1412,72 @@ fn collect_roots_profiled(
         if result.is_err() {
             panic!("source throws collection worker panicked");
         }
+        streamed = Some(state);
     }
     let aggregation_start = enabled.then(std::time::Instant::now);
-    let mut visited = BTreeSet::new();
-    let mut requirements = Vec::new();
-    let mut missing = BTreeMap::new();
-    while let Some(key) = queue.pop_front() {
-        if !visited.insert(key.clone()) {
-            continue;
-        }
-        let (result, timing) = initial_results.pop_front().unwrap_or_else(|| inspect(&key));
-        if let Some(profile) = profile.as_deref_mut() {
-            profile.task_count += 1;
-            profile.ssa_time += timing.ssa_time;
-            profile.inspect_method_time += timing.inspect_method_time;
-            profile.ssa_count += timing.ssa_count;
-            profile.inspect_method_count += timing.inspect_method_count;
-        }
-        match result {
-            Ok(value) => {
-                queue.extend(value.source_targets().cloned());
-                requirements.push(value);
+    match streamed.as_mut() {
+        // Finalize the streamed traversal: delivered results are already
+        // consumed, so only discovered non-batch bodies remain, inspected in
+        // the same breadth-first order as the direct loop.
+        Some(state) => {
+            visited = std::mem::take(&mut state.visited);
+            requirements = std::mem::take(&mut state.requirements);
+            missing = std::mem::take(&mut state.missing);
+            if let Some(profile) = profile.as_deref_mut() {
+                profile.task_count += state.task_count;
+                profile.ssa_time += state.timing.ssa_time;
+                profile.inspect_method_time += state.timing.inspect_method_time;
+                profile.ssa_count += state.timing.ssa_count;
+                profile.inspect_method_count += state.timing.inspect_method_count;
             }
-            Err(error) => {
-                missing.insert(key, error);
+            let StreamedAggregation {
+                traversal, pending, ..
+            } = &mut *state;
+            while let Some(key) = traversal.pop_front() {
+                if !visited.insert(key.clone()) {
+                    continue;
+                }
+                let (result, task_timing) = pending.pop_front().unwrap_or_else(|| inspect(&key));
+                if let Some(profile) = profile.as_deref_mut() {
+                    profile.task_count += 1;
+                    profile.ssa_time += task_timing.ssa_time;
+                    profile.inspect_method_time += task_timing.inspect_method_time;
+                    profile.ssa_count += task_timing.ssa_count;
+                    profile.inspect_method_count += task_timing.inspect_method_count;
+                }
+                match result {
+                    Ok(value) => {
+                        traversal.extend(value.source_targets().cloned());
+                        requirements.push(value);
+                    }
+                    Err(error) => {
+                        missing.insert(key, error);
+                    }
+                }
+            }
+        }
+        None => {
+            while let Some(key) = queue.pop_front() {
+                if !visited.insert(key.clone()) {
+                    continue;
+                }
+                let (result, timing) = initial_results.pop_front().unwrap_or_else(|| inspect(&key));
+                if let Some(profile) = profile.as_deref_mut() {
+                    profile.task_count += 1;
+                    profile.ssa_time += timing.ssa_time;
+                    profile.inspect_method_time += timing.inspect_method_time;
+                    profile.ssa_count += timing.ssa_count;
+                    profile.inspect_method_count += timing.inspect_method_count;
+                }
+                match result {
+                    Ok(value) => {
+                        queue.extend(value.source_targets().cloned());
+                        requirements.push(value);
+                    }
+                    Err(error) => {
+                        missing.insert(key, error);
+                    }
+                }
             }
         }
     }

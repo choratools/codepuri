@@ -227,7 +227,7 @@ fn plan_class_initialization_explicit_stores_only<
         constructors,
         clinit,
         resolver,
-        (inventory, WriteContract::ExplicitStores, None),
+        (inventory, WriteContract::ExplicitStores, None, None),
     )
 }
 
@@ -252,6 +252,7 @@ pub fn plan_class_initialization_with_explicit_stores_attested<
             clinit,
             resolver,
             inventory,
+            None,
         )?,
         inventory,
     ))
@@ -277,11 +278,73 @@ pub(crate) fn plan_class_initialization_shared_explicit_stores_attested<
             clinit,
             resolver,
             inventory,
+            None,
         )?,
         inventory,
     ))
 }
 
+/// Shared-capability family proof reusing an already-computed attested static
+/// plan (or its failure) instead of re-proving identical static evidence.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn plan_class_initialization_shared_explicit_stores_attested_reusing_static<
+    R: backend_java::constructors::TrustedConstructorResolver,
+>(
+    inputs: &[DexFile],
+    dex_index: usize,
+    class: &ClassDef,
+    constructors: &[backend_java::constructors::ConstructorInput<'_>],
+    clinit: Option<(managed_ir::refs::MethodRef, &dex_decompiler::ssa::SsaMethod)>,
+    resolver: &R,
+    inventory: &write_inventory::WriteInventory,
+    precomputed_static: Result<&StaticInitializerBodySubset, &Error>,
+) -> Result<SharedExplicitStorePlan<ClassInitializationPlan>, Error> {
+    Ok(shared_explicit_plan(
+        plan_class_initialization_attested_only(
+            inputs,
+            dex_index,
+            class,
+            constructors,
+            clinit,
+            resolver,
+            inventory,
+            Some(precomputed_static),
+        )?,
+        inventory,
+    ))
+}
+
+/// Copied-capability family proof reusing an already-computed attested static
+/// plan (or its failure) instead of re-proving identical static evidence.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn plan_class_initialization_with_explicit_stores_attested_reusing_static<
+    R: backend_java::constructors::TrustedConstructorResolver,
+>(
+    inputs: &[DexFile],
+    dex_index: usize,
+    class: &ClassDef,
+    constructors: &[backend_java::constructors::ConstructorInput<'_>],
+    clinit: Option<(managed_ir::refs::MethodRef, &dex_decompiler::ssa::SsaMethod)>,
+    resolver: &R,
+    inventory: &write_inventory::WriteInventory,
+    precomputed_static: Result<&StaticInitializerBodySubset, &Error>,
+) -> Result<ExplicitStorePlan<ClassInitializationPlan>, Error> {
+    Ok(explicit_plan(
+        plan_class_initialization_attested_only(
+            inputs,
+            dex_index,
+            class,
+            constructors,
+            clinit,
+            resolver,
+            inventory,
+            Some(precomputed_static),
+        )?,
+        inventory,
+    ))
+}
+
+#[allow(clippy::too_many_arguments)]
 fn plan_class_initialization_attested_only<
     R: backend_java::constructors::TrustedConstructorResolver,
 >(
@@ -292,6 +355,7 @@ fn plan_class_initialization_attested_only<
     clinit: Option<(managed_ir::refs::MethodRef, &dex_decompiler::ssa::SsaMethod)>,
     resolver: &R,
     inventory: &write_inventory::WriteInventory,
+    precomputed_static: Option<Result<&StaticInitializerBodySubset, &Error>>,
 ) -> Result<ClassInitializationPlan, Error> {
     require_explicit_completeness(inventory)?;
     plan_class_initialization_with_inventory_contract(
@@ -305,6 +369,7 @@ fn plan_class_initialization_attested_only<
             inventory,
             WriteContract::ExplicitStores,
             clinit.map(|(_, ssa)| ssa),
+            precomputed_static,
         ),
     )
 }
@@ -786,6 +851,7 @@ fn plan_constructor_subset_impl<R: backend_java::constructors::TrustedConstructo
 
 /// Actual static-initializer body plus preceding original encoded assignments.
 /// This is local body evidence, never whole-class initialization certification.
+#[derive(Clone)]
 pub struct StaticInitializerBodySubset {
     /// Encoded assignments and definite-assignment categories; fields retain finals.
     pub encoded: EncodedInitializationPlan,
@@ -1561,7 +1627,7 @@ pub fn plan_class_initialization_with_inventory<
         constructors,
         clinit,
         resolver,
-        (inventory, WriteContract::RuntimeExclusive, None),
+        (inventory, WriteContract::RuntimeExclusive, None, None),
     )
 }
 
@@ -1581,9 +1647,10 @@ fn plan_class_initialization_with_inventory_contract<
         &write_inventory::WriteInventory,
         WriteContract,
         Option<&dex_decompiler::ssa::SsaMethod>,
+        Option<Result<&StaticInitializerBodySubset, &Error>>,
     ),
 ) -> Result<ClassInitializationPlan, Error> {
-    let (inventory, contract, attested) = write_evidence;
+    let (inventory, contract, attested, precomputed_static) = write_evidence;
     use managed_ir::refs::{ClassRef, FieldRef};
     let dex = inputs.get(dex_index).ok_or(Error::InvalidMetadata)?;
     if !contains_original_class(&dex.classes, class) {
@@ -1602,9 +1669,15 @@ fn plan_class_initialization_with_inventory_contract<
         if !std::ptr::eq(ssa.ir(), ir) {
             return Err(Error::InvalidMetadata);
         }
-        Some(plan_static_initializer_attested_only(
-            inputs, dex_index, class, reference, ssa, resolver, inventory,
-        )?)
+        match precomputed_static {
+            // Driver-computed proof of the identical evidence (same inputs);
+            // reuses it, or its failure, instead of re-proving after a retry.
+            Some(Ok(plan)) => Some(plan.clone()),
+            Some(Err(error)) => return Err(error.clone()),
+            None => Some(plan_static_initializer_attested_only(
+                inputs, dex_index, class, reference, ssa, resolver, inventory,
+            )?),
+        }
     } else {
         None
     };

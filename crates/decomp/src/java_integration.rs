@@ -4559,6 +4559,7 @@ fn constructor_subset_source(
 fn static_initializer_subset_source(
     class: &ClassDef,
     r: &Resolver<'_>,
+    precomputed: Option<(initializers::StaticInitializerBodySubset, usize)>,
 ) -> Result<(u32, Candidate, String), String> {
     let method = class
         .class_data
@@ -4575,8 +4576,14 @@ fn static_initializer_subset_source(
     let signature = r
         .method(MethodRef::new(method.method_idx))
         .ok_or("static subset: signature unavailable")?;
+    // Only the plain attested proof (no exception-scope derivation) is shared
+    // with the family plan's internal static proof, and only for clinit
+    // without handler tables.
+    let precomputed = precomputed.filter(|_| code.tries.is_empty());
     let (plan, runtime_capability_count) =
-        if r.cache_inventory {
+        if let Some((plan, count)) = precomputed {
+            (plan, count)
+        } else if r.cache_inventory {
             let proof = if code.tries.is_empty() {
             initializers::plan_static_initializer_shared_explicit_stores_attested(
             r.inputs,
@@ -4693,6 +4700,7 @@ fn render_initialization_prefix(
 fn initialization_source(
     class: &ClassDef,
     r: &Resolver<'_>,
+    reuse_static: &mut Option<(initializers::StaticInitializerBodySubset, usize)>,
 ) -> Result<InitializationSource, String> {
     let data = class
         .class_data
@@ -4788,36 +4796,101 @@ fn initialization_source(
         .enumerate()
         .find(|(_, m)| method_key(r.dex, m.method_idx).is_some_and(|k| k.name == "<clinit>"))
         .map(|(i, m)| (MethodRef::new(m.method_idx), ssas[i].as_ref()));
+    // The attested family proof computes this exact static-initializer proof
+    // internally; compute it once so the static-subset retry below reuses the
+    // same evidence instead of re-proving it after a family rejection.
+    let precomputed_static = if has_finals {
+        clinit.as_ref().map(|(reference, ssa)| {
+            if r.cache_inventory {
+                initializers::plan_static_initializer_shared_explicit_stores_attested(
+                    r.inputs,
+                    r.dex_index,
+                    class,
+                    *reference,
+                    ssa,
+                    r,
+                    inventory,
+                )
+                .map(|proof| (proof.plan, proof.runtime_capabilities.len()))
+            } else {
+                initializers::plan_static_initializer_explicit_stores_attested(
+                    r.inputs,
+                    r.dex_index,
+                    class,
+                    *reference,
+                    ssa,
+                    r,
+                    inventory,
+                )
+                .map(|proof| (proof.plan, proof.runtime_capabilities.len()))
+            }
+        })
+    } else {
+        None
+    };
     let (plan, runtime_capability_count) = if has_finals {
-        if r.cache_inventory {
-            let proof = initializers::plan_class_initialization_shared_explicit_stores_attested(
-                r.inputs,
-                r.dex_index,
-                class,
-                &constructors,
-                clinit,
-                r,
-                inventory,
-            )
+        let reuse = precomputed_static
+            .as_ref()
+            .map(|proof| proof.as_ref().map(|(plan, _)| plan));
+        let family = if r.cache_inventory {
+            match reuse {
+                Some(plan) => {
+                    initializers::plan_class_initialization_shared_explicit_stores_attested_reusing_static(
+                        r.inputs,
+                        r.dex_index,
+                        class,
+                        &constructors,
+                        clinit,
+                        r,
+                        inventory,
+                        plan,
+                    )
+                }
+                None => initializers::plan_class_initialization_shared_explicit_stores_attested(
+                    r.inputs,
+                    r.dex_index,
+                    class,
+                    &constructors,
+                    clinit,
+                    r,
+                    inventory,
+                ),
+            }
             .map_err(|error| {
                 format!("initialization explicit-store definite assignment: {error:?}")
-            })?;
-            (proof.plan, proof.runtime_capabilities.len())
+            })
+            .map(|proof| (proof.plan, proof.runtime_capabilities.len()))
         } else {
-            let proof = initializers::plan_class_initialization_with_explicit_stores_attested(
-                r.inputs,
-                r.dex_index,
-                class,
-                &constructors,
-                clinit,
-                r,
-                inventory,
-            )
+            match reuse {
+                Some(plan) => {
+                    initializers::plan_class_initialization_with_explicit_stores_attested_reusing_static(
+                        r.inputs,
+                        r.dex_index,
+                        class,
+                        &constructors,
+                        clinit,
+                        r,
+                        inventory,
+                        plan,
+                    )
+                }
+                None => initializers::plan_class_initialization_with_explicit_stores_attested(
+                    r.inputs,
+                    r.dex_index,
+                    class,
+                    &constructors,
+                    clinit,
+                    r,
+                    inventory,
+                ),
+            }
             .map_err(|error| {
                 format!("initialization explicit-store definite assignment: {error:?}")
-            })?;
-            (proof.plan, proof.runtime_capabilities.len())
-        }
+            })
+            .map(|proof| (proof.plan, proof.runtime_capabilities.len()))
+        };
+        *reuse_static = precomputed_static.and_then(Result::ok);
+        family?
     } else {
         let plan = initializers::plan_class_initialization_with_inventory(
             r.inputs,
@@ -5421,8 +5494,9 @@ fn emit_classes(
                 }
             }
             let initialization_timer = stage(profile, "initialization_family");
-            let initialization =
-                (kind == Ok(ClassKind::Class)).then(|| initialization_source(class, r));
+            let mut reuse_static = None;
+            let initialization = (kind == Ok(ClassKind::Class))
+                .then(|| initialization_source(class, r, &mut reuse_static));
             drop(initialization_timer);
             if let Some(Ok((initialized, initialized_fields, prefix))) = initialization {
                 let proposed_fields = initialized_fields.keys().copied().collect();
@@ -5463,7 +5537,8 @@ fn emit_classes(
             // a proved static store sequence. This grants no family proof.
             if !initialization_proven
                 && kind == Ok(ClassKind::Class)
-                && let Ok((index, candidate, prefix)) = static_initializer_subset_source(class, r)
+                && let Ok((index, candidate, prefix)) =
+                    static_initializer_subset_source(class, r, reuse_static.take())
             {
                 failures.remove(&index);
                 candidates.insert(index, candidate);
