@@ -128,6 +128,14 @@ impl AliasInventory {
         self.add_type(owner)
     }
 
+    /// Union a fully validated partial inventory. Set insertion is
+    /// order-independent, so the merge never changes the collected unit.
+    pub(crate) fn append(&mut self, other: AliasInventory) {
+        self.classes.extend(other.classes);
+        self.methods.extend(other.methods);
+        self.fields.extend(other.fields);
+    }
+
     /// Allocate deterministic, collision-free aliases for the collected unit.
     pub fn build(&self, mode: AliasMode) -> JavaAliases {
         self.build_with_shadow_lookup(mode, false)

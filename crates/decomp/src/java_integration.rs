@@ -122,32 +122,145 @@ fn field_key(dex: &DexFile, index: u32) -> Option<FieldKey> {
         descriptor: descriptor(dex, u32::from(f.type_idx))?.into(),
     })
 }
-fn build_alias_inventory(files: &[DexFile]) -> Result<AliasInventory, OutputError> {
-    let mut inventory = AliasInventory::default();
+/// Serial fill for a single DEX. Task order preserves the exact validation
+/// order of the original whole-unit loop.
+fn fill_alias_inventory(dex: &DexFile, inventory: &mut AliasInventory) -> Result<(), OutputError> {
     let invalid = |s: String| OutputError::InvalidDescriptor(s);
+    for ty in &dex.type_ids {
+        inventory
+            .add_type(
+                dex.string(ty.descriptor_idx)
+                    .map_err(|e| invalid(e.to_string()))?,
+            )
+            .map_err(invalid)?;
+    }
+    for i in 0..dex.method_ids.len() {
+        inventory
+            .add_method(
+                method_key(dex, i as u32).ok_or_else(|| invalid("method inventory".into()))?,
+            )
+            .map_err(invalid)?;
+    }
+    for i in 0..dex.field_ids.len() {
+        inventory
+            .add_field(field_key(dex, i as u32).ok_or_else(|| invalid("field inventory".into()))?)
+            .map_err(invalid)?;
+    }
+    Ok(())
+}
+/// Independent validation tasks in the exact serial visit order. A task owns a
+/// contiguous id range of one DEX section, so per-task inventories merged in
+/// task order reproduce the serial unit exactly, including which malformed
+/// identity fails first.
+const ALIAS_INVENTORY_CHUNK: usize = 1 << 16;
+#[derive(Clone, Copy)]
+enum AliasInventoryTask {
+    Types { start: usize, end: usize },
+    Methods { start: usize, end: usize },
+    Fields { start: usize, end: usize },
+}
+impl AliasInventoryTask {
+    fn fill(self, dex: &DexFile, inventory: &mut AliasInventory) -> Result<(), OutputError> {
+        let invalid = |s: String| OutputError::InvalidDescriptor(s);
+        match self {
+            AliasInventoryTask::Types { start, end } => {
+                for i in start..end {
+                    let ty = &dex.type_ids[i];
+                    inventory
+                        .add_type(
+                            dex.string(ty.descriptor_idx)
+                                .map_err(|e| invalid(e.to_string()))?,
+                        )
+                        .map_err(invalid)?;
+                }
+            }
+            AliasInventoryTask::Methods { start, end } => {
+                for i in start..end {
+                    inventory
+                        .add_method(
+                            method_key(dex, i as u32)
+                                .ok_or_else(|| invalid("method inventory".into()))?,
+                        )
+                        .map_err(invalid)?;
+                }
+            }
+            AliasInventoryTask::Fields { start, end } => {
+                for i in start..end {
+                    inventory
+                        .add_field(
+                            field_key(dex, i as u32)
+                                .ok_or_else(|| invalid("field inventory".into()))?,
+                        )
+                        .map_err(invalid)?;
+                }
+            }
+        }
+        Ok(())
+    }
+}
+fn alias_inventory_tasks(files: &[DexFile]) -> (Vec<(&DexFile, AliasInventoryTask)>, usize) {
+    let mut tasks = Vec::new();
+    let mut total = 0usize;
     for dex in files {
-        for ty in &dex.type_ids {
-            inventory
-                .add_type(
-                    dex.string(ty.descriptor_idx)
-                        .map_err(|e| invalid(e.to_string()))?,
-                )
-                .map_err(invalid)?;
+        total += dex.type_ids.len() + dex.method_ids.len() + dex.field_ids.len();
+        let mut push_section = |len: usize, section: fn(usize, usize) -> AliasInventoryTask| {
+            let mut start = 0;
+            while start < len {
+                let end = (start + ALIAS_INVENTORY_CHUNK).min(len);
+                tasks.push((dex, section(start, end)));
+                start = end;
+            }
+        };
+        push_section(dex.type_ids.len(), |start, end| AliasInventoryTask::Types {
+            start,
+            end,
+        });
+        push_section(dex.method_ids.len(), |start, end| {
+            AliasInventoryTask::Methods { start, end }
+        });
+        push_section(dex.field_ids.len(), |start, end| {
+            AliasInventoryTask::Fields { start, end }
+        });
+    }
+    (tasks, total)
+}
+fn build_alias_inventory(files: &[DexFile]) -> Result<AliasInventory, OutputError> {
+    let (tasks, total) = alias_inventory_tasks(files);
+    // Small units stay serial: thread fan-out only pays off on real inventories.
+    if tasks.len() <= 1 || total < 1 << 18 {
+        let mut inventory = AliasInventory::default();
+        for dex in files {
+            fill_alias_inventory(dex, &mut inventory)?;
         }
-        for i in 0..dex.method_ids.len() {
-            inventory
-                .add_method(
-                    method_key(dex, i as u32).ok_or_else(|| invalid("method inventory".into()))?,
-                )
-                .map_err(invalid)?;
-        }
-        for i in 0..dex.field_ids.len() {
-            inventory
-                .add_field(
-                    field_key(dex, i as u32).ok_or_else(|| invalid("field inventory".into()))?,
-                )
-                .map_err(invalid)?;
-        }
+        return Ok(inventory);
+    }
+    const WORKERS: usize = 8;
+    let per_worker = tasks.len().div_ceil(WORKERS);
+    let parts: Vec<Result<AliasInventory, OutputError>> = std::thread::scope(|scope| {
+        tasks
+            .chunks(per_worker)
+            .map(|slice| {
+                scope.spawn(move || {
+                    let mut inventory = AliasInventory::default();
+                    for (dex, task) in slice {
+                        task.fill(dex, &mut inventory)?;
+                    }
+                    Ok(inventory)
+                })
+            })
+            .collect::<Vec<_>>()
+            .into_iter()
+            .map(|handle| match handle.join() {
+                Ok(result) => result,
+                Err(_) => Err(OutputError::Io(std::io::Error::other(
+                    "Java alias inventory worker panicked",
+                ))),
+            })
+            .collect()
+    });
+    let mut inventory = AliasInventory::default();
+    for part in parts {
+        inventory.append(part?);
     }
     Ok(inventory)
 }
@@ -3813,10 +3926,18 @@ fn emit_inner(
     );
     // Only unlimited exports enable this bounded extension. Quarantined source
     // plans are private and do not enter public closure or successful counts.
+    let mut deferred_sub_walls: Option<(
+        std::time::Duration,
+        std::time::Duration,
+        std::time::Duration,
+    )> = None;
     if options.limit.is_none() {
         // Deferred annotation units from every input share one scheduler; ordered
         // delivery retains the original DEX-order, class-order acknowledgement
         // sequence, and frozen resolvers are only built for contributing inputs.
+        // Sub-phase walls are recorded after the phase timer releases the
+        // profile borrow; they sum to the enclosing phase.
+        let deferred_scan_start = std::time::Instant::now();
         let mut deferred_tasks: Vec<(usize, usize)> = Vec::new();
         let mut deferred_pools = vec![false; files.len()];
         let mut duplicated_deferred_owners = BTreeSet::new();
@@ -3836,6 +3957,8 @@ fn emit_inner(
                 }
             }
         }
+        let deferred_scan = deferred_scan_start.elapsed();
+        let deferred_resolve_start = std::time::Instant::now();
         let deferred_metadata: Vec<_> = files
             .iter()
             .enumerate()
@@ -3873,6 +3996,8 @@ fn emit_inner(
                 deferred_resolvers[dex_index] = Some(r);
             }
         }
+        let deferred_resolve = deferred_resolve_start.elapsed();
+        let deferred_emit_start = std::time::Instant::now();
         let deferred_options = JavaOptions {
             limit: None,
             ..options.clone()
@@ -3931,8 +4056,18 @@ fn emit_inner(
         } else {
             run_deferred_span(&deferred_tasks)?;
         }
+        deferred_sub_walls = Some((
+            deferred_scan,
+            deferred_resolve,
+            deferred_emit_start.elapsed(),
+        ));
     }
     drop(phase_timer);
+    if let (Some(p), Some((scan, resolve, emit))) = (profile.as_deref_mut(), deferred_sub_walls) {
+        *p.serial.entry("deferred_scan").or_default() += scan;
+        *p.serial.entry("deferred_resolvers").or_default() += resolve;
+        *p.serial.entry("deferred_emit").or_default() += emit;
+    }
     // Actual external sink acknowledgements are serial, deterministic, and
     // distinct from worker collection. Enum requirements cannot use preparation.
     let mut prepared_enums = Vec::new();
@@ -4028,12 +4163,13 @@ fn emit_inner(
             .as_deref_mut()
             .map(|p| p.serial.entry("method_closure").or_default()),
     );
-    let mut closure = global.close(published.keys().cloned(), provider, |key, _location| {
-        published
-            .get(key)
-            .cloned()
-            .ok_or_else(|| "original semantic body unavailable in exported source".into())
-    });
+    let mut closure =
+        global.close_published(published.keys().cloned(), provider, |key, _location| {
+            published
+                .get(key)
+                .cloned()
+                .ok_or_else(|| "original semantic body unavailable in exported source".into())
+        });
     drop(phase_timer);
     // A genuine native/abstract definition still needs actual source publication.
     let bodyless: BTreeSet<_> = closure

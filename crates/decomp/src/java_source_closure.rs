@@ -235,15 +235,40 @@ impl<'a> GlobalDeclarations<'a> {
         &self,
         roots: impl IntoIterator<Item = MethodKey>,
         external: &dyn ExternalMetadata,
+        emit: impl FnMut(&MethodKey, MethodLocation) -> Result<EmittedMethod, String>,
+    ) -> SourceClosure {
+        self.close_inner(roots, external, emit, true)
+    }
+
+    /// Production variant for drivers whose emitted-unit inventory is already
+    /// complete: `original_methods` only restates `self.methods` grouped by
+    /// owner for [`SourceClosure::select_classes`], which such drivers never
+    /// call. Skipping it avoids cloning the whole input method inventory.
+    pub(crate) fn close_published(
+        &self,
+        roots: impl IntoIterator<Item = MethodKey>,
+        external: &dyn ExternalMetadata,
+        emit: impl FnMut(&MethodKey, MethodLocation) -> Result<EmittedMethod, String>,
+    ) -> SourceClosure {
+        self.close_inner(roots, external, emit, false)
+    }
+
+    fn close_inner(
+        &self,
+        roots: impl IntoIterator<Item = MethodKey>,
+        external: &dyn ExternalMetadata,
         mut emit: impl FnMut(&MethodKey, MethodLocation) -> Result<EmittedMethod, String>,
+        include_original_inventory: bool,
     ) -> SourceClosure {
         let mut report = SourceClosure::default();
-        for key in self.methods.keys() {
-            report
-                .original_methods
-                .entry(key.owner.clone())
-                .or_default()
-                .insert(key.clone());
+        if include_original_inventory {
+            for key in self.methods.keys() {
+                report
+                    .original_methods
+                    .entry(key.owner.clone())
+                    .or_default()
+                    .insert(key.clone());
+            }
         }
         let mut pending: BTreeSet<_> = roots.into_iter().collect();
         let mut visited = BTreeSet::new();
