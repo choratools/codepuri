@@ -9,7 +9,7 @@ Prerequisite: cargo build -p decomp --release --example java_export_bench
 
 Example:
   bench/jadx_vs_codepuri.py tests/corpus/apks_bulk/com.samsung.android.samsungpass.apk \
-      --runs 3 --workers 30 --out bench/local-artifacts/paired-bench-<name>
+      --runs 4 --workers 30 --out bench/local-artifacts/paired-bench-<name>
 """
 from __future__ import annotations
 
@@ -124,7 +124,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("apk", type=Path)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--runs", type=int, default=1)
+    parser.add_argument("--runs", type=int, default=4)
     parser.add_argument("--workers", type=int, default=30)
     parser.add_argument("--jadx-bin", type=Path, default=Path(DEFAULT_JADX))
     parser.add_argument("--profiled-codepuri", action="store_true",
@@ -165,21 +165,36 @@ def main() -> int:
     for index in range(args.runs):
         sample_dir = out_root / f"run{index}"
         sample_dir.mkdir()
-        sample: dict = {"run": index}
-        if not args.skip_jadx:
-            jadx_out = out_root / f"run{index}/jadx-output"
-            sample["jadx"] = run_jadx(args.jadx_bin, apk, jadx_out, args.workers,
-                                      out_root / f"run{index}/jadx.time",
-                                      out_root / f"run{index}/jadx.log")
-            if args.markers:
-                sample["jadx"]["markers"] = count_markers(jadx_out)
-        if not args.skip_codepuri:
-            cp_out = out_root / f"run{index}/codepuri-output"
-            sample["codepuri"] = run_codepuri(apk, cp_out, args.workers,
-                                              out_root / f"run{index}/codepuri.time",
-                                              out_root / f"run{index}/codepuri.log",
-                                              args.profiled_codepuri,
-                                              args.fast_proofs_codepuri)
+        order = ["jadx", "codepuri"] if index % 2 == 0 else ["codepuri", "jadx"]
+        if args.skip_jadx:
+            order.remove("jadx")
+        if args.skip_codepuri:
+            order.remove("codepuri")
+        sample: dict = {"run": index, "order": order}
+        jadx_out = sample_dir / "jadx-output"
+        for tool in order:
+            if tool == "jadx":
+                sample["jadx"] = run_jadx(
+                    args.jadx_bin,
+                    apk,
+                    jadx_out,
+                    args.workers,
+                    sample_dir / "jadx.time",
+                    sample_dir / "jadx.log",
+                )
+            else:
+                cp_out = sample_dir / "codepuri-output"
+                sample["codepuri"] = run_codepuri(
+                    apk,
+                    cp_out,
+                    args.workers,
+                    sample_dir / "codepuri.time",
+                    sample_dir / "codepuri.log",
+                    args.profiled_codepuri,
+                    args.fast_proofs_codepuri,
+                )
+        if args.markers and "jadx" in sample:
+            sample["jadx"]["markers"] = count_markers(jadx_out)
         report["samples"].append(sample)
         print(json.dumps({k: v for k, v in sample.items()}, indent=1), flush=True)
 
@@ -194,13 +209,27 @@ def main() -> int:
                 "max_rss_median_gib": round(statistics.median(rss) / 1024 / 1024, 2),
             }
     report["summary"] = summary
+    deltas = [
+        sample["codepuri"]["wall_s"] - sample["jadx"]["wall_s"]
+        for sample in report["samples"]
+        if "codepuri" in sample and "jadx" in sample
+    ]
+    if deltas:
+        report["summary"]["paired_wall_delta_median_s"] = round(
+            statistics.median(deltas), 2
+        )
     report_path = out_root / "paired-benchmark.json"
     report_path.write_text(json.dumps(report, indent=1) + "\n")
 
     print(f"\n== summary ({report['jadx_version'] or 'jadx'}) ==")
-    for tool, stats in summary.items():
+    for tool in ("jadx", "codepuri"):
+        if tool not in summary:
+            continue
+        stats = summary[tool]
         print(f"{tool}: wall median {stats['wall_median_s']}s, "
               f"min {stats['wall_min_s']}s, RSS {stats['max_rss_median_gib']} GiB")
+    if deltas:
+        print(f"paired delta median (codepuri - jadx): {report['summary']['paired_wall_delta_median_s']}s")
     print(f"report: {report_path}")
     return 0
 

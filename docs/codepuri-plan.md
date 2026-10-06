@@ -303,11 +303,22 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 - Fast mode unpublished reason identity는 계속 opt-in caveat; generated code/strict results
   Samsung Pass에서는 identical.
 
+### R15 결과: 최신 프로파일 및 page-cache 순서 통제
+
+- Fresh profile에서 `source_throws` 4.965s (prep 1.522, scheduler 2.405, derive 0.838),
+  deferred annotation 2.835s, alias_build 1.599s. static-final proof summary는 6,366개
+  capture / 4,783개 consume / 1,583개 미사용. Static-final 플래그 prefilter로 제외 가능한
+  capture는 461개(0.55MB, 전체 summary bytes의 9.3%)뿐이라 추가 변경 안 함.
+- Paired bench가 매번 JADX-first였던 편향을 R15에서 발견·수정(샘플마다 시작 도구 교대).
+  교대 후 Samsung Pass 3회 default: **codepuri 22.76s / jadx 23.55s**; fast: 23.57/23.72s.
+  JADX는 persistent 결과 cache 증거 없고 OS page-cache/order warming 설명과 일치.
+- R15 production source change 없음; 계측 exports checksum/source/report 동일.
+
 ### 현재 대결 기준: ordinary API unprofiled, 동일 세션 paired median.
 
-R14 최신 median은 default 23.02s vs jadx 23.49s, fast 22.27s vs 24.15s. Codepuri
-Samsung Pass 기준 process wall에서 두 mode 모두 paired jadx보다 빠름. CPU 효율은 절반 이하;
-다음 속도 작업은 측정된 ≥0.3s 이득을 내는 경우에만 유지한다.
+R15 교대 paired median은 default 22.76s vs jadx 23.55s (codepuri가 매 pair 승리),
+fast 23.57s vs 23.72s. CPU 효율은 절반 이하; 다음 속도 작업은 측정된 ≥0.3s 이득을
+내는 경우에만 유지한다.
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
@@ -335,7 +346,8 @@ Samsung Pass 기준 process wall에서 두 mode 모두 paired jadx보다 빠름.
 
 - **벤치마크 프로토콜**: Samsung Pass APK, jadx `--no-res -j 30` vs
   `java_export_bench --workers 30` (일반 unprofiled `emit_java`),
-  `/usr/bin/time -v`, 3회 같은 세션 중앙값. `--profiled-codepuri`는 진단 비교 전용.
+  `/usr/bin/time -v`, 4회 same-session paired median; JADX/codepuri 선행 순서를 번갈아
+  page-cache 편향을 줄임. `--profiled-codepuri`는 진단 비교 전용.
   Cache/page-state 드리프트 때문에 과거 jadx 절대값보다 동일 세션 paired median을 우선.
   결과는 `bench/`에 JSON+MD 기록.
 - **업스트림 동기화**: 업스트림 진행(wave 기반)을 정기적으로
