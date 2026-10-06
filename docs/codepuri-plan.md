@@ -241,12 +241,36 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 
 **default 25.52s / fast 23.8s. 1250/1250 테스트, 전 게이트 exact. 커밋 완료.**
 
-### R8 대상
+### R8–R9 결과: 안전 필터와 structure 재사용은 미채택
 
-- init family 79% 실패 구조 자체: 저비용 사전 필터 또는 subset-first 전환
-  (45s CPU 중 다수 절감 잠재, 에러 재생 패턴은 R4/R7에서 검증됨)
+- **R8** constructor-superchain 사전검사는 실제 family planner의 첫 검사를
+  같은 순서로 중복 실행할 뿐, planner를 skip하지 못했음. Resolver lookup 안정성이
+  보장되지 않아 제거. static subset check 재정렬은 동시 실패 시 `InvalidMetadata` /
+  `FieldInitializationUnavailable` 우선순위를 바꿔 제거. 게이트: workspace 1,250
+  passed / 0 failed, fmt/clippy 통과.
+- **R9** provenance 토큰으로 성공한 strict structuring을 backend에 재사용하는 시도:
+  source bytes/report exact, 그러나 ordinary API paired baseline **24.73s → 24.80s**
+  (유의미한 이득 없음)으로 revert. Same-CFG opaque proof token은 가능하지만 이 경로의
+  structuring 자체는 wall bottleneck이 아니었음.
 
-### 완료 기준: 동일 프로토콜에서 jadx 26.26s 대비 동등 이하 (목표 ~20s).
+### R10 결과: throws worklist 인덱싱 + 공정 벤치
+
+- `derive_program`의 BTree-keyed worklist/state를 sorted catalog index + `VecDeque<usize>` /
+  `Vec<bool>`로 바꿈. Reverse caller ordering 및 public error/output map은 BTree 순서 유지.
+- 일반 경로 **24.73 → 24.16s** (−0.57s); opt-in `fast_proofs` **24.24 → 24.01s**.
+  Workspace tests 1,250 passed / 0 failed / 174 ignored; fmt/clippy/strict quality exact.
+- `java_export_bench` 추가: 실제 `emit_java` + `DirectorySink`, 프로파일 계측·예제 FNV checksum·
+  진단 TSV/summary 기록 제외. Fair paired fast-mode 5회: **codepuri 23.98s vs jadx 23.64s**;
+  CPU 약 절반 (≈190s vs ≈390s), codepuri 28,575 files / 200MB vs jadx 17,546 / 86MB.
+  `fast_proofs`는 opt-in: Samsung Pass code bytes/strict coverage 동일, 다만 unpublished
+  diagnostic reason text는 APK에 따라 달라질 수 있음.
+- R10 source/benchmark checkpoint: `ec4a080`; R9/R10 default gain은 0.57s.
+
+### 현재 대결 기준: ordinary API unprofiled, 동일 세션 paired median.
+
+R10 fast mode는 paired 23.98s vs jadx 23.64s, default는 R10 단독 중앙값
+24.16s. CPU 효율은 codepuri가 절반이며, 다음 속도 작업은 측정된 ≥0.3s 이득을
+내는 경우에만 유지한다.
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
@@ -272,9 +296,11 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 
 ## 운영 규칙
 
-- **벤치마크 프로토콜**: Samsung Pass APK, `--no-res -j 30`, 캐시 초기화,
-  `/usr/bin/time -v`, 3회 실행 중앙값. jadx 기준선 26.26s/16.1GiB와
-  항상 동일 조건 비교. 결과는 `bench/`에 JSON+MD로 기록(기존 관례 유지).
+- **벤치마크 프로토콜**: Samsung Pass APK, jadx `--no-res -j 30` vs
+  `java_export_bench --workers 30` (일반 unprofiled `emit_java`),
+  `/usr/bin/time -v`, 3회 같은 세션 중앙값. `--profiled-codepuri`는 진단 비교 전용.
+  Cache/page-state 드리프트 때문에 과거 jadx 절대값보다 동일 세션 paired median을 우선.
+  결과는 `bench/`에 JSON+MD 기록.
 - **업스트림 동기화**: 업스트림 진행(wave 기반)을 정기적으로
   `git fetch upstream && merge`. 속도/가독성 커밋은 업스트림에 역방향
   제안 가능하게 커밋 단위 유지.
@@ -285,7 +311,6 @@ syntax_gate_exit_code 0, javac_diagnostics 44,769, strict_executable_accepted
 ## 즉시 다음 액션
 
 1. ~~Phase 0.1 — JDK 경로 가설 검증~~ ✅ 환경 문제로 확정 (위 참고)
-2. Phase 1.1 — fast-mode 설계: `JavaOptions`에 모드 추가, strict 기본값 유지
-   (프로파일링 에이전트 결과 반영해 후보 확정)
+2. Phase 1 — strict 기본 경로 + opt-in fast_proofs의 품질/속도 계약 정리.
 3. ~~벤치 재현 스크립트~~ ✅ `bench/jadx_vs_codepuri.py`
    (페어 콜드 익스포트, `--runs N` 중앙값, `--markers` jadx 실패 마커 카운트)
