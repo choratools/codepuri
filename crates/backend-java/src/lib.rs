@@ -1698,6 +1698,19 @@ fn render_short_circuit_boolean_return<R: JavaResolver>(
             "short-circuit plan requires Boolean return".into(),
         ));
     }
+    if let Some(inline) = direct_short_circuit_boolean_calls(e, plan, method)
+        && let Some(declarations) = inline_declarations_to_remove(e, &inline.values)
+    {
+        for value in &inline.values {
+            e.values.remove(value);
+            e.hoisted.remove(value);
+        }
+        e.lines
+            .retain(|line| !declarations.iter().any(|declaration| declaration == line));
+        e.lines.push(format!("if (!{}) return false;", inline.left));
+        e.lines.push(format!("return {};", inline.right));
+        return Ok(());
+    }
     emit_short_circuit_instructions(e, &plan.before, method)?;
     let (left, left_type) = e.get(plan.left)?;
     compatible(&left_type, &JavaType::Boolean)?;
@@ -1707,6 +1720,241 @@ fn render_short_circuit_boolean_return<R: JavaResolver>(
     compatible(&right_type, &JavaType::Boolean)?;
     e.lines.push(format!("return {right};"));
     Ok(())
+}
+
+struct DirectShortCircuitBooleanCalls {
+    left: String,
+    right: String,
+    values: Vec<ValueId>,
+}
+
+fn direct_short_circuit_boolean_calls<R: JavaResolver>(
+    e: &Emitter<'_, R>,
+    plan: &branching::ShortCircuitBooleanReturn,
+    method: &JavaMethod,
+) -> Option<DirectShortCircuitBooleanCalls> {
+    // Initial receiver definitions are non-executable binding sentinels. The
+    // emitter already ignores them, but they can share the linear prefix with
+    // the first real field/call pair.
+    let mut before = Vec::new();
+    let mut saw_this_binding = false;
+    for &id in &plan.before {
+        let insn = e.ir.instruction(id).ok()?;
+        if let ManagedInsn::Opaque {
+            family_tag,
+            reads,
+            writes,
+            effects,
+        } = insn
+            && matches!(*family_tag, 0x8001 | 0x8003)
+            && reads.is_empty()
+            && writes.len() == 1
+            && e.parameters.contains(&writes[0])
+            && *effects == managed_ir::effects::EffectFlags::NONE
+            && e.values.get(&writes[0]).is_some_and(|(name, ty)| {
+                name == "this" && *ty == JavaType::Class(method.owner.clone())
+            })
+        {
+            if saw_this_binding {
+                return None;
+            }
+            saw_this_binding = true;
+        } else {
+            before.push(id);
+        }
+    }
+    let [left_field, left_invoke] = before.as_slice() else {
+        return None;
+    };
+    let [right_field, right_invoke] = plan.between.as_slice() else {
+        return None;
+    };
+
+    let (left, left_field_value) =
+        direct_short_circuit_boolean_call(e, *left_field, *left_invoke, plan.left, method)?;
+    let (right, right_field_value) =
+        direct_short_circuit_boolean_call(e, *right_field, *right_invoke, plan.right, method)?;
+    let left_branch = short_circuit_condition_branch(e.ir, plan.left)?;
+    let right_branch = short_circuit_condition_branch(e.ir, plan.right)?;
+    if left_branch == right_branch {
+        return None;
+    }
+
+    Some(DirectShortCircuitBooleanCalls {
+        left,
+        right,
+        values: vec![left_field_value, plan.left, right_field_value, plan.right],
+    })
+}
+
+fn short_circuit_condition_branch(ir: &MethodIr<SsaForm>, value: ValueId) -> Option<InsnId> {
+    let uses = branching::use_sites(ir, value);
+    let [use_id] = uses.as_slice() else {
+        return None;
+    };
+    let instruction = ir.instruction(*use_id).ok()?;
+    let branch = match instruction {
+        ManagedInsn::Branch {
+            condition: Some(condition),
+            ..
+        } if *condition == value => return Some(*use_id),
+        ManagedInsn::Not { result, .. }
+        | ManagedInsn::Move { result, .. }
+        | ManagedInsn::Compare { result, .. } => *result,
+        _ => return None,
+    };
+    let uses = branching::use_sites(ir, branch);
+    let [branch_id] = uses.as_slice() else {
+        return None;
+    };
+    matches!(
+        ir.instruction(*branch_id).ok()?,
+        ManagedInsn::Branch {
+            condition: Some(condition),
+            ..
+        } if *condition == branch
+    )
+    .then_some(*branch_id)
+}
+
+fn direct_short_circuit_boolean_call<R: JavaResolver>(
+    e: &Emitter<'_, R>,
+    field_id: InsnId,
+    invoke_id: InsnId,
+    result_value: ValueId,
+    caller: &JavaMethod,
+) -> Option<(String, ValueId)> {
+    let ManagedInsn::FieldGet {
+        result: field_value,
+        object: Some(receiver),
+        field: field_reference,
+    } = e.ir.instruction(field_id).ok()?
+    else {
+        return None;
+    };
+    let ManagedInsn::Invoke {
+        kind,
+        result: Some(invoke_result),
+        method: method_reference,
+        args,
+    } = e.ir.instruction(invoke_id).ok()?
+    else {
+        return None;
+    };
+    if invoke_result != &result_value
+        || !matches!(kind, InvokeKind::Virtual | InvokeKind::Interface)
+        || args.as_slice() != [*field_value]
+        || branching::use_sites(e.ir, *field_value).as_slice() != [invoke_id]
+        || e.ty(result_value).ok()? != JavaType::Boolean
+    {
+        return None;
+    }
+
+    // Restrict the peephole to an explicitly bound `this` receiver. The normal
+    // field target helper retains all source-name, access, and receiver checks.
+    let (receiver_name, receiver_type) = e.get(*receiver).ok()?;
+    if receiver_name != "this" || receiver_type != JavaType::Class(caller.owner.clone()) {
+        return None;
+    }
+    let field = e.resolver.field(*field_reference)?;
+    if field.is_static || field.ty == JavaType::Void || e.ty(*field_value).ok()? != field.ty {
+        return None;
+    }
+    qualified(&field.owner).ok()?;
+    let field_expression = e
+        .field_target(Some(*receiver), &field, *field_reference, &caller.owner)
+        .ok()?;
+
+    let array_clone = if *kind == InvokeKind::Virtual {
+        e.resolver.array_clone_method(*method_reference, &field.ty)
+    } else {
+        None
+    };
+    let receiver_method = if *kind == InvokeKind::Virtual {
+        e.resolver
+            .virtual_receiver_method(*method_reference, &caller.owner, &field.ty)
+    } else {
+        None
+    };
+    let target_method = receiver_method
+        .clone()
+        .or(array_clone)
+        .or_else(|| e.resolver.method(*method_reference))?;
+    if target_method.is_static
+        || target_method.return_type != JavaType::Boolean
+        || !target_method.parameters.is_empty()
+        || e.resolver
+            .method_access(*method_reference)
+            .is_some_and(|flags| flags & 2 != 0)
+        || checked_exceptions::check(e.resolver, &target_method.throws, &caller.throws).is_err()
+    {
+        return None;
+    }
+    qualified(&target_method.owner).ok()?;
+    member(&target_method.name).ok()?;
+    for exception in &target_method.throws {
+        qualified(exception).ok()?;
+    }
+    let operands = invoke_arguments::operands(&target_method, args).ok()?;
+    if operands.as_slice() != [*field_value] {
+        return None;
+    }
+    if let Some(recipe) = e.resolver.checked_source_body_bridge(caller)
+        && !recipe.approves_rendering_invoke(
+            invoke_id,
+            e.ir.instruction(invoke_id).ok()?,
+            &target_method,
+            caller,
+        )
+    {
+        return None;
+    }
+
+    let owner = JavaType::Class(target_method.owner.clone());
+    e.compatible(&field.ty, &owner).ok()?;
+    let receiver_is_selected = receiver_method.is_some();
+    let target = if receiver_is_selected
+        || field.ty == owner
+        || e.resolver
+            .retain_method_receiver(*method_reference, &caller.owner, &field.ty)
+    {
+        field_expression
+    } else {
+        if e.resolver
+            .method_access(*method_reference)
+            .is_some_and(|flags| flags & 4 != 0)
+            && caller.owner.rsplit_once('.').map(|package| package.0)
+                != target_method
+                    .owner
+                    .rsplit_once('.')
+                    .map(|package| package.0)
+        {
+            return None;
+        }
+        format!("(({}) {field_expression})", owner.source().ok()?)
+    };
+    Some((format!("{target}.{}()", target_method.name), *field_value))
+}
+
+fn inline_declarations_to_remove(
+    e: &Emitter<'_, impl JavaResolver>,
+    values: &[ValueId],
+) -> Option<Vec<String>> {
+    let mut declarations = Vec::new();
+    for value in values {
+        match (e.values.get(value), e.hoisted.contains(value)) {
+            (Some((name, ty)), true) => {
+                let declaration = format!("{} {name};", ty.source().ok()?);
+                if e.lines.iter().filter(|line| *line == &declaration).count() != 1 {
+                    return None;
+                }
+                declarations.push(declaration);
+            }
+            (None, false) => {}
+            _ => return None,
+        }
+    }
+    Some(declarations)
 }
 
 fn emit_short_circuit_instructions<R: JavaResolver>(

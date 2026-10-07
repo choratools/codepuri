@@ -850,8 +850,7 @@ fn predicate_result(ir: &MethodIr<SsaForm>, predicate: InsnId) -> Option<ValueId
     }
 }
 
-#[allow(dead_code)]
-fn use_sites(ir: &MethodIr<SsaForm>, value: ValueId) -> Vec<InsnId> {
+pub(crate) fn use_sites(ir: &MethodIr<SsaForm>, value: ValueId) -> Vec<InsnId> {
     ir.instructions()
         .iter()
         .filter_map(|(id, insn)| {

@@ -330,9 +330,21 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 - Guard는 두 conditional branch, Boolean predicates, 정확한 boolean terminal values,
   모든 CFG block/edge coverage, single-use predicate, pure constants만 수락. observable false
   terminal negative fixture는 기존 forward-plan 경로로 남음.
-- 95 source files changed, no class/source units gained/lost, strict counts unchanged,
-  syntax0, full tests/clippy pass. Output style change intended; total output bytes −115,884.
+- 95 generated Java units changed, no class/source units gained/lost, strict counts unchanged,
+  syntax0, full tests/clippy pass. Output style change intended; total bytes −115,884.
 - Ordinary speed 22.76→22.98s (noise-level neutral); fast mode 23.57→22.45s. Commit pending.
+
+### R20 결과: exact `this.field.booleanCall()` 인라인 ✅
+
+- Witness `Lc7/i;->j()Z`가 이제 `if (!this.a.j()) return false; return this.b.j();`로 출력.
+  FieldGet→0-arg Boolean virtual/interface invoke 형태, receiver `this`, exact single-use,
+  type/access/throws 및 resolver checks가 모두 증명될 때만 임시 변수 4개를 제거.
+- 좌우 호출의 short-circuit 부작용 순서 4가지 조합을 Java compile/run 테스트했고,
+  중간 observable call이 있는 negative fixture는 기존 temp/forward path로 fallback.
+- Workspace tests/clippy/fmt 통과; 28,575 source units, strict body identities 0 gained/0 lost,
+  syntax0, javac diagnostic categories unchanged. 95 generated units changed intentionally.
+- Ordinary 3-run before/after 22.76→22.98s (노이즈 수준); fast 23.57→22.45s.
+  가독성 이득이 목적이며 speed regression 기준 0.3s를 넘지 않음. Commit pending.
 
 다음 가독성 대상:
 1. `BinaryPropertyListWriter.computeOffsetSizeInBytes`: temps `v0`–`v15`, ~47 lines vs JADX ~9.
@@ -340,8 +352,9 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 3. subset/initialization diagnostic comments는 source reading을 방해함; `JavaReport` sidecar/opt-in 주석 모드 검토.
 4. ADB metadata test에서 Android API metadata를 주면 완전도가 크게 상승; CLI `--classpath` 지원 완료.
 
-출력 단순화는 메서드 의미를 바꾸지 않는 형태만 채택. `&&` 결합처럼 값·side-effect 순서가
-보존됨을 테스트로 증명하고, 나머지 methods는 기존 strict CFG output 유지.
+출력 단순화는 메서드 의미를 바꾸지 않는 형태만 채택. `&&` 자체를 합성하는 대신
+short-circuit early-return 형태로 값·side-effect 순서를 보존함을 테스트로 증명; 다른 CFG는
+기존 strict output 유지.
 
 ## Phase 3 — jadx 패리티 선별
 
