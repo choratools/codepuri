@@ -1436,8 +1436,21 @@ fn emit(
         let mut control = None;
         let mut forward = None;
         let mut dispatch_plan = None;
+        let mut short_circuit = None;
         let declarations = e.declarations.keys().copied().collect();
-        let plan = if has_switch {
+        let candidate = if m.return_type == JavaType::Boolean && !has_switch {
+            branching::plan_short_circuit_boolean_return(ir, &bound, &declarations)
+        } else {
+            None
+        };
+        let plan = if let Some(candidate) = candidate {
+            let locals = candidate.locals.clone();
+            short_circuit = Some(candidate);
+            Ok(branching::BranchPlan {
+                locals,
+                steps: Vec::new(),
+            })
+        } else if has_switch {
             branching::plan_extended_canonical_checked(ir, &bound, &declarations)
         } else {
             match branching::plan_canonical_checked(ir, &bound, &declarations) {
@@ -1454,7 +1467,7 @@ fn emit(
             }
         }
         .or_else(|original| {
-            branching::plan_forward_checked(ir, &bound, &e.declarations.keys().copied().collect())
+            branching::plan_forward_checked(ir, &bound, &declarations)
                 .map(|plan| {
                     let locals = plan.locals.clone();
                     forward = Some(plan);
@@ -1473,7 +1486,7 @@ fn emit(
             if matches!(m.name.as_str(), "<init>" | "<clinit>") {
                 return Err(original);
             }
-            branching::plan_dispatch_checked(ir, &bound, &e.declarations.keys().copied().collect())
+            branching::plan_dispatch_checked(ir, &bound, &declarations)
                 .map(|plan| {
                     let locals = plan.locals.clone();
                     dispatch_plan = Some(plan);
@@ -1508,7 +1521,9 @@ fn emit(
             e.values.insert(*v, (name, ty));
             e.hoisted.insert(*v);
         }
-        if let Some(plan) = dispatch_plan {
+        if let Some(plan) = short_circuit {
+            render_short_circuit_boolean_return(&mut e, &plan, m)?;
+        } else if let Some(plan) = dispatch_plan {
             let mut index = 0usize;
             let prefix = loop {
                 let prefix = format!("dispatch{index}");
@@ -1671,6 +1686,55 @@ fn render_steps<R: JavaResolver>(
     m: &JavaMethod,
 ) -> Result<(), Unsupported> {
     render_steps_at(e, steps, m, 0)
+}
+
+fn render_short_circuit_boolean_return<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    plan: &branching::ShortCircuitBooleanReturn,
+    method: &JavaMethod,
+) -> Result<(), Unsupported> {
+    if method.return_type != JavaType::Boolean {
+        return Err(Unsupported::ControlFlow(
+            "short-circuit plan requires Boolean return".into(),
+        ));
+    }
+    emit_short_circuit_instructions(e, &plan.before, method)?;
+    let (left, left_type) = e.get(plan.left)?;
+    compatible(&left_type, &JavaType::Boolean)?;
+    e.lines.push(format!("if (!{left}) return false;"));
+    emit_short_circuit_instructions(e, &plan.between, method)?;
+    let (right, right_type) = e.get(plan.right)?;
+    compatible(&right_type, &JavaType::Boolean)?;
+    e.lines.push(format!("return {right};"));
+    Ok(())
+}
+
+fn emit_short_circuit_instructions<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    instructions: &[InsnId],
+    method: &JavaMethod,
+) -> Result<(), Unsupported> {
+    for &id in instructions {
+        let insn =
+            e.ir.instruction(id)
+                .map_err(|error| Unsupported::Instruction(error.to_string()))?
+                .clone();
+        if matches!(
+            insn,
+            ManagedInsn::Branch { .. }
+                | ManagedInsn::Switch { .. }
+                | ManagedInsn::Phi { .. }
+                | ManagedInsn::Return { .. }
+                | ManagedInsn::Throw { .. }
+        ) {
+            return Err(Unsupported::ControlFlow(
+                "invalid instruction in short-circuit linear segment".into(),
+            ));
+        }
+        e.current = Some(id);
+        e.instruction(&insn, method)?;
+    }
+    Ok(())
 }
 
 struct ForwardJava<'a, 'ir, R> {
@@ -2219,6 +2283,8 @@ fn qualified(n: &str) -> Result<String, Unsupported> {
 
 #[cfg(test)]
 mod array_clone_tests;
+#[cfg(test)]
+mod short_circuit_boolean_tests;
 #[cfg(test)]
 mod super_invocation_binding_tests;
 #[cfg(test)]

@@ -322,11 +322,26 @@ fast 23.57s vs 23.72s. CPU 효율은 절반 이하; 다음 속도 작업은 측�
 
 ## Phase 2 — 가독성: jadx 수준 출력 (91줄 → ~10줄)
 
-1. witness 메서드 세트 구축: `jadx-samsung-pass-output-comparison.json`의
-   비교 방식 확장 — 동일 메서드 jadx vs codepuri 줄수/구조 diff 리포트.
-2. `backend-java` 출력 단순화: 임시 변수 인라인, 중복 캐스터 제거,
-   구조 평탄화(불필요한 블록/라벨), 표현식 병합.
-3. 출력 크기 345MB → jadx 대비 ±2배 이내.
+R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증해
+`forwardBlock_*` 흐름 대신 early-return Java로 출력.
+
+- Samsung Pass `Lc7/i;->j()Z`: 14 labels / ~94 lines → **12 lines**; `L` 호출 순서,
+  false일 때 오른쪽 operand 생략을 Java runtime side-effect fixture로 확인.
+- Guard는 두 conditional branch, Boolean predicates, 정확한 boolean terminal values,
+  모든 CFG block/edge coverage, single-use predicate, pure constants만 수락. observable false
+  terminal negative fixture는 기존 forward-plan 경로로 남음.
+- 95 source files changed, no class/source units gained/lost, strict counts unchanged,
+  syntax0, full tests/clippy pass. Output style change intended; total output bytes −115,884.
+- Ordinary speed 22.76→22.98s (noise-level neutral); fast mode 23.57→22.45s. Commit pending.
+
+다음 가독성 대상:
+1. `BinaryPropertyListWriter.computeOffsetSizeInBytes`: temps `v0`–`v15`, ~47 lines vs JADX ~9.
+2. `NSData.length()`: `this.bytes.length`가 임시 변수 두 개로 materialize.
+3. subset/initialization diagnostic comments는 source reading을 방해함; `JavaReport` sidecar/opt-in 주석 모드 검토.
+4. ADB metadata test에서 Android API metadata를 주면 완전도가 크게 상승; CLI `--classpath` 지원 완료.
+
+출력 단순화는 메서드 의미를 바꾸지 않는 형태만 채택. `&&` 결합처럼 값·side-effect 순서가
+보존됨을 테스트로 증명하고, 나머지 methods는 기존 strict CFG output 유지.
 
 ## Phase 3 — jadx 패리티 선별
 

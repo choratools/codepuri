@@ -264,6 +264,610 @@ pub struct ForwardPlan {
     pub copies: HashMap<EdgeId, Vec<Copy>>,
 }
 
+/// A narrowly recognized two-operand, short-circuit Boolean return.
+///
+/// The instruction lists retain original execution order. Only the pure
+/// predicate calculations and the constant-return terminal paths are omitted;
+/// those are proven to be Boolean operations/literals with no other uses.
+#[allow(dead_code)]
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) struct ShortCircuitBooleanReturn {
+    pub(crate) locals: Vec<ValueId>,
+    pub(crate) before: Vec<InsnId>,
+    pub(crate) between: Vec<InsnId>,
+    pub(crate) left: ValueId,
+    pub(crate) right: ValueId,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[allow(dead_code)]
+struct LinearPath {
+    blocks: Vec<BlockId>,
+    edges: Vec<EdgeId>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[allow(dead_code)]
+struct BooleanAtom {
+    value: ValueId,
+    inverted: bool,
+    predicate: Option<InsnId>,
+    literal_values: Vec<ValueId>,
+    literal_definitions: Vec<InsnId>,
+}
+
+/// Prove and plan the specific short-circuit shape
+/// `if (!left) return false; return right;`.
+///
+/// This deliberately accepts only a two-branch acyclic chain whose outcomes
+/// are exact Boolean constants. The only shared control is the identical
+/// false-return terminal path. All other blocks and edges must be covered by
+/// the linear prefix, guarded middle, or one of those terminal paths.
+#[allow(dead_code)]
+pub(crate) fn plan_short_circuit_boolean_return(
+    ir: &MethodIr<SsaForm>,
+    bindings: &[ValueId],
+    declarations: &HashSet<ValueId>,
+) -> Option<ShortCircuitBooleanReturn> {
+    let cfg = ir.cfg();
+
+    let branch_blocks: Vec<_> = cfg
+        .block_ids()
+        .filter(|block| {
+            cfg.block(*block).is_ok_and(|node| {
+                ir.instruction(*node.payload()).is_ok_and(|insn| {
+                    matches!(
+                        insn,
+                        ManagedInsn::Branch {
+                            condition: Some(_),
+                            ..
+                        }
+                    )
+                })
+            })
+        })
+        .collect();
+    if branch_blocks.len() != 2 {
+        return None;
+    }
+
+    let prefix = walk_to_branch(ir, cfg.entry())?;
+    let first = *prefix.blocks.last()?;
+    let second = *branch_blocks.iter().find(|&&block| block != first)?;
+    let (first_condition, first_true, first_false) = conditional_edges(ir, first)?;
+    let (second_condition, second_true, second_false) = conditional_edges(ir, second)?;
+
+    let first_options = [first_true, first_false];
+    let mut continuing = Vec::new();
+    for edge in first_options {
+        let target = cfg.edge(edge).ok()?.target();
+        if let Some(path) = walk_to_branch(ir, target)
+            && path.blocks.last() == Some(&second)
+        {
+            continuing.push((edge, path));
+        }
+    }
+    if continuing.len() != 1 {
+        return None;
+    }
+    let (continue_edge, between_path) = continuing.pop()?;
+    let early_edge = if continue_edge == first_true {
+        first_false
+    } else {
+        first_true
+    };
+    let early_path = walk_to_return(ir, cfg.edge(early_edge).ok()?.target())?;
+    if terminal_boolean_return(ir, &early_path)? {
+        return None;
+    }
+
+    let branch_true_path = walk_to_return(ir, cfg.edge(second_true).ok()?.target())?;
+    let branch_false_path = walk_to_return(ir, cfg.edge(second_false).ok()?.target())?;
+    let branch_true_result = terminal_boolean_return(ir, &branch_true_path)?;
+    let branch_false_result = terminal_boolean_return(ir, &branch_false_path)?;
+    if branch_true_result == branch_false_result {
+        return None;
+    }
+    let (true_edge, true_path, false_path) = if branch_true_result {
+        (second_true, branch_true_path, branch_false_path)
+    } else {
+        (second_false, branch_false_path, branch_true_path)
+    };
+
+    let first_atom = boolean_atom(ir, first_condition)?;
+    let second_atom = boolean_atom(ir, second_condition)?;
+    // The early edge must be taken exactly when the first value is false.
+    if first_atom.inverted != (early_edge == first_true) {
+        return None;
+    }
+    // The second branch's true-return outcome must equal the second value.
+    let true_edge_is_branch_true = second_true_is_branch_true(ir, true_edge)?;
+    if second_atom.inverted == true_edge_is_branch_true {
+        return None;
+    }
+
+    let first_instruction = *cfg.block(first).ok()?.payload();
+    let second_instruction = *cfg.block(second).ok()?.payload();
+    for (predicate, branch) in [
+        (first_atom.predicate, first_instruction),
+        (second_atom.predicate, second_instruction),
+    ] {
+        if let Some(predicate) = predicate
+            && use_sites(ir, predicate_result(ir, predicate)?).as_slice() != [branch]
+        {
+            return None;
+        }
+    }
+
+    let before_blocks = &prefix.blocks[..prefix.blocks.len().checked_sub(1)?];
+    let between_blocks = &between_path.blocks[..between_path.blocks.len().checked_sub(1)?];
+    let left_definitions: HashSet<_> = before_blocks
+        .iter()
+        .map(|block| cfg.block(*block).ok().map(|node| *node.payload()))
+        .collect::<Option<_>>()?;
+    let middle_definitions: HashSet<_> = between_blocks
+        .iter()
+        .map(|block| cfg.block(*block).ok().map(|node| *node.payload()))
+        .collect::<Option<_>>()?;
+    let binding_set: HashSet<_> = bindings.iter().copied().collect();
+    if (!left_definitions.contains(&ir.value(first_atom.value).ok()?.def())
+        && !binding_set.contains(&first_atom.value))
+        || !middle_definitions.contains(&ir.value(second_atom.value).ok()?.def())
+    {
+        return None;
+    }
+
+    let terminal_paths = [&early_path, &true_path, &false_path];
+    for path in terminal_paths {
+        for &block in &path.blocks {
+            let id = *cfg.block(block).ok()?.payload();
+            let insn = ir.instruction(id).ok()?;
+            match insn {
+                ManagedInsn::Return { .. }
+                | ManagedInsn::Branch {
+                    condition: None, ..
+                } => {}
+                ManagedInsn::Const { result, .. }
+                    if exact_boolean_literal(ir, *result, &mut HashSet::new()).is_some() => {}
+                ManagedInsn::Move { result, .. }
+                    if exact_boolean_literal(ir, *result, &mut HashSet::new()).is_some() => {}
+                _ => return None,
+            }
+        }
+    }
+
+    // The false terminal may be shared only as the same entire linear path.
+    if early_path != false_path && paths_overlap(&early_path, &false_path) {
+        return None;
+    }
+    let paths = [&prefix, &between_path, &early_path, &true_path, &false_path];
+    for i in 0..paths.len() {
+        for j in (i + 1)..paths.len() {
+            if i == 2 && j == 4 && early_path == false_path {
+                continue;
+            }
+            if paths_overlap(paths[i], paths[j]) {
+                return None;
+            }
+        }
+    }
+
+    let mut covered_blocks = HashSet::new();
+    let mut covered_edges = HashSet::new();
+    for path in paths {
+        covered_blocks.extend(path.blocks.iter().copied());
+        covered_edges.extend(path.edges.iter().copied());
+    }
+    covered_edges.extend([first_true, first_false, second_true, second_false]);
+    if covered_blocks.len() != cfg.block_count()
+        || cfg
+            .block_ids()
+            .any(|block| !covered_blocks.contains(&block))
+        || covered_edges.len() != cfg.edge_count()
+        || cfg.edge_ids().any(|edge| !covered_edges.contains(&edge))
+    {
+        return None;
+    }
+
+    let mut removed = HashSet::new();
+    if let Some(id) = first_atom.predicate {
+        removed.insert(id);
+    }
+    if let Some(id) = second_atom.predicate {
+        removed.insert(id);
+    }
+    for path in terminal_paths {
+        for &block in &path.blocks {
+            removed.insert(*cfg.block(block).ok()?.payload());
+        }
+    }
+
+    // A compare-to-literal's temporary can also disappear when every use is
+    // one of the removed pure predicates or replaced constant returns.
+    let literal_values: HashSet<_> = first_atom
+        .literal_values
+        .iter()
+        .chain(&second_atom.literal_values)
+        .copied()
+        .collect();
+    let literal_definitions: HashSet<_> = first_atom
+        .literal_definitions
+        .iter()
+        .chain(&second_atom.literal_definitions)
+        .copied()
+        .collect();
+    let allowed_literal_uses: HashSet<_> = removed
+        .iter()
+        .copied()
+        .chain(literal_definitions.iter().copied())
+        .collect();
+    let can_remove_literals = literal_values.iter().all(|value| {
+        use_sites(ir, *value)
+            .iter()
+            .all(|use_id| allowed_literal_uses.contains(use_id))
+    });
+    if can_remove_literals {
+        removed.extend(literal_definitions);
+    }
+
+    let mut before = Vec::new();
+    let mut between = Vec::new();
+    for (blocks, output) in [(before_blocks, &mut before), (between_blocks, &mut between)] {
+        for &block in blocks {
+            let id = *cfg.block(block).ok()?.payload();
+            let insn = ir.instruction(id).ok()?;
+            if matches!(insn, ManagedInsn::Phi { .. }) {
+                return None;
+            }
+            if !matches!(insn, ManagedInsn::Branch { .. }) && !removed.contains(&id) {
+                output.push(id);
+            }
+        }
+    }
+    let left_definition = ir.value(first_atom.value).ok()?.def();
+    let right_definition = ir.value(second_atom.value).ok()?.def();
+    if (!binding_set.contains(&first_atom.value) && !before.contains(&left_definition))
+        || !between.contains(&right_definition)
+    {
+        return None;
+    }
+
+    let mut definitions: HashSet<_> = before
+        .iter()
+        .chain(&between)
+        .flat_map(|id| ir.instruction(*id).ok().map(defined).unwrap_or_default())
+        .collect();
+    for binding in &binding_set {
+        definitions.remove(binding);
+    }
+    // This final validation proves SSA identity, path availability, Phi edge
+    // completeness, and normal forward flow after the exact shape has matched.
+    plan_forward_checked(ir, bindings, declarations).ok()?;
+    let locals = finish(ir, definitions, Vec::new()).locals;
+    Some(ShortCircuitBooleanReturn {
+        locals,
+        before,
+        between,
+        left: first_atom.value,
+        right: second_atom.value,
+    })
+}
+
+#[allow(dead_code)]
+fn walk_to_branch(ir: &MethodIr<SsaForm>, start: BlockId) -> Option<LinearPath> {
+    let cfg = ir.cfg();
+    let mut blocks = Vec::new();
+    let mut edges = Vec::new();
+    let mut seen = HashSet::new();
+    let mut block = start;
+    loop {
+        if !seen.insert(block) {
+            return None;
+        }
+        blocks.push(block);
+        let id = *cfg.block(block).ok()?.payload();
+        let insn = ir.instruction(id).ok()?;
+        if matches!(
+            insn,
+            ManagedInsn::Branch {
+                condition: Some(_),
+                ..
+            }
+        ) {
+            conditional_edges(ir, block)?;
+            return Some(LinearPath { blocks, edges });
+        }
+        if matches!(
+            insn,
+            ManagedInsn::Return { .. } | ManagedInsn::Throw { .. } | ManagedInsn::Switch { .. }
+        ) {
+            return None;
+        }
+        let outgoing = cfg.block(block).ok()?.outgoing();
+        if outgoing.len() != 1 {
+            return None;
+        }
+        let edge = outgoing[0];
+        let transfer = cfg.edge(edge).ok()?;
+        if transfer.source() != block || transfer.kind() != &EdgeKind::Unconditional {
+            return None;
+        }
+        edges.push(edge);
+        block = transfer.target();
+    }
+}
+
+#[allow(dead_code)]
+fn walk_to_return(ir: &MethodIr<SsaForm>, start: BlockId) -> Option<LinearPath> {
+    let cfg = ir.cfg();
+    let mut blocks = Vec::new();
+    let mut edges = Vec::new();
+    let mut seen = HashSet::new();
+    let mut block = start;
+    loop {
+        if !seen.insert(block) {
+            return None;
+        }
+        blocks.push(block);
+        let id = *cfg.block(block).ok()?.payload();
+        let insn = ir.instruction(id).ok()?;
+        if matches!(insn, ManagedInsn::Return { .. }) {
+            return cfg
+                .block(block)
+                .ok()?
+                .outgoing()
+                .is_empty()
+                .then_some(LinearPath { blocks, edges });
+        }
+        if matches!(insn, ManagedInsn::Throw { .. } | ManagedInsn::Switch { .. })
+            || matches!(
+                insn,
+                ManagedInsn::Branch {
+                    condition: Some(_),
+                    ..
+                }
+            )
+        {
+            return None;
+        }
+        let outgoing = cfg.block(block).ok()?.outgoing();
+        if outgoing.len() != 1 {
+            return None;
+        }
+        let edge = outgoing[0];
+        let transfer = cfg.edge(edge).ok()?;
+        if transfer.source() != block || transfer.kind() != &EdgeKind::Unconditional {
+            return None;
+        }
+        edges.push(edge);
+        block = transfer.target();
+    }
+}
+
+#[allow(dead_code)]
+fn conditional_edges(ir: &MethodIr<SsaForm>, block: BlockId) -> Option<(ValueId, EdgeId, EdgeId)> {
+    let cfg = ir.cfg();
+    let id = *cfg.block(block).ok()?.payload();
+    let ManagedInsn::Branch {
+        condition: Some(condition),
+        then_edge,
+        else_edge: Some(else_edge),
+    } = ir.instruction(id).ok()?
+    else {
+        return None;
+    };
+    let outgoing = cfg.block(block).ok()?.outgoing();
+    let yes = cfg.edge(*then_edge).ok()?;
+    let no = cfg.edge(*else_edge).ok()?;
+    if outgoing.len() != 2
+        || !outgoing.contains(then_edge)
+        || !outgoing.contains(else_edge)
+        || then_edge == else_edge
+        || yes.source() != block
+        || no.source() != block
+        || yes.kind() != &EdgeKind::BranchTrue
+        || no.kind() != &EdgeKind::BranchFalse
+        || ir.value(*condition).ok()?.ty() != &ManagedType::Boolean
+    {
+        return None;
+    }
+    Some((*condition, *then_edge, *else_edge))
+}
+
+#[allow(dead_code)]
+fn second_true_is_branch_true(ir: &MethodIr<SsaForm>, edge: EdgeId) -> Option<bool> {
+    Some(ir.cfg().edge(edge).ok()?.kind() == &EdgeKind::BranchTrue)
+}
+
+#[allow(dead_code)]
+fn boolean_atom(ir: &MethodIr<SsaForm>, condition: ValueId) -> Option<BooleanAtom> {
+    if ir.value(condition).ok()?.ty() != &ManagedType::Boolean {
+        return None;
+    }
+    let definition = ir.value(condition).ok()?.def();
+    match ir.instruction(definition).ok()? {
+        ManagedInsn::Not { result, value }
+            if *result == condition && ir.value(*value).ok()?.ty() == &ManagedType::Boolean =>
+        {
+            Some(BooleanAtom {
+                value: *value,
+                inverted: true,
+                predicate: Some(definition),
+                literal_values: Vec::new(),
+                literal_definitions: Vec::new(),
+            })
+        }
+        ManagedInsn::Move { result, value }
+            if *result == condition && ir.value(*value).ok()?.ty() == &ManagedType::Boolean =>
+        {
+            Some(BooleanAtom {
+                value: *value,
+                inverted: false,
+                predicate: Some(definition),
+                literal_values: Vec::new(),
+                literal_definitions: Vec::new(),
+            })
+        }
+        ManagedInsn::Compare {
+            op: op @ (managed_ir::ops::CompareOp::Equal | managed_ir::ops::CompareOp::NotEqual),
+            result,
+            lhs,
+            rhs,
+        } if *result == condition => {
+            let left_literal = exact_boolean_literal(ir, *lhs, &mut HashSet::new());
+            let right_literal = exact_boolean_literal(ir, *rhs, &mut HashSet::new());
+            let (value, literal, literal_value) = match (left_literal, right_literal) {
+                (None, Some(literal)) => (*lhs, literal, *rhs),
+                (Some(literal), None) => (*rhs, literal, *lhs),
+                _ => return None,
+            };
+            if ir.value(value).ok()?.ty() != &ManagedType::Boolean {
+                return None;
+            }
+            let inverted = match op {
+                managed_ir::ops::CompareOp::Equal => !literal,
+                managed_ir::ops::CompareOp::NotEqual => literal,
+                _ => return None,
+            };
+            let (literal_values, literal_definitions) = boolean_literal_chain(ir, literal_value)?;
+            Some(BooleanAtom {
+                value,
+                inverted,
+                predicate: Some(definition),
+                literal_values,
+                literal_definitions,
+            })
+        }
+        _ => Some(BooleanAtom {
+            value: condition,
+            inverted: false,
+            predicate: None,
+            literal_values: Vec::new(),
+            literal_definitions: Vec::new(),
+        }),
+    }
+}
+
+#[allow(dead_code)]
+fn boolean_literal_chain(
+    ir: &MethodIr<SsaForm>,
+    value: ValueId,
+) -> Option<(Vec<ValueId>, Vec<InsnId>)> {
+    let mut values = Vec::new();
+    let mut definitions = Vec::new();
+    let mut current = value;
+    let mut seen = HashSet::new();
+    loop {
+        if !seen.insert(current) {
+            return None;
+        }
+        values.push(current);
+        let definition = ir.value(current).ok()?.def();
+        definitions.push(definition);
+        match ir.instruction(definition).ok()? {
+            ManagedInsn::Move {
+                result,
+                value: source,
+            } if *result == current => {
+                current = *source;
+            }
+            ManagedInsn::Const {
+                result,
+                value: literal,
+            } if *result == current && boolean_constant(*literal).is_some() => {
+                return Some((values, definitions));
+            }
+            _ => return None,
+        }
+    }
+}
+
+#[allow(dead_code)]
+fn exact_boolean_literal(
+    ir: &MethodIr<SsaForm>,
+    target: ValueId,
+    active: &mut HashSet<ValueId>,
+) -> Option<bool> {
+    if !active.insert(target) || !booleanish_type(ir.value(target).ok()?.ty()) {
+        return None;
+    }
+    let definition = ir.value(target).ok()?.def();
+    let literal = match ir.instruction(definition).ok()? {
+        ManagedInsn::Const {
+            result,
+            value: constant,
+        } if *result == target => boolean_constant(*constant)?,
+        ManagedInsn::Move {
+            result,
+            value: source,
+        } if *result == target => {
+            if !booleanish_type(ir.value(*source).ok()?.ty()) {
+                return None;
+            }
+            exact_boolean_literal(ir, *source, active)?
+        }
+        _ => return None,
+    };
+    active.remove(&target);
+    Some(literal)
+}
+
+#[allow(dead_code)]
+fn boolean_constant(value: managed_ir::ops::Constant) -> Option<bool> {
+    match value {
+        managed_ir::ops::Constant::Boolean(value) => Some(value),
+        managed_ir::ops::Constant::Zero | managed_ir::ops::Constant::Int(0) => Some(false),
+        managed_ir::ops::Constant::Int(1) => Some(true),
+        _ => None,
+    }
+}
+
+#[allow(dead_code)]
+fn booleanish_type(ty: &ManagedType) -> bool {
+    matches!(
+        ty,
+        ManagedType::Boolean | ManagedType::Zero | ManagedType::Int
+    )
+}
+
+#[allow(dead_code)]
+fn terminal_boolean_return(ir: &MethodIr<SsaForm>, path: &LinearPath) -> Option<bool> {
+    let cfg = ir.cfg();
+    let id = *cfg.block(*path.blocks.last()?).ok()?.payload();
+    let ManagedInsn::Return { value: Some(value) } = ir.instruction(id).ok()? else {
+        return None;
+    };
+    exact_boolean_literal(ir, *value, &mut HashSet::new())
+}
+
+#[allow(dead_code)]
+fn predicate_result(ir: &MethodIr<SsaForm>, predicate: InsnId) -> Option<ValueId> {
+    match ir.instruction(predicate).ok()? {
+        ManagedInsn::Not { result, .. }
+        | ManagedInsn::Move { result, .. }
+        | ManagedInsn::Compare { result, .. } => Some(*result),
+        _ => None,
+    }
+}
+
+#[allow(dead_code)]
+fn use_sites(ir: &MethodIr<SsaForm>, value: ValueId) -> Vec<InsnId> {
+    ir.instructions()
+        .iter()
+        .filter_map(|(id, insn)| {
+            let used = reads(insn).contains(&value)
+                || matches!(insn, ManagedInsn::Phi { inputs, .. } if inputs.iter().any(|(_, input)| *input == value));
+            used.then_some(id)
+        })
+        .collect()
+}
+
+#[allow(dead_code)]
+fn paths_overlap(left: &LinearPath, right: &LinearPath) -> bool {
+    left.blocks.iter().any(|block| right.blocks.contains(block))
+        || left.edges.iter().any(|edge| right.edges.contains(edge))
+}
+
 /// Validate definitions and availability on every original forward path.
 pub fn plan_forward(
     ir: &MethodIr<SsaForm>,
