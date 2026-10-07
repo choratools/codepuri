@@ -332,7 +332,8 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
   terminal negative fixture는 기존 forward-plan 경로로 남음.
 - 95 generated Java units changed, no class/source units gained/lost, strict counts unchanged,
   syntax0, full tests/clippy pass. Output style change intended; total bytes −115,884.
-- Ordinary speed 22.76→22.98s (noise-level neutral); fast mode 23.57→22.45s. Commit pending.
+- Ordinary speed 22.76→22.98s (noise-level neutral); fast mode 23.57→22.45s.
+  Commit `3e5c935`.
 
 ### R20 결과: exact `this.field.booleanCall()` 인라인 ✅
 
@@ -344,7 +345,7 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 - Workspace tests/clippy/fmt 통과; 28,575 source units, strict body identities 0 gained/0 lost,
   syntax0, javac diagnostic categories unchanged. 95 generated units changed intentionally.
 - Ordinary 3-run before/after 22.76→22.98s (노이즈 수준); fast 23.57→22.45s.
-  가독성 이득이 목적이며 speed regression 기준 0.3s를 넘지 않음. Commit pending.
+  가독성 이득이 목적이며 speed regression 기준 0.3s를 넘지 않음. Commit `148e7de`.
 
 ### R21 결과: pure single-use expression 축약 ✅
 
@@ -359,7 +360,7 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 - Samsung Pass: 95 output files intentionally changed, 0 method identity gained/lost, syntax0;
   javac diagnostics −3 (`cannot find symbol`), classes unchanged. Ordinary speed delta +0.18s,
   fast −0.19s (노이즈 내). Workspace fmt/clippy/tests pass.
-- R21 commit pending.
+- R21 commit `1ef409f`.
 
 ### R22 결과: compact source + lossless diagnostics sidecar ✅
 
@@ -373,14 +374,26 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 - Sidecar exact round-trip tests (line endings, tabs/control escapes, final no-newline comment),
   Java body lines unchanged, report/status counts unchanged, syntax gate zero for all three inputs;
   workspace tests/clippy/fmt 통과.
-- R22 commit pending. Use when clean Java files matter more than an adjacent large diagnostic ledger.
+- R22 commit `1b43804`. Use when clean Java files matter more than an adjacent large diagnostic ledger.
+
+### R23 결과: 일반 primitive expression chain 축약 ✅
+
+- Straight-line pure single-use Arithmetic/Compare/Neg/Not operands now inline with precedence
+  parentheses and exact constant/type promotion. Calls, writes, allocations, div/rem, Phi, loops,
+  exception-scoped or multi-use values remain materialized.
+- `int v0 = p0 + 1; int v1 = v0 * 2; return v1;` → `return ((p0 + 1) * 2);`.
+  Overflow, nested precedence, unary, negative literals, divide-by-zero order and multi-use
+  guards are compile/run tested. Samsung Pass: no method identity gained/lost; syntax gate 0;
+  javac diagnostics categories unchanged (existing cap reached).
+- Workspace fmt/clippy/tests pass. Ordinary timing 22.76→22.98s (+0.22s, under noise budget);
+  fast 23.57→22.45s. Commit `dd01095`.
 
 다음 가독성 대상:
-1. subset/initialization diagnostic comments를 Java source에서 `JavaReport` sidecar 또는 opt-in
-   verbose mode로 분리.
-2. parameters `p0`/locals `vN`에 DEX debug-local names를 검증된 경우만 적용.
-3. inner-class file bundling은 metadata/access semantics 근거가 있을 때 별도 구현.
-4. ADB metadata test에서 Android API metadata를 주면 완전도가 크게 상승; CLI `--classpath` 지원 완료.
+1. ADB Chrome `LtT;->onResult`의 213-line `forwardBlock_*` CFG를 event-order-safe structured branch로
+   단계적으로 복원 (native bridge, zero-handle throw 때문에 high risk).
+2. DEX debug-local names를 start/end/restart live-range provenance와 SSA value에 연결한 뒤 적용.
+3. Inner-class grouping은 genuine nesting metadata, complete family/access semantics가 입증된 단위만.
+4. Metadata completeness: Android classpath CLI 지원 완료; Chrome/EasyMover 전자세부 coverage smoke.
 
 출력 단순화는 메서드 의미를 바꾸지 않는 형태만 채택. `&&` 자체를 합성하는 대신
 short-circuit early-return 형태로 값·side-effect 순서를 보존함을 테스트로 증명; 다른 CFG는
