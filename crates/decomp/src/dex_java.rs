@@ -387,7 +387,7 @@ mod tests {
         };
         assert!(source.contains("public static int calculate(int p0, int p1)"));
         assert!(source.contains("(p0 + p1)"));
-        assert!(source.contains("return v0;"));
+        assert!(source.contains("return (p0 + p1);"));
     }
     #[test]
     fn resolver_preserves_isolated_surrogates() {

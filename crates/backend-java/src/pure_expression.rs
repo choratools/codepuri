@@ -42,10 +42,9 @@ pub(super) fn plan(
     if !exception_scopes_empty {
         return HashSet::new();
     }
-    // Only scan full use/dominance data for bodies that contain one of the
-    // initial witness-producing operations. This cheap gate keeps the planner
-    // out of the overwhelmingly common methods with no array lengths or
-    // Dalvik ordering comparisons.
+    // Only scan full use/dominance data for bodies that contain a supported
+    // pure-expression candidate. This cheap gate keeps the planner out of
+    // methods that cannot benefit from local expression elision.
     let mut relevant_body = false;
     for (_, instruction) in ir.instructions() {
         if matches!(
@@ -63,14 +62,18 @@ pub(super) fn plan(
         ) {
             return HashSet::new();
         }
-        relevant_body |= matches!(
-            instruction,
+        relevant_body |= match instruction {
+            ManagedInsn::Arithmetic { op, .. } => !matches!(op, ArithOp::Div | ArithOp::Rem),
             ManagedInsn::ArrayLength { .. }
-                | ManagedInsn::OrderingCompare {
-                    op: OrderingOp::CmpLong,
-                    ..
-                }
-        );
+            | ManagedInsn::Compare { .. }
+            | ManagedInsn::Neg { .. }
+            | ManagedInsn::Not { .. }
+            | ManagedInsn::OrderingCompare {
+                op: OrderingOp::CmpLong,
+                ..
+            } => true,
+            _ => false,
+        };
     }
     if !relevant_body || has_exception_edges(ir) || !cfg_is_acyclic(ir) {
         return HashSet::new();
@@ -304,12 +307,36 @@ fn producer_is_safe<R: JavaResolver>(
     if !consumer_is_supported(producer, consumer, result) {
         return false;
     }
+    if matches!(
+        consumer,
+        ManagedInsn::Arithmetic { .. }
+            | ManagedInsn::Compare { .. }
+            | ManagedInsn::Neg { .. }
+            | ManagedInsn::Not { .. }
+    ) && !pure_primitive_operation_is_safe(context, consumer)
+    {
+        return false;
+    }
     match producer {
         ManagedInsn::Const { value, .. } => {
             matches!(
                 value,
                 Constant::Zero | Constant::Boolean(_) | Constant::Int(_) | Constant::Long(_)
             ) && result_type != JavaType::Void
+                && (!matches!(
+                    consumer,
+                    ManagedInsn::Arithmetic { .. }
+                        | ManagedInsn::Neg { .. }
+                        | ManagedInsn::Not { .. }
+                ) || constant_is_safe_expression_operand(
+                    ir,
+                    declarations,
+                    resolver,
+                    consumer,
+                    result,
+                    value,
+                    &result_type,
+                ))
         }
         ManagedInsn::Arithmetic { op, lhs, rhs, .. } => {
             if matches!(op, ArithOp::Div | ArithOp::Rem) {
@@ -321,21 +348,7 @@ fn producer_is_safe<R: JavaResolver>(
             let Some(right) = java_value_type(ir, *rhs, declarations, resolver) else {
                 return false;
             };
-            match (op, &result_type) {
-                (
-                    ArithOp::ShiftLeft | ArithOp::ShiftRight | ArithOp::UnsignedShiftRight,
-                    JavaType::Int | JavaType::Long,
-                ) => left == result_type && right == JavaType::Int,
-                (_, _)
-                    if matches!(
-                        result_type,
-                        JavaType::Int | JavaType::Long | JavaType::Float | JavaType::Double
-                    ) =>
-                {
-                    left == result_type && right == result_type
-                }
-                _ => false,
-            }
+            arithmetic_types_are_safe(op, &result_type, &left, &right)
         }
         ManagedInsn::Compare { lhs, rhs, .. } => {
             let (Some(left), Some(right)) = (
@@ -440,17 +453,216 @@ fn java_value_type(
     })
 }
 
+fn pure_primitive_operation_is_safe<R: JavaResolver>(
+    context: &PlanContext<'_, R>,
+    instruction: &ManagedInsn,
+) -> bool {
+    let ir = context.ir;
+    let declarations = context.declarations;
+    let resolver = context.resolver;
+    match instruction {
+        ManagedInsn::Arithmetic {
+            op,
+            result,
+            lhs,
+            rhs,
+        } => {
+            let (Some(result), Some(left), Some(right)) = (
+                java_value_type(ir, *result, declarations, resolver),
+                java_value_type(ir, *lhs, declarations, resolver),
+                java_value_type(ir, *rhs, declarations, resolver),
+            ) else {
+                return false;
+            };
+            arithmetic_types_are_safe(op, &result, &left, &right)
+        }
+        ManagedInsn::Compare {
+            result, lhs, rhs, ..
+        } => {
+            let (Some(result), Some(left), Some(right)) = (
+                java_value_type(ir, *result, declarations, resolver),
+                java_value_type(ir, *lhs, declarations, resolver),
+                java_value_type(ir, *rhs, declarations, resolver),
+            ) else {
+                return false;
+            };
+            result == JavaType::Boolean
+                && left == right
+                && matches!(
+                    left,
+                    JavaType::Boolean
+                        | JavaType::Byte
+                        | JavaType::Short
+                        | JavaType::Char
+                        | JavaType::Int
+                        | JavaType::Long
+                        | JavaType::Float
+                        | JavaType::Double
+                )
+        }
+        ManagedInsn::Neg { result, value } => {
+            let (Some(result), Some(source)) = (
+                java_value_type(ir, *result, declarations, resolver),
+                java_value_type(ir, *value, declarations, resolver),
+            ) else {
+                return false;
+            };
+            result == source
+                && matches!(
+                    result,
+                    JavaType::Int | JavaType::Long | JavaType::Float | JavaType::Double
+                )
+        }
+        ManagedInsn::Not { result, value } => {
+            let (Some(result), Some(source)) = (
+                java_value_type(ir, *result, declarations, resolver),
+                java_value_type(ir, *value, declarations, resolver),
+            ) else {
+                return false;
+            };
+            result == source && matches!(result, JavaType::Int | JavaType::Long | JavaType::Boolean)
+        }
+        _ => false,
+    }
+}
+
+fn constant_is_exact_primitive(value: &Constant, ty: &JavaType) -> bool {
+    match value {
+        Constant::Zero => matches!(
+            ty,
+            JavaType::Boolean
+                | JavaType::Byte
+                | JavaType::Short
+                | JavaType::Char
+                | JavaType::Int
+                | JavaType::Long
+                | JavaType::Float
+                | JavaType::Double
+        ),
+        Constant::Boolean(_) => *ty == JavaType::Boolean,
+        Constant::Int(value) => {
+            *ty == JavaType::Int
+                || match ty {
+                    JavaType::Byte => i8::try_from(*value).is_ok(),
+                    JavaType::Short => i16::try_from(*value).is_ok(),
+                    JavaType::Char => u16::try_from(*value).is_ok(),
+                    _ => false,
+                }
+        }
+        Constant::Long(_) => *ty == JavaType::Long,
+        _ => false,
+    }
+}
+
+fn constant_is_safe_expression_operand<R: JavaResolver>(
+    ir: &MethodIr<SsaForm>,
+    declarations: &HashMap<ValueId, JavaType>,
+    resolver: &R,
+    consumer: &ManagedInsn,
+    value: ValueId,
+    constant: &Constant,
+    ty: &JavaType,
+) -> bool {
+    if !constant_is_exact_primitive(constant, ty) {
+        return false;
+    }
+    match consumer {
+        ManagedInsn::Arithmetic {
+            op,
+            result,
+            lhs,
+            rhs,
+        } => {
+            let (used_as_left, used_as_right) = (*lhs == value, *rhs == value);
+            if used_as_left == used_as_right || matches!(op, ArithOp::Div | ArithOp::Rem) {
+                return false;
+            }
+            let Some(operation_type) = java_value_type(ir, *result, declarations, resolver) else {
+                return false;
+            };
+            let (Some(left), Some(right)) = (
+                java_value_type(ir, *lhs, declarations, resolver),
+                java_value_type(ir, *rhs, declarations, resolver),
+            ) else {
+                return false;
+            };
+            if !arithmetic_types_are_safe(op, &operation_type, &left, &right) {
+                return false;
+            }
+            let expected = if matches!(
+                op,
+                ArithOp::ShiftLeft | ArithOp::ShiftRight | ArithOp::UnsignedShiftRight
+            ) && used_as_right
+            {
+                JavaType::Int
+            } else {
+                operation_type
+            };
+            *ty == expected
+        }
+        ManagedInsn::Neg {
+            result,
+            value: operand,
+        } if *operand == value => {
+            java_value_type(ir, *result, declarations, resolver).as_ref() == Some(ty)
+                && matches!(
+                    ty,
+                    JavaType::Int | JavaType::Long | JavaType::Float | JavaType::Double
+                )
+        }
+        ManagedInsn::Not {
+            result,
+            value: operand,
+        } if *operand == value => {
+            java_value_type(ir, *result, declarations, resolver).as_ref() == Some(ty)
+                && matches!(ty, JavaType::Int | JavaType::Long | JavaType::Boolean)
+        }
+        _ => false,
+    }
+}
+
+fn arithmetic_types_are_safe(
+    op: &ArithOp,
+    result: &JavaType,
+    left: &JavaType,
+    right: &JavaType,
+) -> bool {
+    if matches!(op, ArithOp::Div | ArithOp::Rem) {
+        return false;
+    }
+    match (op, result) {
+        (
+            ArithOp::ShiftLeft | ArithOp::ShiftRight | ArithOp::UnsignedShiftRight,
+            JavaType::Int | JavaType::Long,
+        ) => left == result && *right == JavaType::Int,
+        (ArithOp::And | ArithOp::Or | ArithOp::Xor, JavaType::Boolean) => {
+            *left == JavaType::Boolean && *right == JavaType::Boolean
+        }
+        (_, JavaType::Int | JavaType::Long | JavaType::Float | JavaType::Double) => {
+            left == result && right == result
+        }
+        _ => false,
+    }
+}
+
 fn consumer_is_supported(producer: &ManagedInsn, consumer: &ManagedInsn, result: ValueId) -> bool {
     match producer {
         ManagedInsn::Const { .. } => matches!(
             consumer,
             ManagedInsn::Compare { .. }
                 | ManagedInsn::OrderingCompare { .. }
+                | ManagedInsn::Arithmetic { .. }
+                | ManagedInsn::Neg { .. }
+                | ManagedInsn::Not { .. }
                 | ManagedInsn::Return { value: Some(_) }
         ),
         ManagedInsn::Arithmetic { .. } => matches!(
             consumer,
-            ManagedInsn::Arithmetic { .. } | ManagedInsn::Compare { .. }
+            ManagedInsn::Arithmetic { .. }
+                | ManagedInsn::Compare { .. }
+                | ManagedInsn::Neg { .. }
+                | ManagedInsn::Not { .. }
+                | ManagedInsn::Return { value: Some(_) }
         ),
         ManagedInsn::Compare { .. } => {
             matches!(
@@ -460,6 +672,8 @@ fn consumer_is_supported(producer: &ManagedInsn, consumer: &ManagedInsn, result:
                     ..
                 } if *value == result
             ) || matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)
+                || matches!(consumer, ManagedInsn::Compare { .. })
+                || matches!(consumer, ManagedInsn::Not { value, .. } if *value == result)
         }
         ManagedInsn::OrderingCompare { .. } => matches!(
             consumer,
@@ -468,6 +682,14 @@ fn consumer_is_supported(producer: &ManagedInsn, consumer: &ManagedInsn, result:
         ManagedInsn::ArrayLength { .. } => {
             matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)
         }
+        ManagedInsn::Neg { .. } | ManagedInsn::Not { .. } => matches!(
+            consumer,
+            ManagedInsn::Arithmetic { .. }
+                | ManagedInsn::Compare { .. }
+                | ManagedInsn::Neg { .. }
+                | ManagedInsn::Not { .. }
+                | ManagedInsn::Return { value: Some(_) }
+        ),
         ManagedInsn::FieldGet { .. } => {
             matches!(consumer, ManagedInsn::ArrayLength { array, .. } if *array == result)
                 || matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)

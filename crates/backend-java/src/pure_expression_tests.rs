@@ -476,18 +476,380 @@ fn single_use_integer_arithmetic_keeps_dex_width_and_overflow() {
 }
 
 #[test]
-fn multi_use_arithmetic_remains_materialized_instead_of_being_duplicated() {
+fn add_multiply_chain_inlines_single_use_values_and_exact_constants() {
     let mut builder = Builder::default();
-    let sentinel = builder.parameter(ManagedType::Array {
-        element: Box::new(ManagedType::Int),
-        nullable: true,
+    let input = builder.parameter(ManagedType::Int);
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
     });
+    let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: input,
+        rhs: one,
+    });
+    let two = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(2),
+    });
+    let product = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Mul,
+        result,
+        lhs: sum,
+        rhs: two,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(product),
+    });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("addMultiply", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["p0".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("return ((p0 + 1) * 2);"), "{source}");
+    assert!(!source.contains(" v0 = "), "{source}");
+    java(
+        &source,
+        "if(addMultiply(5) != 12 || addMultiply(Integer.MAX_VALUE) != 0 || addMultiply(-2) != -2) throw new AssertionError();",
+    );
+}
+
+#[test]
+fn unary_and_comparison_results_inline_into_returns() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let negated = builder.value(ManagedType::Int, |result| ManagedInsn::Neg {
+        result,
+        value: input,
+    });
+    let zero = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(0),
+    });
+    let positive = builder.value(ManagedType::Boolean, |result| ManagedInsn::Compare {
+        op: CompareOp::GreaterThan,
+        result,
+        lhs: negated,
+        rhs: zero,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(positive),
+    });
+    let compare_ir = builder.finish();
+    let compare_source = complete_with(
+        &compare_ir,
+        signature("negatedPositive", JavaType::Boolean, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["input".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(
+        compare_source.contains("return ((- input) > 0);"),
+        "{compare_source}"
+    );
+    assert!(!compare_source.contains(" v0 = "), "{compare_source}");
+
+    let mut builder = Builder::default();
+    let left = builder.parameter(ManagedType::Boolean);
+    let right = builder.parameter(ManagedType::Boolean);
+    let conjunction = builder.value(ManagedType::Boolean, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::And,
+        result,
+        lhs: left,
+        rhs: right,
+    });
+    let inverted = builder.value(ManagedType::Boolean, |result| ManagedInsn::Not {
+        result,
+        value: conjunction,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(inverted),
+    });
+    let boolean_ir = builder.finish();
+    let boolean_source = complete_with(
+        &boolean_ir,
+        signature(
+            "notConjunction",
+            JavaType::Boolean,
+            vec![JavaType::Boolean, JavaType::Boolean],
+        ),
+        ParameterBindings {
+            parameters: vec![left, right],
+            names: vec!["left".into(), "right".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(
+        boolean_source.contains("return (!(left & right));"),
+        "{boolean_source}"
+    );
+    assert!(!boolean_source.contains("boolean v"), "{boolean_source}");
+
+    let mut builder = Builder::default();
+    let negative_one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(-1),
+    });
+    let positive_one = builder.value(ManagedType::Int, |result| ManagedInsn::Neg {
+        result,
+        value: negative_one,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(positive_one),
+    });
+    let literal_ir = builder.finish();
+    let literal_source = complete_with(
+        &literal_ir,
+        signature("negateMinusOne", JavaType::Int, vec![]),
+        ParameterBindings::default(),
+        &PureResolver,
+    );
+    assert!(
+        literal_source.contains("return (- -1);"),
+        "{literal_source}"
+    );
+
+    java(
+        &(compare_source + &boolean_source + &literal_source),
+        "if(negatedPositive(1) || !negatedPositive(-1) || negatedPositive(Integer.MIN_VALUE)) throw new AssertionError(); if(!notConjunction(false, false) || !notConjunction(true, false) || !notConjunction(false, true) || notConjunction(true, true)) throw new AssertionError(); if(negateMinusOne() != 1) throw new AssertionError();",
+    );
+}
+
+#[test]
+fn nested_arithmetic_preserves_source_precedence() {
+    let mut builder = Builder::default();
+    let scale = builder.parameter(ManagedType::Int);
+    let minuend = builder.parameter(ManagedType::Int);
+    let subtrahend = builder.parameter(ManagedType::Int);
+    let difference = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Sub,
+        result,
+        lhs: minuend,
+        rhs: subtrahend,
+    });
+    let product = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Mul,
+        result,
+        lhs: scale,
+        rhs: difference,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(product),
+    });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature(
+            "scaledDifference",
+            JavaType::Int,
+            vec![JavaType::Int, JavaType::Int, JavaType::Int],
+        ),
+        ParameterBindings {
+            parameters: vec![scale, minuend, subtrahend],
+            names: vec!["scale".into(), "minuend".into(), "subtrahend".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(
+        source.contains("return (scale * (minuend - subtrahend));"),
+        "{source}"
+    );
+    java(
+        &source,
+        "if(scaledDifference(3, 10, 4) != 18 || scaledDifference(2, Integer.MIN_VALUE, 1) != -2) throw new AssertionError();",
+    );
+}
+
+#[test]
+fn division_by_zero_remains_at_its_original_materialized_site() {
+    let mut builder = Builder::default();
+    let numerator = builder.parameter(ManagedType::Int);
+    let denominator = builder.parameter(ManagedType::Int);
+    let quotient = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Div,
+        result,
+        lhs: numerator,
+        rhs: denominator,
+    });
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    let incremented = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: quotient,
+        rhs: one,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(incremented),
+    });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature(
+            "divideThenIncrement",
+            JavaType::Int,
+            vec![JavaType::Int, JavaType::Int],
+        ),
+        ParameterBindings {
+            parameters: vec![numerator, denominator],
+            names: vec!["numerator".into(), "denominator".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(
+        source.contains("int v0 = (numerator / denominator);"),
+        "{source}"
+    );
+    assert!(source.contains("return (v0 + 1);"), "{source}");
+    java(
+        &source,
+        "if(divideThenIncrement(8, 2) != 5) throw new AssertionError(); try { divideThenIncrement(8, 0); throw new AssertionError(); } catch(ArithmeticException expected) {}",
+    );
+}
+
+#[test]
+fn branch_phi_and_exception_guards_keep_values_materialized() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: input,
+        rhs: one,
+    });
+    builder.push(ManagedInsn::Return { value: Some(sum) });
+    let straight_line = builder.finish();
+    let normal_plan =
+        pure_expression::plan(&straight_line, None, &HashMap::new(), true, &PureResolver);
+    assert!(normal_plan.contains(&sum));
+    let scoped_plan =
+        pure_expression::plan(&straight_line, None, &HashMap::new(), false, &PureResolver);
+    assert!(scoped_plan.is_empty());
+
+    let mut builder = Builder::default();
+    let condition = builder.parameter(ManagedType::Boolean);
     let left = builder.parameter(ManagedType::Int);
     let right = builder.parameter(ManagedType::Int);
-    let _length = builder.value(ManagedType::Int, |result| ManagedInsn::ArrayLength {
+    let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
         result,
-        array: sentinel,
+        lhs: left,
+        rhs: right,
     });
+    builder.push(ManagedInsn::Return { value: None });
+    let branch_id = *builder.order.last().unwrap();
+    builder.push(ManagedInsn::Return { value: Some(sum) });
+    let true_return = *builder.order.last().unwrap();
+    let (false_constant, false_return) = append_return(&mut builder, 0);
+    let ids = builder.order.clone();
+    let mut cfg = Cfg::new(ids[0]);
+    let mut blocks = HashMap::from([(ids[0], cfg.entry())]);
+    for id in ids.iter().skip(1) {
+        blocks.insert(*id, cfg.add_block(*id));
+    }
+    let add_edge = |cfg: &mut Cfg<InsnId>, from, to, kind| {
+        cfg.add_edge(blocks[&from], blocks[&to], kind).unwrap()
+    };
+    add_edge(&mut cfg, ids[0], branch_id, EdgeKind::Unconditional);
+    let then_edge = add_edge(&mut cfg, branch_id, true_return, EdgeKind::BranchTrue);
+    let else_edge = add_edge(&mut cfg, branch_id, false_constant, EdgeKind::BranchFalse);
+    add_edge(
+        &mut cfg,
+        false_constant,
+        false_return,
+        EdgeKind::Unconditional,
+    );
+    builder.insns[branch_id] = ManagedInsn::Branch {
+        condition: Some(condition),
+        then_edge,
+        else_edge: Some(else_edge),
+    };
+    let branch_ir = MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values);
+    let branch_plan = pure_expression::plan(&branch_ir, None, &HashMap::new(), true, &PureResolver);
+    assert!(!branch_plan.contains(&sum));
+    let branch_source = complete_with(
+        &branch_ir,
+        signature(
+            "branchKeepsArithmetic",
+            JavaType::Int,
+            vec![JavaType::Boolean, JavaType::Int, JavaType::Int],
+        ),
+        ParameterBindings {
+            parameters: vec![condition, left, right],
+            names: vec!["condition".into(), "left".into(), "right".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(
+        branch_source.contains("v0 = (left + right);"),
+        "{branch_source}"
+    );
+    assert!(branch_source.contains("return v0;"), "{branch_source}");
+    java(
+        &branch_source,
+        "if(branchKeepsArithmetic(true, Integer.MAX_VALUE, 1) != Integer.MIN_VALUE || branchKeepsArithmetic(false, 4, 5) != 0) throw new AssertionError();",
+    );
+
+    let mut builder = Builder::default();
+    let left = builder.parameter(ManagedType::Int);
+    let right = builder.parameter(ManagedType::Int);
+    let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: left,
+        rhs: right,
+    });
+    let phi = builder.value(ManagedType::Int, |result| ManagedInsn::Phi {
+        result,
+        inputs: Vec::new(),
+    });
+    builder.push(ManagedInsn::Return { value: Some(phi) });
+    let ids = builder.order.clone();
+    let mut cfg = Cfg::new(ids[0]);
+    let mut blocks = HashMap::from([(ids[0], cfg.entry())]);
+    for id in ids.iter().skip(1) {
+        blocks.insert(*id, cfg.add_block(*id));
+    }
+    let edge = cfg
+        .add_edge(blocks[&ids[0]], blocks[&ids[1]], EdgeKind::Unconditional)
+        .unwrap();
+    cfg.add_edge(blocks[&ids[1]], blocks[&ids[2]], EdgeKind::Unconditional)
+        .unwrap();
+    let phi_id = builder.values.get(phi).unwrap().def();
+    builder.insns[phi_id] = ManagedInsn::Phi {
+        result: phi,
+        inputs: vec![(edge, sum)],
+    };
+    let phi_ir = MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values);
+    let phi_plan = pure_expression::plan(&phi_ir, None, &HashMap::new(), true, &PureResolver);
+    assert!(!phi_plan.contains(&sum));
+}
+
+#[test]
+fn multi_use_arithmetic_remains_materialized_instead_of_being_duplicated() {
+    let mut builder = Builder::default();
+    let left = builder.parameter(ManagedType::Int);
+    let right = builder.parameter(ManagedType::Int);
     let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
         op: ArithOp::Add,
         result,
@@ -507,26 +869,22 @@ fn multi_use_arithmetic_remains_materialized_instead_of_being_duplicated() {
         &signature(
             "sumUsedTwice",
             JavaType::Boolean,
-            vec![
-                JavaType::Array(Box::new(JavaType::Int)),
-                JavaType::Int,
-                JavaType::Int,
-            ],
+            vec![JavaType::Int, JavaType::Int],
         ),
         &ParameterBindings {
-            parameters: vec![sentinel, left, right],
-            names: vec!["sentinel".into(), "left".into(), "right".into()],
+            parameters: vec![left, right],
+            names: vec!["left".into(), "right".into()],
             ..Default::default()
         },
         &PureResolver,
     ) else {
         panic!("multi-use fixture rejected")
     };
-    assert!(source.contains("int v1 = (left + right);"), "{source}");
-    assert!(source.contains("return (v1 == v1);"), "{source}");
+    assert!(source.contains("int v0 = (left + right);"), "{source}");
+    assert!(source.contains("return (v0 == v0);"), "{source}");
     java(
         &source,
-        "if(!sumUsedTwice(new int[1], 2, 3)) throw new AssertionError();",
+        "if(!sumUsedTwice(2, 3)) throw new AssertionError();",
     );
 }
 

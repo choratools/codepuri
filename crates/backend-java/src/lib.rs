@@ -937,7 +937,14 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 } else {
                     "~"
                 };
-                self.define(*result, format!("({op}{n})"), t)?;
+                // Keep adjacent unary minus operators lexically separate when
+                // the operand is itself a negative literal or negation.
+                let expression = if neg {
+                    format!("(- {n})")
+                } else {
+                    format!("({op}{n})")
+                };
+                self.define(*result, expression, t)?;
             }
             ManagedInsn::Invoke {
                 kind,
