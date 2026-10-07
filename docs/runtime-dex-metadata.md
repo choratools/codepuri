@@ -29,10 +29,22 @@ methods with no JVM Code are not automatically native or abstract. A genuine
 JVM Object bytecode proof remains accessible only from the selected JVM provider.
 DEX encoded values are not treated as Java compile-time constants.
 
-The development profiler accepts repeatable `--metadata-dex PATH`. Runtime
-providers precede the explicit JVM classpath, while first-owner precedence and
-APK declaration priority remain intact. Default execution without this option
-uses the existing exporter path. Metadata setup time is reported separately.
+Both the `decomp` CLI and development profiler accept repeatable
+`--metadata-dex PATH`; the CLI also honors repeatable `--classpath PATH` instead
+of silently ignoring it. For example:
+
+```sh
+decomp app.apk out/ --workers 30 \
+  --metadata-dex framework.jar \
+  --classpath /opt/android-sdk/platforms/android-35/android.jar
+```
+
+Runtime providers precede the explicit JVM classpath, while first-owner
+precedence and APK declaration priority remain intact. With no metadata flags,
+the CLI uses the original `emit_java` path. Runtime DEX declarations do not
+become a `javac` classpath; supply a real `.jar`/`.jmod`/`android.jar` separately
+when compiler declarations are needed. Metadata setup time is reported by the
+development profiler separately.
 
 Runtime declaration availability is distinct from `javac` dependency availability:
 a DEX-only framework archive cannot be passed to javac as a classfile archive.
