@@ -361,6 +361,20 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
   fast −0.19s (노이즈 내). Workspace fmt/clippy/tests pass.
 - R21 commit pending.
 
+### R22 결과: compact source + lossless diagnostics sidecar ✅
+
+- `JavaOptions::compact_source` / CLI `--compact-source`는 standalone diagnostic `//` lines만
+  제거하고, path + descriptor + original line + exact text를 deterministic `diagnostics.tsv`에 둠.
+  Default mode false라 기존 Java output 그대로. Generic sinks도 `GeneratedSource.diagnostics` 받음.
+- Java source bytes: Samsung Pass17 **200.06→70.86MB (−64.6%)**, Samsung Pass25
+  345.21→256.54MB (−25.7%), Chrome ADB 110.26→83.45MB (−24.3%). Diagnostic sidecar
+  각각 221.56/174.89/45.06MB여서 combined disk usage는 증가; export wall도 sidecar I/O로
+  Samsung17 약 +12%, Chrome +35%. 따라서 **가독성 모드이지 속도/디스크 최적화는 아님**.
+- Sidecar exact round-trip tests (line endings, tabs/control escapes, final no-newline comment),
+  Java body lines unchanged, report/status counts unchanged, syntax gate zero for all three inputs;
+  workspace tests/clippy/fmt 통과.
+- R22 commit pending. Use when clean Java files matter more than an adjacent large diagnostic ledger.
+
 다음 가독성 대상:
 1. subset/initialization diagnostic comments를 Java source에서 `JavaReport` sidecar 또는 opt-in
    verbose mode로 분리.

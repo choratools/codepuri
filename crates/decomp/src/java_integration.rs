@@ -3354,7 +3354,10 @@ fn emit_pipelined(
             )
         });
         let mut failure = None;
-        for (source, receipt) in &rx {
+        for (mut source, receipt) in &rx {
+            if options.compact_source {
+                compact_source_diagnostic_comments(&mut source);
+            }
             if let Err(error) = sink.emit(&source) {
                 failure = Some(error);
                 break;

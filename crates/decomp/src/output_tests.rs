@@ -3,7 +3,7 @@
 
 use crate::output::*;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 struct Temp(PathBuf);
 
@@ -143,6 +143,7 @@ fn writes_packages_counts_success_and_never_overwrites() {
         Err(OutputError::DuplicatePath(_))
     ));
     sink.flush_pending().unwrap();
+    assert!(!root.join("diagnostics.tsv").exists());
     assert_eq!(
         fs::read_to_string(root.join("p/q/Example.java")).unwrap(),
         original.text
@@ -171,6 +172,109 @@ fn writes_packages_counts_success_and_never_overwrites() {
         Err(OutputError::DuplicatePath(_))
     ));
     assert_eq!(reopened.counts().total(), 0);
+}
+
+#[test]
+fn compact_source_comments_round_trip_through_deterministic_sidecar() {
+    let original = "package p;\n\t// first\tcomment\r\nclass Example {\n  int value; // inline comment\n  // last comment\n}\n// eof without terminator";
+    let mut generated = source("Lp/Example;", SourceStatus::Complete);
+    generated.text = original.into();
+    generated.diagnostics.push(SourceDiagnostic {
+        severity: DiagnosticSeverity::Warning,
+        message: "existing\tmessage\\with\ncontrol".into(),
+    });
+    compact_source_diagnostic_comments(&mut generated);
+    assert_eq!(
+        generated.text,
+        "package p;\nclass Example {\n  int value; // inline comment\n}\n"
+    );
+    assert_eq!(generated.diagnostics.len(), 4);
+
+    let emit = |root: &Path| -> String {
+        let mut sink = DirectorySink::with_diagnostic_sidecar(root).unwrap();
+        sink.emit(&generated).unwrap();
+        sink.flush_pending().unwrap();
+        fs::read_to_string(root.join("diagnostics.tsv")).unwrap()
+    };
+
+    fn unescape_tsv(value: &str) -> String {
+        let mut decoded = String::new();
+        let mut chars = value.chars();
+        while let Some(ch) = chars.next() {
+            if ch != '\\' {
+                decoded.push(ch);
+                continue;
+            }
+            match chars.next().unwrap() {
+                '\\' => decoded.push('\\'),
+                't' => decoded.push('\t'),
+                'n' => decoded.push('\n'),
+                'r' => decoded.push('\r'),
+                'u' => {
+                    assert_eq!(chars.next(), Some('{'));
+                    let digits: String = chars.by_ref().take_while(|ch| *ch != '}').collect();
+                    assert_eq!(chars.next(), Some(';'));
+                    decoded
+                        .push(char::from_u32(u32::from_str_radix(&digits, 16).unwrap()).unwrap());
+                }
+                other => panic!("unknown TSV escape {other:?}"),
+            }
+        }
+        decoded
+    }
+
+    let first_temp = Temp::new();
+    let second_temp = Temp::new();
+    let first_root = first_temp.0.join("first");
+    let second_root = second_temp.0.join("second");
+    let sidecar = emit(&first_root);
+    assert_eq!(sidecar, emit(&second_root));
+    let mut rows = sidecar.lines();
+    assert_eq!(
+        rows.next(),
+        Some("source_path\tdescriptor\torigin_present\torigin\tstatus\tline\tseverity\tmessage")
+    );
+    let mut removed = std::collections::BTreeMap::<usize, String>::new();
+    let mut found_existing_diagnostic = false;
+    for row in rows {
+        let fields: Vec<_> = row.split('\t').map(unescape_tsv).collect();
+        assert_eq!(fields.len(), 8);
+        assert_eq!(fields[0], "p/Example.java");
+        assert_eq!(fields[1], "Lp/Example;");
+        assert_eq!(fields[2], "true");
+        assert_eq!(fields[3], "classes.dex");
+        assert_eq!(fields[4], "complete");
+        if fields[5].is_empty() {
+            assert_eq!(fields[6], "warning");
+            assert_eq!(fields[7], "existing\tmessage\\with\ncontrol");
+            found_existing_diagnostic = true;
+        } else {
+            let line = fields[5].parse::<usize>().unwrap();
+            assert_eq!(fields[6], "info");
+            let (encoded_line, text) = decode_compact_source_comment(&fields[7]).unwrap();
+            assert_eq!(encoded_line, line);
+            assert!(removed.insert(line, text).is_none());
+        }
+    }
+    assert!(found_existing_diagnostic);
+    assert_eq!(removed.len(), 3);
+    assert_eq!(removed[&2], "\t// first\tcomment\r\n");
+    assert_eq!(removed[&5], "  // last comment\n");
+    assert_eq!(removed[&7], "// eof without terminator");
+
+    let compacted = fs::read_to_string(first_root.join("p/Example.java")).unwrap();
+    let mut retained = compacted.split_inclusive('\n');
+    let line_count = compacted.split_inclusive('\n').count() + removed.len();
+    let mut reconstructed = String::new();
+    for line in 1..=line_count {
+        if let Some(comment) = removed.remove(&line) {
+            reconstructed.push_str(&comment);
+        } else {
+            reconstructed.push_str(retained.next().unwrap());
+        }
+    }
+    assert!(retained.next().is_none());
+    assert_eq!(reconstructed, original);
 }
 
 #[test]

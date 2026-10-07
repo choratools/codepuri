@@ -4,7 +4,8 @@ use decomp::java_external_metadata::{
 };
 use std::path::PathBuf;
 
-const USAGE: &str = "usage: decomp <apk> <outdir> [--limit N] [--class FILTER] [--source-release 17|25] [--workers N] [--classpath PATH]... [--metadata-dex PATH]...
+const USAGE: &str = "usage: decomp <apk> <outdir> [--limit N] [--class FILTER] [--source-release 17|25] [--workers N] [--compact-source] [--classpath PATH]... [--metadata-dex PATH]...
+  --compact-source    remove standalone diagnostic comments; write diagnostics.tsv
   --classpath PATH    repeatable JVM .class/.jar/.zip/.jmod declarations
   --metadata-dex PATH repeatable raw DEX or ZIP/APK with root classes*.dex; runtime declarations only, not a javac classpath
   Runtime DEX metadata takes precedence over JVM classpath metadata; whole class declarations are not merged.";
@@ -51,6 +52,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     return Err("workers must be positive".into());
                 }
             }
+            "--compact-source" => options.compact_source = true,
             "--class" => options.class_filter = Some(args.next().ok_or("missing class filter")?),
             _ => return Err(format!("unknown option {arg}").into()),
         }
@@ -65,7 +67,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         Some(Classpath::from_paths(&options.classpath)?)
     };
     let files = dex_format::apk::parse_apk_path(apk)?;
-    let mut sink = decomp::output::DirectorySink::new(out)?;
+    let mut sink = if options.compact_source {
+        decomp::output::DirectorySink::with_diagnostic_sidecar(out)?
+    } else {
+        decomp::output::DirectorySink::new(out)?
+    };
     let report = if runtime_metadata.is_empty() && classpath.is_none() {
         decomp::dex_java::emit_java(&files, &options, &mut sink)?
     } else {

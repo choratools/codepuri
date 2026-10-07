@@ -178,6 +178,42 @@ fn small_dex() -> DexFile {
 }
 
 #[test]
+fn compact_source_option_only_removes_delivery_comments_and_keeps_report() {
+    let dex = small_dex();
+    let export = |compact_source| {
+        let mut sources = Vec::new();
+        let report = crate::dex_java::emit_java(
+            std::slice::from_ref(&dex),
+            &JavaOptions {
+                compact_source,
+                ..JavaOptions::default()
+            },
+            &mut |source: &GeneratedSource| {
+                sources.push(source.clone());
+                Ok(())
+            },
+        )
+        .unwrap();
+        (report, sources)
+    };
+    let (default_report, default_sources) = export(false);
+    let (compact_report, compact_sources) = export(true);
+    assert_eq!(compact_report, default_report);
+    assert_eq!(compact_sources.len(), default_sources.len());
+    for (default, compact) in default_sources.iter().zip(&compact_sources) {
+        let mut expected = default.clone();
+        compact_source_diagnostic_comments(&mut expected);
+        assert_eq!(compact, &expected);
+        assert!(
+            compact
+                .text
+                .lines()
+                .all(|line| !line.trim_start().starts_with("//"))
+        );
+    }
+}
+
+#[test]
 fn production_crossdex_publication_uses_defining_pool_and_owner_fields() {
     use dex_format::{
         RawSpan,

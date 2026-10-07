@@ -4,9 +4,13 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::ffi::OsString;
 use std::fmt;
 use std::fs::{self, File, OpenOptions};
-use std::io::{self, Write};
+use std::io::{self, BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Condvar, Mutex};
+
+const COMPACT_COMMENT_DIAGNOSTIC_TAG: &str = "decomp.compact-source-comment/v1";
+const DIAGNOSTIC_SIDECAR_HEADER: &str =
+    "source_path\tdescriptor\torigin_present\torigin\tstatus\tline\tseverity\tmessage\n";
 
 /// Quality of generated output, supplied explicitly by the producer.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -44,7 +48,8 @@ pub enum DiagnosticSeverity {
 pub struct SourceDiagnostic {
     /// Importance of the message.
     pub severity: DiagnosticSeverity,
-    /// Human-readable diagnostic text.
+    /// Human-readable diagnostic text. Compact-source comment records use the
+    /// versioned encoding decoded by [`decode_compact_source_comment`].
     pub message: String,
 }
 
@@ -95,6 +100,162 @@ impl GeneratedSource {
             diagnostics,
         })
     }
+}
+
+/// Remove generated standalone Java diagnostic comments while retaining their
+/// original source line and exact UTF-8 line contents in `diagnostics`.
+///
+/// This operates only at final source delivery, after deferred units and global
+/// closure evidence have been attached. Source statements and inline comments
+/// are copied byte-for-byte.
+pub(crate) fn compact_source_diagnostic_comments(source: &mut GeneratedSource) {
+    let mut compacted = String::with_capacity(source.text.len());
+    for (index, line) in source.text.split_inclusive('\n').enumerate() {
+        if line.trim_start().starts_with("//") {
+            source.diagnostics.push(SourceDiagnostic {
+                severity: DiagnosticSeverity::Info,
+                message: encode_compact_comment(index + 1, line),
+            });
+        } else {
+            compacted.push_str(line);
+        }
+    }
+    source.text = compacted;
+}
+
+fn encode_compact_comment(line_number: usize, comment: &str) -> String {
+    format!(
+        "{COMPACT_COMMENT_DIAGNOSTIC_TAG}\t{line_number}\t{}",
+        escape_compact_payload(comment)
+    )
+}
+
+fn escape_compact_payload(payload: &str) -> String {
+    let mut escaped = String::with_capacity(payload.len());
+    for ch in payload.chars() {
+        match ch {
+            '\\' => escaped.push_str("\\\\"),
+            '\t' => escaped.push_str("\\t"),
+            '\n' => escaped.push_str("\\n"),
+            '\r' => escaped.push_str("\\r"),
+            ch if ch.is_control() => escaped.push_str(&format!("\\u{{{:x}}};", ch as u32)),
+            ch => escaped.push(ch),
+        }
+    }
+    escaped
+}
+
+/// Decode a compact-source comment diagnostic message.
+///
+/// Returns the 1-based original line number and exact removed source line,
+/// including its original line terminator when present.
+pub fn decode_compact_source_comment(message: &str) -> Option<(usize, String)> {
+    let (tag, rest) = message.split_once('\t')?;
+    if tag != COMPACT_COMMENT_DIAGNOSTIC_TAG {
+        return None;
+    }
+    let (line, payload) = rest.split_once('\t')?;
+    let line = line.parse::<usize>().ok().filter(|line| *line > 0)?;
+    let mut decoded = String::with_capacity(payload.len());
+    let mut chars = payload.chars();
+    while let Some(ch) = chars.next() {
+        if ch != '\\' {
+            decoded.push(ch);
+            continue;
+        }
+        match chars.next()? {
+            '\\' => decoded.push('\\'),
+            't' => decoded.push('\t'),
+            'n' => decoded.push('\n'),
+            'r' => decoded.push('\r'),
+            'u' => {
+                if chars.next()? != '{' {
+                    return None;
+                }
+                let mut digits = String::new();
+                loop {
+                    match chars.next()? {
+                        '}' => break,
+                        digit => digits.push(digit),
+                    }
+                }
+                if chars.next()? != ';' {
+                    return None;
+                }
+                decoded.push(char::from_u32(u32::from_str_radix(&digits, 16).ok()?)?);
+            }
+            _ => return None,
+        }
+    }
+    decoded
+        .trim_start()
+        .starts_with("//")
+        .then_some((line, decoded))
+}
+
+fn escape_tsv_field(field: &str, output: &mut String) {
+    for ch in field.chars() {
+        match ch {
+            '\\' => output.push_str("\\\\"),
+            '\t' => output.push_str("\\t"),
+            '\n' => output.push_str("\\n"),
+            '\r' => output.push_str("\\r"),
+            ch if ch.is_control() => output.push_str(&format!("\\u{{{:x}}};", ch as u32)),
+            ch => output.push(ch),
+        }
+    }
+}
+
+fn write_diagnostic_sidecar_row(
+    sidecar: &mut impl Write,
+    source: &GeneratedSource,
+    diagnostic: &SourceDiagnostic,
+) -> Result<(), OutputError> {
+    let line = decode_compact_source_comment(&diagnostic.message).map(|(line, _)| line);
+    let line = line.map_or_else(String::new, |line| line.to_string());
+    let path = source.relative_path.to_string_lossy();
+    let origin = source.provenance.origin.as_deref().unwrap_or_default();
+    let status = match source.provenance.status {
+        SourceStatus::Complete => "complete",
+        SourceStatus::Fallback => "fallback",
+    };
+    let severity = match diagnostic.severity {
+        DiagnosticSeverity::Info => "info",
+        DiagnosticSeverity::Warning => "warning",
+        DiagnosticSeverity::Error => "error",
+    };
+    let mut row = String::with_capacity(
+        source.relative_path.as_os_str().len()
+            + source.provenance.descriptor.len()
+            + origin.len()
+            + diagnostic.message.len()
+            + 64,
+    );
+    for (index, field) in [
+        path.as_ref(),
+        source.provenance.descriptor.as_str(),
+        if source.provenance.origin.is_some() {
+            "true"
+        } else {
+            "false"
+        },
+        origin,
+        status,
+        line.as_str(),
+        severity,
+        diagnostic.message.as_str(),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        if index != 0 {
+            row.push('\t');
+        }
+        escape_tsv_field(field, &mut row);
+    }
+    row.push('\n');
+    sidecar.write_all(row.as_bytes())?;
+    Ok(())
 }
 
 /// Counts of successfully accepted sources by explicit quality.
@@ -481,6 +642,7 @@ pub struct DirectorySink {
     paths: HashSet<String>,
     directories: HashMap<PathBuf, CachedDirectory>,
     pool: PoolHandle,
+    diagnostic_sidecar: Option<BufWriter<File>>,
     #[cfg(test)]
     directory_operations: (usize, usize, usize),
 }
@@ -514,6 +676,16 @@ impl CachedDirectory {
 impl DirectorySink {
     /// Open an explicit output root, creating its final directory if absent.
     pub fn new(root: impl AsRef<Path>) -> Result<Self, OutputError> {
+        Self::new_with_sidecar(root, false)
+    }
+
+    /// Open a directory sink that writes every source diagnostic to a
+    /// deterministic `diagnostics.tsv` sidecar beneath the output root.
+    pub fn with_diagnostic_sidecar(root: impl AsRef<Path>) -> Result<Self, OutputError> {
+        Self::new_with_sidecar(root, true)
+    }
+
+    fn new_with_sidecar(root: impl AsRef<Path>, write_sidecar: bool) -> Result<Self, OutputError> {
         let root = if root.as_ref().is_absolute() {
             root.as_ref().to_owned()
         } else {
@@ -538,11 +710,24 @@ impl DirectorySink {
                 Err(e) => return Err(e.into()),
             }
         }
+        let root = fs::canonicalize(root)?;
+        let diagnostic_sidecar = if write_sidecar {
+            let file = OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(root.join("diagnostics.tsv"))?;
+            let mut sidecar = BufWriter::new(file);
+            sidecar.write_all(DIAGNOSTIC_SIDECAR_HEADER.as_bytes())?;
+            Some(sidecar)
+        } else {
+            None
+        };
         Ok(Self {
-            root: fs::canonicalize(root)?,
+            root,
             paths: HashSet::new(),
             directories: HashMap::new(),
             pool: PoolHandle::spawn()?,
+            diagnostic_sidecar,
             #[cfg(test)]
             directory_operations: (0, 0, 0),
         })
@@ -567,7 +752,11 @@ impl DirectorySink {
     /// Drain all deferred writes and report the first failure. Only a success
     /// from this method proves every accepted source reached the filesystem.
     pub fn flush_pending(&mut self) -> Result<(), OutputError> {
-        self.pool.flush()
+        self.pool.flush()?;
+        if let Some(sidecar) = self.diagnostic_sidecar.as_mut() {
+            sidecar.flush()?;
+        }
+        Ok(())
     }
 
     /// Synchronous escape hatch used by unit tests; production writes are queued.
@@ -705,6 +894,11 @@ impl SourceSink for DirectorySink {
         self.paths.insert(key);
         if let Some(cache) = self.directories.get_mut(parent) {
             cache.insert(name.to_owned());
+        }
+        if let Some(sidecar) = self.diagnostic_sidecar.as_mut() {
+            for diagnostic in &source.diagnostics {
+                write_diagnostic_sidecar_row(sidecar, source, diagnostic)?;
+            }
         }
         self.pool
             .enqueue(file, source.text.clone(), source.provenance.status)

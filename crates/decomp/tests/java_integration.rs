@@ -35,6 +35,7 @@ fn export(
             cache_inventory: true,
             fast_proofs: false,
             classpath: vec![],
+            compact_source: false,
         },
         &mut |s: &GeneratedSource| -> Result<(), OutputError> {
             sources.push(s.clone());

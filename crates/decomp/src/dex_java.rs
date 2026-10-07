@@ -248,6 +248,9 @@ pub struct JavaOptions {
     pub fast_proofs: bool,
     /// Explicit local JVM declaration inputs; no ambient platform defaults.
     pub classpath: Vec<std::path::PathBuf>,
+    /// Remove standalone diagnostic comments from delivered Java and retain
+    /// them losslessly in source diagnostics. Defaults to disabled.
+    pub compact_source: bool,
 }
 impl Default for JavaOptions {
     fn default() -> Self {
@@ -261,6 +264,7 @@ impl Default for JavaOptions {
             cache_inventory: true,
             fast_proofs: false,
             classpath: Vec::new(),
+            compact_source: false,
         }
     }
 }

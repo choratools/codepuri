@@ -16,7 +16,7 @@ fn seconds(d: Duration) -> f64 {
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
-    let apk = PathBuf::from(args.next().ok_or("usage: java_profile APK OUTPUT [--workers N] [--class DESCRIPTOR] [--classpath PATH] [--metadata-dex PATH] [--source-release N] [--no-io] [--unprofiled] [--no-ssa-cache] [--no-resolution-cache] [--no-inventory-cache] [--fast-proofs]")?);
+    let apk = PathBuf::from(args.next().ok_or("usage: java_profile APK OUTPUT [--workers N] [--class DESCRIPTOR] [--classpath PATH] [--metadata-dex PATH] [--source-release N] [--compact-source] [--no-io] [--unprofiled] [--no-ssa-cache] [--no-resolution-cache] [--no-inventory-cache] [--fast-proofs]")?);
     let root = PathBuf::from(
         args.next()
             .ok_or("missing output directory (must not exist)")?,
@@ -48,6 +48,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "--no-resolution-cache" => options.cache_resolutions = false,
             "--no-inventory-cache" => options.cache_inventory = false,
             "--fast-proofs" => options.fast_proofs = true,
+            "--compact-source" => options.compact_source = true,
             _ => return Err(format!("unknown option {arg}").into()),
         }
     }
@@ -78,6 +79,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let metadata_setup = metadata_start.elapsed();
     let mut directory = if no_io {
         None
+    } else if options.compact_source {
+        Some(DirectorySink::with_diagnostic_sidecar(
+            root.join("sources"),
+        )?)
     } else {
         Some(DirectorySink::new(root.join("sources"))?)
     };
