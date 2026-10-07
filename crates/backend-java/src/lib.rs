@@ -34,6 +34,7 @@ mod invoke_arguments;
 mod java_string_literal;
 mod managed_ops;
 mod object_plan;
+mod pure_expression;
 pub mod shared_regions;
 pub mod special_invokes;
 mod static_field_qualifier;
@@ -720,6 +721,10 @@ impl<R: JavaResolver> Emitter<'_, R> {
             }
             return Ok(());
         }
+        if self.is_pure_expression(v) {
+            self.values.insert(v, (expression, ty));
+            return Ok(());
+        }
         let mut name = format!("v{}", self.next);
         self.next += 1;
         while self.reserved.contains(&name) {
@@ -846,6 +851,26 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 lhs,
                 rhs,
             } => {
+                let predicate = {
+                    let planned = self.pure_expression_values();
+                    planned
+                        .contains(result)
+                        .then(|| {
+                            pure_expression::long_ordering_predicate(
+                                self.ir,
+                                planned,
+                                *op,
+                                *lhs,
+                                *rhs,
+                                |value| self.get(value).ok(),
+                            )
+                        })
+                        .flatten()
+                };
+                if let Some(expression) = predicate {
+                    self.define(*result, expression, self.ty(*result)?)?;
+                    return Ok(false);
+                }
                 let (_, left_type) = self.get(*lhs)?;
                 let (_, right_type) = self.get(*rhs)?;
                 // A DEX zero is interpreted at the comparison use, not by the
@@ -1354,7 +1379,9 @@ fn emit(
     }
     let mut e = Emitter {
         allocation_readable: None,
-        object_planning: Default::default(),
+        object_planning: std::rc::Rc::new(object_plan::ObjectPlanning::for_source_emission(
+            scopes.is_none_or(|metadata| metadata.scopes().is_empty()),
+        )),
         ir,
         resolver: r,
         values: HashMap::new(),
@@ -1503,6 +1530,9 @@ fn emit(
         })
         .map_err(|err| Unsupported::ControlFlow(err.to_string()))?;
         for v in &plan.locals {
+            if e.is_pure_expression(*v) {
+                continue;
+            }
             let ty = e.ty(*v)?;
             let mut name = format!("v{}", e.next);
             e.next += 1;

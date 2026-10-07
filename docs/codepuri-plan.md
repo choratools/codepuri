@@ -346,10 +346,26 @@ R19 첫 적용: boolean short-circuit return CFG를 엄격한 형태로 검증�
 - Ordinary 3-run before/after 22.76→22.98s (노이즈 수준); fast 23.57→22.45s.
   가독성 이득이 목적이며 speed regression 기준 0.3s를 넘지 않음. Commit pending.
 
+### R21 결과: pure single-use expression 축약 ✅
+
+- `BinaryPropertyListWriter.computeOffsetSizeInBytes(long)`: **47→15 lines**; cmp-long/zero
+  comparison chain이 typed relational tests로 출력. `NSData.length()`: **5→3 lines**;
+  proven `this.bytes` + ArrayLength가 `return this.bytes.length;`로 출력.
+- Guard: exact type/use/dominance, acyclic unique-unconditional paths, no intervening effects;
+  array length only direct-return/no-exception-scope; field reads only `this`, instance,
+  non-volatile. Div/rem, calls, writes, Phi, loops 등은 인라인하지 않음.
+- Java runtime tests: 255/256, 65535/65536, 2^32−1/2^32, Long.MAX_VALUE, negative, integer overflow,
+  null-array exception 및 bounds ordering; multi-use arithmetic remains materialized.
+- Samsung Pass: 95 output files intentionally changed, 0 method identity gained/lost, syntax0;
+  javac diagnostics −3 (`cannot find symbol`), classes unchanged. Ordinary speed delta +0.18s,
+  fast −0.19s (노이즈 내). Workspace fmt/clippy/tests pass.
+- R21 commit pending.
+
 다음 가독성 대상:
-1. `BinaryPropertyListWriter.computeOffsetSizeInBytes`: temps `v0`–`v15`, ~47 lines vs JADX ~9.
-2. `NSData.length()`: `this.bytes.length`가 임시 변수 두 개로 materialize.
-3. subset/initialization diagnostic comments는 source reading을 방해함; `JavaReport` sidecar/opt-in 주석 모드 검토.
+1. subset/initialization diagnostic comments를 Java source에서 `JavaReport` sidecar 또는 opt-in
+   verbose mode로 분리.
+2. parameters `p0`/locals `vN`에 DEX debug-local names를 검증된 경우만 적용.
+3. inner-class file bundling은 metadata/access semantics 근거가 있을 때 별도 구현.
 4. ADB metadata test에서 Android API metadata를 주면 완전도가 크게 상승; CLI `--classpath` 지원 완료.
 
 출력 단순화는 메서드 의미를 바꾸지 않는 형태만 채택. `&&` 자체를 합성하는 대신

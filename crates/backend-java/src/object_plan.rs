@@ -50,9 +50,44 @@ pub(super) struct ObjectPlanning {
     regions: RefCell<HashMap<InsnId, Result<regions::ArgumentRegion, Unsupported>>>,
     sequences: RefCell<HashSet<InsnId>>,
     argument_owners: OnceCell<HashMap<InsnId, Vec<ValueId>>>,
+    pub(super) pure_expressions: OnceCell<HashSet<ValueId>>,
+    pure_expression_enabled: bool,
+    exception_scopes_empty: bool,
+}
+
+impl ObjectPlanning {
+    pub(super) fn for_source_emission(exception_scopes_empty: bool) -> Self {
+        Self {
+            pure_expression_enabled: true,
+            exception_scopes_empty,
+            ..Self::default()
+        }
+    }
 }
 
 impl<R: JavaResolver> Emitter<'_, R> {
+    pub(super) fn pure_expression_values(&self) -> &HashSet<ValueId> {
+        self.object_planning.pure_expressions.get_or_init(|| {
+            let receiver = self
+                .values
+                .iter()
+                .find_map(|(value, (name, _))| (name == "this").then_some(*value));
+            let exception_scopes_empty = self.object_planning.pure_expression_enabled
+                && self.object_planning.exception_scopes_empty;
+            super::pure_expression::plan(
+                self.ir,
+                receiver,
+                &self.declarations,
+                exception_scopes_empty,
+                self.resolver,
+            )
+        })
+    }
+
+    pub(super) fn is_pure_expression(&self, value: ValueId) -> bool {
+        self.pure_expression_values().contains(&value)
+    }
+
     pub(super) fn object_plan(&self, allocation: InsnId) -> Result<ObjectPlan, Unsupported> {
         if let Some(plan) = self.object_planning.plans.borrow().get(&allocation) {
             return plan.clone();

@@ -1715,3 +1715,5 @@ fn integrated_hierarchy_argument_field_return_and_array_store_execute() {
 
 #[path = "interface_super_tests.rs"]
 mod interface_super_tests;
+#[path = "pure_expression_tests.rs"]
+mod pure_expression_tests;
