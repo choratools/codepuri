@@ -63,6 +63,22 @@ impl ObjectPlanning {
             ..Self::default()
         }
     }
+
+    /// A static initializer validates through the ordinary method emitter and
+    /// then renders the same IR with final-field rules. Reuse immutable object
+    /// plan evidence, but retain the static emitter's distinct pure-expression
+    /// policy and its own mutable value environment.
+    pub(super) fn for_static_from(ordinary: &Self) -> Self {
+        Self {
+            blocks: ordinary.blocks.clone(),
+            plans: RefCell::new(ordinary.plans.borrow().clone()),
+            conditional: RefCell::new(ordinary.conditional.borrow().clone()),
+            regions: RefCell::new(ordinary.regions.borrow().clone()),
+            sequences: RefCell::new(ordinary.sequences.borrow().clone()),
+            argument_owners: ordinary.argument_owners.clone(),
+            ..Self::default()
+        }
+    }
 }
 
 impl<R: JavaResolver> Emitter<'_, R> {

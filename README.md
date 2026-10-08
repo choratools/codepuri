@@ -193,6 +193,46 @@ Use `--fast-proofs-codepuri` for the opt-in path. For
 java_profile`. The benchmark writes a JSON report and per-run
 `/usr/bin/time -v` logs. Use fresh output directories for every run.
 
+### Ten-app APK spot check (2026-10-08)
+
+One paired run was made for each of ten installed, single-base-APK apps.
+Both tools used 30 workers and fresh output directories; tool order alternated
+between apps. JADX 1.5.1 ran with `--no-res -j 30`; Codepuri ran with
+`--workers 30 --classpath android-35/android.jar`. This is a one-run spot check,
+not a repeated-run statistical benchmark.
+
+| App | DEX input | Codepuri time | JADX time | Peak RSS (Codepuri / JADX) | JADX log errors |
+|---|---:|---:|---:|---:|---:|
+| Google Chrome | 7.7 MiB | 13.3 s | 16.4 s | 1.9 / 5.8 GiB | 4 |
+| Samsung Notes | 89.5 MiB | 118.7 s | 61.4 s | 14.6 / 40.5 GiB | 94 |
+| Samsung SmartThings | 106.9 MiB | 122.7 s | 102.5 s | 18.5 / 66.7 GiB | 374 |
+| Samsung Watch Manager | 6.4 MiB | 9.7 s | 10.0 s | 1.4 / 3.5 GiB | 6 |
+| Samsung Wallet | 123.3 MiB | 125.3 s | 82.8 s | 19.4 / 60.2 GiB | 107 |
+| Microsoft OneDrive | 36.8 MiB | 42.7 s | 37.1 s | 7.0 / 24.3 GiB | 58 |
+| Spotify | 69.3 MiB | 92.7 s | 134.9 s | 13.2 / 46.2 GiB | 154 |
+| Facebook | 128.0 MiB | 131.1 s | 126.0 s | 21.3 / 69.3 GiB | 364 |
+| Amazon (`com.amazon.ziggy.android`) | 15.9 MiB | 18.7 s | 15.8 s | 3.3 / 8.2 GiB | 54 |
+| Netflix | 2.5 MiB | 3.4 s | 5.9 s | 0.7 / 2.5 GiB | 7 |
+
+Across the ten runs, Codepuri used **678.4 s** total versus **592.8 s** for
+JADX; Codepuri was faster on Chrome, Spotify and Netflix, while Watch Manager
+was nearly even. Median peak RSS across the apps was **10.08 GiB** for Codepuri
+and **32.42 GiB** for JADX. Codepuri emitted **614,283 Java files**;
+JADX emitted **509,337**. These file counts and output sizes are not direct
+quality measures because the tools emit different source subsets and
+diagnostics.
+
+All Codepuri runs exited successfully and reported **1,891,138 complete
+ordinary method bodies** and **469,287 unsupported ordinary methods**. JADX
+wrote source output for all ten APKs, but exited with errors for every app; its
+logs reported **1,222 errors** in total. The JADX output contained 51,203 raw
+`Method not decompiled` and 50,444 `Code decompiled incorrectly` marker
+occurrences. These diagnostics are not directly comparable with Codepuri's
+method counters. Facebook's JADX run also reported a `resources.arsc` parsing
+error while continuing to emit Java sources. This comparison measures export
+behavior only; it does not establish that either output is a complete,
+compilable or runnable reconstruction.
+
 ## Architecture
 
 ```text

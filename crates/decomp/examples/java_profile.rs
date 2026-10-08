@@ -66,16 +66,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .iter()
         .map(DexMetadata::from_path)
         .collect::<Result<Vec<_>, _>>()?;
-    let compiler_metadata = if runtime_metadata.is_empty() {
+    let compiler_metadata = if options.classpath.is_empty() {
         None
     } else {
         Some(Classpath::from_paths(&options.classpath)?)
     };
-    let external = compiler_metadata.as_ref().map(|classpath| {
+    let external = if runtime_metadata.is_empty() && compiler_metadata.is_none() {
+        None
+    } else {
         let mut providers: Vec<_> = runtime_metadata.iter().map(MetadataProvider::Dex).collect();
-        providers.push(MetadataProvider::Jvm(classpath));
-        MetadataChain::new(providers)
-    });
+        if let Some(classpath) = &compiler_metadata {
+            providers.push(MetadataProvider::Jvm(classpath));
+        }
+        Some(MetadataChain::new(providers))
+    };
     let metadata_setup = metadata_start.elapsed();
     let mut directory = if no_io {
         None

@@ -135,6 +135,38 @@ fn emitter<'a>(ir: &'a MethodIr<SsaForm>, resolver: &'a Resolver) -> Emitter<'a,
 }
 
 #[test]
+fn static_reuse_keeps_plan_evidence_but_not_materialized_state_or_expression_policy() {
+    let mut builder = Builder::default();
+    let (object, gap) = builder.allocation(true);
+    builder.push(ManagedInsn::Return { value: None });
+    let ir = builder.finish();
+    let resolver = Resolver::default();
+    let mut ordinary = emitter(&ir, &resolver);
+    ordinary.object_planning = std::rc::Rc::new(ObjectPlanning::for_source_emission(true));
+    assert!(ordinary.object_argument_instruction(gap));
+    ordinary.values.insert(
+        object,
+        ("ready".into(), JavaType::Class("Fixture.Box".into())),
+    );
+    assert!(!ordinary.object_argument_instruction(gap));
+    let calls = resolver.calls.get();
+    let mut static_emitter = emitter(&ir, &resolver);
+    static_emitter.object_planning =
+        std::rc::Rc::new(ObjectPlanning::for_static_from(&ordinary.object_planning));
+    assert!(static_emitter.object_argument_instruction(gap));
+    assert_eq!(resolver.calls.get(), calls);
+    assert!(!static_emitter.object_planning.pure_expression_enabled);
+    assert!(
+        static_emitter
+            .object_planning
+            .pure_expressions
+            .get()
+            .is_none()
+    );
+    assert!(static_emitter.values.is_empty());
+}
+
+#[test]
 fn argument_membership_keeps_pending_state_dynamic_and_pure_gap_ordinary() {
     let mut builder = Builder::default();
     let (first, first_gap) = builder.allocation(true);

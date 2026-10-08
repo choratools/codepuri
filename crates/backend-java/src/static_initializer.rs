@@ -159,6 +159,9 @@ fn emit_static_initializer_body_contract(
         })
     });
     signature.name = "class_initializer_body".into();
+    let ordinary_planning = std::rc::Rc::new(object_plan::ObjectPlanning::for_source_emission(
+        metadata.is_none(),
+    ));
     let gate = match metadata {
         Some(scopes) => exceptions::emit_method_disjoint(
             ir,
@@ -167,7 +170,13 @@ fn emit_static_initializer_body_contract(
             resolver,
             scopes,
         ),
-        None => emit_method(ir, &signature, bindings, resolver),
+        None => emit_method_with_planning(
+            ir,
+            &signature,
+            bindings,
+            resolver,
+            ordinary_planning.clone(),
+        ),
     };
     if let SourceResult::Unsupported(reason) = gate {
         return Err(reason);
@@ -206,7 +215,9 @@ fn emit_static_initializer_body_contract(
     }
     let mut emitter = Emitter {
         allocation_readable: None,
-        object_planning: Default::default(),
+        object_planning: std::rc::Rc::new(object_plan::ObjectPlanning::for_static_from(
+            &ordinary_planning,
+        )),
         ir,
         resolver,
         values: HashMap::new(),

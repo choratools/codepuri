@@ -412,6 +412,28 @@ pub fn emit_method(
         resolver,
     )
 }
+
+fn emit_method_with_planning(
+    ir: &MethodIr<SsaForm>,
+    method: &JavaMethod,
+    bindings: &ParameterBindings,
+    resolver: &impl JavaResolver,
+    planning: std::rc::Rc<object_plan::ObjectPlanning>,
+) -> SourceResult {
+    let bindings = DeclarationBindings {
+        receiver: bindings.receiver,
+        parameters: bindings.parameters.iter().copied().map(Some).collect(),
+        names: bindings.names.clone(),
+    };
+    match emit(ir, method, &bindings, resolver, None, Some(planning)) {
+        Ok((source, method_name, parameter_names)) => SourceResult::Complete {
+            source,
+            method_name,
+            parameter_names,
+        },
+        Err(error) => SourceResult::Unsupported(error),
+    }
+}
 /// Emit a complete method while retaining unused descriptor positions.
 pub fn emit_method_declaration(
     ir: &MethodIr<SsaForm>,
@@ -430,7 +452,7 @@ pub fn emit_method_declaration_with_exceptions(
     resolver: &impl JavaResolver,
     scopes: Option<&dyn exceptions::ExceptionMetadata>,
 ) -> SourceResult {
-    match emit(ir, method, bindings, resolver, scopes) {
+    match emit(ir, method, bindings, resolver, scopes, None) {
         Ok((source, method_name, parameter_names)) => SourceResult::Complete {
             source,
             method_name,
@@ -1331,6 +1353,7 @@ fn emit(
     b: &DeclarationBindings,
     r: &impl JavaResolver,
     scopes: Option<&dyn exceptions::ExceptionMetadata>,
+    planning: Option<std::rc::Rc<object_plan::ObjectPlanning>>,
 ) -> Result<(String, String, Vec<String>), Unsupported> {
     qualified(&m.owner)?;
     if m.name.starts_with('<') {
@@ -1386,9 +1409,11 @@ fn emit(
     }
     let mut e = Emitter {
         allocation_readable: None,
-        object_planning: std::rc::Rc::new(object_plan::ObjectPlanning::for_source_emission(
-            scopes.is_none_or(|metadata| metadata.scopes().is_empty()),
-        )),
+        object_planning: planning.unwrap_or_else(|| {
+            std::rc::Rc::new(object_plan::ObjectPlanning::for_source_emission(
+                scopes.is_none_or(|metadata| metadata.scopes().is_empty()),
+            ))
+        }),
         ir,
         resolver: r,
         values: HashMap::new(),
