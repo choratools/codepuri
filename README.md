@@ -1,82 +1,256 @@
-# codepuri
+# Codepuri
 
-Fork of decomphify (upstream: /storage_0/decomphify). Goal: jadx-class DEX→Java
-decompiler core in Rust — faster than jadx (26.3s wall @30 threads on Samsung
-Pass is the bar to beat), then multi-target (JVM/.NET/native) via the shared
-IR core.
+![Rust 2024](https://img.shields.io/badge/Rust-2024-orange?logo=rust)
+![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
+![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)
 
-Latest production recovery status, validation and final APK measurement:
-[`bench/JAVA_PRODUCTION_INTEGRATION.md`](bench/JAVA_PRODUCTION_INTEGRATION.md).
+**Codepuri is a Rust-first Android APK/DEX → Java decompiler.** The development
+CLI accepts conventional APKs with `AndroidManifest.xml` and `classes*.dex`;
+the library also accepts parsed DEX inputs. It favors an
+honest, verifiable source subset over fabricated stubs: methods that cannot be
+supported with the available bytecode and metadata are reported as unavailable.
 
-Export-session cache options and measured memory/time results:
-[`bench/SAMSUNG_PASS_MEMORY_CACHES.md`](bench/SAMSUNG_PASS_MEMORY_CACHES.md).
+The project is library-first, with a development CLI for exporting APKs. It is
+an actively evolving decompiler core—not yet a drop-in replacement for JADX or
+a complete Android application reconstruction tool.
 
-Repeated exports can retain the exact Java source snapshot in
-`decomp::java_session::JavaSession`. Construct it with owned DEX inputs and fixed
-`JavaOptions`, then call `emit` with a fresh sink for each export. The first call
-decompiles; later calls reuse the sources and report. Classpath files are loaded
-once at construction. `clear_cache()` releases generated sources; changing inputs
-or classpath requires a new session. This speeds repeated identical work, not the
-initial decompilation.
-Measured cold/warm source replay:
-[`bench/SAMSUNG_PASS_SOURCE_SESSION.md`](bench/SAMSUNG_PASS_SOURCE_SESSION.md).
-Earlier full Samsung Pass replay validation: **350.65 s first render → 1.51 s
-cached export**, all 31,188 files and reports identical; retained source text
-294.37 MiB and whole-process peak12.26 GiB. This requires keeping the same library
-session alive. The new original-input inheritance index also preserves all
-method statuses. See
-[`bench/SAMSUNG_PASS_CACHE_WAVE6.md`](bench/SAMSUNG_PASS_CACHE_WAVE6.md).
+> [!IMPORTANT]
+> Codepuri emits only the classes and method bodies it can justify. An export
+> can be useful Java source without being a complete, compilable or runnable APK.
 
-Resolution caching also retains completed contextual field proofs for the whole
-export: original symbolic field, caller, receiver and staticness form the key.
-Frozen metadata and aliases belong to the cache; declaration/initialization
-publication remains outside it. `JavaProfile::field_use_cache_*` reports stage
-hits, computations, typed failures and distinct keys. Disabling
-`cache_resolutions` uses the original uncached path. Memory grows with actual
-results; no fixed share of the host's RAM is reserved.
-Latest frozen Samsung Pass check: **317.55 s first export → 1.58 s cached
-replay**, with all **31,196 files and reports identical**. Retained text is
-301.24 MiB; whole-process peak RSS was 14.79 GiB. This is same-session replay,
-not a measured cold-render speedup. See
-[`bench/RAM_CACHE_CURRENT.md`](bench/RAM_CACHE_CURRENT.md).
+## Contents
 
-Java source output defaults to release 17. Explicit `--source-release 25` retains
-proven constructor prologues in original execution order; those sources require
-a Java 25 compiler. See [source release selection](docs/java-source-release.md).
+- [Features](#features)
+- [Requirements](#requirements)
+- [Quick start](#quick-start)
+- [Android and runtime metadata](#android-and-runtime-metadata)
+- [Compact source output](#compact-source-output)
+- [Rust library](#rust-library)
+- [Performance](#performance)
+- [Architecture](#architecture)
+- [Limitations](#limitations)
+- [Development](#development)
+- [License](#license)
 
-Rust 기반 멀티 타겟 디컴파일 코어 (UI 없음, 라이브러리 우선). 1단계 목표: APK/DEX → Java.
+## Features
 
-## Crates
+- Parse conventional APKs containing one or more `classes*.dex` files.
+- Decode Dalvik instructions and lift them through CFG, typed IR and SSA stages.
+- Reconstruct supported Java control flow, expressions, constructors and
+  initializers with explicit proof checks.
+- Resolve declarations from the APK, optional Android/runtime DEX metadata and
+  explicit JVM classpaths.
+- Emit through a streaming sink or the built-in directory sink.
+- Optionally move generated diagnostic comments out of Java files into a
+  lossless `diagnostics.tsv` sidecar.
+- Reuse a successful in-memory export with `JavaSession` when the same inputs are
+  emitted repeatedly in one process.
 
-| crate | 역할 | 의존 |
-|---|---|---|
-| `decomp-core` | 타입 arena CFG, 그래프 분석(dominator/frontier/loop), 패스 레지스트리, 진단 — IR 패밀리에 무지(non-family) | - |
-| `decomp-emit` | 언어 불문 코드 출력 인프라(토큰, 우선순위, 네이밍, source map) | - |
-| `dex-format` | lossless DEX 파서 + APK(ZIP) 컨테이너 추출 | - |
-| `backend-java` | structured IR → Java 출력 (phase 2) | core |
-| `decomp` | 퍼사드 라이브러리 + 개발용 CLI (phase 2) | all |
+## Requirements
 
-## 아키텍처 불변식
+- Rust **1.95+** (edition 2024).
+- A JDK is not required to run the CLI. **JDK 17** is required by the
+  compile-and-run workspace tests; some optional Java 25 fixtures require JDK
+  25.
+- An Android SDK `android.jar` is optional, but improves resolution of Android
+  API declarations.
 
-- `decomp-core`는 어떤 IR 패밀리도 몰라야 한다 (헥사고날 경계).
-- CFG 변경은 `Cfg` mutation API 경유만 허용, 모든 mutation은 revision 증가로 분석 캐시 무효화.
-- 엣지는 일급 객체 (switch 라벨 / exceptional flow / fallthrough 구분).
-- 패스는 선언적 의존성(requires/provides/invalidates)을 갖는 플러그인.
+## Quick start
 
-## 품질 게이트
+Build the CLI:
+
+```bash
+cargo build --release -p decomp
+```
+
+Export an APK to a directory:
+
+```bash
+./target/release/decomp app.apk out/ --workers 30
+```
+
+Show all CLI options:
+
+```bash
+./target/release/decomp --help
+```
+
+The output directory contains Java compilation units plus a `JavaReport` on
+stdout. The report records emitted classes, recovered bodies and unsupported
+or unavailable methods.
+
+### CLI options
+
+| Option | Description |
+|---|---|
+| `--workers N` | Maximum parallel class workers; must be positive. |
+| `--class FILTER` | Select descriptors containing this substring. |
+| `--limit N` | Limit the number of emitted compilation units. |
+| `--source-release 17\|25` | Select generated Java source level; default is 17. |
+| `--classpath PATH` | Repeatable JVM `.class`, `.jar`, `.zip` or `.jmod` declaration input. |
+| `--metadata-dex PATH` | Repeatable runtime DEX or ZIP/APK containing root `classes*.dex` entries. |
+| `--compact-source` | Remove standalone diagnostic comments from `.java` and write them to `diagnostics.tsv`. |
+
+## Android and runtime metadata
+
+Without external metadata, calls to APIs absent from the input APK may remain
+unresolved and the corresponding method body may be omitted. Pass the Android
+SDK platform JAR to supply genuine API declarations:
+
+```bash
+ANDROID_SDK_ROOT=/path/to/Android/Sdk
+./target/release/decomp app.apk out/ --workers 30 \
+  --classpath "$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
+```
+
+For device/framework declarations, a DEX archive can be provided separately:
+
+```bash
+./target/release/decomp app.apk out/ --workers 30 \
+  --metadata-dex framework.jar \
+  --classpath "$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
+```
+
+Metadata is explicit and ordered: runtime DEX providers precede the JVM
+classpath, and APK declarations retain priority. A runtime DEX is **declaration
+metadata, not a `javac` classpath**. `android.jar` supplies API declarations;
+it does not supply Android framework implementation source. Missing or
+ambiguous declarations remain unavailable rather than being guessed.
+
+See [`docs/runtime-dex-metadata.md`](docs/runtime-dex-metadata.md) for provider
+precedence and metadata limitations.
+
+## Compact source output
+
+By default, Java files include comments explaining subset status and rejected
+members. For cleaner Java files, use:
+
+```bash
+./target/release/decomp app.apk out/ --compact-source \
+  --classpath "$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
+```
+
+Standalone diagnostic comments are preserved in `diagnostics.tsv`, keyed by
+source path and original line number. This mode improves readability, but the
+sidecar can be large and writing it can increase export time; it is an output
+presentation mode, not a speed mode. The default export format is unchanged.
+
+## Rust library
+
+The `decomp` crate exposes the exporter and `SourceSink` interface. Callers that
+need to parse APKs directly also depend on `dex-format`:
+
+```rust,ignore
+use decomp::dex_java::{JavaOptions, emit_java};
+use decomp::output::DirectorySink;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let files = dex_format::apk::parse_apk_path("app.apk")?;
+    let options = JavaOptions {
+        workers: 30,
+        ..JavaOptions::default()
+    };
+    let mut sink = DirectorySink::new("out")?;
+    let report = emit_java(&files, &options, &mut sink)?;
+    println!("{} classes emitted", report.classes_emitted);
+    Ok(())
+}
+```
+
+For explicit metadata, use `emit_with_metadata` with `DexMetadata`,
+`Classpath` and `MetadataChain`. `JavaSession` can retain one successful source
+snapshot for repeated exports in the same process; this saves rerendering but
+does not accelerate the first export and retains generated source text in
+memory.
+
+## Performance
+
+Paired 30-worker measurements on one Samsung Pass APK, using JADX 1.5.1 and
+Codepuri's ordinary unprofiled `emit_java` path:
+
+| Mode | Codepuri median | JADX median |
+|---|---:|---:|
+| Default | **22.94 s** | 24.80 s |
+| Opt-in `fast_proofs` | **22.52 s** | 24.65 s |
+
+Four runs alternated which tool ran first to reduce filesystem page-cache order
+bias. In this sample Codepuri emitted **28,575 files / ~200 MB**; JADX emitted
+**17,546 files / ~86 MB**. Output grouping and completeness differ, so timings
+are sample-specific and are not a universal speed guarantee. `fast_proofs` is
+experimental: on other APKs it may change unpublished-method diagnostic
+reasons, so it is not enabled by default.
+
+Reproduce with a local APK:
+
+```bash
+cargo build --release -p decomp --example java_export_bench
+python3 bench/jadx_vs_codepuri.py app.apk \
+  --out /tmp/codepuri-bench --runs 4 --workers 30
+```
+
+Use `--fast-proofs-codepuri` for the opt-in path. For
+`--profiled-codepuri`, first build `cargo build --release -p decomp --example
+java_profile`. The benchmark writes a JSON report and per-run
+`/usr/bin/time -v` logs. Use fresh output directories for every run.
+
+## Architecture
+
+```text
+APK / DEX
+   │
+   ▼
+dex-format ──► dex-decompiler ──► managed-ir / decomp-core
+                                      │
+                                      ▼
+                                decomp-structure
+                                      │
+                                      ▼
+                                  backend-java
+                                      │
+                                      ▼
+                           Java source + diagnostics
+```
+
+| Crate | Responsibility |
+|---|---|
+| `dex-format` | DEX model/parser and APK ZIP container extraction. |
+| `dex-decompiler` | Dalvik decoding, lifting, type inference and SSA passes. |
+| `managed-ir` | Typed managed IR, instructions, SSA forms and verification. |
+| `decomp-core` | Generic CFG, graph analyses, pass registry and diagnostics. |
+| `decomp-structure` | Language-independent branch, loop and switch structuring. |
+| `decomp-emit` | Language-neutral tokens, precedence, naming and source maps. |
+| `backend-java` | Java declarations, expressions, control-flow emission and proofs. |
+| `decomp` | Public facade, metadata/session APIs, output sinks and development CLI. |
+
+## Limitations
+
+- Exported Java is a **supported subset**, not a reconstructed Android project.
+- Binary `AndroidManifest.xml`, `resources.arsc`, assets and native libraries are
+  not decoded by the DEX-to-Java CLI.
+- Unsupported methods and unavailable initialization remain explicitly
+  reported; Codepuri does not fabricate successful bodies to fill gaps.
+- Android/JVM metadata improves declaration resolution but does not prove that
+  every generated source compiles together or that an APK can be rebuilt/run.
+- JVM `.class`, .NET IL/C#, ELF/native decompilation and a GUI are not currently
+  implemented.
+
+## Development
 
 ```bash
 cargo fmt --all -- --check
-cargo clippy --all-targets --all-features -- -D warnings
-JAVA_HOME=/home/jtjisgod/tools/jdk-17.0.13+11 \
-PATH=/home/jtjisgod/tools/jdk-17.0.13+11/bin:$PATH \
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+export JAVA_HOME=/path/to/jdk-17
+export PATH="$JAVA_HOME/bin:$PATH"
 cargo test --workspace
 ```
 
-- `backend-java` 실행 테스트는 JDK 17 요구 (일부 Java25 픽스처는
-  `/tmp/opencode/decomphify-jdk25` 사용). javac가 PATH에 없으면
-  NotFound로 49개 실패.
+`JAVA_HOME` is needed for Java compile-and-run tests. Rust `unsafe` is forbidden
+by workspace lint; keep library errors typed and preserve conservative failure
+behavior. The regression APK corpus in `tests/corpus/` is local and is not
+included in this repository checkout.
 
-- `unsafe` 전면 금지 (workspace lint).
-- 라이브러리 경로에서 `unwrap`/`expect` 금지 — `thiserror` 타입 에러 사용.
-- 테스트 픽스처: `tests/corpus/apks/` (실제 APK 회귀 코퍼스).
+## License
+
+Apache-2.0, as declared by the Cargo workspace. See the
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
