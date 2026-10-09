@@ -329,6 +329,7 @@ fn same_signature(a: &MethodKey, b: &MethodKey) -> bool {
     a.name == b.name && a.parameters == b.parameters && a.return_type == b.return_type
 }
 type Signature = (String, Vec<String>, String);
+type NamedDescendants = BTreeMap<(String, Vec<String>), Option<BTreeMap<String, Vec<MethodKey>>>>;
 fn signature(k: &MethodKey) -> Signature {
     (k.name.clone(), k.parameters.clone(), k.return_type.clone())
 }
@@ -336,6 +337,7 @@ struct FamilyIndex {
     signatures: BTreeMap<Signature, Vec<MethodKey>>,
     named: BTreeMap<(String, Vec<String>), Vec<MethodKey>>,
     ancestors: BTreeMap<String, BTreeSet<String>>,
+    descendants: NamedDescendants,
 }
 impl FamilyIndex {
     fn new(aliases: &JavaAliases) -> Self {
@@ -352,6 +354,7 @@ impl FamilyIndex {
             signatures,
             named,
             ancestors: BTreeMap::new(),
+            descendants: BTreeMap::new(),
         }
     }
 }
@@ -636,7 +639,15 @@ fn family(
     if input.seed(bridge, hierarchy).as_ref() != Some(target) {
         return None;
     }
-    let seed_ancestors = input.ancestors(&target.owner, external)?;
+    let seed_ancestors = if let Some(ancestors) = index.ancestors.get(&target.owner) {
+        ancestors.clone()
+    } else {
+        let ancestors = input.ancestors(&target.owner, external)?;
+        index
+            .ancestors
+            .insert(target.owner.clone(), ancestors.clone());
+        ancestors
+    };
     let MethodAlias::Ordinary(wide_name) = aliases.methods.get(target)? else {
         return None;
     };
@@ -645,13 +656,14 @@ fn family(
     }
     // Preserve the original broad source obligation. It is never renamed,
     // deleted, or replaced by a compiler-generated body in this grammar.
-    let wide_roots = index
-        .signatures
-        .get(&signature(bridge))?
+    index.signatures.get(&signature(bridge))?;
+    let wide_roots = seed_ancestors
         .iter()
-        .filter(|k| {
-            input.methods.contains_key(*k) && *k != bridge && seed_ancestors.contains(&k.owner)
+        .map(|owner| MethodKey {
+            owner: owner.clone(),
+            ..bridge.clone()
         })
+        .filter(|key| key != bridge && input.methods.contains_key(key))
         .collect::<Vec<_>>();
     if !wide_roots.iter().any(|k| {
         input
@@ -662,7 +674,7 @@ fn family(
         return None;
     }
     for root in wide_roots {
-        if aliases.methods.get(root) != Some(&MethodAlias::Ordinary(wide_name.clone())) {
+        if aliases.methods.get(&root) != Some(&MethodAlias::Ordinary(wide_name.clone())) {
             return None;
         }
     }
@@ -695,12 +707,44 @@ fn family(
             return None;
         }
     }
-    let mut narrow = BTreeSet::new();
-    for k in index.signatures.get(&signature(target))? {
-        let ancestors = input.ancestors(&k.owner, external)?;
-        if !ancestors.contains(&target.owner) {
-            continue;
+    let named = (target.name.clone(), target.parameters.clone());
+    if !index.descendants.contains_key(&named) {
+        // Every original named operand must have complete ancestry, including
+        // unrelated owners. Preserve the old full-scan rejection on unknown
+        // ancestry while indexing the immutable relation just once per name.
+        let mut descendants = BTreeMap::<String, Vec<MethodKey>>::new();
+        let mut complete = true;
+        for key in index.named.get(&named)? {
+            if !index.ancestors.contains_key(&key.owner) {
+                let Some(parents) = input.ancestors(&key.owner, external) else {
+                    complete = false;
+                    break;
+                };
+                index.ancestors.insert(key.owner.clone(), parents);
+            }
+            for parent in &index.ancestors[&key.owner] {
+                descendants
+                    .entry(parent.clone())
+                    .or_default()
+                    .push(key.clone());
+            }
         }
+        index
+            .descendants
+            .insert(named.clone(), complete.then_some(descendants));
+    }
+    let descendants = index.descendants.get(&named)?.as_ref()?;
+    // An accepted wide family requires complete ancestry for every named key,
+    // so the same index also safely bounds narrow-signature validation. Return
+    // descriptors remain exact; related broad operands are not narrow members.
+    index.signatures.get(&signature(target))?;
+    let mut narrow = BTreeSet::new();
+    for k in descendants
+        .get(&target.owner)
+        .into_iter()
+        .flatten()
+        .filter(|key| same_signature(key, target))
+    {
         if selected_class_declaration(input, &k.owner, target).as_ref() != Some(target) {
             return None;
         }
@@ -714,20 +758,7 @@ fn family(
     }
     let mut restored_wide = BTreeSet::new();
     let mut descendant_wide_override = false;
-    for k in index
-        .named
-        .get(&(target.name.clone(), target.parameters.clone()))?
-    {
-        let parents = if let Some(a) = index.ancestors.get(&k.owner) {
-            a.clone()
-        } else {
-            let a = input.ancestors(&k.owner, external)?;
-            index.ancestors.insert(k.owner.clone(), a.clone());
-            a
-        };
-        if !parents.contains(&target.owner) {
-            continue;
-        }
+    for k in descendants.get(&target.owner).into_iter().flatten() {
         if same_signature(k, target) {
             if !narrow.contains(k) {
                 return None;

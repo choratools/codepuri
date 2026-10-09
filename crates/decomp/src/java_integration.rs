@@ -359,6 +359,10 @@ impl backend_java::constructors::ConstructorExceptionMetadata for ConstructorExc
             .collect()
     }
 }
+#[path = "java_shared_snapshot.rs"]
+mod shared_snapshot;
+use shared_snapshot::SharedSnapshot;
+
 struct Resolver<'a> {
     source_release: u16,
     ssa_cache: Option<&'a ssa_cache::SsaCache>,
@@ -393,7 +397,8 @@ struct Resolver<'a> {
     defer_annotation_defaults: bool,
     fast_proofs: bool,
     original_names: BTreeMap<String, String>,
-    class_catalog: BTreeMap<String, Option<backend_java::constructors::ConstructorClass>>,
+    class_catalog:
+        SharedSnapshot<BTreeMap<String, Option<backend_java::constructors::ConstructorClass>>>,
     constructor_sets: BTreeMap<String, Vec<MethodRef>>,
     inputs: &'a [DexFile],
     dex_index: usize,
@@ -408,9 +413,9 @@ struct Resolver<'a> {
     static_positions: BTreeMap<(u32, u32), usize>,
     catalog: BTreeMap<MethodKey, Option<MethodMetadata>>,
     global_catalog: Option<&'a BTreeMap<MethodKey, Option<MethodMetadata>>>,
-    field_names: BTreeMap<String, BTreeSet<String>>,
+    field_names: SharedSnapshot<BTreeMap<String, BTreeSet<String>>>,
     external: Option<&'a dyn ExternalMetadata>,
-    input_owners: BTreeSet<String>,
+    input_owners: SharedSnapshot<BTreeSet<String>>,
 }
 impl<'a> Resolver<'a> {
     #[cfg(test)]
@@ -451,7 +456,7 @@ impl<'a> Resolver<'a> {
             field_uses: None,
             published_owners: None,
             original_names: BTreeMap::new(),
-            class_catalog: BTreeMap::new(),
+            class_catalog: SharedSnapshot::default(),
             constructor_sets: BTreeMap::new(),
             inputs: std::slice::from_ref(dex),
             dex_index: 0,
@@ -471,9 +476,9 @@ impl<'a> Resolver<'a> {
             static_positions: BTreeMap::new(),
             catalog: BTreeMap::new(),
             global_catalog,
-            field_names: BTreeMap::new(),
+            field_names: SharedSnapshot::default(),
             external: None,
-            input_owners: BTreeSet::new(),
+            input_owners: SharedSnapshot::default(),
         };
         let raw = MemberResolver { dex };
         for ty in &dex.type_ids {
@@ -3575,6 +3580,17 @@ fn emit_inner(
         })
         .unwrap_or_default();
     let catalog = &global.declaration_metadata;
+    let dex_metadata = {
+        let _timer = Timer::new(
+            profile
+                .as_deref_mut()
+                .map(|p| p.serial.entry("input_metadata").or_default()),
+        );
+        files
+            .iter()
+            .map(dex_decompiler::infer::DexMetadata::new)
+            .collect::<Vec<_>>()
+    };
     let field_throw_catalog =
         crate::java_checked_bound_targets::FieldThrowCatalog::new(files, catalog);
     let mut throws_profile = profile
@@ -3670,21 +3686,16 @@ fn emit_inner(
                 });
                 let class_prepare_elapsed = class_prepare_start.map(|start| start.elapsed());
                 let resolver_prepare_start = profile_enabled.then(std::time::Instant::now);
-                let dex_metadata: Vec<_> = prep_files
-                    .iter()
-                    .map(dex_decompiler::infer::DexMetadata::new)
-                    .collect();
                 let member_indices: Vec<_> = prep_files
                     .iter()
                     .map(crate::java_members::MemberIndex::new)
                     .collect();
                 let resolver_prepare_elapsed = resolver_prepare_start.map(|start| start.elapsed());
                 (
-                    class_catalog,
-                    field_names,
-                    input_owners,
+                    SharedSnapshot::from(class_catalog),
+                    SharedSnapshot::from(field_names),
+                    SharedSnapshot::from(input_owners),
                     field_use_cache,
-                    dex_metadata,
                     member_indices,
                     class_prepare_elapsed,
                     resolver_prepare_elapsed,
@@ -3706,6 +3717,11 @@ fn emit_inner(
             options.workers,
             cache,
             throws_profile.as_mut(),
+            Some(source_throws::PreparedIndices {
+                field: &field_index,
+                super_index: super_index.as_ref(),
+                metadata: &dex_metadata,
+            }),
         );
         drop(source_throws_timer);
         let (
@@ -3713,7 +3729,6 @@ fn emit_inner(
             field_names,
             input_owners,
             field_use_cache,
-            dex_metadata,
             member_indices,
             class_prepare_elapsed,
             resolver_prepare_elapsed,
@@ -4031,9 +4046,7 @@ fn emit_inner(
             let deferred_metadata: Vec<_> = files
                 .iter()
                 .enumerate()
-                .map(|(dex_index, dex)| {
-                    deferred_pools[dex_index].then(|| dex_decompiler::infer::DexMetadata::new(dex))
-                })
+                .map(|(dex_index, _)| deferred_pools[dex_index].then_some(&dex_metadata[dex_index]))
                 .collect();
             // Only contributing inputs get a frozen resolver; duplicate owners keep
             // the original per-DEX scheduling below so publication-key overwrite

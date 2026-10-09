@@ -366,7 +366,7 @@ fn samsung_original_annotation_elements_have_local_default_dependencies() {
         let mut resolver = Resolver::new(dex, &names, &metadata);
         resolver.inputs = &files;
         resolver.dex_index = pool;
-        resolver.input_owners = owners.clone();
+        resolver.input_owners = owners.clone().into();
         resolver.external = Some(&external);
         for class in &dex.classes {
             if class_kind(class.access_flags) != Ok(ClassKind::Annotation) {

@@ -31,7 +31,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
         &self,
         consumer: InsnId,
         aliases: &[(ValueId, InsnId)],
-        after: &HashSet<InsnId>,
+        after: &InstructionAvailability,
     ) -> bool {
         if after.contains(&consumer) {
             return true;
@@ -100,7 +100,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
         &self,
         consumer: InsnId,
         value: ValueId,
-        after_constructor: &HashSet<InsnId>,
+        after_constructor: &InstructionAvailability,
     ) -> Result<bool, Unsupported> {
         let definition = self
             .ir
@@ -108,10 +108,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
             .map_err(|_| Unsupported::Instruction("allocation capture definition".into()))?
             .def();
         let after_definition = self.after_initializer(definition)?;
-        let available = after_constructor
-            .intersection(&after_definition)
-            .copied()
-            .collect();
+        let available = after_constructor.intersect(&after_definition);
         Ok(self.initialized_sequence_use(consumer, &[(value, definition)], &available))
     }
     pub(in crate::object_plan) fn sequence_object_plan(

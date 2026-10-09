@@ -44,6 +44,7 @@ pub(super) struct ObjectPlan {
 /// to the emitter's changing value environment and is checked on every use.
 #[derive(Default)]
 pub(super) struct ObjectPlanning {
+    linear_order: OnceCell<Option<std::rc::Rc<LinearObjectOrder>>>,
     blocks: OnceCell<HashMap<InsnId, BlockId>>,
     plans: RefCell<HashMap<InsnId, Result<ObjectPlan, Unsupported>>>,
     conditional: RefCell<HashMap<InsnId, Result<conditional::ConditionalPlan, Unsupported>>>,
@@ -53,6 +54,75 @@ pub(super) struct ObjectPlanning {
     pub(super) pure_expressions: OnceCell<HashSet<ValueId>>,
     pure_expression_enabled: bool,
     exception_scopes_empty: bool,
+}
+
+#[derive(Clone)]
+pub(super) struct LinearObjectOrder {
+    pub(super) instructions: Vec<InsnId>,
+    pub(super) positions: HashMap<InsnId, usize>,
+}
+
+pub(crate) enum InstructionAvailability {
+    Linear {
+        order: std::rc::Rc<LinearObjectOrder>,
+        start: usize,
+    },
+    Graph(HashSet<InsnId>),
+}
+
+impl InstructionAvailability {
+    pub(crate) fn contains(&self, instruction: &InsnId) -> bool {
+        match self {
+            Self::Linear { order, start } => {
+                order.positions.get(instruction).is_some_and(|p| p >= start)
+            }
+            Self::Graph(instructions) => instructions.contains(instruction),
+        }
+    }
+
+    pub(crate) fn intersect(&self, other: &Self) -> Self {
+        if let (
+            Self::Linear { order, start },
+            Self::Linear {
+                order: other_order,
+                start: other_start,
+            },
+        ) = (self, other)
+            && std::rc::Rc::ptr_eq(order, other_order)
+        {
+            return Self::Linear {
+                order: order.clone(),
+                start: (*start).max(*other_start),
+            };
+        }
+        Self::Graph(match self {
+            Self::Linear { order, start } => order.instructions[*start..]
+                .iter()
+                .copied()
+                .filter(|id| other.contains(id))
+                .collect(),
+            Self::Graph(instructions) => instructions
+                .iter()
+                .copied()
+                .filter(|id| other.contains(id))
+                .collect(),
+        })
+    }
+
+    pub(crate) fn into_set(self) -> HashSet<InsnId> {
+        match self {
+            Self::Linear { order, start } => order.instructions[start..].iter().copied().collect(),
+            Self::Graph(instructions) => instructions,
+        }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn is_empty(&self) -> bool {
+        match self {
+            Self::Linear { order, start } => *start == order.instructions.len(),
+            Self::Graph(instructions) => instructions.is_empty(),
+        }
+    }
 }
 
 impl ObjectPlanning {
@@ -70,6 +140,7 @@ impl ObjectPlanning {
     /// policy and its own mutable value environment.
     pub(super) fn for_static_from(ordinary: &Self) -> Self {
         Self {
+            linear_order: ordinary.linear_order.clone(),
             blocks: ordinary.blocks.clone(),
             plans: RefCell::new(ordinary.plans.borrow().clone()),
             conditional: RefCell::new(ordinary.conditional.borrow().clone()),
@@ -82,6 +153,59 @@ impl ObjectPlanning {
 }
 
 impl<R: JavaResolver> Emitter<'_, R> {
+    /// Exact order only for a fully reachable, unique unconditional chain.
+    /// Exception edges, joins, duplicate payloads and cycles keep the general
+    /// success-path traversal. No per-initializer suffix cache is retained.
+    pub(super) fn linear_object_order(&self) -> Option<&std::rc::Rc<LinearObjectOrder>> {
+        self.object_planning
+            .linear_order
+            .get_or_init(|| {
+                let cfg = self.ir.cfg();
+                let mut block = cfg.entry();
+                let mut seen = HashSet::new();
+                let mut instructions = Vec::with_capacity(cfg.block_count());
+                let mut positions = HashMap::with_capacity(cfg.block_count());
+                loop {
+                    if !seen.insert(block) {
+                        return None;
+                    }
+                    let node = cfg.block(block).ok()?;
+                    if instructions.is_empty() && !node.incoming().is_empty() {
+                        return None;
+                    }
+                    if positions
+                        .insert(*node.payload(), instructions.len())
+                        .is_some()
+                    {
+                        return None;
+                    }
+                    instructions.push(*node.payload());
+                    match node.outgoing() {
+                        [] => break,
+                        [edge_id] => {
+                            let edge = cfg.edge(*edge_id).ok()?;
+                            if *edge.kind() != EdgeKind::Unconditional || edge.source() != block {
+                                return None;
+                            }
+                            let next = cfg.block(edge.target()).ok()?;
+                            if next.incoming() != [*edge_id] {
+                                return None;
+                            }
+                            block = edge.target();
+                        }
+                        _ => return None,
+                    }
+                }
+                (seen.len() == cfg.block_count()).then(|| {
+                    std::rc::Rc::new(LinearObjectOrder {
+                        instructions,
+                        positions,
+                    })
+                })
+            })
+            .as_ref()
+    }
+
     pub(super) fn pure_expression_values(&self) -> &HashSet<ValueId> {
         self.object_planning.pure_expressions.get_or_init(|| {
             let receiver = self

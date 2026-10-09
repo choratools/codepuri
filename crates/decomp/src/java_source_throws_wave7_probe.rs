@@ -251,7 +251,7 @@ fn frozen_wave6_function0_and_room_handler_evidence() {
             resolver.inputs = &files;
             resolver.dex_index = pool;
             resolver.external = Some(&external);
-            resolver.input_owners = input_owners.clone();
+            resolver.input_owners = input_owners.clone().into();
             resolver.hierarchy = hierarchy.clone();
             resolver
         })

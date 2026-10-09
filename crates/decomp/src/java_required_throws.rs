@@ -864,8 +864,9 @@ pub fn derive_program(
                 vec![]
             }
         };
+        let mut failed = failures.contains_key(key);
         for (event, names) in method.events.iter().zip(types) {
-            if failures.contains_key(key) {
+            if failed {
                 break;
             }
             let coverage = match event {
@@ -893,6 +894,7 @@ pub fn derive_program(
                             key.clone(),
                             ThrowsError::Unknown(format!("exception hierarchy {name}")),
                         );
+                        failed = true;
                         break;
                     }
                 }
@@ -902,7 +904,7 @@ pub fn derive_program(
         if changed {
             required[method_index] = collected;
         }
-        if changed || failures.contains_key(key) {
+        if changed || failed {
             for &caller in &reverse[method_index] {
                 if !queued[caller] {
                     queued[caller] = true;

@@ -135,6 +135,43 @@ fn emitter<'a>(ir: &'a MethodIr<SsaForm>, resolver: &'a Resolver) -> Emitter<'a,
 }
 
 #[test]
+fn linear_availability_includes_success_boundary_but_not_preinit_values() {
+    let mut builder = Builder::default();
+    let (object, gap) = builder.allocation(true);
+    let allocation = builder.values[object].def();
+    builder.push(ManagedInsn::Return { value: None });
+    let ir = builder.finish();
+    let resolver = Resolver::default();
+    let e = emitter(&ir, &resolver);
+    let initializer = e.object_plan(allocation).unwrap().initializer;
+    let available = e.after_initializer(initializer).unwrap();
+    assert!(available.contains(&initializer));
+    assert!(!available.contains(&allocation));
+    assert!(!available.contains(&gap));
+    let after_gap = e.after_initializer(gap).unwrap();
+    let both = available.intersect(&after_gap);
+    assert!(matches!(both, InstructionAvailability::Linear { .. }));
+    let expected = e.after_initializer(initializer).unwrap().into_set();
+    assert_eq!(both.into_set(), expected);
+    let graph = InstructionAvailability::Graph(expected.clone());
+    assert_eq!(available.intersect(&graph).into_set(), expected);
+    assert_eq!(graph.intersect(&available).into_set(), expected);
+    assert!(ir.instructions().iter().any(|(id, insn)| {
+        matches!(insn, ManagedInsn::Return { .. }) && available.contains(&id)
+    }));
+    let cached = e.linear_object_order().unwrap();
+    assert!(std::ptr::eq(cached, e.linear_object_order().unwrap()));
+    let off_cfg = ir
+        .instructions()
+        .iter()
+        .map(|(id, _)| id)
+        .find(|id| !cached.positions.contains_key(id));
+    if let Some(off_cfg) = off_cfg {
+        assert!(e.after_initializer(off_cfg).unwrap().is_empty());
+    }
+}
+
+#[test]
 fn static_reuse_keeps_plan_evidence_but_not_materialized_state_or_expression_policy() {
     let mut builder = Builder::default();
     let (object, gap) = builder.allocation(true);

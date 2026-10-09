@@ -1112,7 +1112,7 @@ pub(super) fn collect_cached(
     cache: &ssa_cache::SsaCache,
 ) -> SourceThrowsPlan {
     collect_cached_profiled(
-        files, aliases, catalog, external, hierarchy, workers, cache, None,
+        files, aliases, catalog, external, hierarchy, workers, cache, None, None,
     )
     .0
 }
@@ -1130,6 +1130,11 @@ pub(super) type SourceThrowsScraps<'a> = (
         ThrowsTaskProfile,
     )>,
 );
+pub(super) struct PreparedIndices<'a> {
+    pub field: &'a crate::java_members::external_metadata::fields::InputIndex<'a>,
+    pub super_index: Option<&'a crate::java_super_resolution::SuperIndex<'a>>,
+    pub metadata: &'a [dex_decompiler::infer::DexMetadata],
+}
 #[allow(clippy::too_many_arguments)]
 pub(super) fn collect_cached_profiled<'a>(
     files: &'a [DexFile],
@@ -1140,6 +1145,7 @@ pub(super) fn collect_cached_profiled<'a>(
     workers: usize,
     cache: &'a ssa_cache::SsaCache,
     profile: Option<&mut SourceThrowsProfile>,
+    prepared: Option<PreparedIndices<'a>>,
 ) -> (SourceThrowsPlan, SourceThrowsScraps<'a>) {
     collect_roots_profiled(
         files,
@@ -1151,6 +1157,7 @@ pub(super) fn collect_cached_profiled<'a>(
         workers,
         Some(cache),
         profile,
+        prepared,
     )
 }
 
@@ -1178,7 +1185,7 @@ fn collect_roots_with_workers(
     cache: Option<&ssa_cache::SsaCache>,
 ) -> SourceThrowsPlan {
     collect_roots_profiled(
-        files, aliases, catalog, external, hierarchy, roots, workers, cache, None,
+        files, aliases, catalog, external, hierarchy, roots, workers, cache, None, None,
     )
     .0
 }
@@ -1193,6 +1200,7 @@ fn collect_roots_profiled<'a>(
     workers: usize,
     cache: Option<&'a ssa_cache::SsaCache>,
     mut profile: Option<&mut SourceThrowsProfile>,
+    prepared: Option<PreparedIndices<'a>>,
 ) -> (SourceThrowsPlan, SourceThrowsScraps<'a>) {
     let enabled = profile.is_some();
     let preparation_start = enabled.then(std::time::Instant::now);
@@ -1201,9 +1209,15 @@ fn collect_roots_profiled<'a>(
     let super_inputs: Vec<_> = files.iter().collect();
     let (facts, field_index, super_index, metadata) = std::thread::scope(|scope| {
         let facts_worker = scope.spawn(|| Facts::new(files, aliases, catalog, external));
-        let field_worker =
-            scope.spawn(|| crate::java_members::external_metadata::fields::InputIndex::new(files));
+        let field_worker = scope.spawn(|| {
+            prepared
+                .is_none()
+                .then(|| crate::java_members::external_metadata::fields::InputIndex::new(files))
+        });
         let super_worker = scope.spawn(|| {
+            if prepared.is_some() {
+                return None;
+            }
             crate::java_super_resolution::SuperIndex::collect(
                 &super_inputs,
                 external.unwrap_or(&MissingMetadata),
@@ -1211,6 +1225,9 @@ fn collect_roots_profiled<'a>(
             .ok()
         });
         let metadata_worker = scope.spawn(|| {
+            if prepared.is_some() {
+                return Vec::new();
+            }
             files
                 .iter()
                 .map(dex_decompiler::infer::DexMetadata::new)
@@ -1236,10 +1253,20 @@ fn collect_roots_profiled<'a>(
     });
     // Frozen per-input resolvers are built concurrently from the completed
     // preparation state; pool order retains the original construction sequence.
-    let facts_ref = &facts;
-    let metadata_ref = &metadata;
-    let field_index_ref = &field_index;
-    let super_index_ref = &super_index;
+    let metadata_ref = prepared
+        .as_ref()
+        .map_or(metadata.as_slice(), |indices| indices.metadata);
+    let field_index_ref = prepared
+        .as_ref()
+        .map(|indices| indices.field)
+        .or(field_index.as_ref());
+    let super_index_ref = match &prepared {
+        Some(indices) => indices.super_index,
+        None => super_index.as_ref(),
+    };
+    let input_owners: super::SharedSnapshot<BTreeSet<String>> =
+        facts.owners.keys().cloned().collect();
+    let input_owners_ref = &input_owners;
     let resolvers: Vec<_> = std::thread::scope(|scope| {
         let workers: Vec<_> = files
             .iter()
@@ -1249,13 +1276,13 @@ fn collect_roots_profiled<'a>(
                     let mut resolver =
                         Resolver::with_catalog(dex, aliases, &metadata_ref[pool], Some(catalog));
                     resolver.ssa_cache = cache;
-                    resolver.field_index = Some(field_index_ref);
+                    resolver.field_index = field_index_ref;
                     resolver.inputs = files;
                     resolver.dex_index = pool;
                     resolver.external = external;
-                    resolver.input_owners = facts_ref.owners.keys().cloned().collect();
+                    resolver.input_owners = input_owners_ref.clone();
                     resolver.hierarchy = hierarchy.clone();
-                    resolver.super_index = super_index_ref.as_ref();
+                    resolver.super_index = super_index_ref;
                     resolver
                 })
             })
@@ -2016,6 +2043,33 @@ mod tests {
         assert_same_plan(&repeated, &serial);
         assert_eq!(cache.stats().misses, misses);
         assert!(cache.stats().hits > 0);
+        let field_index = crate::java_members::external_metadata::fields::InputIndex::new(&files);
+        let inputs = files.iter().collect::<Vec<_>>();
+        let super_index =
+            crate::java_super_resolution::SuperIndex::collect(&inputs, &MissingMetadata).ok();
+        let metadata = files
+            .iter()
+            .map(dex_decompiler::infer::DexMetadata::new)
+            .collect::<Vec<_>>();
+        for prepared_super in [super_index.as_ref(), None] {
+            let shared = collect_cached_profiled(
+                &files,
+                &aliases,
+                &catalog,
+                None,
+                &hierarchy,
+                4,
+                &cache,
+                None,
+                Some(PreparedIndices {
+                    field: &field_index,
+                    super_index: prepared_super,
+                    metadata: &metadata,
+                }),
+            )
+            .0;
+            assert_same_plan(&shared, &serial);
+        }
         for workers in [1, 4] {
             let mut profile = SourceThrowsProfile::default();
             let profiled = collect_cached_profiled(
@@ -2027,6 +2081,7 @@ mod tests {
                 workers,
                 &cache,
                 Some(&mut profile),
+                None,
             )
             .0;
             assert_same_plan(&profiled, &serial);

@@ -415,7 +415,7 @@ fn successful_allocation_reads<R: JavaResolver>(
         let available = match success.entry(root) {
             std::collections::hash_map::Entry::Occupied(entry) => entry.into_mut(),
             std::collections::hash_map::Entry::Vacant(entry) => {
-                let mut available = emitter.after_initializer(object.initializer)?;
+                let mut available = emitter.after_initializer(object.initializer)?.into_set();
                 available.remove(&object.initializer);
                 available.remove(&object.allocation);
                 entry.insert(available)

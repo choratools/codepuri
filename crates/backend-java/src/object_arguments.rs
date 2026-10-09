@@ -248,7 +248,17 @@ impl<R: JavaResolver> Emitter<'_, R> {
     pub(crate) fn after_initializer(
         &self,
         initializer: InsnId,
-    ) -> Result<HashSet<InsnId>, Unsupported> {
+    ) -> Result<InstructionAvailability, Unsupported> {
+        if let Some(order) = self.linear_object_order() {
+            return Ok(InstructionAvailability::Linear {
+                start: order
+                    .positions
+                    .get(&initializer)
+                    .copied()
+                    .unwrap_or(order.instructions.len()),
+                order: order.clone(),
+            });
+        }
         let reject = || Unsupported::Instruction("allocation capture availability".into());
         // A use is available only if every CFG path to it passes the successful
         // initializer. Traversal includes exceptional edges and is deliberately
@@ -290,7 +300,9 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 pending.push(self.ir.cfg().edge(*edge).map_err(|_| reject())?.target());
             }
         }
-        Ok(reachable.difference(&without).copied().collect())
+        Ok(InstructionAvailability::Graph(
+            reachable.difference(&without).copied().collect(),
+        ))
     }
     fn builder_member(&self, reference: MethodRef) -> Option<JavaMethod> {
         let m = self.resolver.method(reference)?;

@@ -107,11 +107,11 @@ fn actual_private_enum_production_wave17() {
             r.dex_index = pool;
             r.writes = Some(self.writes);
             r.field_catalog = Some(self.publication);
-            r.class_catalog = self.class_catalog.clone();
+            r.class_catalog = self.class_catalog.clone().into();
             r.external = Some(self.cp);
             r.hierarchy = self.hierarchy.clone();
             r.original_hierarchy = Some(std::sync::Arc::clone(&self.original_hierarchy));
-            r.input_owners = self.input_owners.clone();
+            r.input_owners = self.input_owners.clone().into();
             r
         }
     }
