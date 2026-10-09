@@ -96,6 +96,26 @@ fn constant(b: &mut Builder, n: i64) -> ValueId {
         value: Constant::Long(n),
     })
 }
+
+fn cached_emitter<'a>(
+    ir: &'a MethodIr<SsaForm>,
+    resolver: &'a CountingResolver,
+) -> Emitter<'a, CountingResolver> {
+    Emitter {
+        allocation_readable: None,
+        object_planning: Default::default(),
+        ir,
+        resolver,
+        values: HashMap::new(),
+        lines: vec![],
+        next: 0,
+        parameters: HashSet::new(),
+        reserved: HashSet::new(),
+        current: None,
+        hoisted: HashSet::new(),
+        declarations: HashMap::new(),
+    }
+}
 #[test]
 fn read_index_caches_relevant_signatures_preserves_multiplicity_and_raw_fallback() {
     let mut b = Builder::default();
@@ -139,6 +159,30 @@ fn read_index_caches_relevant_signatures_preserves_multiplicity_and_raw_fallback
     // A distinct physical high word remains visible on invalid metadata.
     let both = read_index(&ir, &HashSet::from([v, other]), &r);
     assert!(both[&other].len() >= 401);
+    let cached_resolver = CountingResolver::default();
+    let e = cached_emitter(&ir, &cached_resolver);
+    assert_eq!(e.object_read_index(&wanted), index);
+    assert_eq!(
+        *cached_resolver.calls.borrow(),
+        HashMap::from([(1, 1), (2, 1), (98, 1)])
+    );
+    assert_eq!(e.object_read_index(&wanted), index);
+    assert_eq!(
+        *cached_resolver.calls.borrow(),
+        HashMap::from([(1, 1), (2, 1), (98, 1)])
+    );
+    assert_eq!(e.object_read_index(&HashSet::from([v, other])), both);
+    assert_eq!(cached_resolver.calls.borrow().get(&99), Some(&1));
+    for (value, _) in ir.values() {
+        let expected = ir
+            .instructions()
+            .iter()
+            .filter_map(|(id, insn)| conditional::reads(insn).contains(&value).then_some(id))
+            .collect::<Vec<_>>();
+        assert_eq!(e.object_raw_uses(value).collect::<Vec<_>>(), expected);
+    }
+    let changed_emitter = cached_emitter(&ir, &changed);
+    assert_eq!(changed_emitter.object_read_index(&wanted)[&v].len(), 13);
 }
 fn fixture(noise: bool) -> (MethodIr<SsaForm>, InsnId) {
     let mut b = Builder::default();

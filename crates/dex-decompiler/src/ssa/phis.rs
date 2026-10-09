@@ -376,7 +376,6 @@ fn dominance_safe(
     replacement: &mut HashMap<ValueId, ValueId>,
 ) -> bool {
     let cfg = analysis.cfg;
-    let intervals = dominance_intervals(analysis);
     let phi_counts: HashMap<usize, usize> = phis
         .by_block
         .iter()
@@ -464,7 +463,7 @@ fn dominance_safe(
         let safe = uses_of.get(&result).is_none_or(|sites| {
             sites
                 .iter()
-                .all(|site| dominates(analysis, &intervals, *target_site, *site))
+                .all(|site| dominates(analysis, *target_site, *site))
         });
         if !safe {
             replacement.remove(&result);
@@ -483,6 +482,7 @@ fn def_value(insns: &InsnArena, insn: InsnId) -> Option<ValueId> {
 /// Returns whether a definition site dominates a use site. Phi-edge uses
 /// sit at the end of the predecessor chain, so any definition inside that
 /// chain dominates them.
+#[cfg(test)]
 fn dominance_intervals(
     analysis: &super::analysis::Analysis<'_>,
 ) -> HashMap<BlockId, (usize, usize)> {
@@ -513,12 +513,7 @@ fn dominance_intervals(
     intervals
 }
 
-fn dominates(
-    analysis: &super::analysis::Analysis<'_>,
-    intervals: &HashMap<BlockId, (usize, usize)>,
-    def: Site,
-    use_site: Site,
-) -> bool {
+fn dominates(analysis: &super::analysis::Analysis<'_>, def: Site, use_site: Site) -> bool {
     if def.chain == use_site.chain {
         return def.position < use_site.position;
     }
@@ -528,10 +523,7 @@ fn dominates(
     let Some(use_block) = analysis.block_of_chain(use_site.chain) else {
         return false;
     };
-    match (intervals.get(&def_block), intervals.get(&use_block)) {
-        (Some(&(start, end)), Some(&(position, _))) => start <= position && position < end,
-        _ => false,
-    }
+    analysis.doms.dominates(def_block, use_block)
 }
 
 #[cfg(test)]

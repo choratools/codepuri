@@ -135,6 +135,91 @@ fn emitter<'a>(ir: &'a MethodIr<SsaForm>, resolver: &'a Resolver) -> Emitter<'a,
 }
 
 #[test]
+fn cached_definition_evidence_does_not_cache_dynamic_allocation_readability() {
+    let mut builder = Builder::default();
+    let (object, _) = builder.allocation(true);
+    builder.push(ManagedInsn::Return {
+        value: Some(object),
+    });
+    let ir = builder.finish();
+    let resolver = Resolver::default();
+    let mut e = emitter(&ir, &resolver);
+    let allocation = ir.value(object).unwrap().def();
+    assert_eq!(e.allocation_root(object), Some(allocation));
+    assert!(std::rc::Rc::ptr_eq(
+        &e.cached_value_evidence(object),
+        &e.cached_value_evidence(object)
+    ));
+    let unknown = ValueId::default();
+    assert!(e.cached_value_evidence(unknown).is_err());
+    assert!(std::rc::Rc::ptr_eq(
+        &e.cached_value_evidence(unknown),
+        &e.cached_value_evidence(unknown)
+    ));
+    assert_eq!(e.allocation_root(unknown), None);
+    assert_eq!(e.allocation_root(unknown), None);
+    e.values.insert(
+        object,
+        ("ready".into(), JavaType::Class("Fixture.Box".into())),
+    );
+    assert!(e.get(object).is_ok());
+    e.hoisted.insert(object);
+    assert!(e.get(object).is_err());
+    assert_eq!(e.allocation_root(object), Some(allocation));
+    e.hoisted.remove(&object);
+    assert!(e.get(object).is_ok());
+}
+
+#[test]
+fn cfg_analysis_and_failures_are_reused_only_within_the_same_method_session() {
+    let mut builder = Builder::default();
+    let (object, gap) = builder.allocation(true);
+    builder.push(ManagedInsn::Return { value: None });
+    let ir = builder.finish();
+    let resolver = Resolver::default();
+    let e = emitter(&ir, &resolver);
+    assert!(std::ptr::eq(e.object_dominance(), e.object_dominance()));
+    assert!(std::ptr::eq(
+        e.object_post_dominance(),
+        e.object_post_dominance()
+    ));
+    assert!(std::ptr::eq(
+        e.object_structure_extended(),
+        e.object_structure_extended()
+    ));
+    assert!(
+        e.object_dominance()
+            .dominates(ir.cfg().entry(), e.object_block_id(gap).unwrap())
+    );
+    let allocation = ir.value(object).unwrap().def();
+    let mut cfg = Cfg::new(allocation);
+    cfg.add_block(gap);
+    let invalid =
+        MethodIr::<SsaForm>::from_parts(cfg, ir.instructions().clone(), ir.values().clone());
+    let other = emitter(&invalid, &resolver);
+    assert!(other.object_structure_extended().is_err());
+    assert!(std::ptr::eq(
+        other.object_structure_extended(),
+        other.object_structure_extended()
+    ));
+    assert!(!std::ptr::eq(
+        e.object_structure_extended(),
+        other.object_structure_extended()
+    ));
+    let mut static_emitter = emitter(&ir, &resolver);
+    static_emitter.object_planning =
+        std::rc::Rc::new(ObjectPlanning::for_static_from(&e.object_planning));
+    assert!(std::ptr::eq(
+        e.object_dominance(),
+        static_emitter.object_dominance()
+    ));
+    assert!(std::ptr::eq(
+        e.object_structure_extended(),
+        static_emitter.object_structure_extended()
+    ));
+}
+
+#[test]
 fn linear_availability_includes_success_boundary_but_not_preinit_values() {
     let mut builder = Builder::default();
     let (object, gap) = builder.allocation(true);

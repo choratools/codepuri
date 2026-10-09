@@ -144,7 +144,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
         let Some(site) = self.conditional_block_id(allocation) else {
             return false;
         };
-        def != site && decomp_core::analysis::dominators(self.ir.cfg()).dominates(def, site)
+        def != site && self.object_dominance().dominates(def, site)
     }
 
     fn conditional_plan(&self, allocation: InsnId) -> Result<ConditionalPlan, Unsupported> {
@@ -303,11 +303,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
         {
             return Err(fail());
         }
-        let dominators = decomp_core::analysis::dominators(self.ir.cfg());
-        for (id, instruction) in self.ir.instructions() {
-            if !reads(instruction).contains(&value) {
-                continue;
-            }
+        let dominators = self.object_dominance();
+        for id in self.object_raw_uses(value) {
             if arms.iter().any(|arm| arm.initializer == id) {
                 continue;
             }
@@ -364,7 +361,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
     }
 }
 
-fn reads(instruction: &ManagedInsn) -> Vec<ValueId> {
+#[cfg(test)]
+pub(super) fn reads(instruction: &ManagedInsn) -> Vec<ValueId> {
     match instruction {
         ManagedInsn::Const { .. } | ManagedInsn::NewInstance { .. } => vec![],
         ManagedInsn::Phi { inputs, .. } => inputs.iter().map(|(_, v)| *v).collect(),

@@ -205,29 +205,15 @@ impl<R: JavaResolver> Emitter<'_, R> {
             .collect();
         let fail = || Unsupported::Type("unproved synthetic fill-array payload".into());
         if !synthetic.is_empty() {
-            let cfg_defs: HashSet<_> = self
-                .ir
-                .cfg()
-                .block_ids()
-                .map(|b| {
-                    self.ir
-                        .cfg()
-                        .block(b)
-                        .map(|n| *n.payload())
-                        .map_err(|_| fail())
-                })
-                .collect::<Result<_, _>>()?;
-            if self
-                .ir
-                .register_slots()
-                .values()
-                .any(|slot| slot.values().iter().any(|v| synthetic.contains(v)))
+            if synthetic
+                .iter()
+                .any(|value| self.object_register_bound(value))
             {
                 return Err(fail());
             }
             for value in &synthetic {
                 let record = self.ir.value(*value).map_err(|_| fail())?;
-                if cfg_defs.contains(&record.def())
+                if self.object_block_id(record.def()).is_some()
                     || self.ty(*value)? != *component
                     || !matches!(self.ir.instruction(record.def()),
                         Ok(ManagedInsn::Const { result, .. }) if result == value)
@@ -236,7 +222,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 }
             }
             let mut payload_uses = 0;
-            for (_, insn) in self.ir.instructions() {
+            for id in self.object_uses_for_values(&synthetic) {
+                let insn = self.ir.instruction(id).map_err(|_| fail())?;
                 if let ManagedInsn::FillArray { array, values } = insn {
                     let count = values.iter().filter(|v| synthetic.contains(v)).count();
                     if count != 0 {
@@ -248,8 +235,9 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 }
             }
             let locals: Vec<_> = synthetic.iter().copied().collect();
-            let constraints = contextual_locals::consumer_constraints_with_declarations(
+            let constraints = contextual_locals::consumer_constraints_indexed(
                 self.ir,
+                self.object_contextual_index(),
                 &locals,
                 &signature.return_type,
                 self.resolver,

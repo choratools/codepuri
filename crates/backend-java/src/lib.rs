@@ -570,7 +570,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
             return Ok((expression, expected.clone()));
         }
         if matches!(
-            contextual_locals::evidence(self.ir, value, self.resolver),
+            self.cached_value_evidence(value).as_ref(),
             Ok(ValueType::RawZero | ValueType::Null)
         ) {
             if let Ok((name, ty)) = self.get(value) {

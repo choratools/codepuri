@@ -72,46 +72,21 @@ fn phi_heads(method: &MethodIr<SsaForm>) -> HashMap<BlockId, BlockId> {
     heads
 }
 
-/// Iterative dominator-tree DFS avoids both per-use parent walks and recursion
-/// on deep methods. Missing labels preserve unreachable-block rejection.
+/// The shared core tree already provides interval queries. Retain one analysis
+/// rather than constructing a second verifier-specific interval tree.
 struct DominanceIndex {
-    intervals: HashMap<BlockId, (usize, usize)>,
+    tree: decomp_core::analysis::Dominators,
 }
 
 impl DominanceIndex {
     fn build(method: &MethodIr<SsaForm>) -> Self {
-        let tree = dominators(method.cfg());
-        let mut children = HashMap::<BlockId, Vec<BlockId>>::new();
-        for block in method.cfg().block_ids() {
-            if let Some(parent) = tree.immediate_dominator(block) {
-                children.entry(parent).or_default().push(block);
-            }
+        Self {
+            tree: dominators(method.cfg()),
         }
-        let mut intervals = HashMap::<BlockId, (usize, usize)>::new();
-        let mut stack = vec![(method.cfg().entry(), false)];
-        let mut clock = 0;
-        while let Some((block, exiting)) = stack.pop() {
-            if exiting {
-                if let Some(interval) = intervals.get_mut(&block) {
-                    *interval = (interval.0, clock);
-                }
-            } else {
-                intervals.insert(block, (clock, clock));
-                clock += 1;
-                stack.push((block, true));
-                if let Some(children) = children.get(&block) {
-                    stack.extend(children.iter().map(|&child| (child, false)));
-                }
-            }
-        }
-        Self { intervals }
     }
 
     fn dominates(&self, dominator: BlockId, block: BlockId) -> bool {
-        match (self.intervals.get(&dominator), self.intervals.get(&block)) {
-            (Some(&(start, end)), Some(&(position, _))) => start <= position && position < end,
-            _ => false,
-        }
+        self.tree.dominates(dominator, block)
     }
 }
 
@@ -358,7 +333,14 @@ mod tests {
             }
         }
         assert_eq!(parent_steps, 130_816);
-        assert_eq!(index.intervals.len(), 512);
+        assert_eq!(
+            method
+                .cfg()
+                .block_ids()
+                .filter(|&block| index.dominates(method.cfg().entry(), block))
+                .count(),
+            512
+        );
         eprintln!(
             "512-block chain: {parent_steps} old parent steps; 512 indexed nodes, 511 constant-time queries"
         );

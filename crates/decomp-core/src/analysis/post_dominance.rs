@@ -1,9 +1,10 @@
 use std::collections::{HashMap, HashSet};
+use std::sync::OnceLock;
 
 use crate::cfg::Cfg;
 use crate::ids::BlockId;
 
-use super::dominance::dense_dominators;
+use super::dominance::{dense_dominators, tree_intervals};
 use super::traversal::{predecessors, reverse_postorder, successors};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -15,28 +16,42 @@ enum PostNode {
 /// Immediate post-dominator information for blocks that can reach an exit.
 #[derive(Clone, Debug)]
 pub struct PostDominators {
-    immediate: HashMap<BlockId, Option<BlockId>>,
+    positions: HashMap<BlockId, usize>,
+    nodes: Vec<PostNode>,
+    parents: Vec<usize>,
+    intervals: OnceLock<Vec<(usize, usize)>>,
 }
 
 impl PostDominators {
     /// Returns the immediate post-dominator when it is a real block.
     pub fn immediate_post_dominator(&self, block: BlockId) -> Option<BlockId> {
-        self.immediate.get(&block).copied().flatten()
+        let &position = self.positions.get(&block)?;
+        match self.nodes[self.parents[position]] {
+            PostNode::Block(parent) => Some(parent),
+            PostNode::Exit => None,
+        }
     }
 
-    /// Returns whether `post_dominator` post-dominates `block`.
+    /// Returns whether `post_dominator` post-dominates `block`. Nontrivial
+    /// queries build the O(B) synthetic-exit intervals once, then use O(1)
+    /// interval checks and expected O(1) block lookups.
     pub fn post_dominates(&self, post_dominator: BlockId, block: BlockId) -> bool {
-        if !self.immediate.contains_key(&post_dominator) || !self.immediate.contains_key(&block) {
+        let (Some(&left), Some(&right)) = (
+            self.positions.get(&post_dominator),
+            self.positions.get(&block),
+        ) else {
+            return false;
+        };
+        if left == right || self.parents[right] == left {
+            return true;
+        }
+        if self.parents[left] == right {
             return false;
         }
-        let mut cursor = Some(block);
-        while let Some(current) = cursor {
-            if current == post_dominator {
-                return true;
-            }
-            cursor = self.immediate.get(&current).copied().flatten();
-        }
-        false
+        let intervals = self.intervals.get_or_init(|| tree_intervals(&self.parents));
+        let (begin, end) = intervals[left];
+        let (other_begin, other_end) = intervals[right];
+        begin <= other_begin && other_end <= end
     }
 }
 
@@ -77,24 +92,20 @@ pub fn post_dominators<T>(cfg: &Cfg<T>) -> PostDominators {
             }
         })
         .collect();
-    let immediate = dense_dominators(&incoming);
-    let real = rpo
-        .iter()
-        .copied()
-        .enumerate()
-        .map(|(index, node)| (node, rpo[immediate[index]]))
-        .filter_map(|(node, parent)| match node {
-            PostNode::Block(block) => Some((
-                block,
-                match parent {
-                    PostNode::Block(parent_block) => Some(parent_block),
-                    PostNode::Exit => None,
-                },
-            )),
+    let parents = dense_dominators(&incoming);
+    let positions = positions
+        .into_iter()
+        .filter_map(|(node, position)| match node {
+            PostNode::Block(block) => Some((block, position)),
             PostNode::Exit => None,
         })
         .collect();
-    PostDominators { immediate: real }
+    PostDominators {
+        positions,
+        nodes: rpo,
+        parents,
+        intervals: OnceLock::new(),
+    }
 }
 
 fn post_reverse_postorder<T>(

@@ -202,7 +202,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
                     return Err(reject());
                 }
                 let outer_values = aliases.iter().map(|(value, _)| *value).collect();
-                let outer_uses = read_index(self.ir, &outer_values, self.resolver);
+                let outer_uses = self.object_read_index(&outer_values);
                 let after_outer = self.after_initializer(current)?;
                 for uses in outer_uses.values() {
                     if uses.iter().any(|id| {
@@ -213,7 +213,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
                         return Err(reject());
                     }
                 }
-                let index = read_index(self.ir, &definitions, self.resolver);
+                let index = self.object_read_index(&definitions);
                 for (_, allocation, _) in &nested {
                     let proof = self.pure_object_plan(*allocation)?;
                     if proof.aliases.iter().any(|(value, _)| {

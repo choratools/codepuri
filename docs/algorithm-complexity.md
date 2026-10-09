@@ -80,10 +80,10 @@ O(N + 참조별 파싱 총량 + map 정렬/중복 검사 + Σ try_count·handler
 | Tarjan SCC | `O(B+E)` | 보수적 `O(B+E)` | `analysis/scc.rs`; frame이 successor Vec 보유 |
 | CHK dominators | `O(B+E+k_d(B+E·D))` | `O(B+E)` | `analysis/dominance.rs`; dense RPO fixed point |
 | core postdominators | CHK와 같은 형태 | `O(B+E)` | `analysis/post_dominance.rs`; reverse graph·virtual exit |
-| parent lookup / 일반 dominates | `O(1)` / `O(D)` | `O(1)` 조회 | `Dominators`; 일반 dominates는 parent walk |
+| parent lookup / dominates·post-dominates | 평균 `O(1)` / 첫 비단순 질의의 interval 준비 `O(B)` 이후 평균 `O(1)` | interval `O(B)`, 질의 `O(1)` | 공통 core의 dense parent·lazy DFS interval; root/self/direct-parent fast path |
 | dominance frontier | `O(B+E+F_D+Σ f_b log f_b)` | `O(B+F_D)` | `analysis/frontier.rs`; 이미 방문한 ancestor suffix 중단, 출력 정렬 |
-| natural loops | `O(E·D + L_back(B+E·D))` 보수적 | `O(B+E+L_back·B)` 보수적 | `analysis/loops.rs`; backedge별 역탐색 |
-| reducibility 검사 | dominator 구축 + `O(B+E·D)` | `O(B+E)` | `analysis/reducibility.rs` |
+| natural loops | interval 준비 + 평균 `O(E + L_back(B+E))` 보수적 | `O(B+E+L_back·B)` 보수적 | `analysis/loops.rs`; backedge별 역탐색, dominance 질의는 구간 비교 |
+| reducibility 검사 | dominator 구축 + interval 준비 + 평균 `O(B+E)` | `O(B+E)` | `analysis/reducibility.rs` |
 
 Natural loop 분석 구현과 Java loop 구조 복원 구현은 별개다.
 
@@ -101,7 +101,7 @@ Natural loop 분석 구현과 Java loop 구조 복원 구현은 별개다.
 | Phi dominance 안전성 검사 | 인덱스 구축 `O(B+I+U+A+P)`, candidate use 총량 `O(U_rep)` | `O(B+I+U+A+P)` | interval dominance, chain→block index; immutable direct target별 1회 검사, same-chain strict position 유지 |
 | materialize·provenance remap | `O(I+P+E+A+U+B log B)` | `O(I+P+E+A+B)` | `ssa/materialize.rs`; 명령·Phi마다 공개 CFG 블록 생성, 최종 indexed validate 포함 |
 | SSA layout·defs·uses 검증 | `O(B+E+T_dom+I+U+A+V+G+Σ g_v log g_v)` | `O(B+E+V+G+진단)` | `managed-ir/src/verify*`; interval dominance·Phi-head memoization·incoming set cache·wide history 정렬 |
-| 검증기 dominance query | `O(1)` | index `O(B)` | `verify/uses.rs::DominanceIndex`; 일반 core dominates와 다름 |
+| 검증기 dominance query | 평균 `O(1)` | 공유 core index `O(B)` | `verify/uses.rs::DominanceIndex`; 별도 interval 재구축 없이 공통 core 사용 |
 
 `S`는 합성 정의 수, `R₀`는 fallback initial 수, `W_φ`는 누적 Phi input
 재평가량이다. 실제 dependency shape가 반복량을 결정한다.

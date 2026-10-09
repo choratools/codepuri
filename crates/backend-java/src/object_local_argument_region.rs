@@ -12,15 +12,11 @@ pub(super) fn steps<R: JavaResolver>(
     let proof = branching::plan_forward_checked(emitter.ir, bindings, declarations)
         .map_err(|_| denied())?;
     let cfg = emitter.ir.cfg();
-    let find = |insn| {
-        cfg.block_ids()
-            .find(|block| cfg.block(*block).is_ok_and(|b| *b.payload() == insn))
-            .ok_or_else(denied)
-    };
+    let find = |insn| emitter.object_block_id(insn).ok_or_else(denied);
     let start = find(root)?;
     let end = find(initializer)?;
-    let dom = decomp_core::analysis::dominators(cfg);
-    let post = decomp_core::analysis::post_dominators(cfg);
+    let dom = emitter.object_dominance();
+    let post = emitter.object_post_dominance();
     if !post.post_dominates(end, start) {
         return Err(denied());
     }
@@ -51,7 +47,7 @@ pub(super) fn steps<R: JavaResolver>(
     struct Walker<'a> {
         ir: &'a MethodIr<SsaForm>,
         local: &'a HashSet<BlockId>,
-        post: decomp_core::analysis::PostDominators,
+        post: &'a decomp_core::analysis::PostDominators,
         copies: &'a HashMap<EdgeId, Vec<branching::Copy>>,
         placed: HashSet<BlockId>,
         root: BlockId,

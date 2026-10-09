@@ -24,6 +24,9 @@ mod cache_tests;
 #[cfg(test)]
 #[path = "object_capture_publication_tests.rs"]
 mod capture_publication_tests;
+#[cfg(test)]
+#[path = "object_success_dominance_tests.rs"]
+mod success_dominance_tests;
 
 #[derive(Clone)]
 pub(super) struct ObjectPlan {
@@ -39,11 +42,36 @@ pub(super) struct ObjectPlan {
     pub argument_captures: Vec<ValueId>,
 }
 
+type CachedSuccessCut = Result<std::rc::Rc<HashSet<InsnId>>, Unsupported>;
+
 /// The IR, resolver and declaration types remain fixed throughout one emitter.
-/// Only plan shape is cached: whether an allocation is still pending belongs
-/// to the emitter's changing value environment and is checked on every use.
+/// Immutable analysis, lookup evidence and plan shape are cached. Whether an
+/// allocation is still pending belongs to the emitter's changing value
+/// environment and is checked on every use.
 #[derive(Default)]
 pub(super) struct ObjectPlanning {
+    dominance: OnceCell<std::rc::Rc<decomp_core::analysis::Dominators>>,
+    post_dominance: OnceCell<std::rc::Rc<decomp_core::analysis::PostDominators>>,
+    extended_structure: OnceCell<
+        std::rc::Rc<
+            Result<decomp_structure::ExtendedStructuredCfg, decomp_structure::StructureError>,
+        >,
+    >,
+    operands: OnceCell<std::rc::Rc<ObjectOperandIndex>>,
+    contextual_index: OnceCell<std::rc::Rc<contextual_locals::MethodIndex>>,
+    register_values: OnceCell<std::rc::Rc<HashSet<ValueId>>>,
+    normalized_reads: RefCell<HashMap<InsnId, Vec<ValueId>>>,
+    invoke_signatures: RefCell<HashMap<MethodRef, Option<JavaMethod>>>,
+    value_reads: RefCell<HashMap<ValueId, Vec<InsnId>>>,
+    allocation_roots: RefCell<HashMap<ValueId, Option<InsnId>>>,
+    value_evidence: RefCell<
+        HashMap<
+            ValueId,
+            std::rc::Rc<Result<type_compatibility::ValueType, type_compatibility::Compatibility>>,
+        >,
+    >,
+    success_dominance: OnceCell<Option<std::rc::Rc<SuccessDominance>>>,
+    success_cuts: RefCell<HashMap<InsnId, CachedSuccessCut>>,
     linear_order: OnceCell<Option<std::rc::Rc<LinearObjectOrder>>>,
     blocks: OnceCell<HashMap<InsnId, BlockId>>,
     plans: RefCell<HashMap<InsnId, Result<ObjectPlan, Unsupported>>>,
@@ -62,12 +90,47 @@ pub(super) struct LinearObjectOrder {
     pub(super) positions: HashMap<InsnId, usize>,
 }
 
+struct ObjectOperandIndex {
+    instructions: Vec<InsnId>,
+    positions: HashMap<InsnId, usize>,
+    consumers: HashMap<ValueId, Vec<usize>>,
+    special_receivers: HashMap<ValueId, Vec<InsnId>>,
+    conditions: HashMap<ValueId, Vec<InsnId>>,
+}
+
+pub(super) struct SuccessDominance {
+    dominance: decomp_core::analysis::Dominators,
+    original: HashMap<InsnId, BlockId>,
+    success: HashMap<InsnId, BlockId>,
+}
+
+impl SuccessDominance {
+    fn contains(&self, cut: InsnId, instruction: &InsnId) -> bool {
+        if !self.original.contains_key(&cut) {
+            return false;
+        }
+        if cut == *instruction {
+            return true;
+        }
+        self.success
+            .get(&cut)
+            .zip(self.original.get(instruction))
+            .is_some_and(|(&success, &target)| self.dominance.dominates(success, target))
+    }
+}
+
 pub(crate) enum InstructionAvailability {
     Linear {
         order: std::rc::Rc<LinearObjectOrder>,
         start: usize,
     },
     Graph(HashSet<InsnId>),
+    SharedGraph(std::rc::Rc<HashSet<InsnId>>),
+    SharedPair([std::rc::Rc<HashSet<InsnId>>; 2]),
+    Dominance {
+        index: std::rc::Rc<SuccessDominance>,
+        cuts: [Option<InsnId>; 2],
+    },
 }
 
 impl InstructionAvailability {
@@ -77,10 +140,23 @@ impl InstructionAvailability {
                 order.positions.get(instruction).is_some_and(|p| p >= start)
             }
             Self::Graph(instructions) => instructions.contains(instruction),
+            Self::SharedGraph(instructions) => instructions.contains(instruction),
+            Self::SharedPair(sets) => sets.iter().all(|set| set.contains(instruction)),
+            Self::Dominance { index, cuts } => cuts
+                .iter()
+                .flatten()
+                .all(|cut| index.contains(*cut, instruction)),
         }
     }
 
     pub(crate) fn intersect(&self, other: &Self) -> Self {
+        if let (Self::SharedGraph(left), Self::SharedGraph(right)) = (self, other) {
+            return if std::rc::Rc::ptr_eq(left, right) {
+                Self::SharedGraph(left.clone())
+            } else {
+                Self::SharedPair([left.clone(), right.clone()])
+            };
+        }
         if let (
             Self::Linear { order, start },
             Self::Linear {
@@ -95,6 +171,39 @@ impl InstructionAvailability {
                 start: (*start).max(*other_start),
             };
         }
+        if let (
+            Self::Dominance { index, cuts },
+            Self::Dominance {
+                index: other_index,
+                cuts: other_cuts,
+            },
+        ) = (self, other)
+            && std::rc::Rc::ptr_eq(index, other_index)
+        {
+            let mut combined = [None, None];
+            let mut count = 0;
+            for cut in cuts.iter().chain(other_cuts).flatten() {
+                if combined.contains(&Some(*cut)) {
+                    continue;
+                }
+                if count == 2 {
+                    break;
+                }
+                combined[count] = Some(*cut);
+                count += 1;
+            }
+            if cuts
+                .iter()
+                .chain(other_cuts)
+                .flatten()
+                .all(|cut| combined.contains(&Some(*cut)))
+            {
+                return Self::Dominance {
+                    index: index.clone(),
+                    cuts: combined,
+                };
+            }
+        }
         Self::Graph(match self {
             Self::Linear { order, start } => order.instructions[*start..]
                 .iter()
@@ -106,6 +215,22 @@ impl InstructionAvailability {
                 .copied()
                 .filter(|id| other.contains(id))
                 .collect(),
+            Self::SharedGraph(instructions) => instructions
+                .iter()
+                .copied()
+                .filter(|id| other.contains(id))
+                .collect(),
+            Self::SharedPair(sets) => sets[0]
+                .iter()
+                .copied()
+                .filter(|id| self.contains(id) && other.contains(id))
+                .collect(),
+            Self::Dominance { index, .. } => index
+                .original
+                .keys()
+                .copied()
+                .filter(|id| self.contains(id) && other.contains(id))
+                .collect(),
         })
     }
 
@@ -113,6 +238,15 @@ impl InstructionAvailability {
         match self {
             Self::Linear { order, start } => order.instructions[start..].iter().copied().collect(),
             Self::Graph(instructions) => instructions,
+            Self::SharedGraph(instructions) => std::rc::Rc::try_unwrap(instructions)
+                .unwrap_or_else(|instructions| (*instructions).clone()),
+            Self::SharedPair(sets) => sets[0].intersection(&sets[1]).copied().collect(),
+            Self::Dominance { ref index, .. } => index
+                .original
+                .keys()
+                .copied()
+                .filter(|id| self.contains(id))
+                .collect(),
         }
     }
 
@@ -121,6 +255,9 @@ impl InstructionAvailability {
         match self {
             Self::Linear { order, start } => *start == order.instructions.len(),
             Self::Graph(instructions) => instructions.is_empty(),
+            Self::SharedGraph(instructions) => instructions.is_empty(),
+            Self::SharedPair(sets) => !sets[0].iter().any(|id| sets[1].contains(id)),
+            Self::Dominance { index, .. } => !index.original.keys().any(|id| self.contains(id)),
         }
     }
 }
@@ -140,6 +277,19 @@ impl ObjectPlanning {
     /// policy and its own mutable value environment.
     pub(super) fn for_static_from(ordinary: &Self) -> Self {
         Self {
+            dominance: ordinary.dominance.clone(),
+            post_dominance: ordinary.post_dominance.clone(),
+            extended_structure: ordinary.extended_structure.clone(),
+            operands: ordinary.operands.clone(),
+            contextual_index: ordinary.contextual_index.clone(),
+            register_values: ordinary.register_values.clone(),
+            normalized_reads: RefCell::new(ordinary.normalized_reads.borrow().clone()),
+            invoke_signatures: RefCell::new(ordinary.invoke_signatures.borrow().clone()),
+            value_reads: RefCell::new(ordinary.value_reads.borrow().clone()),
+            allocation_roots: RefCell::new(ordinary.allocation_roots.borrow().clone()),
+            value_evidence: RefCell::new(ordinary.value_evidence.borrow().clone()),
+            success_dominance: ordinary.success_dominance.clone(),
+            success_cuts: RefCell::new(ordinary.success_cuts.borrow().clone()),
             linear_order: ordinary.linear_order.clone(),
             blocks: ordinary.blocks.clone(),
             plans: RefCell::new(ordinary.plans.borrow().clone()),
@@ -153,6 +303,270 @@ impl ObjectPlanning {
 }
 
 impl<R: JavaResolver> Emitter<'_, R> {
+    /// Split normal transfers through an analysis-only success node; exception
+    /// transfers bypass it. The source CFG and instruction identities stay intact.
+    pub(super) fn object_success_dominance(&self) -> Option<&std::rc::Rc<SuccessDominance>> {
+        self.object_planning
+            .success_dominance
+            .get_or_init(|| {
+                let original = self.ir.cfg();
+                original.validate().ok()?;
+                let mut cfg = decomp_core::cfg::Cfg::new(());
+                let mut blocks = HashMap::from([(original.entry(), cfg.entry())]);
+                let mut instructions = HashMap::new();
+                for block in original.block_ids() {
+                    let mapped = *blocks.entry(block).or_insert_with(|| cfg.add_block(()));
+                    let id = *original.block(block).ok()?.payload();
+                    if instructions.insert(id, mapped).is_some() {
+                        return None;
+                    }
+                }
+                let mut success = HashMap::new();
+                for block in original.block_ids() {
+                    let node = original.block(block).ok()?;
+                    let source = blocks[&block];
+                    let mut completed = None;
+                    for edge_id in node.outgoing() {
+                        let edge = original.edge(*edge_id).ok()?;
+                        let target = blocks[&edge.target()];
+                        if matches!(edge.kind(), EdgeKind::Exception(_)) {
+                            cfg.add_edge(source, target, edge.kind().clone()).ok()?;
+                        } else {
+                            let complete = match completed {
+                                Some(complete) => complete,
+                                None => {
+                                    let complete = cfg.add_block(());
+                                    cfg.add_edge(source, complete, EdgeKind::Unconditional)
+                                        .ok()?;
+                                    completed = Some(complete);
+                                    success.insert(*node.payload(), complete);
+                                    complete
+                                }
+                            };
+                            cfg.add_edge(complete, target, edge.kind().clone()).ok()?;
+                        }
+                    }
+                }
+                let dominance = decomp_core::analysis::dominators(&cfg);
+                let entry = cfg.entry();
+                instructions.retain(|_, mapped| dominance.dominates(entry, *mapped));
+                Some(std::rc::Rc::new(SuccessDominance {
+                    dominance,
+                    original: instructions,
+                    success,
+                }))
+            })
+            .as_ref()
+    }
+
+    pub(super) fn cached_value_evidence(
+        &self,
+        value: ValueId,
+    ) -> std::rc::Rc<Result<type_compatibility::ValueType, type_compatibility::Compatibility>> {
+        self.object_planning
+            .value_evidence
+            .borrow_mut()
+            .entry(value)
+            .or_insert_with(|| {
+                std::rc::Rc::new(contextual_locals::evidence(self.ir, value, self.resolver))
+            })
+            .clone()
+    }
+    pub(super) fn object_contextual_index(&self) -> &contextual_locals::MethodIndex {
+        self.object_planning
+            .contextual_index
+            .get_or_init(|| std::rc::Rc::new(contextual_locals::MethodIndex::new(self.ir)))
+    }
+
+    fn object_operands(&self) -> &ObjectOperandIndex {
+        self.object_planning.operands.get_or_init(|| {
+            let mut index = ObjectOperandIndex {
+                instructions: Vec::with_capacity(self.ir.instructions().len()),
+                positions: HashMap::with_capacity(self.ir.instructions().len()),
+                consumers: HashMap::new(),
+                special_receivers: HashMap::new(),
+                conditions: HashMap::new(),
+            };
+            for (id, instruction) in self.ir.instructions() {
+                let position = index.instructions.len();
+                index.instructions.push(id);
+                index.positions.insert(id, position);
+                for value in arguments::reads(instruction) {
+                    let sites = index.consumers.entry(value).or_default();
+                    if sites.last() != Some(&position) {
+                        sites.push(position);
+                    }
+                }
+                if let ManagedInsn::Invoke {
+                    kind: InvokeKind::Special,
+                    args,
+                    ..
+                } = instruction
+                    && let Some(receiver) = args.first()
+                {
+                    index
+                        .special_receivers
+                        .entry(*receiver)
+                        .or_default()
+                        .push(id);
+                }
+                if let ManagedInsn::Branch {
+                    condition: Some(value),
+                    ..
+                } = instruction
+                {
+                    index.conditions.entry(*value).or_default().push(id);
+                }
+            }
+            std::rc::Rc::new(index)
+        })
+    }
+
+    /// Reads retain original arena order, duplicates and descriptor-normalized
+    /// wide arguments. Resolve only relevant invokes and cache missing metadata.
+    pub(super) fn object_read_index(
+        &self,
+        wanted: &HashSet<ValueId>,
+    ) -> HashMap<ValueId, Vec<InsnId>> {
+        let index = self.object_operands();
+        let mut result = HashMap::new();
+        for value in wanted {
+            if let Some(sites) = self.object_planning.value_reads.borrow().get(value) {
+                if !sites.is_empty() {
+                    result.insert(*value, sites.clone());
+                }
+                continue;
+            }
+            let mut sites = Vec::new();
+            for position in index.consumers.get(value).into_iter().flatten() {
+                let id = index.instructions[*position];
+                let instruction = match self.ir.instruction(id) {
+                    Ok(instruction) => instruction,
+                    Err(_) => continue,
+                };
+                if let ManagedInsn::Invoke { method, args, .. } = instruction {
+                    let mut normalized = self.object_planning.normalized_reads.borrow_mut();
+                    let reads = normalized.entry(id).or_insert_with(|| {
+                        self.object_planning
+                            .invoke_signatures
+                            .borrow_mut()
+                            .entry(*method)
+                            .or_insert_with(|| self.resolver.method(*method))
+                            .as_ref()
+                            .and_then(|m| invoke_arguments::operands(m, args).ok())
+                            .unwrap_or_else(|| args.clone())
+                    });
+                    sites.extend(reads.iter().filter(|read| *read == value).map(|_| id));
+                } else {
+                    sites.extend(
+                        arguments::reads(instruction)
+                            .iter()
+                            .filter(|read| *read == value)
+                            .map(|_| id),
+                    );
+                }
+            }
+            self.object_planning
+                .value_reads
+                .borrow_mut()
+                .insert(*value, sites.clone());
+            if !sites.is_empty() {
+                result.insert(*value, sites);
+            }
+        }
+        result
+    }
+
+    pub(super) fn object_special_invokes(&self, receiver: ValueId) -> &[InsnId] {
+        self.object_operands()
+            .special_receivers
+            .get(&receiver)
+            .map(Vec::as_slice)
+            .unwrap_or_default()
+    }
+
+    pub(super) fn object_raw_uses(&self, value: ValueId) -> impl Iterator<Item = InsnId> + '_ {
+        let index = self.object_operands();
+        index
+            .consumers
+            .get(&value)
+            .into_iter()
+            .flatten()
+            .map(|position| index.instructions[*position])
+    }
+
+    pub(super) fn object_uses_for_values(&self, values: &HashSet<ValueId>) -> Vec<InsnId> {
+        let index = self.object_operands();
+        let mut positions = values
+            .iter()
+            .flat_map(|value| index.consumers.get(value).into_iter().flatten().copied())
+            .collect::<Vec<_>>();
+        positions.sort_unstable();
+        positions.dedup();
+        positions
+            .into_iter()
+            .map(|position| index.instructions[position])
+            .collect()
+    }
+
+    pub(super) fn object_register_bound(&self, value: &ValueId) -> bool {
+        self.object_planning
+            .register_values
+            .get_or_init(|| {
+                std::rc::Rc::new(
+                    self.ir
+                        .register_slots()
+                        .values()
+                        .flat_map(|slot| slot.values().iter().copied())
+                        .collect(),
+                )
+            })
+            .contains(value)
+    }
+
+    pub(super) fn object_alias_special_invokes(
+        &self,
+        aliases: &[(ValueId, InsnId)],
+    ) -> Vec<InsnId> {
+        let index = self.object_operands();
+        let mut invokes = aliases
+            .iter()
+            .flat_map(|(value, _)| self.object_special_invokes(*value).iter().copied())
+            .collect::<Vec<_>>();
+        invokes.sort_unstable_by_key(|id| index.positions.get(id));
+        invokes.dedup();
+        invokes
+    }
+
+    pub(super) fn object_conditions(&self, condition: ValueId) -> &[InsnId] {
+        self.object_operands()
+            .conditions
+            .get(&condition)
+            .map(Vec::as_slice)
+            .unwrap_or_default()
+    }
+
+    pub(super) fn object_dominance(&self) -> &decomp_core::analysis::Dominators {
+        self.object_planning
+            .dominance
+            .get_or_init(|| std::rc::Rc::new(decomp_core::analysis::dominators(self.ir.cfg())))
+    }
+
+    pub(super) fn object_post_dominance(&self) -> &decomp_core::analysis::PostDominators {
+        self.object_planning
+            .post_dominance
+            .get_or_init(|| std::rc::Rc::new(decomp_core::analysis::post_dominators(self.ir.cfg())))
+    }
+
+    pub(super) fn object_structure_extended(
+        &self,
+    ) -> &Result<decomp_structure::ExtendedStructuredCfg, decomp_structure::StructureError> {
+        self.object_planning
+            .extended_structure
+            .get_or_init(|| std::rc::Rc::new(decomp_structure::structure_extended(self.ir.cfg())))
+            .as_ref()
+    }
+
     /// Exact order only for a fully reachable, unique unconditional chain.
     /// Exception edges, joins, duplicate payloads and cycles keep the general
     /// success-path traversal. No per-initializer suffix cache is retained.
@@ -254,6 +668,10 @@ impl<R: JavaResolver> Emitter<'_, R> {
     }
 
     fn object_block(&self, instruction: InsnId) -> Option<&Block<InsnId>> {
+        self.ir.cfg().block(self.object_block_id(instruction)?).ok()
+    }
+
+    pub(super) fn object_block_id(&self, instruction: InsnId) -> Option<BlockId> {
         let blocks = self.object_planning.blocks.get_or_init(|| {
             let mut blocks = HashMap::new();
             for id in self.ir.cfg().block_ids() {
@@ -264,7 +682,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
             }
             blocks
         });
-        self.ir.cfg().block(*blocks.get(&instruction)?).ok()
+        blocks.get(&instruction).copied()
     }
 
     fn object_argument_owners(&self, current: InsnId) -> &[ValueId] {
@@ -485,16 +903,32 @@ impl<R: JavaResolver> Emitter<'_, R> {
     }
 
     pub(super) fn allocation_root(&self, mut value: ValueId) -> Option<InsnId> {
-        let mut visited = HashSet::new();
-        while visited.insert(value) {
-            let def = self.ir.value(value).ok()?.def();
-            match self.ir.instruction(def).ok()? {
-                ManagedInsn::NewInstance { .. } => return Some(def),
-                ManagedInsn::Move { value: source, .. } => value = *source,
-                _ => return None,
-            }
+        if let Some(root) = self.object_planning.allocation_roots.borrow().get(&value) {
+            return *root;
         }
-        None
+        let mut visited = HashSet::new();
+        let root = loop {
+            if let Some(root) = self.object_planning.allocation_roots.borrow().get(&value) {
+                break *root;
+            }
+            if !visited.insert(value) {
+                break None;
+            }
+            let Ok(record) = self.ir.value(value) else {
+                break None;
+            };
+            let def = record.def();
+            match self.ir.instruction(def) {
+                Ok(ManagedInsn::NewInstance { .. }) => break Some(def),
+                Ok(ManagedInsn::Move { value: source, .. }) => value = *source,
+                _ => break None,
+            }
+        };
+        let mut roots = self.object_planning.allocation_roots.borrow_mut();
+        for value in visited {
+            roots.insert(value, root);
+        }
+        root
     }
 
     /// A hoisted allocation slot is declared but unreadable until its exact

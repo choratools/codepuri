@@ -20,12 +20,15 @@ pub(super) fn declarations(
 
 pub(super) fn declarations_indexed(
     ir: &MethodIr<SsaForm>,
-    index: &MethodIndex<'_>,
+    index: &MethodIndex,
     return_type: &JavaType,
     resolver: &impl JavaResolver,
 ) -> HashMap<ValueId, JavaType> {
     let mut result = HashMap::new();
-    for (id, instruction) in &index.instructions {
+    for id in &index.instructions {
+        let Ok(instruction) = ir.instruction(*id) else {
+            continue;
+        };
         let ManagedInsn::Invoke {
             result: Some(seed),
             method,

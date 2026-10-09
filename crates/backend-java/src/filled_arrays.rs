@@ -25,8 +25,9 @@ impl<R: JavaResolver> Emitter<'_, R> {
         {
             return Ok(false);
         }
-        let contexts = contextual_locals::consumer_constraints_with_declarations(
+        let contexts = contextual_locals::consumer_constraints_indexed(
             self.ir,
+            self.object_contextual_index(),
             &[result],
             &signature.return_type,
             self.resolver,
@@ -76,7 +77,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
         // by numeric and reference consumers. Only definition-proven null is
         // reference-only; expression() above separately rejects wide raw zero.
         if matches!(
-            contextual_locals::evidence(self.ir, result, self.resolver),
+            self.cached_value_evidence(result).as_ref(),
             Ok(type_compatibility::ValueType::Null)
         ) && !expected.reference()
         {
@@ -127,7 +128,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
             return Err(fail());
         }
         let mut payload_consumer = false;
-        for (_, insn) in self.ir.instructions() {
+        for id in self.object_raw_uses(result) {
+            let insn = self.ir.instruction(id).map_err(|_| fail())?;
             if let ManagedInsn::FillArray { array, values } = insn
                 && values.contains(&result)
             {
@@ -168,8 +170,9 @@ impl<R: JavaResolver> Emitter<'_, R> {
         if !payload_consumer {
             return Ok(false);
         }
-        let contexts = contextual_locals::consumer_constraints_with_declarations(
+        let contexts = contextual_locals::consumer_constraints_indexed(
             self.ir,
+            self.object_contextual_index(),
             &[result],
             &signature.return_type,
             self.resolver,

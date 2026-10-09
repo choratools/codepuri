@@ -16,6 +16,74 @@ fn add_edge(cfg: &mut Cfg<&'static str>, source: BlockId, target: BlockId) {
 }
 
 #[test]
+fn deep_chain_interval_queries_keep_reachability_and_do_not_recurse() {
+    let mut cfg = Cfg::new("entry");
+    let entry = cfg.entry();
+    let mut previous = entry;
+    let mut blocks = vec![entry];
+    for _ in 0..8192 {
+        let next = cfg.add_block("chain");
+        add_edge(&mut cfg, previous, next);
+        previous = next;
+        blocks.push(next);
+    }
+    let dead = cfg.add_block("unreachable");
+    let dom = dominators(&cfg);
+    let post = post_dominators(&cfg);
+    for (index, &block) in blocks.iter().enumerate() {
+        assert!(dom.dominates(entry, block));
+        assert!(post.post_dominates(previous, block));
+        assert!(!dom.dominates(dead, block));
+        assert!(!post.post_dominates(dead, block));
+        if index > 0 {
+            assert_eq!(dom.immediate_dominator(block), Some(blocks[index - 1]));
+            assert!(!dom.dominates(block, blocks[index - 1]));
+            assert!(!post.post_dominates(blocks[index - 1], block));
+        }
+    }
+    assert!(natural_loops(&cfg, &dom).is_empty());
+    assert!(!dom.dominates(dead, dead));
+    assert!(!post.post_dominates(dead, dead));
+}
+
+#[test]
+#[ignore = "controlled dominance-query scaling microbenchmark; not whole-APK throughput"]
+fn repeated_dominance_query_scaling() {
+    use std::time::Instant;
+    for count in [1024usize, 4096, 16384] {
+        let mut cfg = Cfg::new("entry");
+        let mut blocks = vec![cfg.entry()];
+        for _ in 1..count {
+            let block = cfg.add_block("chain");
+            add_edge(&mut cfg, blocks[blocks.len() - 1], block);
+            blocks.push(block);
+        }
+        let dom = dominators(&cfg);
+        let mut steps = 0u64;
+        let start = Instant::now();
+        for pair in blocks.windows(2) {
+            let mut cursor = Some(pair[0]);
+            while let Some(block) = cursor {
+                assert_ne!(block, pair[1]);
+                steps += 1;
+                cursor = dom.immediate_dominator(block);
+            }
+        }
+        let parent_walk = start.elapsed();
+        let start = Instant::now();
+        for pair in blocks.windows(2) {
+            assert!(!std::hint::black_box(&dom).dominates(pair[1], pair[0]));
+        }
+        let indexed = start.elapsed();
+        assert_eq!(steps, count as u64 * (count as u64 - 1) / 2);
+        eprintln!(
+            "chain-query {count}: parent_steps={steps}, indexed_queries={}, parent_walk={parent_walk:?}, indexed={indexed:?}",
+            count - 1
+        );
+    }
+}
+
+#[test]
 fn traversal_orders_a_diamond_in_depth_first_postorder() {
     let mut cfg = Cfg::new("entry");
     let entry = cfg.entry();

@@ -122,6 +122,7 @@ pub(in crate::object_plan) fn reads(insn: &ManagedInsn) -> Vec<ValueId> {
 /// local to this immutable resolver context and resolved once per relevant
 /// MethodRef. A missing/invalid descriptor retains raw reads conservatively.
 /// Vectors retain multiplicity: two logical args are two uses, even if equal.
+#[cfg(test)]
 fn read_index<R: JavaResolver>(
     ir: &MethodIr<SsaForm>,
     wanted: &HashSet<ValueId>,
@@ -259,6 +260,38 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 order: order.clone(),
             });
         }
+        if let Some(cached) = self.object_planning.success_cuts.borrow().get(&initializer) {
+            return cached.clone().map(InstructionAvailability::SharedGraph);
+        }
+        // Avoid a second whole-CFG analysis for one-off/small query batches.
+        // Retain at most four explicit sets, then promote repeated queries to
+        // one success-dominance snapshot with O(1) membership.
+        if (self.object_planning.success_dominance.get().is_some()
+            || self.object_planning.success_cuts.borrow().len() >= 4)
+            && let Some(index) = self.object_success_dominance()
+        {
+            self.object_planning.success_cuts.borrow_mut().clear();
+            return Ok(InstructionAvailability::Dominance {
+                index: index.clone(),
+                cuts: [Some(initializer), None],
+            });
+        }
+        let result = self
+            .after_initializer_traversal(initializer)
+            .map(std::rc::Rc::new);
+        if self.object_planning.success_cuts.borrow().len() < 4 {
+            self.object_planning
+                .success_cuts
+                .borrow_mut()
+                .insert(initializer, result.clone());
+        }
+        result.map(InstructionAvailability::SharedGraph)
+    }
+
+    fn after_initializer_traversal(
+        &self,
+        initializer: InsnId,
+    ) -> Result<HashSet<InsnId>, Unsupported> {
         let reject = || Unsupported::Instruction("allocation capture availability".into());
         // A use is available only if every CFG path to it passes the successful
         // initializer. Traversal includes exceptional edges and is deliberately
@@ -300,9 +333,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 pending.push(self.ir.cfg().edge(*edge).map_err(|_| reject())?.target());
             }
         }
-        Ok(InstructionAvailability::Graph(
-            reachable.difference(&without).copied().collect(),
-        ))
+        Ok(reachable.difference(&without).copied().collect())
     }
     fn builder_member(&self, reference: MethodRef) -> Option<JavaMethod> {
         let m = self.resolver.method(reference)?;
@@ -576,7 +607,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
                     return Err(reject());
                 }
                 let wanted = gap.keys().copied().collect();
-                let mut use_index = read_index(self.ir, &wanted, self.resolver);
+                let mut use_index = self.object_read_index(&wanted);
                 let mut after = None;
                 let mut argument_captures = Vec::new();
                 let mut capture_occurrences = HashSet::new();

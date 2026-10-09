@@ -19,8 +19,8 @@ mod producer_reference_locals;
 /// Immutable full-arena relationships shared by all declaration candidates.
 /// Adjacency vectors retain arena order; consumer positions are deduplicated
 /// per instruction, while operand duplicates remain in the instruction itself.
-struct MethodIndex<'a> {
-    instructions: Vec<(InsnId, &'a ManagedInsn)>,
+pub(crate) struct MethodIndex {
+    instructions: Vec<InsnId>,
     copies: HashMap<ValueId, Vec<ValueId>>,
     downstream: HashMap<ValueId, Vec<ValueId>>,
     consumers: HashMap<ValueId, Vec<usize>>,
@@ -30,10 +30,10 @@ struct MethodIndex<'a> {
     caught: HashMap<ValueId, JavaType>,
 }
 
-impl<'a> MethodIndex<'a> {
-    fn new(ir: &'a MethodIr<SsaForm>) -> Self {
+impl MethodIndex {
+    pub(crate) fn new(ir: &MethodIr<SsaForm>) -> Self {
         let mut index = Self {
-            instructions: ir.instructions().iter().collect(),
+            instructions: ir.instructions().keys().collect(),
             copies: HashMap::new(),
             downstream: HashMap::new(),
             consumers: HashMap::new(),
@@ -42,7 +42,7 @@ impl<'a> MethodIndex<'a> {
             thrown: HashSet::new(),
             caught: HashMap::new(),
         };
-        for (position, (_, instruction)) in index.instructions.iter().enumerate() {
+        for (position, (_, instruction)) in ir.instructions().iter().enumerate() {
             instruction_reads(instruction, |value| {
                 let positions = index.consumers.entry(value).or_default();
                 if positions.last() != Some(&position) {
@@ -246,9 +246,9 @@ pub(crate) fn consumer_constraints_with_declarations(
     )
 }
 
-fn consumer_constraints_indexed(
+pub(crate) fn consumer_constraints_indexed(
     ir: &MethodIr<SsaForm>,
-    index: &MethodIndex<'_>,
+    index: &MethodIndex,
     locals: &[ValueId],
     return_type: &JavaType,
     resolver: &impl JavaResolver,
@@ -269,7 +269,7 @@ fn consumer_constraints_indexed(
 
 fn consumer_constraints_at_positions(
     ir: &MethodIr<SsaForm>,
-    index: &MethodIndex<'_>,
+    index: &MethodIndex,
     locals: &HashSet<ValueId>,
     positions: &[usize],
     return_type: &JavaType,
@@ -286,7 +286,9 @@ fn consumer_constraints_at_positions(
     };
     let mut constraints = Vec::new();
     for position in positions {
-        let insn = index.instructions[*position].1;
+        let insn = ir
+            .instruction(index.instructions[*position])
+            .map_err(|_| unknown())?;
         let mut require = |v: ValueId, expected: JavaType| {
             if has(&v) {
                 constraints.push(expected);
@@ -611,7 +613,7 @@ pub fn checked_phi_plan(
 
 fn checked_phi_plan_indexed(
     ir: &MethodIr<SsaForm>,
-    index: &MethodIndex<'_>,
+    index: &MethodIndex,
     result: ValueId,
     declared: &JavaType,
     return_type: &JavaType,
@@ -719,7 +721,7 @@ pub(crate) fn declaration_plan_with_caught_producers(
     // spread a Boolean annotation. Such a domain requires an int candidate;
     // the family proof below still rejects every incompatible consumer.
     if !candidates.contains(&JavaType::Int)
-        && index.instructions.iter().any(|(_, instruction)| {
+        && ir.instructions().iter().any(|(_, instruction)| {
             matches!(instruction, ManagedInsn::Const { result, value: Constant::Int(bits) }
                 if !matches!(bits, 0 | 1)
                     && ir.value(*result).is_ok_and(|v| v.ty() == &managed_ir::types::ManagedType::Boolean)
@@ -1149,13 +1151,16 @@ fn reference_producer(
 /// proof permits conversions only at operand sites that actually emit them;
 /// it cannot turn a Boolean local into a Java array index or an int into an if.
 fn check_direct_consumers(
-    index: &MethodIndex<'_>,
+    ir: &MethodIr<SsaForm>,
+    index: &MethodIndex,
     locals: &[ValueId],
     declared: &JavaType,
 ) -> Result<(), Compatibility> {
     let locals: HashSet<_> = locals.iter().copied().collect();
     for position in index.consumer_positions(&locals) {
-        let instruction = index.instructions[position].1;
+        let instruction = ir
+            .instruction(index.instructions[position])
+            .map_err(|_| unknown())?;
         let direct_int = match instruction {
             ManagedInsn::ArrayGet { index, .. } | ManagedInsn::ArrayPut { index, .. } => {
                 locals.contains(index)
@@ -1239,7 +1244,7 @@ fn preserved_reference_copy(
 
 fn phi_proof_indexed(
     ir: &MethodIr<SsaForm>,
-    index: &MethodIndex<'_>,
+    index: &MethodIndex,
     result: ValueId,
     declared: &JavaType,
     consumers: &[JavaType],
@@ -1368,7 +1373,7 @@ fn phi_proof_indexed(
     if leaves.is_empty() {
         return Err(Compatibility::Indeterminate(UnsupportedType::UnknownValue));
     }
-    check_direct_consumers(index, &locals, declared)?;
+    check_direct_consumers(ir, index, &locals, declared)?;
     // The production resolver carries genuine input/classpath hierarchy edges;
     // the caller's generic hierarchy may intentionally be empty. Normalize only
     // positively attested assignments, never unknown or nominal-only guesses.

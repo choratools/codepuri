@@ -103,7 +103,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
         };
         let owner = self.resolver.class(*class).ok_or_else(denied)?;
         let mut initializers = vec![];
-        for (id, insn) in self.ir.instructions() {
+        for &id in self.object_special_invokes(*value) {
+            let insn = self.ir.instruction(id).map_err(|_| denied())?;
             if let ManagedInsn::Invoke {
                 kind: InvokeKind::Special,
                 result: None,
@@ -124,7 +125,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
         };
         let declarations = self.declarations.keys().copied().collect();
         let bindings = self.parameters.iter().copied().collect::<Vec<_>>();
-        let steps = match decomp_structure::structure_extended(self.ir.cfg()) {
+        let steps = match self.object_structure_extended() {
             Ok(structure) => {
                 let canonical = branching::plan_extended_checked(
                     self.ir,
@@ -154,16 +155,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
             return Err(denied());
         }
         for condition in &plan.conditions {
-            let original = self
-                .ir
-                .instructions()
-                .iter()
-                .filter_map(|(id, insn)| {
-                    matches!(insn, ManagedInsn::Branch {condition:Some(c),..} if c == condition)
-                        .then_some(id)
-                })
-                .collect::<Vec<_>>();
-            let [branch] = original.as_slice() else {
+            let [branch] = self.object_conditions(*condition) else {
                 return Err(denied());
             };
             plan.branches.insert(*branch);
@@ -190,7 +182,8 @@ impl<R: JavaResolver> Emitter<'_, R> {
                 // initializer, including off-CFG observations. Do not admit a
                 // second initializer merely because another path is hidden.
                 let mut initializers = vec![];
-                for (candidate, insn) in self.ir.instructions() {
+                for candidate in self.object_alias_special_invokes(&child.aliases) {
+                    let insn = self.ir.instruction(candidate).map_err(|_| denied())?;
                     if let ManagedInsn::Invoke {
                         kind: InvokeKind::Special,
                         method,
@@ -287,7 +280,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
             .ok_or_else(denied)?;
         let mut pending = vec![root_block];
         let mut visited = HashSet::new();
-        let dominance = decomp_core::analysis::dominators(self.ir.cfg());
+        let dominance = self.object_dominance();
         while let Some(block_id) = pending.pop() {
             if !visited.insert(block_id) {
                 continue;
@@ -338,7 +331,7 @@ impl<R: JavaResolver> Emitter<'_, R> {
                     .is_ok_and(|b| std::ptr::eq(b, init_block))
             })
             .ok_or_else(denied)?;
-        let dominance = decomp_core::analysis::dominators(self.ir.cfg());
+        let dominance = self.object_dominance();
         for (id, insn) in self.ir.instructions() {
             let reads = arguments::reads(insn);
             if id != *initializer && reads.contains(value) {
