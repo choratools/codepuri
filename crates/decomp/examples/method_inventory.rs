@@ -90,10 +90,184 @@ fn root_order(name: &str) -> Option<u32> {
     }
     number.parse::<u32>().ok().filter(|n| *n >= 2)
 }
+
+fn disassembly(
+    dex: &DexFile,
+    code: &dex_format::code::CodeItem,
+    instructions: &[dex_decompiler::decode::DecodedInsn],
+) -> (String, Vec<String>) {
+    let mut text = format!(
+        "# DEX code-unit offsets; registers={} incoming_words={} outgoing_words={}\n",
+        code.registers_size, code.ins_size, code.outs_size
+    );
+    let mut calls = Vec::new();
+    for (position, instruction) in instructions.iter().enumerate() {
+        match instruction.opcode {
+            Opcode::Supported(info) => {
+                let symbol = instruction
+                    .pool_index
+                    .and_then(|index| reference(dex, info.opcode, index));
+                let target = instruction
+                    .branch_offset
+                    .map(|relative| i64::from(instruction.offset) + i64::from(relative));
+                let _ = writeln!(
+                    text,
+                    "{:06x}: {} registers={:?} literal={:?} pool={:?} reference={:?} branch_target={:?} payload={:?}",
+                    instruction.offset,
+                    info.name,
+                    instruction.registers,
+                    instruction.literal,
+                    instruction.pool_index,
+                    symbol,
+                    target,
+                    instruction.payload_offset
+                );
+                if matches!(info.opcode, 0x1a | 0x1b)
+                    && let Some(index) = instruction.pool_index
+                    && let Ok(value) = dex.string(index)
+                {
+                    let _ = writeln!(text, "          string_scalar_view={value:?}");
+                }
+                if let Some(index) = instruction.secondary_pool_index {
+                    let _ = writeln!(
+                        text,
+                        "          secondary_proto={:?}",
+                        proto(dex, index).ok()
+                    );
+                }
+                if info.class == SemanticClass::Invoke {
+                    let called = symbol
+                        .as_deref()
+                        .and_then(|symbol| symbol.strip_prefix("method:"));
+                    calls.push(format!(
+                        "{{\"offset\":{},\"opcode\":{},\"target\":{}}}",
+                        instruction.offset,
+                        json(info.name),
+                        called.map_or("null".into(), json)
+                    ));
+                }
+            }
+            Opcode::Payload { ident } => {
+                let end = instructions
+                    .get(position + 1)
+                    .map_or(code.insns_size, |next| next.offset);
+                let raw = code
+                    .insns
+                    .get(instruction.offset as usize * 2..end as usize * 2)
+                    .unwrap_or_default();
+                let _ = writeln!(
+                    text,
+                    "{:06x}: payload ident=0x{ident:04x} raw={}",
+                    instruction.offset,
+                    hex(raw)
+                );
+            }
+            Opcode::Unsupported { opcode } => {
+                let _ = writeln!(
+                    text,
+                    "{:06x}: unsupported_opcode=0x{opcode:02x}",
+                    instruction.offset
+                );
+            }
+        }
+    }
+    for range in &code.tries {
+        let _ = writeln!(
+            text,
+            "try {:06x}..{:06x} handler=@{:x}",
+            range.start_addr,
+            u64::from(range.start_addr) + u64::from(range.insn_count),
+            range.handler_off
+        );
+    }
+    for handler in &code.handlers {
+        for catch in &handler.handlers {
+            let _ = writeln!(
+                text,
+                "handler @{:x} catch {:?} -> {:06x}",
+                handler.relative_offset,
+                ty(dex, catch.type_idx).ok(),
+                catch.address
+            );
+        }
+        if let Some(address) = handler.catch_all_addr {
+            let _ = writeln!(
+                text,
+                "handler @{:x} catch-all -> {:06x}",
+                handler.relative_offset, address
+            );
+        }
+    }
+    (text, calls)
+}
+
+#[cfg(test)]
+mod evidence_tests {
+    use super::*;
+
+    fn code(words: &[u16]) -> dex_format::code::CodeItem {
+        dex_format::code::CodeItem {
+            registers_size: 1,
+            ins_size: 0,
+            outs_size: 0,
+            debug_info_off: 0,
+            insns_size: words.len() as u32,
+            insns: words.iter().flat_map(|w| w.to_le_bytes()).collect(),
+            tries: vec![],
+            handlers: vec![],
+            span: dex_format::RawSpan { offset: 0, size: 0 },
+        }
+    }
+
+    #[test]
+    fn evidence_keeps_code_unit_offsets_and_exact_symbolic_invocation()
+    -> Result<(), Box<dyn std::error::Error>> {
+        let dex = DexFile::from_bytes(include_bytes!(
+            "../../../tests/corpus/dex/clean/classes.dex"
+        ))?;
+        let body = code(&[0x0012, 0x0071, 0, 0, 0x000e]);
+        let decoded = decode_method(&body)?;
+        let (text, calls) = disassembly(&dex, &body, &decoded);
+        let (owner, name, signature) = method(&dex, 0)?;
+        assert!(text.contains("000001: invoke-static"));
+        assert!(text.contains("000004: return-void"));
+        assert_eq!(
+            calls,
+            vec![format!(
+                "{{\"offset\":1,\"opcode\":\"invoke-static\",\"target\":{}}}",
+                json(&format!("{owner}->{name}{signature}"))
+            )]
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn evidence_keeps_branch_target_without_executing_code()
+    -> Result<(), Box<dyn std::error::Error>> {
+        let dex = DexFile::from_bytes(include_bytes!(
+            "../../../tests/corpus/dex/clean/classes.dex"
+        ))?;
+        let body = code(&[0x0128, 0x000e]);
+        let decoded = decode_method(&body)?;
+        let (text, calls) = disassembly(&dex, &body, &decoded);
+        assert!(text.contains("branch_target=Some(1)"));
+        assert!(calls.is_empty());
+        Ok(())
+    }
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let path = std::env::args()
-        .nth(1)
-        .ok_or("usage: method_inventory APK")?;
+    let mut args = std::env::args().skip(1);
+    let path = args
+        .next()
+        .ok_or("usage: method_inventory APK [--disassembly]")?;
+    let mut include_disassembly = false;
+    for option in args {
+        match option.as_str() {
+            "--disassembly" => include_disassembly = true,
+            _ => return Err(format!("unknown option: {option}").into()),
+        }
+    }
     let mut zip = zip::ZipArchive::new(std::fs::File::open(path)?)?;
     let mut names = Vec::new();
     for i in 0..zip.len() {
@@ -157,10 +331,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let mut error = None;
                     let mut canonical = None;
                     let mut count = None;
+                    let mut evidence = None;
+                    let mut calls = Vec::new();
                     if let Some(code) = &m.code {
                         match decode_method(code) {
                             Err(e) => error = Some(e.to_string()),
                             Ok(insns) => {
+                                if include_disassembly {
+                                    let (text, symbolic_calls) = disassembly(dex, code, &insns);
+                                    evidence = Some(text);
+                                    calls = symbolic_calls;
+                                }
                                 count = Some(
                                     insns
                                         .iter()
@@ -257,7 +438,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         .join(",");
                     writeln!(
                         output,
-                        "{{\"kind\":\"method\",\"entry\":{},\"logical\":{},\"pool\":{},\"method_index\":{},\"identity\":{},\"owner\":{},\"name\":{},\"signature\":{},\"class_flags\":{},\"flags\":{},\"code_offset\":{},\"code_units\":{},\"registers\":{},\"try_count\":{},\"instruction_count\":{},\"features\":{{{}}},\"decode_error\":{},\"raw_insns_hex\":{},\"canonical_code\":{}}}",
+                        "{{\"kind\":\"method\",\"entry\":{},\"logical\":{},\"pool\":{},\"method_index\":{},\"identity\":{},\"owner\":{},\"name\":{},\"signature\":{},\"class_flags\":{},\"flags\":{},\"code_offset\":{},\"code_units\":{},\"registers\":{},\"try_count\":{},\"instruction_count\":{},\"features\":{{{}}},\"decode_error\":{},\"raw_insns_hex\":{},\"canonical_code\":{},\"disassembly\":{},\"symbolic_calls\":[{}]}}",
                         json(&entry),
                         logical,
                         pool,
@@ -278,7 +459,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         m.code
                             .as_ref()
                             .map_or("null".into(), |c| json(&hex(&c.insns))),
-                        canonical.as_deref().map_or("null".into(), json)
+                        canonical.as_deref().map_or("null".into(), json),
+                        evidence.as_deref().map_or("null".into(), json),
+                        calls.join(",")
                     )?;
                 }
             }

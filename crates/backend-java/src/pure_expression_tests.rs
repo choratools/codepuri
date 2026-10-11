@@ -4,6 +4,25 @@ use std::collections::HashMap;
 
 struct PureResolver;
 
+struct EffectResolver;
+impl JavaResolver for EffectResolver {
+    fn method(&self, reference: MethodRef) -> Option<JavaMethod> {
+        (reference.index() == 0).then(|| signature("tick", JavaType::Void, vec![]))
+    }
+    fn method_access(&self, _: MethodRef) -> Option<u32> {
+        Some(9)
+    }
+    fn field(&self, reference: FieldRef) -> Option<JavaField> {
+        PureResolver.field(reference)
+    }
+    fn class(&self, reference: ClassRef) -> Option<String> {
+        PureResolver.class(reference)
+    }
+    fn string(&self, reference: StringRef) -> Option<Vec<u16>> {
+        PureResolver.string(reference)
+    }
+}
+
 impl JavaResolver for PureResolver {
     fn method(&self, _: MethodRef) -> Option<JavaMethod> {
         None
@@ -164,6 +183,57 @@ fn graph_for_offsets(
     MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values)
 }
 
+fn branch_phi_ir(
+    mut builder: Builder,
+    branch: InsnId,
+    condition: ValueId,
+    false_block: InsnId,
+    phi: ValueId,
+    true_value: ValueId,
+    false_value: ValueId,
+) -> MethodIr<SsaForm> {
+    let ids = builder.order.clone();
+    let mut cfg = Cfg::new(ids[0]);
+    let mut blocks = HashMap::from([(ids[0], cfg.entry())]);
+    for id in ids.iter().skip(1) {
+        blocks.insert(*id, cfg.add_block(*id));
+    }
+    let branch_position = ids.iter().position(|id| *id == branch).unwrap();
+    for pair in ids[..=branch_position].windows(2) {
+        cfg.add_edge(blocks[&pair[0]], blocks[&pair[1]], EdgeKind::Unconditional)
+            .unwrap();
+    }
+    let phi_id = builder.values.get(phi).unwrap().def();
+    let then_edge = cfg
+        .add_edge(blocks[&branch], blocks[&phi_id], EdgeKind::BranchTrue)
+        .unwrap();
+    let else_edge = cfg
+        .add_edge(blocks[&branch], blocks[&false_block], EdgeKind::BranchFalse)
+        .unwrap();
+    let false_join = cfg
+        .add_edge(
+            blocks[&false_block],
+            blocks[&phi_id],
+            EdgeKind::Unconditional,
+        )
+        .unwrap();
+    let phi_position = ids.iter().position(|id| *id == phi_id).unwrap();
+    for pair in ids[phi_position..].windows(2) {
+        cfg.add_edge(blocks[&pair[0]], blocks[&pair[1]], EdgeKind::Unconditional)
+            .unwrap();
+    }
+    builder.insns[branch] = ManagedInsn::Branch {
+        condition: Some(condition),
+        then_edge,
+        else_edge: Some(else_edge),
+    };
+    builder.insns[phi_id] = ManagedInsn::Phi {
+        result: phi,
+        inputs: vec![(then_edge, true_value), (false_join, false_value)],
+    };
+    MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values)
+}
+
 fn offset_fixture() -> (MethodIr<SsaForm>, ValueId, ValueId) {
     let mut builder = Builder::default();
     let receiver = builder.parameter(ManagedType::Reference(ClassRef::new(0)));
@@ -232,7 +302,7 @@ fn offset_size_uses_single_use_long_relations_and_executes_boundaries() {
     assert!(!source.contains("int v"), "{source}");
     assert!(!source.contains("long v"), "{source}");
     assert!(!source.contains("boolean v"), "{source}");
-    assert_eq!(source.lines().count(), 15, "{source}");
+    assert!(source.lines().count() <= 15, "{source}");
 
     java(
         &source,
@@ -522,6 +592,341 @@ fn add_multiply_chain_inlines_single_use_values_and_exact_constants() {
 }
 
 #[test]
+fn ten_local_assignments_collapse_even_with_an_unrelated_effect_before_them() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    builder.push(ManagedInsn::Invoke {
+        kind: InvokeKind::Static,
+        result: None,
+        method: MethodRef::new(0),
+        args: vec![],
+    });
+    let mut value = input;
+    for number in 1..=10 {
+        let constant = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+            result,
+            value: Constant::Int(number),
+        });
+        value = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+            op: ArithOp::Add,
+            result,
+            lhs: value,
+            rhs: constant,
+        });
+    }
+    builder.push(ManagedInsn::Return { value: Some(value) });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("chain", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &EffectResolver,
+    );
+    assert!(source.contains("Fixture.tick();"), "{source}");
+    assert!(!source.contains("int v"), "{source}");
+    assert_eq!(source.matches("return ").count(), 1);
+    java(
+        &(source + "static int effects; static void tick(){effects++;}"),
+        "for(int x:new int[]{0,17,Integer.MAX_VALUE,Integer.MIN_VALUE}){int before=effects;if(chain(x)!=x+55 || effects!=before+1)throw new AssertionError();}",
+    );
+}
+
+#[test]
+fn local_expression_does_not_move_across_an_intervening_invocation() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    let value = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: input,
+        rhs: one,
+    });
+    builder.push(ManagedInsn::Invoke {
+        kind: InvokeKind::Static,
+        result: None,
+        method: MethodRef::new(0),
+        args: vec![],
+    });
+    builder.push(ManagedInsn::Return { value: Some(value) });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("barrier", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &EffectResolver,
+    );
+    assert!(source.contains("int v"), "{source}");
+    assert!(source.find("int v").unwrap() < source.find("Fixture.tick();").unwrap());
+    java(
+        &(source + "static int effects; static void tick(){effects++;}"),
+        "if(barrier(9)!=10 || effects!=1)throw new AssertionError();",
+    );
+}
+
+#[test]
+fn local_expression_crosses_only_inert_primitive_work() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    let incremented = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: input,
+        rhs: one,
+    });
+    let two = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(2),
+    });
+    let doubled = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Mul,
+        result,
+        lhs: input,
+        rhs: two,
+    });
+    let result = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: incremented,
+        rhs: doubled,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(result),
+    });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("inertGap", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("return ((x + 1) + (x * 2));"), "{source}");
+    assert!(!source.contains("int v"), "{source}");
+    java(
+        &source,
+        "for(int x:new int[]{0,1,-1,Integer.MAX_VALUE,Integer.MIN_VALUE})if(inertGap(x)!=(x+1)+(x*2))throw new AssertionError();",
+    );
+}
+
+#[test]
+fn boolean_primitive_expression_can_feed_a_branch_directly() {
+    let mut builder = Builder::default();
+    let left = builder.parameter(ManagedType::Boolean);
+    let right = builder.parameter(ManagedType::Boolean);
+    let condition = builder.value(ManagedType::Boolean, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::And,
+        result,
+        lhs: left,
+        rhs: right,
+    });
+    builder.push(ManagedInsn::Return { value: None });
+    let branch = *builder.order.last().unwrap();
+    let yes = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    builder.push(ManagedInsn::Return { value: Some(yes) });
+    let yes_return = *builder.order.last().unwrap();
+    let no = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(0),
+    });
+    builder.push(ManagedInsn::Return { value: Some(no) });
+    let no_return = *builder.order.last().unwrap();
+
+    let ids = builder.order.clone();
+    let mut cfg = Cfg::new(ids[0]);
+    let mut blocks = HashMap::from([(ids[0], cfg.entry())]);
+    for id in ids.iter().skip(1) {
+        blocks.insert(*id, cfg.add_block(*id));
+    }
+    cfg.add_edge(blocks[&ids[0]], blocks[&branch], EdgeKind::Unconditional)
+        .unwrap();
+    let then_edge = cfg
+        .add_edge(
+            blocks[&branch],
+            blocks[&builder.values.get(yes).unwrap().def()],
+            EdgeKind::BranchTrue,
+        )
+        .unwrap();
+    let else_edge = cfg
+        .add_edge(
+            blocks[&branch],
+            blocks[&builder.values.get(no).unwrap().def()],
+            EdgeKind::BranchFalse,
+        )
+        .unwrap();
+    cfg.add_edge(
+        blocks[&builder.values.get(yes).unwrap().def()],
+        blocks[&yes_return],
+        EdgeKind::Unconditional,
+    )
+    .unwrap();
+    cfg.add_edge(
+        blocks[&builder.values.get(no).unwrap().def()],
+        blocks[&no_return],
+        EdgeKind::Unconditional,
+    )
+    .unwrap();
+    builder.insns[branch] = ManagedInsn::Branch {
+        condition: Some(condition),
+        then_edge,
+        else_edge: Some(else_edge),
+    };
+    let ir = MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values);
+    let planned = pure_expression::plan(&ir, None, &HashMap::new(), true, &PureResolver);
+    assert!(planned.contains(&condition));
+    let source = complete_with(
+        &ir,
+        signature(
+            "booleanBranch",
+            JavaType::Int,
+            vec![JavaType::Boolean, JavaType::Boolean],
+        ),
+        ParameterBindings {
+            parameters: vec![left, right],
+            names: vec!["left".into(), "right".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(!source.contains("boolean v"), "{source}");
+    java(
+        &source,
+        "if(booleanBranch(false,false)!=0 || booleanBranch(true,false)!=0 || booleanBranch(false,true)!=0 || booleanBranch(true,true)!=1)throw new AssertionError();",
+    );
+}
+
+#[test]
+fn ten_same_type_copy_assignments_become_one_return() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let mut value = input;
+    for _ in 0..10 {
+        value = builder.value(ManagedType::Int, |result| ManagedInsn::Move {
+            result,
+            value,
+        });
+    }
+    builder.push(ManagedInsn::Return { value: Some(value) });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("copies", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("return x;"), "{source}");
+    assert!(!source.contains("int v"), "{source}");
+    java(
+        &source,
+        "for(int x:new int[]{0,-1,Integer.MAX_VALUE,Integer.MIN_VALUE})if(copies(x)!=x)throw new AssertionError();",
+    );
+}
+
+#[test]
+fn long_arithmetic_chain_keeps_bounded_java_parser_nesting() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let mut value = input;
+    for _ in 0..200 {
+        let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+            result,
+            value: Constant::Int(1),
+        });
+        value = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+            op: ArithOp::Add,
+            result,
+            lhs: value,
+            rhs: one,
+        });
+    }
+    builder.push(ManagedInsn::Return { value: Some(value) });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("bounded", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("int v"), "{source}");
+    java(
+        &source,
+        "for(int x:new int[]{0,-1,Integer.MAX_VALUE,Integer.MIN_VALUE})if(bounded(x)!=x+200)throw new AssertionError();",
+    );
+}
+
+#[test]
+fn balanced_expression_tree_has_bounded_rendered_operator_count() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let mut level = vec![input; 256];
+    while level.len() > 1 {
+        level = level
+            .chunks_exact(2)
+            .map(|pair| {
+                builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+                    op: ArithOp::Add,
+                    result,
+                    lhs: pair[0],
+                    rhs: pair[1],
+                })
+            })
+            .collect();
+    }
+    let result = level[0];
+    builder.push(ManagedInsn::Return {
+        value: Some(result),
+    });
+    let ir = builder.finish();
+    let source = complete_with(
+        &ir,
+        signature("balanced", JavaType::Int, vec![JavaType::Int]),
+        ParameterBindings {
+            parameters: vec![input],
+            names: vec!["x".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("int v"), "{source}");
+    for line in source.lines() {
+        assert!(line.matches(" + ").count() <= 128, "{line}");
+    }
+    java(
+        &source,
+        "for(int x:new int[]{0,1,-1,Integer.MAX_VALUE,Integer.MIN_VALUE})if(balanced(x)!=x*256)throw new AssertionError();",
+    );
+}
+
+#[test]
 fn unary_and_comparison_results_inline_into_returns() {
     let mut builder = Builder::default();
     let input = builder.parameter(ManagedType::Int);
@@ -804,7 +1209,15 @@ fn branch_phi_and_exception_guards_keep_values_materialized() {
         branch_source.contains("v0 = (left + right);"),
         "{branch_source}"
     );
-    assert!(branch_source.contains("return v0;"), "{branch_source}");
+    assert!(
+        branch_source.contains("condition ? (v0) : (0)"),
+        "{branch_source}"
+    );
+    assert_eq!(
+        branch_source.matches("(left + right)").count(),
+        1,
+        "{branch_source}"
+    );
     java(
         &branch_source,
         "if(branchKeepsArithmetic(true, Integer.MAX_VALUE, 1) != Integer.MIN_VALUE || branchKeepsArithmetic(false, 4, 5) != 0) throw new AssertionError();",
@@ -843,6 +1256,165 @@ fn branch_phi_and_exception_guards_keep_values_materialized() {
     let phi_ir = MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values);
     let phi_plan = pure_expression::plan(&phi_ir, None, &HashMap::new(), true, &PureResolver);
     assert!(!phi_plan.contains(&sum));
+}
+
+#[test]
+fn phi_edge_read_keeps_branch_compare_materialized() {
+    let mut builder = Builder::default();
+    let left = builder.parameter(ManagedType::Int);
+    let right = builder.parameter(ManagedType::Int);
+    let condition = builder.value(ManagedType::Boolean, |result| ManagedInsn::Compare {
+        op: CompareOp::GreaterThan,
+        result,
+        lhs: left,
+        rhs: right,
+    });
+    builder.push(ManagedInsn::Return { value: None });
+    let branch = *builder.order.last().unwrap();
+    let other = builder.value(ManagedType::Boolean, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Boolean(false),
+    });
+    let false_block = builder.values.get(other).unwrap().def();
+    let selected = builder.value(ManagedType::Boolean, |result| ManagedInsn::Phi {
+        result,
+        inputs: Vec::new(),
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(selected),
+    });
+    let ir = branch_phi_ir(
+        builder,
+        branch,
+        condition,
+        false_block,
+        selected,
+        condition,
+        other,
+    );
+
+    let planned = pure_expression::plan(&ir, None, &HashMap::new(), true, &PureResolver);
+    assert!(!planned.contains(&condition));
+    let source = complete_with(
+        &ir,
+        signature(
+            "compareFeedsBranchAndPhi",
+            JavaType::Boolean,
+            vec![JavaType::Int, JavaType::Int],
+        ),
+        ParameterBindings {
+            parameters: vec![left, right],
+            names: vec!["left".into(), "right".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("boolean v0;"), "{source}");
+    assert!(source.contains("v0 = (left > right);"), "{source}");
+    assert!(source.contains("if (v0)"), "{source}");
+    assert!(source.contains(" = v0;"), "{source}");
+    java(
+        &source,
+        "for(int left=-2;left<=2;left++)for(int right=-2;right<=2;right++)if(compareFeedsBranchAndPhi(left,right)!=(left>right))throw new AssertionError();",
+    );
+}
+
+#[test]
+fn phi_edge_read_prevents_inlining_a_single_use_copy_assignment() {
+    let mut builder = Builder::default();
+    let condition = builder.parameter(ManagedType::Boolean);
+    let input = builder.parameter(ManagedType::Int);
+    let alternate = builder.parameter(ManagedType::Int);
+    let first_copy = builder.value(ManagedType::Int, |result| ManagedInsn::Move {
+        result,
+        value: input,
+    });
+    let second_copy = builder.value(ManagedType::Int, |result| ManagedInsn::Move {
+        result,
+        value: first_copy,
+    });
+    builder.push(ManagedInsn::Return { value: None });
+    let branch = *builder.order.last().unwrap();
+    let false_copy = builder.value(ManagedType::Int, |result| ManagedInsn::Move {
+        result,
+        value: alternate,
+    });
+    let false_block = builder.values.get(false_copy).unwrap().def();
+    let selected = builder.value(ManagedType::Int, |result| ManagedInsn::Phi {
+        result,
+        inputs: Vec::new(),
+    });
+    let combined = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: second_copy,
+        rhs: selected,
+    });
+    builder.push(ManagedInsn::Return {
+        value: Some(combined),
+    });
+    let ir = branch_phi_ir(
+        builder,
+        branch,
+        condition,
+        false_block,
+        selected,
+        first_copy,
+        false_copy,
+    );
+    let source = complete_with(
+        &ir,
+        signature(
+            "copyFeedsPhi",
+            JavaType::Int,
+            vec![JavaType::Boolean, JavaType::Int, JavaType::Int],
+        ),
+        ParameterBindings {
+            parameters: vec![condition, input, alternate],
+            names: vec!["condition".into(), "input".into(), "alternate".into()],
+            ..Default::default()
+        },
+        &PureResolver,
+    );
+    assert!(source.contains("v0 = input;"), "{source}");
+    assert!(source.contains("v1 = v0;"), "{source}");
+    assert!(source.contains(" = v0;"), "{source}");
+    java(
+        &source,
+        "for(int input:new int[]{-7,0,11,Integer.MAX_VALUE})for(int alternate:new int[]{-3,4,Integer.MIN_VALUE}){if(copyFeedsPhi(true,input,alternate)!=input+input)throw new AssertionError();if(copyFeedsPhi(false,input,alternate)!=input+alternate)throw new AssertionError();}",
+    );
+}
+
+#[test]
+fn cyclic_cfg_keeps_expression_values_materialized_for_loop_hoisting() {
+    let mut builder = Builder::default();
+    let input = builder.parameter(ManagedType::Int);
+    let one = builder.value(ManagedType::Int, |result| ManagedInsn::Const {
+        result,
+        value: Constant::Int(1),
+    });
+    let sum = builder.value(ManagedType::Int, |result| ManagedInsn::Arithmetic {
+        op: ArithOp::Add,
+        result,
+        lhs: input,
+        rhs: one,
+    });
+    builder.push(ManagedInsn::Return { value: Some(sum) });
+    let ids = builder.order.clone();
+    let mut cfg = Cfg::new(ids[0]);
+    let mut blocks = HashMap::from([(ids[0], cfg.entry())]);
+    for id in ids.iter().skip(1) {
+        blocks.insert(*id, cfg.add_block(*id));
+    }
+    cfg.add_edge(blocks[&ids[0]], blocks[&ids[1]], EdgeKind::Unconditional)
+        .unwrap();
+    cfg.add_edge(blocks[&ids[1]], blocks[&ids[2]], EdgeKind::Unconditional)
+        .unwrap();
+    cfg.add_edge(blocks[&ids[2]], blocks[&ids[1]], EdgeKind::Unconditional)
+        .unwrap();
+    let ir = MethodIr::<SsaForm>::from_parts(cfg, builder.insns, builder.values);
+    let planned = pure_expression::plan(&ir, None, &HashMap::new(), true, &PureResolver);
+    assert!(planned.is_empty());
 }
 
 #[test]

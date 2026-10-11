@@ -34,6 +34,22 @@ pub struct FieldThrowDefinition {
     pub field_type: String,
 }
 
+/// Frontend-attested runtime escaping evidence for one genuine selected static/final
+/// definition. The caller domain may remain unknown; this proof is target-local.
+#[derive(Clone, Debug)]
+pub struct RuntimeThrowDefinition {
+    /// Exact original defining DEX/method/full descriptor identity.
+    pub original_identity: String,
+    /// Original selected code item offset; zero means unavailable.
+    pub code_offset: u32,
+    /// Original encoded access flags.
+    pub access_flags: u32,
+    /// Genuine encoded declared exceptions, unchanged.
+    pub original_throws: Vec<String>,
+    /// Proven conservative checked escaping domain from the original body.
+    pub escaping: Vec<String>,
+}
+
 /// A target-specific body witness whose source declaration remains unchanged.
 /// The frontend must bind pool identities/aliases to the genuine selected owner.
 #[derive(Clone, Debug)]
@@ -44,6 +60,54 @@ pub struct BoundTarget {
     code_offset: u32,
 }
 impl BoundTarget {
+    /// Bind one selected static or final-instance source contract to original body-analysis
+    /// result. Unknown runtime facts, missing hierarchy, altered clauses and
+    /// native/abstract/synchronized/initializer targets reject. No global
+    /// permission for unrelated Throwable invocations is produced.
+    pub fn runtime_throwable(
+        reference: MethodRef,
+        method: JavaMethod,
+        definition: &RuntimeThrowDefinition,
+        resolver: &impl JavaResolver,
+    ) -> Result<Self, Unsupported> {
+        let source: std::collections::BTreeSet<_> = definition
+            .original_throws
+            .iter()
+            .chain(&definition.escaping)
+            .cloned()
+            .collect();
+        let actual: std::collections::BTreeSet<_> = method.throws.iter().cloned().collect();
+        if definition.original_identity.is_empty()
+            || definition.code_offset == 0
+            || (definition.access_flags & 0x8 != 0) != method.is_static
+            || (!method.is_static && definition.access_flags & 0x10 == 0)
+            || definition.access_flags & (0x20 | 0x100 | 0x400 | 0x20000) != 0
+            || method.name.starts_with('<')
+            || !definition
+                .escaping
+                .iter()
+                .any(|name| name == "java.lang.Throwable")
+            || source != actual
+            || !resolver.assignable(
+                &JavaType::Class("java.lang.Throwable".into()),
+                &JavaType::Class("java.lang.Object".into()),
+            )
+            || source.iter().any(|name| {
+                !resolver.assignable(
+                    &JavaType::Class(name.clone()),
+                    &JavaType::Class("java.lang.Throwable".into()),
+                )
+            })
+        {
+            return Err(failure("bound original runtime-throwable contract"));
+        }
+        Ok(Self {
+            reference,
+            method,
+            original_identity: definition.original_identity.clone(),
+            code_offset: definition.code_offset,
+        })
+    }
     /// Validate the complete original straight-line field-throw shape and source
     /// declaration. Missing Throwable hierarchy remains a blocker. This witness
     /// can be consumed only by a whole-body outer boundary, never a site helper.

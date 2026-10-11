@@ -27,6 +27,9 @@ fn export(
         &[dex],
         &JavaOptions {
             class_filter: Some(filter.into()),
+            source_prefixes: vec![],
+            library_prefixes: vec![],
+            library_owners: Default::default(),
             limit: None,
             workers: 1,
             source_release: 17,

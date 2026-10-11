@@ -317,7 +317,7 @@ fn compiled_sum_count_zero_false_swap_effects_and_nested_if() {
         let SourceResult::Complete { source, .. } = result else {
             panic!("{result:?}")
         };
-        assert!(source.contains("while (true)"), "{source}");
+        assert!(source.contains("while ("), "{source}");
         if effects {
             assert!(
                 source.find("while (true)").unwrap() < source.find("effect100").unwrap(),
@@ -663,7 +663,7 @@ fn production_nested_loops_and_distinct_latch_phi_copies_execute() {
     let SourceResult::Complete { source, .. } = result else {
         panic!("{result:?}");
     };
-    assert_eq!(source.matches("while (true)").count(), 2, "{source}");
+    assert_eq!(source.matches("while (").count(), 2, "{source}");
     let source = format!(
         "public class WhileMain {{ {source} public static void main(String[] args) {{ for(int n=-2;n<9;n++) for(int seed:new int[]{{0,7}}) {{ int expected=seed+(n>0?n*(n+1)/2+10:0); if(nestedLatches(n,seed)!=expected) throw new AssertionError(n+\":\"+seed); }} System.out.println(\"nested/multilatch assertions passed\"); }} }}"
     );

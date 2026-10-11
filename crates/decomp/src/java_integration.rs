@@ -344,6 +344,10 @@ struct BoundSuper {
     metadata: MethodMetadata,
     method: JavaMethod,
 }
+struct InheritedFinal {
+    key: MethodKey,
+    metadata: MethodMetadata,
+}
 struct StoredConstructorException {
     ssa: Arc<dex_decompiler::ssa::SsaMethod>,
     metadata: crate::java_exception_regions::DisjointMetadata,
@@ -612,7 +616,8 @@ impl<'a> Resolver<'a> {
                     }),
                 })
             } else if self.input_owners.contains(&key.owner) {
-                None
+                self.inherited_final_method(index)
+                    .map(|target| target.metadata)
             } else {
                 self.external.and_then(|provider| {
                     provider.method(&key).or_else(|| {
@@ -630,6 +635,78 @@ impl<'a> Resolver<'a> {
             return Err(MetadataRequirement::Exceptions(key));
         }
         Ok(metadata)
+    }
+    fn inherited_final_method(&self, index: u32) -> Option<InheritedFinal> {
+        use crate::java_super_resolution::SuperMetadata;
+        let symbolic = method_key(self.dex, index)?;
+        if symbolic.name.starts_with('<')
+            || !self.input_owners.contains(&symbolic.owner)
+            || self
+                .global_catalog
+                .unwrap_or(&self.catalog)
+                .contains_key(&symbolic)
+        {
+            return None;
+        }
+        let provider = self.super_index?;
+        let mut owner = symbolic.owner.clone();
+        let mut visited = BTreeSet::new();
+        let mut intervening = Vec::new();
+        let mut ancestry = Vec::new();
+        loop {
+            if visited.len() >= 4096
+                || !visited.insert(owner.clone())
+                || !self.input_owners.contains(&owner)
+            {
+                return None;
+            }
+            let class = provider.class(&owner)?;
+            if class.access_flags & (1 | 0x200) != 1 {
+                return None;
+            }
+            ancestry.push(owner.clone());
+            let exact: Vec<_> = class
+                .methods
+                .iter()
+                .filter(|method| {
+                    method.key.name == symbolic.name && method.key.parameters == symbolic.parameters
+                })
+                .collect();
+            if !exact.is_empty() {
+                let [method] = exact.as_slice() else {
+                    return None;
+                };
+                if owner == symbolic.owner
+                    || method.key.return_type != symbolic.return_type
+                    || method.metadata.access_flags & 0x10 == 0
+                    || method.metadata.access_flags & (2 | 8 | 0x400) != 0
+                    || method.metadata.access_flags & (1 | 4) == 0
+                    || method.metadata.exceptions.is_none()
+                    || (method.generic
+                        && !provider.source_super_signature_is_erased(
+                            &symbolic.owner,
+                            &ancestry,
+                            &method.key,
+                        ))
+                {
+                    return None;
+                }
+                let MethodAlias::Ordinary(name) = self.aliases.method_name(&method.key)? else {
+                    return None;
+                };
+                let target = self.signature_key(&method.key, false, Vec::new())?;
+                if intervening.iter().any(|key: &MethodKey| {
+                    self.aliases.method_name(key).is_some_and(|alias| matches!(alias, MethodAlias::Ordinary(candidate) if candidate == name))
+                        && self.signature_key(key, false, Vec::new()).is_some_and(|candidate| candidate.parameters == target.parameters)
+                }) { return None; }
+                return Some(InheritedFinal {
+                    key: method.key.clone(),
+                    metadata: method.metadata.clone(),
+                });
+            }
+            intervening.extend(class.methods.into_iter().map(|method| method.key));
+            owner = class.superclass?;
+        }
     }
     fn ty(&self, d: &str) -> Option<JavaType> {
         if let Some(component) = d.strip_prefix('[') {
@@ -789,11 +866,18 @@ impl Resolver<'_> {
                 })
             })
             .collect::<Option<Vec<_>>>()?;
-        self.signature(reference.index(), metadata.access_flags & 8 != 0, throws)
+        if let Some(selected) = self.inherited_final_method(reference.index()) {
+            self.signature_key(&selected.key, false, throws)
+        } else {
+            self.signature(reference.index(), metadata.access_flags & 8 != 0, throws)
+        }
     }
     fn resolve_method(&self, reference: MethodRef) -> Option<JavaMethod> {
         let mut method = self.original_method(reference)?;
-        let key = method_key(self.dex, reference.index())?;
+        let key = self
+            .inherited_final_method(reference.index())
+            .map(|selected| selected.key)
+            .or_else(|| method_key(self.dex, reference.index()))?;
         if let Some(throws) = self
             .source_throws
             .and_then(|plan| source_throws::source(plan, &key))
@@ -1064,6 +1148,35 @@ impl JavaResolver for Resolver<'_> {
         let Some(original_receiver) = self.original_names.get(receiver) else {
             return false;
         };
+        if let Some(selected) = self.inherited_final_method(reference.index())
+            && format!("L{};", original_receiver.replace('.', "/")) == key.owner
+        {
+            let actual_owner = selected
+                .key
+                .owner
+                .trim_start_matches('L')
+                .trim_end_matches(';')
+                .replace('/', ".");
+            let access = crate::java_access::AccessContext {
+                caller: original_caller,
+                owner: &actual_owner,
+                receiver: Some(original_receiver),
+                hierarchy: self
+                    .original_hierarchy
+                    .as_deref()
+                    .unwrap_or(&self.hierarchy),
+                nests: None,
+                emitted_caller: caller,
+                emitted_owner: &target.owner,
+            };
+            return access
+                .method_access_with_source_hierarchy(
+                    selected.metadata.access_flags,
+                    &self.hierarchy,
+                    Some(receiver),
+                )
+                .is_ok();
+        }
         let original_owner = key
             .owner
             .trim_start_matches('L')
@@ -1885,6 +1998,15 @@ fn requirements(
 ) -> Result<MemberRequirements, String> {
     requirements_with_bridge(ir, caller, r, constructor, None)
 }
+
+fn trace_source_method(method: &JavaMethod) -> bool {
+    std::env::var("CODEPURI_TRACE_METHOD").is_ok_and(|filter| {
+        let identity = format!("{}.{}", method.owner, method.name);
+        filter
+            .split(',')
+            .any(|needle| !needle.is_empty() && identity.contains(needle))
+    })
+}
 fn requirements_with_bridge(
     ir: &MethodIr<SsaForm>,
     caller: &JavaMethod,
@@ -1935,7 +2057,9 @@ fn requirements_with_bridge(
                             format!("input metadata requirement: {requirement:?}")
                         })?;
                         (
-                            symbolic_key,
+                            r.inherited_final_method(method.index())
+                                .map(|selected| selected.key)
+                                .unwrap_or(symbolic_key),
                             metadata,
                             r.method(*method).ok_or("invalid invocation metadata")?,
                         )
@@ -2067,6 +2191,19 @@ fn requirements_with_bridge(
                         plan.approves_invoke(id, instruction, checked_target, caller)
                     })
                 {
+                    if trace_source_method(caller) {
+                        let target_key = method_key(r.dex, method.index());
+                        eprintln!(
+                            "[source-contract] caller={}.{} instruction={id:?} original_target={target_key:?} selected_target={checked_target:?} caller_throws={:?} bridge={} target_runtime={:?}",
+                            caller.owner,
+                            caller.name,
+                            caller.throws,
+                            bridge.is_some(),
+                            target_key.as_ref().and_then(|key| r
+                                .source_throws
+                                .and_then(|plan| source_throws::runtime(plan, key)))
+                        );
+                    }
                     return Err("callee exceptions not declared by caller".into());
                 }
                 if !external {
@@ -2183,6 +2320,70 @@ fn checked_bridge_helper(r: &Resolver<'_>, key: &MethodKey, index: u32) -> Optio
         }
     }
     None
+}
+
+fn runtime_throw_bound_target(
+    r: &Resolver<'_>,
+    reference: MethodRef,
+    selected: &JavaMethod,
+) -> Option<backend_java::checked_source_bridge::BoundTarget> {
+    let mut key = method_key(r.dex, reference.index())?;
+    key.owner = format!(
+        "L{};",
+        r.original_names.get(&selected.owner)?.replace('.', "/")
+    );
+    let projected = r.signature_key(&key, selected.is_static, selected.throws.clone())?;
+    if projected.owner != selected.owner
+        || projected.name != selected.name
+        || projected.parameters != selected.parameters
+        || projected.return_type != selected.return_type
+    {
+        return None;
+    }
+    let facts = source_throws::runtime(r.source_throws?, &key)?;
+    let metadata = r.global_catalog.unwrap_or(&r.catalog).get(&key)?.as_ref()?;
+    let original = metadata
+        .exceptions
+        .as_ref()?
+        .iter()
+        .map(|name| match r.ty(name)? {
+            JavaType::Class(name) => Some(name),
+            _ => None,
+        })
+        .collect::<Option<Vec<_>>>()?;
+    let dex = r.inputs.get(facts.identity.dex)?;
+    if facts.identity.key != key
+        || method_key(dex, facts.identity.index)? != key
+        || facts.original != original
+    {
+        return None;
+    }
+    let raw = dex.method_id(facts.identity.index).ok()?;
+    let class = dex
+        .classes
+        .iter()
+        .find(|class| class.class_idx == u32::from(raw.class_idx))?;
+    let definition = class
+        .class_data
+        .as_ref()?
+        .direct_methods
+        .iter()
+        .chain(&class.class_data.as_ref()?.virtual_methods)
+        .find(|method| method.method_idx == facts.identity.index)?;
+    definition.code.as_ref()?;
+    backend_java::checked_source_bridge::BoundTarget::runtime_throwable(
+        reference,
+        selected.clone(),
+        &backend_java::checked_source_bridge::RuntimeThrowDefinition {
+            original_identity: format!("{}:{}:{key:?}", facts.identity.dex, facts.identity.index),
+            code_offset: definition.code_off,
+            access_flags: definition.access_flags,
+            original_throws: facts.original.clone(),
+            escaping: facts.escaping.clone(),
+        },
+        r,
+    )
+    .ok()
 }
 fn checked_bridge_name_inventory(r: &Resolver<'_>, root: &str) -> Option<BTreeSet<String>> {
     let mut names = BTreeSet::new();
@@ -2601,6 +2802,24 @@ fn method_source(
     let ir = ssa.ir();
     let prior_signature = m.clone();
     let mut checked_bridge = None;
+    if trace_source_method(&m) {
+        let key = method_key(r.dex, method.method_idx);
+        eprintln!(
+            "[source-method] caller={}.{} dex={} method={} tries={} original={:?} source={:?} unavailable={:?} runtime={:?}",
+            m.owner,
+            m.name,
+            r.dex_index,
+            method.method_idx,
+            code.tries.len(),
+            r.original_method(MethodRef::new(method.method_idx)),
+            m.throws,
+            key.as_ref()
+                .and_then(|key| r.source_throws.and_then(|plan| plan.unavailable.get(key))),
+            key.as_ref().and_then(|key| r
+                .source_throws
+                .and_then(|plan| source_throws::runtime(plan, key)))
+        );
+    }
     if kind == ClassKind::Class
         && !constructor
         && !clinit
@@ -2633,33 +2852,63 @@ fn method_source(
                 &helper,
                 r,
             )
-            .or_else(|_| {
-                let targets: Vec<_> = r
-                    .field_throw_catalog
-                    .into_iter()
-                    .flat_map(|catalog| {
-                        ir.instructions().iter().filter_map(|(_, insn)| {
-                            if let ManagedInsn::Invoke {
-                                kind: managed_ir::ops::InvokeKind::Static,
-                                method,
-                                ..
-                            } = insn
-                            {
-                                catalog.bind(r.dex, *method, r)
+            .or_else(|site_error| {
+                if trace_source_method(&original) {
+                    eprintln!("[source-bridge] sites={site_error:?}");
+                }
+                let targets: Vec<_> = ir
+                    .instructions()
+                    .iter()
+                    .filter_map(|(_, insn)| {
+                        if let ManagedInsn::Invoke {
+                            kind, method, args, ..
+                        } = insn
+                            && matches!(
+                                kind,
+                                managed_ir::ops::InvokeKind::Static
+                                    | managed_ir::ops::InvokeKind::Virtual
+                            )
+                        {
+                            let selected = if *kind == managed_ir::ops::InvokeKind::Virtual {
+                                args.first()
+                                    .and_then(|value| ir.value(*value).ok())
+                                    .and_then(|value| managed_type_to_java(value.ty(), r))
+                                    .and_then(|receiver| {
+                                        r.virtual_receiver_method(
+                                            *method,
+                                            &original.owner,
+                                            &receiver,
+                                        )
+                                    })
+                                    .or_else(|| r.method(*method))
                             } else {
-                                None
-                            }
-                        })
+                                r.method(*method)
+                            }?;
+                            r.field_throw_catalog
+                                .and_then(|catalog| catalog.bind(r.dex, *method, r))
+                                .or_else(|| runtime_throw_bound_target(r, *method, &selected))
+                        } else {
+                            None
+                        }
                     })
                     .collect();
-                backend_java::checked_source_bridge::plan_whole_body_bound_targets(
+                let plan = backend_java::checked_source_bridge::plan_whole_body_bound_targets(
                     ir,
                     &original,
                     facts.map(|facts| facts.escaping.as_slice()),
                     &helper,
                     r,
                     &targets,
-                )
+                );
+                if trace_source_method(&original) {
+                    eprintln!(
+                        "[source-bridge] body targets={} result={:?}",
+                        targets.len(),
+                        plan.as_ref()
+                            .map(|recipe| recipe.as_ref().map(|recipe| recipe.site_count()))
+                    );
+                }
+                plan
             })
         {
             m = original;
@@ -2758,7 +3007,7 @@ fn method_source(
                 .iter()
                 .map(|scope| scope as &dyn backend_java::exceptions::RegionMetadata)
                 .collect();
-            if let Ok(Some(recipe)) = backend_java::checked_source_bridge::plan_dispatch_body(
+            let recipe = backend_java::checked_source_bridge::plan_dispatch_body(
                 ir,
                 &original,
                 facts.map(|facts| facts.escaping.as_slice()),
@@ -2766,7 +3015,16 @@ fn method_source(
                 r,
                 &bindings,
                 &refs,
-            ) {
+            );
+            if trace_source_method(&original) {
+                eprintln!(
+                    "[source-bridge] dispatch result={:?}",
+                    recipe
+                        .as_ref()
+                        .map(|recipe| recipe.as_ref().map(|recipe| recipe.site_count()))
+                );
+            }
+            if let Ok(Some(recipe)) = recipe {
                 m = original;
                 checked_bridge = Some(recipe);
                 dispatch_scopes = Some(scopes);
@@ -2888,6 +3146,12 @@ fn method_source(
         // A source recipe is transactional: unsuccessful adoption leaves the
         // previously validated caller projection untouched.
         let result = if matches!(result, SourceResult::Unsupported(_)) && checked_bridge.is_some() {
+            if trace_source_method(&m) {
+                eprintln!(
+                    "[bridge-render] caller={}.{} result={result:?}",
+                    m.owner, m.name
+                );
+            }
             m = prior_signature.clone();
             checked_bridge = None;
             let rollback_signature = dependency_signature_with_catches(ir, &m, r, &caught_types);
@@ -3593,6 +3857,27 @@ fn emit_inner(
     };
     let field_throw_catalog =
         crate::java_checked_bound_targets::FieldThrowCatalog::new(files, catalog);
+    let selected_contract_roots: Option<BTreeSet<MethodKey>> =
+        options.has_source_scope().then(|| {
+            files
+                .iter()
+                .flat_map(|dex| {
+                    dex.classes
+                        .iter()
+                        .filter(move |class| {
+                            descriptor(dex, class.class_idx)
+                                .is_some_and(|owner| options.selected_owner(owner))
+                        })
+                        .filter_map(|class| class.class_data.as_ref())
+                        .flat_map(move |data| {
+                            data.direct_methods
+                                .iter()
+                                .chain(&data.virtual_methods)
+                                .filter_map(move |method| method_key(dex, method.method_idx))
+                        })
+                })
+                .collect()
+        });
     let mut throws_profile = profile
         .as_ref()
         .map(|_| source_throws::SourceThrowsProfile::default());
@@ -3721,6 +4006,7 @@ fn emit_inner(
                 field: &field_index,
                 super_index: super_index.as_ref(),
                 metadata: &dex_metadata,
+                roots: selected_contract_roots.as_ref(),
             }),
         );
         drop(source_throws_timer);
@@ -5535,10 +5821,7 @@ fn emit_classes(
         report.classes_seen += 1;
         let descriptor = descriptor(dex, class.class_idx)
             .ok_or_else(|| OutputError::InvalidDescriptor("class pool".into()))?;
-        if options
-            .class_filter
-            .as_ref()
-            .is_some_and(|f| !descriptor.contains(f))
+        if !options.selected_owner(descriptor)
             || options.limit.is_some_and(|l| report.classes_emitted >= l)
         {
             report.skipped_classes += 1;

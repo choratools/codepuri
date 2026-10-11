@@ -80,6 +80,7 @@ pub(super) struct ObjectPlanning {
     sequences: RefCell<HashSet<InsnId>>,
     argument_owners: OnceCell<HashMap<InsnId, Vec<ValueId>>>,
     pub(super) pure_expressions: OnceCell<HashSet<ValueId>>,
+    pub(super) readable_uses: OnceCell<std::rc::Rc<HashMap<ValueId, usize>>>,
     pure_expression_enabled: bool,
     exception_scopes_empty: bool,
 }
@@ -297,6 +298,7 @@ impl ObjectPlanning {
             regions: RefCell::new(ordinary.regions.borrow().clone()),
             sequences: RefCell::new(ordinary.sequences.borrow().clone()),
             argument_owners: ordinary.argument_owners.clone(),
+            readable_uses: ordinary.readable_uses.clone(),
             ..Self::default()
         }
     }

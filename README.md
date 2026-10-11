@@ -85,6 +85,11 @@ or unavailable methods.
 |---|---|
 | `--workers N` | Maximum parallel class workers; must be positive. |
 | `--class FILTER` | Select descriptors containing this substring. |
+| `--source-prefix PREFIX` | Repeatable original DEX owner prefix to render, e.g. `Lcom/example/app/`; declarations remain available and contracts follow required dependencies. |
+| `--library-prefix PREFIX` | Retain matching input owners as metadata while excluding their Java output. |
+| `--library-evidence PATH` | Read trusted artifact/reference evidence and verify exact original class implementations before separating source. Raw LibScout JSON is not accepted. |
+| `--library-min-score SCORE` | Candidate score threshold in `0..1`; default `0.95`. Requires evidence; lowering it never bypasses implementation or distinctive-anchor checks. |
+| `--library-out PATH` | Route qualified library Java in the selected scope to a separate, non-overlapping directory. Without it, qualified library owners are not rendered. |
 | `--limit N` | Limit the number of emitted compilation units. |
 | `--source-release 17\|25` | Select generated Java source level; default is 17. |
 | `--classpath PATH` | Repeatable JVM `.class`, `.jar`, `.zip` or `.jmod` declaration input. |
@@ -92,6 +97,21 @@ or unavailable methods.
 | `--compact-source` | Remove standalone diagnostic comments from `.java` and write them to `diagnostics.tsv`. |
 
 ## Android and runtime metadata
+
+Evidence-qualified library separation can be configured explicitly:
+
+```bash
+./target/release/decomp app.apk out/app-or-unknown \
+  --library-evidence /path/to/evidence.json --library-min-score 0.95 \
+  --library-out out/libraries --workers 30 \
+  --classpath /path/to/android.jar
+```
+
+`library-selection.json` records the applied threshold, exact original owners,
+artifact/reference hashes, and rejection reasons. Remaining source is
+**app-or-unknown**, not automatically first-party. Original APK declarations
+remain available. See [library separation](bench/LIBRARY_SEPARATION.md) for the
+evidence generator, verification boundaries, and actual Absher results.
 
 Without external metadata, calls to APIs absent from the input APK may remain
 unresolved and the corresponding method body may be omitted. Pass the Android

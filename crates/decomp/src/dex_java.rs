@@ -8,7 +8,7 @@ use managed_ir::{
     refs::{ClassRef, FieldRef, MethodRef, StringRef},
     value::ValueId,
 };
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 #[path = "java_profile.rs"]
 mod profile;
@@ -224,6 +224,14 @@ pub struct JavaReport {
 pub struct JavaOptions {
     /// Substring of the genuine DEX class descriptor.
     pub class_filter: Option<String>,
+    /// Original DEX descriptor prefixes selected for source export. Empty means
+    /// all owners; retained input declarations remain available as metadata.
+    pub source_prefixes: Vec<String>,
+    /// Explicit original owner prefixes retained as input but not rendered.
+    pub library_prefixes: Vec<String>,
+    /// Exact original owners excluded from source. CLI population requires
+    /// verified library implementation evidence; input metadata remains intact.
+    pub library_owners: BTreeSet<String>,
     /// Maximum number of emitted subset compilation units.
     pub limit: Option<usize>,
     /// Maximum parallel class tasks; output callbacks remain ordered and serial.
@@ -256,6 +264,9 @@ impl Default for JavaOptions {
     fn default() -> Self {
         Self {
             class_filter: None,
+            source_prefixes: Vec::new(),
+            library_prefixes: Vec::new(),
+            library_owners: BTreeSet::new(),
             limit: None,
             workers: 1,
             source_release: 17,
@@ -266,6 +277,31 @@ impl Default for JavaOptions {
             classpath: Vec::new(),
             compact_source: false,
         }
+    }
+}
+
+impl JavaOptions {
+    pub(crate) fn selected_owner(&self, owner: &str) -> bool {
+        self.class_filter
+            .as_ref()
+            .is_none_or(|filter| owner.contains(filter))
+            && (self.source_prefixes.is_empty()
+                || self
+                    .source_prefixes
+                    .iter()
+                    .any(|prefix| owner.starts_with(prefix)))
+            && !self
+                .library_prefixes
+                .iter()
+                .any(|prefix| owner.starts_with(prefix))
+            && !self.library_owners.contains(owner)
+    }
+
+    pub(crate) fn has_source_scope(&self) -> bool {
+        self.class_filter.is_some()
+            || !self.source_prefixes.is_empty()
+            || !self.library_prefixes.is_empty()
+            || !self.library_owners.is_empty()
     }
 }
 
@@ -339,6 +375,36 @@ mod tests {
         for invalid in ["[V", "II", "L../Bad;", "Lp/class;", "Lp/Bad", ""] {
             assert_eq!(descriptor_type(invalid), None, "{invalid}");
         }
+    }
+
+    #[test]
+    fn source_and_library_prefixes_use_original_owners_and_keep_default_scope() {
+        let mut options = JavaOptions::default();
+        assert!(options.selected_owner("Lthird/Library;"));
+        assert!(!options.has_source_scope());
+        options.source_prefixes = vec!["Lapp/".into(), "Lpeer/".into()];
+        options.library_prefixes = vec!["Lapp/sdk/".into()];
+        assert!(options.has_source_scope());
+        assert!(options.selected_owner("Lapp/Activity;"));
+        assert!(options.selected_owner("Lpeer/Helper;"));
+        assert!(!options.selected_owner("Lapp/sdk/Client;"));
+        assert!(!options.selected_owner("Lthird/Library;"));
+        options.class_filter = Some("Activity".into());
+        assert!(options.selected_owner("Lapp/Activity;"));
+        assert!(!options.selected_owner("Lpeer/Helper;"));
+    }
+
+    #[test]
+    fn exact_library_owners_do_not_exclude_neighbors_or_default_scope() {
+        let mut options = JavaOptions::default();
+        assert!(!options.has_source_scope());
+        options
+            .library_owners
+            .insert("Lcom/google/internal/Verified;".into());
+        assert!(options.has_source_scope());
+        assert!(!options.selected_owner("Lcom/google/internal/Verified;"));
+        assert!(options.selected_owner("Lcom/google/internal/VerifiedNeighbor;"));
+        assert!(options.selected_owner("Lcom/google/internal/Application;"));
     }
     #[test]
     fn incoming_this_wide_and_narrow_follow_histories() {

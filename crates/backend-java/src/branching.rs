@@ -1592,7 +1592,7 @@ fn defined(insn: &ManagedInsn) -> Vec<ValueId> {
         _ => Vec::new(),
     }
 }
-fn reads(insn: &ManagedInsn) -> Vec<ValueId> {
+pub(super) fn reads(insn: &ManagedInsn) -> Vec<ValueId> {
     match insn {
         ManagedInsn::Move { value, .. }
         | ManagedInsn::Neg { value, .. }

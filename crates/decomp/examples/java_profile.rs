@@ -42,6 +42,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--workers" => options.workers = args.next().ok_or("missing workers")?.parse()?,
             "--class" => options.class_filter = Some(args.next().ok_or("missing class")?),
+            "--source-prefix" => options
+                .source_prefixes
+                .push(args.next().ok_or("missing source prefix")?),
+            "--library-prefix" => options
+                .library_prefixes
+                .push(args.next().ok_or("missing library prefix")?),
             "--no-io" => no_io = true,
             "--unprofiled" => unprofiled = true,
             "--no-ssa-cache" => options.cache_ssa = false,

@@ -709,7 +709,7 @@ impl backend_java::JavaResolver for SourceResolver {
 }
 
 #[test]
-fn integrated_emitter_hoists_declarations_but_keeps_effects_and_snapshots_in_arms() {
+fn integrated_emitter_hoists_declarations_but_keeps_effects_and_single_copies_in_arms() {
     use backend_java::{JavaMethod, JavaType, ParameterBindings, SourceResult, emit_method};
     for nested in [false, true] {
         for empty in [false, true] {
@@ -752,14 +752,14 @@ fn integrated_emitter_hoists_declarations_but_keeps_effects_and_snapshots_in_arm
                 usize::from(!empty)
             );
             assert!(
-                source.contains("int edge"),
-                "Phi source must be snapshotted: {source}"
+                !source.contains("int edge"),
+                "single-copy edge needs no snapshot: {source}"
             );
             assert!(
-                source.contains(" = edge"),
-                "Phi destination must use snapshot: {source}"
+                source.contains("v0 = "),
+                "Phi destination must still be assigned: {source}"
             );
-            assert!(source.rfind("return v").unwrap() > source.rfind(" = edge").unwrap());
+            assert!(source.rfind("return v").unwrap() > source.rfind("v0 = ").unwrap());
         }
     }
 }
@@ -1583,7 +1583,7 @@ fn terminating_arm_does_not_remove_surviving_arm_definitions() {
 }
 
 #[test]
-fn edge_temporary_names_reserve_even_unused_parameters() {
+fn single_copy_edges_do_not_allocate_temporaries_colliding_with_unused_parameters() {
     use backend_java::{DeclarationBindings, JavaMethod, JavaType, SourceResult};
     let (ir, bindings, _) = diamond(false, false);
     let result = backend_java::emit_method_declaration(
@@ -1613,5 +1613,5 @@ fn edge_temporary_names_reserve_even_unused_parameters() {
     };
     assert!(source.contains("int edge3)"));
     assert!(!source.contains("int edge3 ="), "{source}");
-    assert!(source.contains("int edge4 ="), "{source}");
+    assert!(!source.contains("int edge4 ="), "{source}");
 }

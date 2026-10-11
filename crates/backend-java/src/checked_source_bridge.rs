@@ -20,7 +20,7 @@ use std::collections::{HashMap, HashSet};
 mod bound_target;
 #[path = "checked_source_bridge_dispatch.rs"]
 mod dispatch_body;
-pub use bound_target::{BoundTarget, FieldThrowDefinition};
+pub use bound_target::{BoundTarget, FieldThrowDefinition, RuntimeThrowDefinition};
 pub use dispatch_body::{
     BoundDispatchInputs, emit_dispatch_body, plan_dispatch_body, plan_dispatch_body_bound_targets,
 };
@@ -330,7 +330,12 @@ fn plan_inner_bound(
                 args,
             } => {
                 let target = selected_target(ir, original, *kind, *method, args, resolver)
-                    .ok_or_else(|| failure("callee declaration"))?;
+                    .ok_or_else(|| {
+                        if std::env::var("CODEPURI_TRACE_METHOD").is_ok_and(|filter| filter.split(',').any(|needle| !needle.is_empty() && format!("{}.{}", original.owner, original.name).contains(needle))) {
+                            eprintln!("[bridge-declaration] caller={}.{} instruction={id:?} reference={method:?} kind={kind:?}", original.owner, original.name);
+                        }
+                        failure("callee declaration")
+                    })?;
                 result.resolved.insert(
                     id,
                     InvokeSite {
@@ -349,11 +354,11 @@ fn plan_inner_bound(
                 let constructor =
                     mode != Mode::Sites && *kind == InvokeKind::Special && target.name == "<init>";
                 let bound_throwable = mode != Mode::Sites
-                    && *kind == InvokeKind::Static
+                    && matches!(kind, InvokeKind::Static | InvokeKind::Virtual)
                     && uncovered
                         .types
                         .iter()
-                        .all(|name| name == "java.lang.Throwable")
+                        .any(|name| name == "java.lang.Throwable")
                     && bound_targets
                         .iter()
                         .any(|proof| proof.matches(*method, &target));
@@ -364,10 +369,21 @@ fn plan_inner_bound(
                     ) || constructor
                         || (mode != Mode::Sites && *kind == InvokeKind::Super))
                     || uncovered.types.iter().any(|name| {
-                        !source_exception(name, runtime_escaping, resolver, require_domain)
-                            && !bound_throwable
+                        !(source_exception(name, runtime_escaping, resolver, require_domain)
+                            || (bound_throwable && name == "java.lang.Throwable"))
                     })
                 {
+                    if std::env::var("CODEPURI_TRACE_METHOD").is_ok_and(|filter| {
+                        filter.split(',').any(|needle| {
+                            !needle.is_empty()
+                                && format!("{}.{}", original.owner, original.name).contains(needle)
+                        })
+                    }) {
+                        eprintln!(
+                            "[bridge-domain] caller={}.{} mode={mode:?} instruction={id:?} kind={kind:?} target={target:?} uncovered={:?} original_clause={:?}",
+                            original.owner, original.name, uncovered.types, original.throws
+                        );
+                    }
                     return Err(failure("unproved invocation runtime domain or dispatch"));
                 }
                 if after_allocation.contains(&id) {

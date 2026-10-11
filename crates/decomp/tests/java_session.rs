@@ -44,7 +44,7 @@ fn warm_replay_preserves_all_sources_reports_order_and_clear_lifetime() {
         assert_eq!(session.stats().replays, usize::from(warm));
         assert_eq!(
             session.stats().source_text_bytes,
-            direct.iter().map(|s| s.text.len()).sum()
+            direct.iter().map(|s| s.text.len()).sum::<usize>()
         );
     }
     session.clear_cache();

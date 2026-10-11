@@ -1,9 +1,9 @@
 //! Fail-closed local expression elision for exact single-use SSA values.
 //!
 //! A value is eligible only when its sole consumer is reached along an acyclic
-//! chain of unique unconditional edges. The chain may cross simple constant
-//! definitions only; all other intervening operations, branches, joins, Phi
-//! values, and multiple operand uses are deliberately excluded.
+//! chain of unique unconditional edges. The chain may cross inert literals and
+//! exact primitive operations, but never effects, throwing operations, branches,
+//! joins, Phi values, or multiple operand uses.
 use super::{JavaResolver, JavaType, managed_type};
 use decomp_core::cfg::EdgeKind;
 use managed_ir::{
@@ -12,7 +12,16 @@ use managed_ir::{
     ops::{ArithOp, CompareOp, Constant, OrderingOp},
     value::{InsnId, ValueId},
 };
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::{HashMap, HashSet};
+
+const MAX_INLINE_EXPRESSION_NODES: usize = 128;
+const MAX_INLINE_EXPRESSION_DEPTH: usize = 64;
+
+#[derive(Clone, Copy, Default)]
+struct ExpressionMetrics {
+    nodes: usize,
+    depth: usize,
+}
 
 #[derive(Clone, Copy)]
 struct UseSite {
@@ -60,9 +69,12 @@ pub(super) fn plan(
                 | ManagedInsn::MonitorExit { .. }
                 | ManagedInsn::Throw { .. }
         ) {
-            return HashSet::new();
+            // Effects elsewhere in a body do not prohibit a local arithmetic
+            // chain. The per-producer path check below rejects crossing them.
+            continue;
         }
         relevant_body |= match instruction {
+            ManagedInsn::Move { .. } => true,
             ManagedInsn::Arithmetic { op, .. } => !matches!(op, ArithOp::Div | ArithOp::Rem),
             ManagedInsn::ArrayLength { .. }
             | ManagedInsn::Compare { .. }
@@ -75,6 +87,9 @@ pub(super) fn plan(
             _ => false,
         };
     }
+    // Loop lowering has its own hoisted value environment. Keep this broad
+    // guard until expression planning can prove compatibility with that plan;
+    // a local linear use path alone does not establish loop-slot availability.
     if !relevant_body || has_exception_edges(ir) || !cfg_is_acyclic(ir) {
         return HashSet::new();
     }
@@ -108,6 +123,7 @@ pub(super) fn plan(
         exception_scopes_empty,
         resolver,
     };
+    let dominance = std::cell::OnceCell::new();
     let mut planned = HashSet::new();
     for (definition, instruction) in ir.instructions() {
         let Some(result) = defined_value(instruction) else {
@@ -124,9 +140,19 @@ pub(super) fn plan(
             continue;
         };
         let available_at_use = if matches!(instruction, ManagedInsn::Const { .. }) {
-            constant_dominates(ir, &blocks, definition, site.instruction)
+            let tree = dominance.get_or_init(|| decomp_core::analysis::dominators(ir.cfg()));
+            blocks
+                .get(&definition)
+                .zip(blocks.get(&site.instruction))
+                .is_some_and(|(&definition, &consumer)| tree.dominates(definition, consumer))
         } else {
-            single_straight_line_to_consumer(ir, &blocks, definition, site.instruction)
+            single_straight_line_to_consumer(
+                &context,
+                instruction,
+                &blocks,
+                definition,
+                site.instruction,
+            )
         };
         if !available_at_use {
             continue;
@@ -138,7 +164,167 @@ pub(super) fn plan(
             planned.insert(result);
         }
     }
+    bound_expression_complexity(ir, &mut planned);
     planned
+}
+
+/// Bound each emitted expression, not just the longest path through it. A
+/// balanced SSA tree can otherwise be exponentially larger than its depth.
+/// When a rendered expression exceeds either budget, materialize its largest
+/// planned operand and repeat; this also bounds initializer lines of cut nodes.
+fn bound_expression_complexity(ir: &MethodIr<SsaForm>, planned: &mut HashSet<ValueId>) {
+    loop {
+        let metrics = planned_expression_metrics(ir, planned);
+        let mut remove = HashSet::new();
+        for (_, instruction) in ir.instructions() {
+            let (own_nodes, own_depth) = expression_shape(instruction);
+            let mut inputs = Vec::new();
+            visit_reads(instruction, |input| {
+                if let Some(metric) = metrics.get(&input) {
+                    inputs.push((input, *metric));
+                }
+            });
+            let nodes = inputs.iter().fold(own_nodes, |nodes, (_, metric)| {
+                nodes.saturating_add(metric.nodes)
+            });
+            let depth = own_depth.saturating_add(
+                inputs
+                    .iter()
+                    .map(|(_, metric)| metric.depth)
+                    .max()
+                    .unwrap_or(0),
+            );
+            if nodes <= MAX_INLINE_EXPRESSION_NODES && depth <= MAX_INLINE_EXPRESSION_DEPTH {
+                continue;
+            }
+            let selected = inputs.iter().max_by_key(|(_, metric)| {
+                if nodes > MAX_INLINE_EXPRESSION_NODES && depth > MAX_INLINE_EXPRESSION_DEPTH {
+                    (metric.nodes, metric.depth)
+                } else if nodes > MAX_INLINE_EXPRESSION_NODES {
+                    (metric.nodes, 0)
+                } else {
+                    (metric.depth, metric.nodes)
+                }
+            });
+            if let Some((value, _)) = selected {
+                remove.insert(*value);
+            }
+        }
+        if remove.is_empty() {
+            break;
+        }
+        planned.retain(|value| !remove.contains(value));
+    }
+}
+
+fn planned_expression_metrics(
+    ir: &MethodIr<SsaForm>,
+    planned: &HashSet<ValueId>,
+) -> HashMap<ValueId, ExpressionMetrics> {
+    let mut metrics = HashMap::new();
+    let mut active = HashSet::new();
+    for seed in planned.iter().copied() {
+        let mut stack = vec![(seed, false)];
+        while let Some((value, expanded)) = stack.pop() {
+            if expanded {
+                if metrics.contains_key(&value) {
+                    active.remove(&value);
+                    continue;
+                }
+                let instruction = ir
+                    .value(value)
+                    .ok()
+                    .and_then(|record| ir.instruction(record.def()).ok());
+                let Some(instruction) = instruction else {
+                    metrics.insert(value, oversized_expression());
+                    active.remove(&value);
+                    continue;
+                };
+                let mut inputs = Vec::new();
+                visit_reads(instruction, |input| {
+                    if planned.contains(&input) {
+                        inputs.push(input);
+                    }
+                });
+                let (own_nodes, own_depth) = expression_shape(instruction);
+                let nodes = inputs.iter().fold(own_nodes, |nodes, input| {
+                    nodes.saturating_add(
+                        metrics
+                            .get(input)
+                            .copied()
+                            .unwrap_or_else(oversized_expression)
+                            .nodes,
+                    )
+                });
+                let depth = own_depth.saturating_add(
+                    inputs
+                        .iter()
+                        .map(|input| {
+                            metrics
+                                .get(input)
+                                .copied()
+                                .unwrap_or_else(oversized_expression)
+                                .depth
+                        })
+                        .max()
+                        .unwrap_or(0),
+                );
+                metrics.insert(
+                    value,
+                    ExpressionMetrics {
+                        nodes: nodes.min(MAX_INLINE_EXPRESSION_NODES + 1),
+                        depth: depth.min(MAX_INLINE_EXPRESSION_DEPTH + 1),
+                    },
+                );
+                active.remove(&value);
+            } else {
+                match metrics.entry(value) {
+                    std::collections::hash_map::Entry::Occupied(_) => continue,
+                    std::collections::hash_map::Entry::Vacant(entry) => {
+                        if !active.insert(value) {
+                            entry.insert(oversized_expression());
+                            continue;
+                        }
+                    }
+                }
+                let instruction = ir
+                    .value(value)
+                    .ok()
+                    .and_then(|record| ir.instruction(record.def()).ok());
+                let mut inputs = Vec::new();
+                if let Some(instruction) = instruction {
+                    visit_reads(instruction, |input| {
+                        if planned.contains(&input) {
+                            inputs.push(input);
+                        }
+                    });
+                }
+                stack.push((value, true));
+                stack.extend(inputs.into_iter().rev().map(|input| (input, false)));
+            }
+        }
+    }
+    metrics
+}
+
+fn oversized_expression() -> ExpressionMetrics {
+    ExpressionMetrics {
+        nodes: MAX_INLINE_EXPRESSION_NODES + 1,
+        depth: MAX_INLINE_EXPRESSION_DEPTH + 1,
+    }
+}
+
+fn expression_shape(instruction: &ManagedInsn) -> (usize, usize) {
+    match instruction {
+        ManagedInsn::Const { .. }
+        | ManagedInsn::Move { .. }
+        | ManagedInsn::Return { .. }
+        | ManagedInsn::Branch { .. }
+        | ManagedInsn::Switch { .. } => (0, 0),
+        // Ordering comparisons render a nested conditional expression.
+        ManagedInsn::OrderingCompare { .. } => (5, 3),
+        _ => (1, 1),
+    }
 }
 
 fn has_exception_edges(ir: &MethodIr<SsaForm>) -> bool {
@@ -157,7 +343,7 @@ fn cfg_is_acyclic(ir: &MethodIr<SsaForm>) -> bool {
         };
         indegree.insert(block, block_ref.incoming().len());
     }
-    let mut ready: VecDeque<_> = indegree
+    let mut ready: std::collections::VecDeque<_> = indegree
         .iter()
         .filter_map(|(block, degree)| (*degree == 0).then_some(*block))
         .collect();
@@ -186,6 +372,7 @@ fn cfg_is_acyclic(ir: &MethodIr<SsaForm>) -> bool {
 /// A simple literal has no evaluation or exception behavior to move. Its only
 /// cross-block substitution is allowed when its defining block dominates its
 /// unique consumer; joins and loops are already excluded by the method gate.
+#[cfg(test)]
 fn constant_dominates(
     ir: &MethodIr<SsaForm>,
     blocks: &HashMap<InsnId, decomp_core::ids::BlockId>,
@@ -235,12 +422,17 @@ fn constant_dominates(
     !without_definition.contains(&consumer_block)
 }
 
-fn single_straight_line_to_consumer(
-    ir: &MethodIr<SsaForm>,
+/// Prove a unique unconditional definition-to-use path. Primitive producers
+/// may commute only with other exact non-throwing primitive work; heap reads
+/// and copies of references retain the older literal-only gap rule.
+fn single_straight_line_to_consumer<R: JavaResolver>(
+    context: &PlanContext<'_, R>,
+    producer: &ManagedInsn,
     blocks: &HashMap<InsnId, decomp_core::ids::BlockId>,
     definition: InsnId,
     consumer: InsnId,
 ) -> bool {
+    let ir = context.ir;
     let (Some(&source), Some(&target)) = (blocks.get(&definition), blocks.get(&consumer)) else {
         return false;
     };
@@ -275,19 +467,109 @@ fn single_straight_line_to_consumer(
         let Ok(next_block) = ir.cfg().block(next) else {
             return false;
         };
-        if !matches!(
-            ir.instruction(*next_block.payload()),
-            Ok(ManagedInsn::Const {
-                value: Constant::Zero | Constant::Boolean(_) | Constant::Int(_) | Constant::Long(_),
-                ..
-            })
-        ) {
+        let Ok(intervening) = ir.instruction(*next_block.payload()) else {
+            return false;
+        };
+        if !reorderable_primitive_operation(context, intervening)
+            || (!primitive_expression_producer(context, producer)
+                && !matches!(intervening, ManagedInsn::Const { .. }))
+        {
             return false;
         }
         previous_edge = Some(*edge_id);
         current = next;
     }
     false
+}
+
+fn reorderable_primitive_operation<R: JavaResolver>(
+    context: &PlanContext<'_, R>,
+    instruction: &ManagedInsn,
+) -> bool {
+    match instruction {
+        ManagedInsn::Const { result, value } => {
+            java_value_type(context.ir, *result, context.declarations, context.resolver)
+                .is_some_and(|ty| {
+                    ty != JavaType::Void
+                        && constant_is_exact_primitive(value, &ty)
+                        && matches!(
+                            value,
+                            Constant::Zero
+                                | Constant::Boolean(_)
+                                | Constant::Int(_)
+                                | Constant::Long(_)
+                        )
+                })
+        }
+        ManagedInsn::Move { result, value } => matches!(
+            (
+                java_value_type(
+                    context.ir,
+                    *result,
+                    context.declarations,
+                    context.resolver,
+                ),
+                java_value_type(
+                    context.ir,
+                    *value,
+                    context.declarations,
+                    context.resolver,
+                ),
+            ),
+            (Some(result), Some(source)) if result == source && is_primitive(&result)
+        ),
+        ManagedInsn::Arithmetic { .. }
+        | ManagedInsn::Compare { .. }
+        | ManagedInsn::OrderingCompare { .. }
+        | ManagedInsn::Neg { .. }
+        | ManagedInsn::Not { .. } => pure_primitive_operation_is_safe(context, instruction),
+        _ => false,
+    }
+}
+
+fn is_primitive(ty: &JavaType) -> bool {
+    matches!(
+        ty,
+        JavaType::Boolean
+            | JavaType::Byte
+            | JavaType::Short
+            | JavaType::Char
+            | JavaType::Int
+            | JavaType::Long
+            | JavaType::Float
+            | JavaType::Double
+    )
+}
+
+fn primitive_expression_producer<R: JavaResolver>(
+    context: &PlanContext<'_, R>,
+    producer: &ManagedInsn,
+) -> bool {
+    match producer {
+        ManagedInsn::Arithmetic { .. }
+        | ManagedInsn::Compare { .. }
+        | ManagedInsn::OrderingCompare { .. }
+        | ManagedInsn::Neg { .. }
+        | ManagedInsn::Not { .. } => pure_primitive_operation_is_safe(context, producer),
+        ManagedInsn::Move { result, value } => matches!(
+            (
+                java_value_type(
+                    context.ir,
+                    *result,
+                    context.declarations,
+                    context.resolver,
+                ),
+                java_value_type(
+                    context.ir,
+                    *value,
+                    context.declarations,
+                    context.resolver,
+                ),
+            ),
+            (Some(result), Some(source)) if result == source && is_primitive(&result)
+        ),
+        _ => false,
+    }
 }
 
 fn producer_is_safe<R: JavaResolver>(
@@ -309,6 +591,16 @@ fn producer_is_safe<R: JavaResolver>(
     }
     if matches!(
         consumer,
+        ManagedInsn::Branch {
+            condition: Some(value),
+            ..
+        } if *value == result
+    ) && result_type != JavaType::Boolean
+    {
+        return false;
+    }
+    if matches!(
+        consumer,
         ManagedInsn::Arithmetic { .. }
             | ManagedInsn::Compare { .. }
             | ManagedInsn::Neg { .. }
@@ -318,11 +610,14 @@ fn producer_is_safe<R: JavaResolver>(
         return false;
     }
     match producer {
+        ManagedInsn::Move { value, .. } => java_value_type(ir, *value, declarations, resolver)
+            .is_some_and(|source| source == result_type && result_type != JavaType::Void),
         ManagedInsn::Const { value, .. } => {
             matches!(
                 value,
                 Constant::Zero | Constant::Boolean(_) | Constant::Int(_) | Constant::Long(_)
-            ) && result_type != JavaType::Void
+            ) && constant_is_exact_primitive(value, &result_type)
+                && result_type != JavaType::Void
                 && (!matches!(
                     consumer,
                     ManagedInsn::Arithmetic { .. }
@@ -500,6 +795,30 @@ fn pure_primitive_operation_is_safe<R: JavaResolver>(
                         | JavaType::Double
                 )
         }
+        ManagedInsn::OrderingCompare {
+            op,
+            result,
+            lhs,
+            rhs,
+        } => {
+            let (Some(result), Some(left), Some(right)) = (
+                java_value_type(ir, *result, declarations, resolver),
+                java_value_type(ir, *lhs, declarations, resolver),
+                java_value_type(ir, *rhs, declarations, resolver),
+            ) else {
+                return false;
+            };
+            result == JavaType::Int
+                && match op {
+                    OrderingOp::CmpLong => left == JavaType::Long && right == JavaType::Long,
+                    OrderingOp::CmpLowFloat | OrderingOp::CmpHighFloat => {
+                        left == JavaType::Float && right == JavaType::Float
+                    }
+                    OrderingOp::CmpLowDouble | OrderingOp::CmpHighDouble => {
+                        left == JavaType::Double && right == JavaType::Double
+                    }
+                }
+        }
         ManagedInsn::Neg { result, value } => {
             let (Some(result), Some(source)) = (
                 java_value_type(ir, *result, declarations, resolver),
@@ -646,24 +965,39 @@ fn arithmetic_types_are_safe(
 }
 
 fn consumer_is_supported(producer: &ManagedInsn, consumer: &ManagedInsn, result: ValueId) -> bool {
+    let branch_consumer = matches!(
+        consumer,
+        ManagedInsn::Branch {
+            condition: Some(value),
+            ..
+        } if *value == result
+    );
     match producer {
-        ManagedInsn::Const { .. } => matches!(
-            consumer,
-            ManagedInsn::Compare { .. }
-                | ManagedInsn::OrderingCompare { .. }
-                | ManagedInsn::Arithmetic { .. }
-                | ManagedInsn::Neg { .. }
-                | ManagedInsn::Not { .. }
-                | ManagedInsn::Return { value: Some(_) }
-        ),
-        ManagedInsn::Arithmetic { .. } => matches!(
-            consumer,
-            ManagedInsn::Arithmetic { .. }
-                | ManagedInsn::Compare { .. }
-                | ManagedInsn::Neg { .. }
-                | ManagedInsn::Not { .. }
-                | ManagedInsn::Return { value: Some(_) }
-        ),
+        ManagedInsn::Const { .. } => {
+            branch_consumer
+                || matches!(
+                    consumer,
+                    ManagedInsn::Compare { .. }
+                        | ManagedInsn::OrderingCompare { .. }
+                        | ManagedInsn::Arithmetic { .. }
+                        | ManagedInsn::Neg { .. }
+                        | ManagedInsn::Not { .. }
+                        | ManagedInsn::Return { value: Some(_) }
+                        | ManagedInsn::Move { .. }
+                )
+        }
+        ManagedInsn::Arithmetic { .. } => {
+            branch_consumer
+                || matches!(
+                    consumer,
+                    ManagedInsn::Arithmetic { .. }
+                        | ManagedInsn::Compare { .. }
+                        | ManagedInsn::Neg { .. }
+                        | ManagedInsn::Not { .. }
+                        | ManagedInsn::Return { value: Some(_) }
+                        | ManagedInsn::Move { .. }
+                )
+        }
         ManagedInsn::Compare { .. } => {
             matches!(
                 consumer,
@@ -674,25 +1008,54 @@ fn consumer_is_supported(producer: &ManagedInsn, consumer: &ManagedInsn, result:
             ) || matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)
                 || matches!(consumer, ManagedInsn::Compare { .. })
                 || matches!(consumer, ManagedInsn::Not { value, .. } if *value == result)
+                || matches!(consumer, ManagedInsn::Move { value, .. } if *value == result)
         }
-        ManagedInsn::OrderingCompare { .. } => matches!(
-            consumer,
-            ManagedInsn::Compare { .. } | ManagedInsn::Return { value: Some(_) }
-        ),
+        ManagedInsn::OrderingCompare { .. } => {
+            matches!(
+                consumer,
+                ManagedInsn::Compare { .. } | ManagedInsn::Return { value: Some(_) }
+            ) || matches!(consumer, ManagedInsn::Move { value, .. } if *value == result)
+        }
         ManagedInsn::ArrayLength { .. } => {
             matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)
         }
-        ManagedInsn::Neg { .. } | ManagedInsn::Not { .. } => matches!(
-            consumer,
-            ManagedInsn::Arithmetic { .. }
-                | ManagedInsn::Compare { .. }
-                | ManagedInsn::Neg { .. }
-                | ManagedInsn::Not { .. }
-                | ManagedInsn::Return { value: Some(_) }
-        ),
+        ManagedInsn::Neg { .. } => {
+            matches!(
+                consumer,
+                ManagedInsn::Arithmetic { .. }
+                    | ManagedInsn::Compare { .. }
+                    | ManagedInsn::Neg { .. }
+                    | ManagedInsn::Not { .. }
+                    | ManagedInsn::Return { value: Some(_) }
+            ) || matches!(consumer, ManagedInsn::Move { value, .. } if *value == result)
+        }
+        ManagedInsn::Not { .. } => {
+            branch_consumer
+                || matches!(
+                    consumer,
+                    ManagedInsn::Arithmetic { .. }
+                        | ManagedInsn::Compare { .. }
+                        | ManagedInsn::Neg { .. }
+                        | ManagedInsn::Not { .. }
+                        | ManagedInsn::Return { value: Some(_) }
+                )
+                || matches!(consumer, ManagedInsn::Move { value, .. } if *value == result)
+        }
         ManagedInsn::FieldGet { .. } => {
             matches!(consumer, ManagedInsn::ArrayLength { array, .. } if *array == result)
                 || matches!(consumer, ManagedInsn::Return { value: Some(value) } if *value == result)
+        }
+        ManagedInsn::Move { .. } => {
+            branch_consumer
+                || matches!(
+                    consumer,
+                    ManagedInsn::Move { .. }
+                        | ManagedInsn::Arithmetic { .. }
+                        | ManagedInsn::Compare { .. }
+                        | ManagedInsn::Neg { .. }
+                        | ManagedInsn::Not { .. }
+                        | ManagedInsn::Return { value: Some(_) }
+                )
         }
         _ => false,
     }
@@ -859,4 +1222,49 @@ fn is_zero_constant(ir: &MethodIr<SsaForm>, value: ValueId) -> bool {
             value: Constant::Zero | Constant::Int(0),
         }) if *result == value
     )
+}
+
+#[cfg(test)]
+mod reference_tests {
+    use super::*;
+    use decomp_core::cfg::Cfg;
+    use managed_ir::method::{InsnArena, ValueArena};
+
+    #[test]
+    fn shared_dominance_matches_constant_cut_reference_in_loops_and_dead_regions() {
+        let mut instructions = InsnArena::with_key();
+        let ids: Vec<_> = (0..5)
+            .map(|_| instructions.insert(ManagedInsn::Return { value: None }))
+            .collect();
+        let mut cfg = Cfg::new(ids[0]);
+        let nodes = [
+            cfg.entry(),
+            cfg.add_block(ids[1]),
+            cfg.add_block(ids[2]),
+            cfg.add_block(ids[3]),
+            cfg.add_block(ids[4]),
+        ];
+        for (a, b) in [(0, 1), (1, 2), (2, 1), (2, 3)] {
+            assert!(
+                cfg.add_edge(nodes[a], nodes[b], EdgeKind::Unconditional)
+                    .is_ok()
+            );
+        }
+        let ir = MethodIr::<SsaForm>::from_parts(cfg, instructions, ValueArena::with_key());
+        assert!(!cfg_is_acyclic(&ir));
+        let blocks = ids
+            .iter()
+            .zip(nodes)
+            .map(|(id, block)| (*id, block))
+            .collect();
+        let dom = decomp_core::analysis::dominators(ir.cfg());
+        for (left, &a) in ids.iter().zip(nodes.iter()) {
+            for (right, &b) in ids.iter().zip(nodes.iter()) {
+                assert_eq!(
+                    constant_dominates(&ir, &blocks, *left, *right),
+                    dom.dominates(a, b)
+                );
+            }
+        }
+    }
 }

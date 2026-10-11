@@ -930,7 +930,11 @@ impl RequiredThrowsContext for Context<'_, '_> {
         })
     }
     fn invocation_contract(&self, reference: MethodRef) -> Option<InvocationContract> {
-        let key = method_key(self.resolver.dex, reference.index())?;
+        let key = self
+            .resolver
+            .inherited_final_method(reference.index())
+            .map(|selected| selected.key)
+            .or_else(|| method_key(self.resolver.dex, reference.index()))?;
         let metadata = self.resolver.declaration(reference.index()).ok()?;
         let declared = self.facts.names(metadata.exceptions.as_ref()?)?;
         let source_target =
@@ -1134,6 +1138,9 @@ pub(super) struct PreparedIndices<'a> {
     pub field: &'a crate::java_members::external_metadata::fields::InputIndex<'a>,
     pub super_index: Option<&'a crate::java_super_resolution::SuperIndex<'a>>,
     pub metadata: &'a [dex_decompiler::infer::DexMetadata],
+    /// Selected source definitions; the collector follows their contract
+    /// dependencies instead of inspecting unrelated definitions eagerly.
+    pub roots: Option<&'a BTreeSet<MethodKey>>,
 }
 #[allow(clippy::too_many_arguments)]
 pub(super) fn collect_cached_profiled<'a>(
@@ -1147,13 +1154,14 @@ pub(super) fn collect_cached_profiled<'a>(
     profile: Option<&mut SourceThrowsProfile>,
     prepared: Option<PreparedIndices<'a>>,
 ) -> (SourceThrowsPlan, SourceThrowsScraps<'a>) {
+    let roots = prepared.as_ref().and_then(|indices| indices.roots);
     collect_roots_profiled(
         files,
         aliases,
         catalog,
         external,
         hierarchy,
-        None,
+        roots,
         workers,
         Some(cache),
         profile,
@@ -1476,26 +1484,61 @@ fn collect_roots_profiled<'a>(
                 profile.inspect_method_count += state.timing.inspect_method_count;
             }
             let StreamedAggregation { discovered, .. } = &mut *state;
-            while let Some(key) = discovered.pop_front() {
-                if !visited.insert(key.clone()) {
+            while !discovered.is_empty() {
+                // A FIFO wave contains exactly the keys the serial traversal
+                // would inspect before any newly appended dependencies. Ordered
+                // delivery preserves requirement/error selection across waves.
+                let mut batch = Vec::new();
+                while let Some(key) = discovered.pop_front() {
+                    if visited.insert(key.clone()) {
+                        batch.push(key);
+                    }
+                }
+                if batch.is_empty() {
                     continue;
                 }
-                let (result, task_timing) = inspect(&key);
-                if let Some(profile) = profile.as_deref_mut() {
-                    profile.task_count += 1;
-                    profile.ssa_time += task_timing.ssa_time;
-                    profile.inspect_method_time += task_timing.inspect_method_time;
-                    profile.ssa_count += task_timing.ssa_count;
-                    profile.inspect_method_count += task_timing.inspect_method_count;
+                let (result, wave_schedule) = scheduler::run(
+                    batch.len(),
+                    workers,
+                    |index| inspect(&batch[index]),
+                    |index, (result, task_timing)| {
+                        if let Some(profile) = profile.as_deref_mut() {
+                            profile.task_count += 1;
+                            profile.ssa_time += task_timing.ssa_time;
+                            profile.inspect_method_time += task_timing.inspect_method_time;
+                            profile.ssa_count += task_timing.ssa_count;
+                            profile.inspect_method_count += task_timing.inspect_method_count;
+                        }
+                        match result {
+                            Ok(value) => {
+                                discovered.extend(value.source_targets().cloned());
+                                requirements.push(value);
+                            }
+                            Err(error) => {
+                                missing.insert(batch[index].clone(), error);
+                            }
+                        }
+                        Ok(())
+                    },
+                    || (),
+                );
+                if let Some(profile) = profile.as_deref_mut()
+                    && let Some(schedule) = profile.scheduler.as_mut()
+                {
+                    schedule.wall += wave_schedule.wall;
+                    schedule.tasks += wave_schedule.tasks;
+                    schedule.task_time += wave_schedule.task_time;
+                    schedule.worker_time += wave_schedule.worker_time;
+                    schedule.queue_wait += wave_schedule.queue_wait;
+                    schedule.dispatch_idle += wave_schedule.dispatch_idle;
+                    schedule.capacity = schedule.capacity.max(wave_schedule.capacity);
+                    schedule.reorder_capacity = schedule
+                        .reorder_capacity
+                        .max(wave_schedule.reorder_capacity);
+                    schedule.max_pending = schedule.max_pending.max(wave_schedule.max_pending);
                 }
-                match result {
-                    Ok(value) => {
-                        discovered.extend(value.source_targets().cloned());
-                        requirements.push(value);
-                    }
-                    Err(error) => {
-                        missing.insert(key, error);
-                    }
+                if result.is_err() {
+                    panic!("source throws dependency worker panicked");
                 }
             }
         }
@@ -2065,6 +2108,7 @@ mod tests {
                     field: &field_index,
                     super_index: prepared_super,
                     metadata: &metadata,
+                    roots: None,
                 }),
             )
             .0;

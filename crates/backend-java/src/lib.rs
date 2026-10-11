@@ -35,6 +35,7 @@ mod java_string_literal;
 mod managed_ops;
 mod object_plan;
 mod pure_expression;
+mod readable_ast;
 pub mod shared_regions;
 pub mod special_invokes;
 mod static_field_qualifier;
@@ -1591,6 +1592,10 @@ fn emit(
                 let prefix = format!("dispatch{index}");
                 if !e.reserved.contains(&format!("{prefix}_pc"))
                     && !e.reserved.contains(&format!("{prefix}_loop"))
+                    && !e
+                        .reserved
+                        .iter()
+                        .any(|name| name.starts_with(&format!("{prefix}_test_")))
                 {
                     break prefix;
                 }
@@ -1598,6 +1603,9 @@ fn emit(
             };
             e.reserved.insert(format!("{prefix}_pc"));
             e.reserved.insert(format!("{prefix}_loop"));
+            for group in 0..plan.regions.states.len() {
+                e.reserved.insert(format!("{prefix}_test_{group}"));
+            }
             let body = dispatch::render(
                 cfg,
                 &plan.regions,
@@ -2196,13 +2204,30 @@ fn render_control<R: JavaResolver>(
     m: &JavaMethod,
     depth: usize,
 ) -> Result<(), Unsupported> {
+    let uses = e
+        .object_planning
+        .readable_uses
+        .get_or_init(|| std::rc::Rc::new(readable_uses(e.ir)))
+        .clone();
+    let nodes = readable_control(e, steps, m, &uses)?;
+    finish_readable(e, nodes, depth);
+    Ok(())
+}
+
+fn readable_control<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    steps: &[loop_control::ControlStep],
+    m: &JavaMethod,
+    uses: &HashMap<ValueId, usize>,
+) -> Result<Vec<readable_ast::Node>, Unsupported> {
     use loop_control::ControlStep;
     use loop_control_regions::TransferKind;
+    use readable_ast::Node;
+    let mut nodes = Vec::new();
     for step in steps {
-        let indent = "    ".repeat(depth);
         match step {
             ControlStep::Ordinary(step) => {
-                render_steps_at(e, std::slice::from_ref(step), m, depth)?
+                nodes.extend(readable_steps(e, std::slice::from_ref(step), m, uses)?);
             }
             ControlStep::If {
                 condition,
@@ -2211,21 +2236,25 @@ fn render_control<R: JavaResolver>(
             } => {
                 let (name, ty) = e.get(*condition)?;
                 compatible(&ty, &JavaType::Boolean)?;
-                e.lines.push(format!("{indent}if ({name}) {{"));
-                render_control(e, then_steps, m, depth + 1)?;
-                e.lines.push(format!("{indent}}} else {{"));
-                render_control(e, else_steps, m, depth + 1)?;
-                e.lines.push(format!("{indent}}}"));
+                let yes = readable_control(e, then_steps, m, uses)?;
+                let no = readable_control(e, else_steps, m, uses)?;
+                nodes.push(Node::If {
+                    condition: name,
+                    yes,
+                    no,
+                });
             }
             ControlStep::Loop { header, body } => {
                 let label: String = format!("{header:?}")
                     .chars()
                     .filter(char::is_ascii_alphanumeric)
                     .collect();
-                e.lines
-                    .push(format!("{indent}loop{label}: while (true) {{"));
-                render_control(e, body, m, depth + 1)?;
-                e.lines.push(format!("{indent}}}"));
+                let body = readable_control(e, body, m, uses)?;
+                nodes.push(Node::Loop {
+                    label: Some(format!("loop{label}")),
+                    condition: "true".into(),
+                    body,
+                });
             }
             ControlStep::Transfer { kind, .. } => {
                 let (keyword, header) = match kind {
@@ -2236,11 +2265,15 @@ fn render_control<R: JavaResolver>(
                     .chars()
                     .filter(char::is_ascii_alphanumeric)
                     .collect();
-                e.lines.push(format!("{indent}{keyword} loop{label};"));
+                nodes.push(if keyword == "break" {
+                    Node::Break(Some(format!("loop{label}")))
+                } else {
+                    Node::Continue(Some(format!("loop{label}")))
+                });
             }
         }
     }
-    Ok(())
+    Ok(nodes)
 }
 
 fn render_steps_at<R: JavaResolver>(
@@ -2249,10 +2282,218 @@ fn render_steps_at<R: JavaResolver>(
     m: &JavaMethod,
     depth: usize,
 ) -> Result<(), Unsupported> {
+    let uses = e
+        .object_planning
+        .readable_uses
+        .get_or_init(|| std::rc::Rc::new(readable_uses(e.ir)))
+        .clone();
+    let nodes = readable_steps(e, steps, m, &uses)?;
+    finish_readable(e, nodes, depth);
+    Ok(())
+}
+
+fn finish_readable<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    nodes: Vec<readable_ast::Node>,
+    depth: usize,
+) {
+    let mut before = HashSet::new();
+    readable_ast::condition_assignments(&nodes, &mut before);
+    let nodes = readable_ast::simplify(nodes);
+    let mut remaining = HashSet::new();
+    readable_ast::condition_assignments(&nodes, &mut remaining);
+    let declarations: HashSet<_> = before
+        .difference(&remaining)
+        .map(|name| format!("boolean {name};"))
+        .collect();
+    e.lines.retain(|line| !declarations.contains(line.trim()));
+    readable_ast::render(&nodes, depth, &mut e.lines);
+}
+
+fn readable_uses(ir: &MethodIr<SsaForm>) -> HashMap<ValueId, usize> {
+    let mut uses = HashMap::new();
+    for (_, instruction) in ir.instructions() {
+        let reads = match instruction {
+            ManagedInsn::Phi { inputs, .. } => inputs.iter().map(|(_, value)| *value).collect(),
+            _ => branching::reads(instruction),
+        };
+        for value in reads {
+            *uses.entry(value).or_default() += 1;
+        }
+    }
+    uses
+}
+
+fn readable_steps<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    steps: &[branching::Step],
+    m: &JavaMethod,
+    uses: &HashMap<ValueId, usize>,
+) -> Result<Vec<readable_ast::Node>, Unsupported> {
+    use readable_ast::Node;
+    let mut nodes = Vec::new();
     for step in steps {
         if e.folded_argument_region_step(step)? {
             continue;
         }
+        match step {
+            branching::Step::If {
+                condition,
+                then_steps,
+                else_steps,
+            } => {
+                let (condition, ty) = e.get(*condition)?;
+                compatible(&ty, &JavaType::Boolean)?;
+                let yes = readable_steps(e, then_steps, m, uses)?;
+                let no = readable_steps(e, else_steps, m, uses)?;
+                nodes.push(Node::If { condition, yes, no });
+            }
+            branching::Step::While {
+                evaluation,
+                condition,
+                body_on_true,
+                body_steps,
+                exit_steps,
+            } => {
+                // Render/evaluate definitions before asking for their expression.
+                let mut body = readable_steps(e, evaluation, m, uses)?;
+                let (name, ty) = e.get(*condition)?;
+                compatible(&ty, &JavaType::Boolean)?;
+                let stop = if *body_on_true {
+                    format!("!({name})")
+                } else {
+                    name
+                };
+                let mut yes = readable_steps(e, exit_steps, m, uses)?;
+                yes.push(Node::Break(None));
+                body.push(Node::If {
+                    condition: stop,
+                    yes,
+                    no: Vec::new(),
+                });
+                body.extend(readable_steps(e, body_steps, m, uses)?);
+                nodes.push(Node::Loop {
+                    label: None,
+                    condition: "true".into(),
+                    body,
+                });
+            }
+            _ => {
+                let start = e.lines.len();
+                render_steps_raw_at(e, std::slice::from_ref(step), m, 0)?;
+                let lines: Vec<_> = e.lines.drain(start..).collect();
+                let instruction = match step {
+                    branching::Step::Instruction(id) => e.ir.instruction(*id).ok(),
+                    _ => None,
+                };
+                let terminal = matches!(
+                    instruction,
+                    Some(ManagedInsn::Return { .. } | ManagedInsn::Throw { .. })
+                );
+                let boolean = match instruction {
+                    Some(
+                        ManagedInsn::Compare { result, .. }
+                        | ManagedInsn::Not { result, .. }
+                        | ManagedInsn::Move { result, .. },
+                    ) if uses.get(result) == Some(&1) => Some(*result),
+                    _ => None,
+                };
+                let assignment = match instruction {
+                    Some(
+                        insn @ (ManagedInsn::Const { result, .. }
+                        | ManagedInsn::Move { result, .. }
+                        | ManagedInsn::Arithmetic { result, .. }
+                        | ManagedInsn::Neg { result, .. }
+                        | ManagedInsn::Not { result, .. }),
+                    ) if e.hoisted.contains(result)
+                        && branching::reads(insn).iter().all(|value| {
+                            e.hoisted.contains(value) || e.parameters.contains(value)
+                        }) =>
+                    {
+                        Some((*result, uses.get(result) == Some(&1)))
+                    }
+                    _ => match step {
+                        branching::Step::Copies { copies, .. }
+                            if copies.len() == 1
+                                && (e.hoisted.contains(&copies[0].source)
+                                    || e.parameters.contains(&copies[0].source)) =>
+                        {
+                            Some((copies[0].destination, false))
+                        }
+                        _ => None,
+                    },
+                };
+                if let Some(value) = boolean
+                    && let Ok((target, JavaType::Boolean)) = e.get(value)
+                    && let [line] = lines.as_slice()
+                    && let Some(expression) = line
+                        .strip_prefix(&format!("{target} = "))
+                        .and_then(|line| line.strip_suffix(';'))
+                {
+                    nodes.push(Node::ConditionAssignment {
+                        target,
+                        expression: expression.into(),
+                    });
+                } else if let Some((value, inline)) = assignment
+                    && let Ok((target, ty)) = e.get(value)
+                    && matches!(
+                        ty,
+                        JavaType::Boolean
+                            | JavaType::Byte
+                            | JavaType::Short
+                            | JavaType::Char
+                            | JavaType::Int
+                            | JavaType::Long
+                            | JavaType::Float
+                            | JavaType::Double
+                    )
+                    && let [line] = lines.as_slice()
+                    && let Some(expression) = line
+                        .strip_prefix(&format!("{target} = "))
+                        .and_then(|line| line.strip_suffix(';'))
+                {
+                    nodes.push(Node::Assignment {
+                        target,
+                        expression: expression.into(),
+                        inline,
+                    });
+                } else if let Some(ManagedInsn::Return { value: Some(value) }) = instruction
+                    && let Ok((_, ty)) = e.get(*value)
+                    && ty == m.return_type
+                    && matches!(
+                        ty,
+                        JavaType::Boolean
+                            | JavaType::Int
+                            | JavaType::Long
+                            | JavaType::Float
+                            | JavaType::Double
+                    )
+                    && let [line] = lines.as_slice()
+                    && let Some(expression) = line
+                        .strip_prefix("return ")
+                        .and_then(|line| line.strip_suffix(';'))
+                {
+                    nodes.push(Node::Return {
+                        expression: expression.into(),
+                        ty: ty.source()?,
+                        nesting: 0,
+                    });
+                } else {
+                    nodes.push(Node::Raw { lines, terminal });
+                }
+            }
+        }
+    }
+    Ok(nodes)
+}
+
+fn render_steps_raw_at<R: JavaResolver>(
+    e: &mut Emitter<'_, R>,
+    steps: &[branching::Step],
+    m: &JavaMethod,
+    depth: usize,
+) -> Result<(), Unsupported> {
+    for step in steps {
         let start = e.lines.len();
         let indent = "    ".repeat(depth);
         match step {
@@ -2352,6 +2593,16 @@ fn render_steps_at<R: JavaResolver>(
                 continue;
             }
             branching::Step::Copies { copies, .. } => {
+                if let [copy] = copies.as_slice() {
+                    let (destination, dt) = e.get(copy.destination)?;
+                    let (source, ty) = e.operand(copy.source, &dt)?;
+                    e.compatible(&ty, &dt)?;
+                    e.lines.push(format!("{destination} = {source};"));
+                    for line in &mut e.lines[start..] {
+                        line.insert_str(0, &indent);
+                    }
+                    continue;
+                }
                 let mut snapshots = Vec::new();
                 for copy in copies {
                     let (destination, dt) = e.get(copy.destination)?;

@@ -1212,7 +1212,8 @@ fn arithmetic_parameters_moves_and_widths_execute() {
         },
     );
     assert!(source.contains("int class_"));
-    assert!(source.contains("int v2 = v1;"));
+    assert!(source.contains("return v1;"), "{source}");
+    assert!(!source.contains("int v2 = v1;"), "{source}");
     let mut b = Builder::default();
     let p = b.parameter(ManagedType::Long);
     let c = b.value(ManagedType::Long, |v| ManagedInsn::Const {

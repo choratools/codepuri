@@ -20,6 +20,8 @@ pub mod java_initial_parameters;
 mod java_integration;
 pub mod java_members;
 pub mod java_session;
+pub mod library_evidence;
+pub mod library_fingerprint;
 pub use java_members::external_metadata as java_external_metadata;
 pub mod java_hierarchy;
 pub use backend_java::type_compatibility;
